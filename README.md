@@ -10,7 +10,7 @@ Contents
 2. [Building the Code](#building-the-code)
 3. [Sample Applications](#sample-applications)
 4. [Documentation](#documentation)
-5. [Credits, Sponsorship & Thanks](#credits-sponsorship-and-thanks)
+5. [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
 
 Getting Started
 ---------------
@@ -57,7 +57,7 @@ Credits, Sponsorship & Thanks
 
 SharpGL is written and maintained by me. It's proudly sponsored by:
 
-*** NDepend ***
+### NDepend ###
 
 Some notable contributions have come from:
 
