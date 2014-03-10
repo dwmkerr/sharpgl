@@ -59,9 +59,7 @@ SharpGL is written and maintained by me.
 
 ### NDepend ###
 
-![NDepend](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/ndepend.png "NDepend")
+![NDepend](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/ndepend.png?raw=true "NDepend")
 
 SharpGL is proudly sponsored by NDepend! Find out more at [www.NDepend.com](http://www.NDepend.com).
-
-Some notable contributions have come from:
 
