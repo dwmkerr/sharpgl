@@ -55,9 +55,13 @@ It's finally a work in progress.
 Credits, Sponsorship & Thanks
 -----------------------------
 
-SharpGL is written and maintained by me. It's proudly sponsored by:
+SharpGL is written and maintained by me.
 
 ### NDepend ###
+
+![NDepend](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/ndepend.png "NDepend")
+
+SharpGL is proudly sponsored by NDepend! Find out more at [www.NDepend.com](http://www.NDepend.com).
 
 Some notable contributions have come from:
 
