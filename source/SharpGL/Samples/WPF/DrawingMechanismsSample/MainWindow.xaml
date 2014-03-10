@@ -1,0 +1,16 @@
+﻿<Window x:Class="DrawingMechanismsSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:WPF="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF" Title="Drawing Mechanisms Sample" Height="350" Width="525">
+    <Grid>
+        <DockPanel>
+            <ToolBar DockPanel.Dock="Top">
+                <ComboBox x:Name="drawingMechanismCombo" Width="120">
+                    <ComboBoxItem IsSelected="True">Immediate</ComboBoxItem>
+                    <ComboBoxItem>Vertex Arrays</ComboBoxItem>
+                </ComboBox>
+            </ToolBar>
+            <WPF:OpenGLControl x:Name="openGLCtrl" OpenGLDraw="openGLCtrl_OpenGLDraw" OpenGLInitialized="openGLCtrl_OpenGLInitialized" DrawFPS="True" />
+        </DockPanel>
+    </Grid>
+</Window>

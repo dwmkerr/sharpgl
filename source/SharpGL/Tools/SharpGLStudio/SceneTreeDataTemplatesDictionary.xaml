@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:apexControls="clr-namespace:Apex.Controls;assembly=Apex"
+                    xmlns:sgl="clr-namespace:SharpGL;assembly=SharpGL"
+                    xmlns:sglSceneGraph="clr-namespace:SharpGL.SceneGraph;assembly=SharpGL.SceneGraph"
+                    xmlns:sglCore="clr-namespace:SharpGL.SceneGraph.Core;assembly=SharpGL.SceneGraph"
+                    xmlns:sglDesignPrimitives="clr-namespace:SharpGL.SceneGraph.Primitives;assembly=SharpGL.SceneGraph">
+    
+    <HierarchicalDataTemplate DataType="{x:Type sglCore:SceneElement}" ItemsSource="{Binding Children}">
+        <apexControls:PaddedGrid Columns="Auto,Auto,Auto" Padding="2">
+            <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" />
+        </apexControls:PaddedGrid>
+    </HierarchicalDataTemplate>
+    
+</ResourceDictionary>

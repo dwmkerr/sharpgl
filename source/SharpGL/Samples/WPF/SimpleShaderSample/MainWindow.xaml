@@ -1,0 +1,11 @@
+﻿<Window x:Class="SimpleShaderSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Simple Shader Sample" Height="350" Width="525"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF">
+    <Grid>
+        <sharpGL:OpenGLControl 
+            OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized"
+            RenderContextType="FBO" />
+    </Grid>
+</Window>

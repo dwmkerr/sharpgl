@@ -1,0 +1,37 @@
+﻿<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>SharpGL Windows Forms Application</Name>
+    <Description>A template for creating an application that uses SharpGL to provide OpenGL rendering with a Windows Forms user interface.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType></ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>SharpGLWinformsApplication</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+    <RequiredFrameworkVersion>4.0</RequiredFrameworkVersion>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="WinformsTemplate.csproj" File="WinformsTemplate.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="app.config">app.config</ProjectItem>
+      <Folder Name="Dependencies" TargetFolderName="Dependencies">
+        <ProjectItem ReplaceParameters="false" TargetFileName="SharpGL.dll">SharpGL.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="SharpGL.SceneGraph.dll">SharpGL.SceneGraph.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="SharpGL.WinForms.dll">SharpGL.WinForms.dll</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Program.cs">Program.cs</ProjectItem>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Resources.resx">Resources.resx</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Resources.Designer.cs">Resources.Designer.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Settings.settings">Settings.settings</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Settings.Designer.cs">Settings.Designer.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="SharpGLForm.cs">SharpGLForm.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="SharpGLForm.Designer.cs">SharpGLForm.Designer.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="SharpGLForm.resx">SharpGLForm.resx</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

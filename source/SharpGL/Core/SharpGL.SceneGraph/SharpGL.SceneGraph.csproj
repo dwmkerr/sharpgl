@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpGL.SceneGraph</RootNamespace>
+    <AssemblyName>SharpGL.SceneGraph</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\SharpGL.SceneGraph.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SharpGL.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Core\IHasMaterial.cs" />
+    <Compile Include="IDeepClonable.cs" />
+    <Compile Include="NETDesignSurface.cs" />
+    <Compile Include="OpenGLAttributes\AccumBufferAttributes.cs" />
+    <Compile Include="OpenGLAttributes\ColorBufferAttributes.cs" />
+    <Compile Include="OpenGLAttributes\CurrentAttributes.cs" />
+    <Compile Include="OpenGLAttributes\DepthBufferAttributes.cs" />
+    <Compile Include="OpenGLAttributes\EnableAttributes.cs" />
+    <Compile Include="OpenGLAttributes\EvalAttributes.cs" />
+    <Compile Include="OpenGLAttributes\FogAttributes.cs" />
+    <Compile Include="OpenGLAttributes\HintAttributes.cs" />
+    <Compile Include="OpenGLAttributes\LightingAttributes.cs" />
+    <Compile Include="OpenGLAttributes\LineAttributes.cs" />
+    <Compile Include="OpenGLAttributes\ListAttributes.cs" />
+    <Compile Include="OpenGLAttributes\OpenGLAttributeGroup.cs" />
+    <Compile Include="OpenGLAttributes\PixelModeAttributes.cs" />
+    <Compile Include="OpenGLAttributes\PointAttributes.cs" />
+    <Compile Include="OpenGLAttributes\PolygonAttributes.cs" />
+    <Compile Include="OpenGLAttributes\PolygonStippleAttributes.cs" />
+    <Compile Include="OpenGLAttributes\ScissorAttributes.cs" />
+    <Compile Include="OpenGLAttributes\StencilBufferAttributes.cs" />
+    <Compile Include="OpenGLAttributes\TextureAttributes.cs" />
+    <Compile Include="OpenGLAttributes\TransformAttributes.cs" />
+    <Compile Include="OpenGLAttributes\ViewportAttributes.cs" />
+    <Compile Include="OpenGLEventArgs.cs" />
+    <Compile Include="OpenGLSceneGraphExtensions.cs" />
+    <Compile Include="ParticleSystem\Particle.cs" />
+    <Compile Include="ParticleSystem\ParticleSystems.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\Asset.cs" />
+    <Compile Include="Assets\Material.cs" />
+    <Compile Include="Assets\Texture.cs" />
+    <Compile Include="Cameras\ArcBallCamera.cs" />
+    <Compile Include="Cameras\Camera.cs" />
+    <Compile Include="Cameras\FrustumCamera.cs" />
+    <Compile Include="Cameras\LookAtCamera.cs" />
+    <Compile Include="Cameras\OrthographicCamera.cs" />
+    <Compile Include="Cameras\PerspectiveCamera.cs" />
+    <Compile Include="Collections.cs" />
+    <Compile Include="Core\ArcBall.cs" />
+    <Compile Include="Core\BoundingVolume.cs" />
+    <Compile Include="Face.cs" />
+    <Compile Include="Core\IBindable.cs" />
+    <Compile Include="Core\IFreezable.cs" />
+    <Compile Include="Core\IHasObjectSpace.cs" />
+    <Compile Include="Core\IHasOpenGLContext.cs" />
+    <Compile Include="Index.cs" />
+    <Compile Include="Core\IRenderable.cs" />
+    <Compile Include="Core\IVolumeBound.cs" />
+    <Compile Include="Transformations\LinearTransformation.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Plane.cs" />
+    <Compile Include="Core\RenderMode.cs" />
+    <Compile Include="Core\SceneContainer.cs" />
+    <Compile Include="Core\SceneElement.cs" />
+    <Compile Include="Core\SceneElementTraversal.cs" />
+    <Compile Include="Transformations\Transformation.cs" />
+    <Compile Include="UV.cs" />
+    <Compile Include="Vertex.cs" />
+    <Compile Include="Core\VertexGrid.cs" />
+    <Compile Include="DisplayList.cs" />
+    <Compile Include="Effects\ArcBallTransformationEffect.cs" />
+    <Compile Include="Effects\Effect.cs" />
+    <Compile Include="Effects\LinearTransformationEffect.cs" />
+    <Compile Include="Effects\OpenGLAttributesEffect.cs" />
+    <Compile Include="Evaluators\Evaluator.cs" />
+    <Compile Include="Evaluators\Evaluator1D.cs" />
+    <Compile Include="Evaluators\Evaluator2D.cs" />
+    <Compile Include="Evaluators\NURBS.cs" />
+    <Compile Include="Evaluators\NurbsCurve.cs" />
+    <Compile Include="Evaluators\NurbsSurface.cs" />
+    <Compile Include="Feedback\Feedback.cs" />
+    <Compile Include="Feedback\Polygonator.cs" />
+    <Compile Include="Feedback\Triangulator.cs" />
+    <Compile Include="GLColor.cs" />
+    <Compile Include="Helpers\BoundingVolumeHelper.cs" />
+    <Compile Include="Helpers\FreezableHelper.cs" />
+    <Compile Include="Helpers\HasObjectSpaceHelper.cs" />
+    <Compile Include="Helpers\OpenGLHelper.cs" />
+    <Compile Include="Helpers\SceneHelper.cs" />
+    <Compile Include="Lighting\Light.cs" />
+    <Compile Include="Lighting\Spotlight.cs" />
+    <Compile Include="Primitives\Axies.cs" />
+    <Compile Include="Primitives\Cube.cs" />
+    <Compile Include="Primitives\Folder.cs" />
+    <Compile Include="Primitives\Grid.cs" />
+    <Compile Include="Primitives\Polygon.cs" />
+    <Compile Include="Primitives\Shadow.cs" />
+    <Compile Include="Primitives\Teapot.cs" />
+    <Compile Include="Quadrics\Cylinder.cs" />
+    <Compile Include="Quadrics\Disk.cs" />
+    <Compile Include="Quadrics\DrawStyle.cs" />
+    <Compile Include="Quadrics\Normals.cs" />
+    <Compile Include="Quadrics\Orientation.cs" />
+    <Compile Include="Quadrics\Quadric.cs" />
+    <Compile Include="Quadrics\Sphere.cs" />
+    <Compile Include="Raytracing\Intersection.cs" />
+    <Compile Include="Raytracing\IRayTracable.cs" />
+    <Compile Include="Raytracing\Ray.cs" />
+    <Compile Include="Raytracing\RayTracer.cs" />
+    <Compile Include="Raytracing\ScreenPixel.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="Shaders\FragmentShader.cs" />
+    <Compile Include="Shaders\ShaderProgram.cs" />
+    <Compile Include="Shaders\Shader.cs" />
+    <Compile Include="Shaders\VertexShader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpGL\SharpGL.csproj">
+      <Project>{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}</Project>
+      <Name>SharpGL %28Core\SharpGL%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SharpGL.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)bin\$(ConfigurationName)\*.dll" "$(SolutionDir)Deploy\$(ConfigurationName)\" /i /d /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

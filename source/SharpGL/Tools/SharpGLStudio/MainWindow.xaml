@@ -1,0 +1,259 @@
+﻿<ribbon:RibbonWindow x:Class="SharpGLStudio.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SharpGLStudio"
+        xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+        xmlns:apexControls="clr-namespace:Apex.Controls;assembly=Apex"
+                     Title="SharpGL Studio" Height="600" Width="800">
+    
+    <Window.Resources>
+        <ResourceDictionary Source="RibbonDictionary.xaml" />
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local:SceneViewModel x:Name="viewModel" />
+    </Window.DataContext>
+
+    <!--
+    <Grid>
+        <local:ApplicationHost />
+    </Grid>
+    -->
+    <Grid>
+        <Grid.Resources>
+
+            
+
+
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ribbon:Ribbon x:Name="ribbon" DataContext="{Binding RibbonViewModel}">
+            <ribbon:Ribbon.ApplicationMenu>
+                <ribbon:RibbonApplicationMenu SmallImageSource="Images\Document_16x16.png" KeyTip="F">
+
+                    <ribbon:RibbonApplicationMenuItem Header="Open" Command="{Binding LoadSceneCommand}" />
+                    <ribbon:RibbonApplicationMenuItem Header="Save" />
+
+                    <ribbon:RibbonApplicationSplitMenuItem Header="Save As">
+                        <ribbon:RibbonApplicationSplitMenuItem.Resources>
+                        </ribbon:RibbonApplicationSplitMenuItem.Resources>
+                        <ribbon:RibbonApplicationMenuItem Header="SaveAsWordDocument" />
+                        <ribbon:RibbonApplicationMenuItem Header="SaveAsWordTemplate" />
+                        <ribbon:RibbonApplicationMenuItem Header="SaveAsWord97To2003Document" />
+                        <ribbon:RibbonApplicationMenuItem Header="SaveAsOpenDocumentText" />
+                        <ribbon:RibbonApplicationMenuItem Header="SaveAsPdfOrXps" />
+                        <ribbon:RibbonApplicationMenuItem Header="SaveAsOtherFormat" />
+                    </ribbon:RibbonApplicationSplitMenuItem>
+
+                    <ribbon:RibbonSeparator/>
+
+                    <ribbon:RibbonApplicationSplitMenuItem Header="Print">
+                        <ribbon:RibbonApplicationMenuItem Header="PrintOptions" />
+                        <ribbon:RibbonApplicationMenuItem Header="QuickPrint" />
+                        <ribbon:RibbonApplicationMenuItem Header="PrintPreview" />
+                    </ribbon:RibbonApplicationSplitMenuItem>
+
+                    <ribbon:RibbonApplicationMenuItem Header="Prepare">
+                        <ribbon:RibbonApplicationMenuItem Header="Properties" />
+                        <ribbon:RibbonApplicationMenuItem Header="InspectDocument" />
+                        <ribbon:RibbonApplicationMenuItem Header="EncryptDocument" />
+                        <ribbon:RibbonApplicationMenuItem Header="RestrictPermission">
+                            <ribbon:RibbonApplicationMenuItem Header="UnrestrictedAccess" />
+                            <ribbon:RibbonApplicationMenuItem Header="RestrictedAccess" />
+                            <ribbon:RibbonSeparator/>
+                            <ribbon:RibbonApplicationMenuItem Header="DoNotReplyAll" />
+                            <ribbon:RibbonApplicationMenuItem Header="MicrosoftAllAllRights" />
+                            <ribbon:RibbonApplicationMenuItem Header="MicrosoftAllAllRightsExceptCopyAndPrint" />
+                            <ribbon:RibbonApplicationMenuItem Header="MicrosoftAllReadOnly" />
+                            <ribbon:RibbonApplicationMenuItem Header="MicrosoftFteAllRightsExceptCopyAndPrint" />
+                            <ribbon:RibbonApplicationMenuItem Header="MicrosoftFteReadOnly" />
+                            <ribbon:RibbonSeparator/>
+                            <ribbon:RibbonApplicationMenuItem Header="ManageCredentials" />
+                        </ribbon:RibbonApplicationMenuItem>
+                        <ribbon:RibbonApplicationMenuItem Header="AddADigitalSignature" />
+                        <ribbon:RibbonApplicationMenuItem Header="MarkAsFinal" />
+                        <ribbon:RibbonApplicationMenuItem Header="RunCompatibilityChecker" />
+                    </ribbon:RibbonApplicationMenuItem>
+
+                    <ribbon:RibbonApplicationMenuItem Header="Send">
+                        <ribbon:RibbonApplicationMenuItem Header="Email" />
+                        <ribbon:RibbonApplicationMenuItem Header="EmailAsPdfAttachment" />
+                        <ribbon:RibbonApplicationMenuItem Header="EmailAsXpsAttachment" />
+                        <ribbon:RibbonApplicationMenuItem Header="InternetFax" />
+                    </ribbon:RibbonApplicationMenuItem>
+
+                    <ribbon:RibbonApplicationMenuItem Header="Publish">
+                        <ribbon:RibbonApplicationMenuItem Header="Blog" />
+                        <ribbon:RibbonApplicationMenuItem Header="DocumentManagementServer" />
+                        <ribbon:RibbonApplicationMenuItem Header="CreateDocumentWorkspace" />
+                    </ribbon:RibbonApplicationMenuItem>
+
+                    <ribbon:RibbonSeparator/>
+
+                    <ribbon:RibbonApplicationMenuItem  Header="Wor_kflows" ImageSource="Images\Open_16x16.png" />
+
+                    <ribbon:RibbonSeparator/>
+
+                    <ribbon:RibbonApplicationMenuItem Header="_Close" ImageSource="Images\Open_16x16.png" />
+
+                    <ribbon:RibbonApplicationMenu.AuxiliaryPaneContent>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ribbon:RibbonSeparator Grid.Row="0" Label="Recent Documents"/>
+                            <ItemsControl
+                                Grid.Row="2">
+                                
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="MainBorder" 
+                                                BorderThickness="1"
+                                                Padding="5,2,5,2">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Index}" TextDecorations="Underline" />
+                                                <TextBlock Grid.Column="2" Text="{Binding Label}" />
+                                                <Image x:Name="Pin" Grid.Column="3" Source="Images\EditUndo_16x16.png" />
+                                                <Image x:Name="Unpin" Grid.Column="3" Source="Images\EditRedo_16x16.png" Visibility="Collapsed" />
+                                            </Grid>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                                <Setter TargetName="Pin" Property="Visibility" Value="Collapsed" />
+                                                <Setter TargetName="Unpin" Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="MainBorder" Property="Background" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(ribbon:RibbonControlService.Ribbon).MouseOverBackground}" />
+                                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent},Path=(ribbon:RibbonControlService.Ribbon).MouseOverBorderBrush}" />
+                                            </Trigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </ribbon:RibbonApplicationMenu.AuxiliaryPaneContent>
+
+                    <ribbon:RibbonApplicationMenu.FooterPaneContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ribbon:RibbonButton Grid.Column="1" Content="Options" />
+                            <ribbon:RibbonButton Grid.Column="2" Content="ExitWord" />
+                        </Grid>
+                    </ribbon:RibbonApplicationMenu.FooterPaneContent>
+
+                </ribbon:RibbonApplicationMenu>
+            </ribbon:Ribbon.ApplicationMenu>
+
+            <ribbon:RibbonTab Header="Scene" KeyTip="S">
+
+                <ribbon:RibbonGroup Header="Display">
+                    <ribbon:RibbonCheckBox Label="Render Bounding Volumes" IsChecked="{Binding Scene.RenderBoundingVolumes}" />
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Selection">
+                    <apexControls:PaddedGrid Columns="Auto,Auto" Padding="4">
+                        <ListView Width="120" Height="60" ItemsSource="{Binding Scene.SelectedElements}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </apexControls:PaddedGrid>
+                </ribbon:RibbonGroup>
+
+            </ribbon:RibbonTab>
+
+            <ribbon:RibbonTab Header="Primitives" KeyTip="P">
+
+                <ribbon:RibbonGroup Header="Polygons">
+                    <ribbon:RibbonButton Label="Cube" Command="{Binding AddCubeCommand}" />
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Quadrics">
+                    <ribbon:RibbonButton Label="Cone" Command="{Binding AddConeCommand}" />
+                    <ribbon:RibbonButton Label="Cylinder" Command="{Binding AddCylinderCommand}" />
+                    <ribbon:RibbonButton Label="Disk" Command="{Binding AddDiskCommand}" />
+                    <ribbon:RibbonButton Label="Sphere" Command="{Binding AddSphereCommand}" />
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Evaluators">
+                    <ribbon:RibbonButton Label="1D Curve" />
+                    <ribbon:RibbonButton Label="2D Patch" />
+                    <ribbon:RibbonButton Label="NURBs Curve" />
+                    <ribbon:RibbonButton Label="NURBs Patch" />
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Lighting">
+                    <ribbon:RibbonButton Label="Light" />
+                    <ribbon:RibbonButton Label="Spotlight" />
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Cameras">
+                    <ribbon:RibbonButton Label="Orthographic Camera" />
+                    <ribbon:RibbonButton Label="Perspective Camera" />
+                    <ribbon:RibbonButton Label="Frustum Camera" />
+                    <ribbon:RibbonButton Label="'Look At' Camera" />
+                </ribbon:RibbonGroup>
+
+            </ribbon:RibbonTab>
+
+            <ribbon:RibbonTab Header="Effects" KeyTip="E">
+
+                <ribbon:RibbonGroup Header="Scene Effects">
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Geometric Effects">
+                    <ribbon:RibbonButton Label="Linear Transformation" />
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Visual Effects">
+                    <ribbon:RibbonButton Label="OpenGL Attributes" />
+                </ribbon:RibbonGroup>
+
+            </ribbon:RibbonTab>
+
+            <ribbon:RibbonTab Header="Assets" KeyTip="A">
+
+                <ribbon:RibbonGroup Header="Materials">
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Textures">
+                </ribbon:RibbonGroup>
+
+            </ribbon:RibbonTab>
+
+            <ribbon:RibbonTab Header="Selection" KeyTip="L">
+
+                <ribbon:RibbonGroup Header="Mouse Mode">
+                </ribbon:RibbonGroup>
+
+                <ribbon:RibbonGroup Header="Selected Elements">
+                </ribbon:RibbonGroup>
+
+            </ribbon:RibbonTab>
+
+
+        </ribbon:Ribbon>
+
+        <local:ApplicationHost Grid.Row="1" />
+    </Grid>
+
+</ribbon:RibbonWindow>

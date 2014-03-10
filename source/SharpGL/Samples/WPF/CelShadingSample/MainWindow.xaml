@@ -1,0 +1,20 @@
+﻿<Window x:Class="CelShadingSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cel Shading Sample" Height="350" Width="525"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF">
+    <Grid>
+        <DockPanel>
+            
+            <ToolBarPanel DockPanel.Dock="Top">
+                <ToolBar>
+                    <CheckBox x:Name="checkBoxUseCelShader" Content="Use Cel Shader" />
+                </ToolBar>
+            </ToolBarPanel>
+            
+            <sharpGL:OpenGLControl x:Name="openGlCtrl"
+            OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized" 
+            RenderContextType="FBO" Resized="OpenGLControl_Resized" />
+        </DockPanel>
+    </Grid>
+</Window>

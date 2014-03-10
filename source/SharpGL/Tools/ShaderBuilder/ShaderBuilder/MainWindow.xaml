@@ -1,0 +1,94 @@
+﻿<Window x:Class="ShaderBuilder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ShaderBuilder"
+        xmlns:shaders="clr-namespace:ShaderBuilder.Shader"
+        Title="Shader Studio" Height="600" Width="800" Icon="/ShaderBuilder;component/SharpGL.ico">
+    <Window.DataContext>
+        <local:MainViewModel x:Name="viewModel" />
+    </Window.DataContext>
+
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StudioTabControlDictionary.xaml" />
+                <ResourceDictionary>
+                    
+
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.Background>
+        <ImageBrush ImageSource="/ShaderBuilder;component/Resources/BackgroundBrush.bmp"  Viewbox="0,0,4,4" ViewboxUnits="Absolute"
+                    Viewport="0,0,4,4" ViewportUnits="Absolute" TileMode="Tile" />
+    </Window.Background>
+
+    <Grid>
+        <DockPanel>
+            
+            <!-- The menu. -->
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Command="{Binding FileNewCommand}" />
+                    <MenuItem Header="_Open" Command="{Binding FileOpenCommand}" />
+                    <Separator />
+                    <MenuItem Header="_Save" Command="{Binding FileSaveCommand}" />
+                    <MenuItem Header="Save _As..." Command="{Binding FileSaveAsCommand}" />
+                    <Separator />
+                    <MenuItem Header="E_xit" Command="{Binding FileExitCommand}" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Undo" IsEnabled="False" />
+                    <MenuItem Header="_Redo" />
+                    <Separator />
+                    <MenuItem Header="Cut" IsEnabled="False" />
+                    <MenuItem Header="Copy" IsEnabled="False" />
+                    <MenuItem Header="Paste" IsEnabled="False" />
+                </MenuItem>
+                <MenuItem Header="_View">
+                    <MenuItem Header="_Show Output Window" Command="{Binding ViewShowOutputWindowCommand}" IsCheckable="True"
+                              IsChecked="{Binding IsOutputWindowVisible}" />
+                </MenuItem>
+                <MenuItem Header="Build">
+                    <MenuItem Header="Compile" Command="{Binding BuildCompileCommand}"  />
+                    <MenuItem Header="Link" Command="{Binding BuildLinkCommand}" />
+                    <MenuItem Header="Build" Command="{Binding BuildBuildCommand}" />
+                </MenuItem>
+            </Menu>
+            
+            <!-- The status bar. -->
+            <StatusBar DockPanel.Dock="Bottom">
+                <TextBlock Text="Vendor:" />
+                <TextBlock Text="{Binding OpenGLVendor}" />
+                <Separator />
+                <TextBlock Text="Renderer:" />
+                <TextBlock Text="{Binding OpenGLRenderer}" />
+                <Separator />
+                <TextBlock Text="Version:" />
+                <TextBlock Text="{Binding OpenGLVersion}" />
+                <Separator />
+                <TextBlock Text="Shading Language Version:" />
+                <TextBlock Text="{Binding OpenGLShadingLanguageVersion}" />
+            </StatusBar>
+            
+            <!-- The main tab control, contains the shaders.-->
+            <TabControl ItemsSource="{Binding Shaders}" SelectedItem="{Binding CurrentShader}" Margin="4">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <shaders:ShaderView />
+                    </DataTemplate>
+                    
+                </TabControl.ContentTemplate>
+            </TabControl>
+           
+        </DockPanel>
+    </Grid>
+</Window>

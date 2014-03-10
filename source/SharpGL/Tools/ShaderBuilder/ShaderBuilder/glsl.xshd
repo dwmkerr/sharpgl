@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<!-- syntaxdefinition for C/C++ 2001 by Andrea Paatz and Mike Krueger -->
+<!-- converted to AvalonEdit format by Siegfried Pammer in 2010 -->
+<SyntaxDefinition name="glsl" extensions=".glsl" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+	<Color name="Comment" foreground="Green" />
+  <Color name="ShaderDelimiter" foreground="Red" />
+  <Color name="Character" foreground="Fuchsia" />
+	<Color name="String" foreground="Fuchsia" />
+	<Color name="Preprocessor" foreground="Green" />
+	<Color name="Punctuation" foreground="DarkGreen" />
+	<Color name="MethodName" foreground="MidnightBlue" fontWeight="bold" />
+	<Color name="Digits" foreground="DarkBlue" />
+	<Color name="CompoundKeywords" foreground="Black" fontWeight="bold" />
+	<Color name="This" foreground="Black" fontWeight="bold" />
+	<Color name="Operators" foreground="#FF008B8B" fontWeight="bold" />
+	<Color name="Namespace" foreground="#FF008000" fontWeight="bold" />
+	<Color name="Friend" foreground="#FFA52A2A" />
+	<Color name="Modifiers" foreground="#FF0000FF" fontWeight="bold" />
+	<Color name="TypeKeywords" foreground="#FF0000FF" />
+  <Color name="BuiltInVariables" foreground="#FFFF00FF" />
+	<Color name="BooleanConstants" foreground="#FF000000" fontWeight="bold" />
+	<Color name="Keywords" foreground="#FF0000FF" fontWeight="bold" />
+	<Color name="LoopKeywords" foreground="#FF0000FF" fontWeight="bold" />
+	<Color name="JumpKeywords" foreground="#FF000080" />
+	<Color name="ExceptionHandling" foreground="#FF008080" fontWeight="bold" />
+	<Color name="ControlFlow" foreground="#FF0000FF" fontWeight="bold" />
+	<RuleSet ignoreCase="false">
+		<Rule color="Punctuation">
+		[?,.;()\[\]{}+\-/%*&lt;&gt;^=~!&amp;]+
+		</Rule>
+		<Keywords color="CompoundKeywords">
+			<Word>__abstract</Word>
+			<Word>__box</Word>
+			<Word>__delegate</Word>
+			<Word>__gc</Word>
+			<Word>__identifier</Word>
+			<Word>__nogc</Word>
+			<Word>__pin</Word>
+			<Word>__property</Word>
+			<Word>__sealed</Word>
+			<Word>__try_cast</Word>
+			<Word>__typeof</Word>
+			<Word>__value</Word>
+			<Word>__event</Word>
+			<Word>__hook</Word>
+			<Word>__raise</Word>
+			<Word>__unhook</Word>
+			<Word>__interface</Word>
+			<Word>ref class</Word>
+			<Word>ref struct</Word>
+			<Word>value class</Word>
+			<Word>value struct</Word>
+			<Word>interface class</Word>
+			<Word>interface struct</Word>
+			<Word>enum class</Word>
+			<Word>enum struct</Word>
+			<Word>delegate</Word>
+			<Word>event</Word>
+			<Word>property</Word>
+			<Word>abstract</Word>
+			<Word>override</Word>
+			<Word>sealed</Word>
+			<Word>generic</Word>
+			<Word>where</Word>
+			<Word>finally</Word>
+			<Word>for each</Word>
+		</Keywords>
+		<Keywords color="This">
+			<Word>this</Word>
+		</Keywords>
+		<Keywords color="Operators">
+			<Word>and</Word>
+			<Word>and_eq</Word>
+			<Word>bitand</Word>
+			<Word>bitor</Word>
+			<Word>new</Word>
+			<Word>not</Word>
+			<Word>not_eq</Word>
+			<Word>or</Word>
+			<Word>or_eq</Word>
+			<Word>xor</Word>
+			<Word>xor_eq</Word>
+		</Keywords>
+		<Keywords color="Namespace">
+			<Word>using</Word>
+			<Word>namespace</Word>
+		</Keywords>
+		<Keywords color="Friend">
+			<Word>friend</Word>
+		</Keywords>
+    <Keywords color="BuiltInVariables">
+      <Word>gl_Position</Word>
+      <Word>gl_PointSize</Word>
+      <Word>gl_ClipVertex</Word>
+      <Word>gl_FragColor</Word>
+      <Word>gl_FrontFacing</Word>
+      <Word>gl_FragDepth</Word>
+      <Word>gl_FragData</Word>
+      <Word>gl_MaxDepthBuffers</Word>
+      <Word>gl_FragCoord</Word>
+
+      <Word>gl_MaxLights</Word>
+      <Word>gl_MaxClipPlanes</Word>
+      <Word>gl_MaxTextureUnits</Word>
+      <Word>gl_MaxTextureCoords</Word>
+      <Word>gl_MaxVertexAttribs</Word>
+      <Word>gl_MaxVertexUniformComponents</Word>
+      <Word>gl_MaxVaryingFloats</Word>
+      <Word>gl_MaxVertexTextureImageUnits</Word>
+      <Word>gl_MaxCombinedTextureImageUnits</Word>
+      <Word>gl_MaxTextureImageUnits</Word>
+      <Word>gl_MaxFragmentUniformComponents</Word>
+      <Word>gl_MaxDrawBuffers</Word>
+
+      <Word>gl_Color</Word>
+      <Word>gl_SecondaryColor</Word>
+      <Word>gl_Normal</Word>
+      <Word>gl_Vertex</Word>
+      <Word>gl_MultiTexCoord0</Word>
+      <Word>gl_MultiTexCoord1</Word>
+      <Word>gl_MultiTexCoord2</Word>
+      <Word>gl_MultiTexCoord3</Word>
+      <Word>gl_MultiTexCoord4</Word>
+      <Word>gl_MultiTexCoord5</Word>
+      <Word>gl_MultiTexCoord6</Word>
+      <Word>gl_MultiTexCoord7</Word>
+      <Word>gl_FogCoord</Word>
+
+    </Keywords>
+		<Keywords color="Modifiers">
+      <Word>const</Word>
+      <Word>attribute</Word>
+      <Word>in</Word>
+      <Word>out</Word>
+      <Word>inout</Word>
+      <Word>uniform</Word>
+      <Word>varying</Word>
+		</Keywords>
+		<Keywords color="TypeKeywords">
+			<Word>bool</Word>
+      <Word>int</Word>
+      <Word>void</Word>
+      <Word>float</Word>
+			<Word>vec2</Word>
+      <Word>vec3</Word>
+      <Word>vec4</Word>
+      <Word>bvec2</Word>
+      <Word>bvec3</Word>
+      <Word>bvec4</Word>
+      <Word>ivec2</Word>
+      <Word>ivec3</Word>
+      <Word>ivec4</Word>
+      <Word>mat2</Word>
+      <Word>mat3</Word>
+      <Word>mat4</Word>
+      <Word>sampler1D</Word>
+      <Word>sampler2D</Word>
+      <Word>sampler3D</Word>
+      <Word>samplerCube</Word>
+      <Word>sampler1DShadow</Word>
+      <Word>sampler2DShadow</Word>
+		</Keywords>
+		<Keywords color="BooleanConstants">
+			<Word>false</Word>
+			<Word>true</Word>
+		</Keywords>
+		<Keywords color="LoopKeywords">
+			<Word>do</Word>
+			<Word>for</Word>
+			<Word>while</Word>
+		</Keywords>
+		<Keywords color="JumpKeywords">
+			<Word>break</Word>
+			<Word>continue</Word>
+			<Word>goto</Word>
+			<Word>return</Word>
+		</Keywords>
+		<Keywords color="ExceptionHandling">
+			<Word>catch</Word>
+			<Word>throw</Word>
+			<Word>try</Word>
+		</Keywords>
+		<Keywords color="ControlFlow">
+			<Word>case</Word>
+			<Word>else</Word>
+			<Word>if</Word>
+			<Word>switch</Word>
+			<Word>default</Word>
+      <Word>discard</Word>
+		</Keywords>
+		<Keywords color="Keywords">
+			<Word>asm</Word>
+			<Word>auto</Word>
+			<Word>compl</Word>
+			<Word>mutable</Word>
+			<Word>const_cast</Word>
+			<Word>delete</Word>
+			<Word>dynamic_cast</Word>
+			<Word>explicit</Word>
+			<Word>export</Word>
+			<Word>extern</Word>
+			<Word>inline</Word>
+			<Word>int</Word>
+			<Word>long</Word>
+			<Word>operator</Word>
+			<Word>register</Word>
+			<Word>reinterpret_cast</Word>
+			<Word>sizeof</Word>
+			<Word>static_cast</Word>
+			<Word>template</Word>
+			<Word>typedef</Word>
+			<Word>typeid</Word>
+			<Word>typename</Word>
+		</Keywords>
+		<Span color="Preprocessor">
+			<Begin>\#</Begin>
+		</Span>
+    <Span color="ShaderDelimiter">
+      <Begin>--</Begin>
+    </Span>
+		<Span color="Comment">
+			<Begin>//</Begin>
+		</Span>
+		<Span color="Comment" multiline="true">
+			<Begin>/\*</Begin>
+			<End>\*/</End>
+		</Span>
+		<Span color="String">
+			<Begin>"</Begin>
+			<End>"</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Span color="Character">
+			<Begin>'</Begin>
+			<End>'</End>
+			<RuleSet>
+				<Span begin="\\" end="." />
+			</RuleSet>
+		</Span>
+		<Rule color="MethodName">[\d\w_]+(?=(\s*\())</Rule>
+		<Rule color="Digits">\b0[xX][0-9a-fA-F]+|(\b\d+(\.[0-9]+)?|\.[0-9]+)([eE][+-]?[0-9]+)?</Rule>
+	</RuleSet>
+</SyntaxDefinition>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="SharpGL..f7275bce-f976-42a4-adb8-b5c2f5f3b4f5">
+    <Name>SharpGL</Name>
+    <Author>Dave Kerr</Author>
+    <Version>2.1.0</Version>
+    <Description xml:space="preserve">SharpGL gives you the power of OpenGL in your C# applications.</Description>
+    <Locale>1033</Locale>
+    <MoreInfoUrl>http://sharpgl.codeplex.com</MoreInfoUrl>
+    <License>SharpGLLicense.txt</License>
+    <GettingStartedGuide>http://sharpgl.codeplex.com/wikipage?title=Getting%20Started</GettingStartedGuide>
+    <Icon>SharpGL.ico</Icon>
+    <PreviewImage>SharpGL.JPG</PreviewImage>
+    <SupportedProducts>
+      <VisualStudio Version="10.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+        <Edition>VCSExpress</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="4.0" MaxVersion="4.0" />
+  </Identifier>
+  <References />
+  <Content>
+    <ProjectTemplate>ProjectTemplates</ProjectTemplate>
+  </Content>
+</Vsix>

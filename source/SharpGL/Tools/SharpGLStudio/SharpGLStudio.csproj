@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D6E52081-60DD-416C-A06C-4F7161BAB582}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpGLStudio</RootNamespace>
+    <AssemblyName>SharpGLStudio</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Apex, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\Apex.dll</HintPath>
+    </Reference>
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Dependencies\RibbonControlsLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="RibbonViewModel.cs" />
+    <Compile Include="SceneViewModel.cs" />
+    <Page Include="ApplicationHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ApplicationHost.xaml.cs">
+      <DependentUpon>ApplicationHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="RibbonDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SceneTreeDataTemplatesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudioTabControlDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\BackgroundBrush.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">
+      <Project>{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}</Project>
+      <Name>SharpGL.SceneGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\SharpGL.Serialization\SharpGL.Serialization.csproj">
+      <Project>{FDFA2632-A960-4778-A517-CA9E337C037C}</Project>
+      <Name>SharpGL.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\SharpGL.WPF\SharpGL.WPF.csproj">
+      <Project>{53E67055-13D2-4467-BB57-79589AFAC2CD}</Project>
+      <Name>SharpGL.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\SharpGL\SharpGL.csproj">
+      <Project>{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}</Project>
+      <Name>SharpGL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AlignCenter_16x16.png" />
+    <Resource Include="Images\AlignLeft_16x16.png" />
+    <Resource Include="Images\AlignRight_16x16.png" />
+    <Resource Include="Images\Bold_16x16.png" />
+    <Resource Include="Images\BordersAndShading_16x16.png" />
+    <Resource Include="Images\Borders_16x16.png" />
+    <Resource Include="Images\BottomBorder_16x16.png" />
+    <Resource Include="Images\Bullets_16x16.png" />
+    <Resource Include="Images\ChooseColor_16x16.png" />
+    <Resource Include="Images\ClearFormatting_16x16.png" />
+    <Resource Include="Images\Close_16x16.png" />
+    <Resource Include="Images\ColorPalette.png" />
+    <Resource Include="Images\Color_16x16.png" />
+    <Resource Include="Images\ConnectionManager_48x48.png" />
+    <Resource Include="Images\Copy_16x16.png" />
+    <Resource Include="Images\Cut_16x16.png" />
+    <Resource Include="Images\DecreaseIndent_16x16.png" />
+    <Resource Include="Images\Default_16x16.png" />
+    <Resource Include="Images\DiagonalDownBorder_16x16.png" />
+    <Resource Include="Images\DiagonalUpBorder_16x16.png" />
+    <Resource Include="Images\Document_16x16.png" />
+    <Resource Include="Images\DownArrow_16x16.png" />
+    <Resource Include="Images\DownArrow_32x32.png" />
+    <Resource Include="Images\DrawTable_16x16.png" />
+    <Resource Include="Images\EditRedo_16x16.png" />
+    <Resource Include="Images\EditUndo_16x16.png" />
+    <Resource Include="Images\Erase_16x16.png" />
+    <Resource Include="Images\Find_16x16.png" />
+    <Resource Include="Images\Find_32x32.png" />
+    <Resource Include="Images\FolderClosed_48x48.png" />
+    <Resource Include="Images\FontColor_16x16.png" />
+    <Resource Include="Images\FontScript_16x16.png" />
+    <Resource Include="Images\Font_16x16.png" />
+    <Resource Include="Images\Font_32x32.png" />
+    <Resource Include="Images\Forecolor_16x16.png" />
+    <Resource Include="Images\FormatPainter_16x16.png" />
+    <Resource Include="Images\GoTo_16x16.png" />
+    <Resource Include="Images\Help_16x16.png" />
+    <Resource Include="Images\Highlight_16x16.png" />
+    <Resource Include="Images\IncreaseIndent_16x16.png" />
+    <Resource Include="Images\InsideBorders_16x16.png" />
+    <Resource Include="Images\InsideHorizontalBorder_16x16.png" />
+    <Resource Include="Images\InsideVerticalBorder_16x16.png" />
+    <Resource Include="Images\Italic_16x16.png" />
+    <Resource Include="Images\Justify_16x16.png" />
+    <Resource Include="Images\LeftArrow_32x32.png" />
+    <Resource Include="Images\LeftBorder_16x16.png" />
+    <Resource Include="Images\LineColor_16x16.png" />
+    <Resource Include="Images\LineSpacing_16x16.png" />
+    <Resource Include="Images\Minus_32x32.png" />
+    <Resource Include="Images\MultilevelList_16x16.png" />
+    <Resource Include="Images\NewDocument_16x16.png" />
+    <Resource Include="Images\NewPermission_32x32.png" />
+    <Resource Include="Images\NoBorder_16x16.png" />
+    <Resource Include="Images\Numbering_16x16.png" />
+    <Resource Include="Images\Open_16x16.png" />
+    <Resource Include="Images\Options_16x16.png" />
+    <Resource Include="Images\OuterBorders_16x16.png" />
+    <Resource Include="Images\ParagraphSpacing_16x16.png" />
+    <Resource Include="Images\Paragraph_16x16.png" />
+    <Resource Include="Images\Paragraph_32x32.png" />
+    <Resource Include="Images\Paste_16x16.png" />
+    <Resource Include="Images\Paste_32x32.png" />
+    <Resource Include="Images\Plus_32x32.png" />
+    <Resource Include="Images\Printer_48x48.png" />
+    <Resource Include="Images\PrintPreview_16x16.png" />
+    <Resource Include="Images\Print_16x16.png" />
+    <Resource Include="Images\PublishPlan_16x16.png" />
+    <Content Include="Images\README.html" />
+    <Resource Include="Images\RefreshArrow_32x32.png" />
+    <Resource Include="Images\Replace_16x16.png" />
+    <Resource Include="Images\RightArrow_32x32.png" />
+    <Resource Include="Images\RightBorder_16x16.png" />
+    <Resource Include="Images\Save_16x16.png" />
+    <Resource Include="Images\SelectionPane_16x16.png" />
+    <Resource Include="Images\Select_16x16.png" />
+    <Resource Include="Images\SendLinkByEmail_32x32.png" />
+    <Resource Include="Images\Shading_16x16.png" />
+    <Resource Include="Images\ShowGridlines_16x16.png" />
+    <Resource Include="Images\ShowHide_16x16.png" />
+    <Resource Include="Images\Sort_16x16.png" />
+    <Resource Include="Images\StylesGroup.png" />
+    <Resource Include="Images\Styles_32x32.png" />
+    <Resource Include="Images\Table_32x32.png" />
+    <Resource Include="Images\ThemeFonts.png" />
+    <Resource Include="Images\Tick_32x32.png" />
+    <Resource Include="Images\TopBorder_16x16.png" />
+    <Resource Include="Images\UpArrow_16x16.png" />
+    <Resource Include="Images\UpArrow_32x32.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,75 @@
+﻿<Window x:Class="TextRenderingSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Text Rendering Sample" Height="400" Width="600"
+        xmlns:local="clr-namespace:TextRenderingSample"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF"
+        xmlns:apexControls="clr-namespace:Apex.Controls;assembly=Apex" Icon="/TextRenderingSample;component/SharpGL.ico">
+    <Window.DataContext>
+        <local:MainViewModel x:Name="viewModel" />
+    </Window.DataContext>
+    <apexControls:ApexGrid Columns="*,Auto,3*">
+        
+        <!-- Main Tab Control -->
+        <TabControl Grid.Column="0" Margin="4">
+            
+            <TabItem Header="2D Text" >
+                <!-- The settings. -->
+                <apexControls:PaddedGrid 
+            Grid.Column="0" Padding="2" Rows="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+            Columns="*,2*">
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="X" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding X}" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Y" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Y}" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="R" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding R}" />
+                    <Label Grid.Row="3" Grid.Column="0" Content="G" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding G}" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="B" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding B}" />
+                    <Label Grid.Row="5" Grid.Column="0" Content="Face Name" />
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FaceName}" />
+                    <Label Grid.Row="6" Grid.Column="0" Content="Font Size" />
+                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding FontSize}" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="Text" />
+                    <TextBox Grid.Row="8" Grid.ColumnSpan="2" Height="60" Text="{Binding Text}"
+                     TextWrapping="Wrap" AcceptsReturn="True" />
+
+                </apexControls:PaddedGrid>
+            </TabItem>
+
+            <TabItem Header="3D Text" >
+                <!-- The settings. -->
+                <apexControls:PaddedGrid 
+            Grid.Column="0" Padding="2" Rows="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+            Columns="*,2*">
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Deviation" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Deviation3D}" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Extrusion" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Extrusion3D}" />
+                    <Label Grid.Row="5" Grid.Column="0" Content="Face Name" />
+                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding FaceName3D}" />
+                    <Label Grid.Row="6" Grid.Column="0" Content="Font Size" />
+                    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding FontSize3D}" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="Text" />
+                    <TextBox Grid.Row="8" Grid.ColumnSpan="2" Height="60" 
+                             Text="{Binding Text3D}" AcceptsReturn="True"
+                     TextWrapping="Wrap" />
+
+                </apexControls:PaddedGrid>
+            </TabItem>
+        </TabControl>
+        
+        
+        
+        <!-- The splitter.-->
+        <GridSplitter Grid.Column="1" Width="4" ResizeBehavior="PreviousAndNext" ResizeDirection="Columns" />
+        <sharpGL:OpenGLControl 
+            Grid.Column="2"
+            OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized"
+            RenderContextType="FBO" />
+    </apexControls:ApexGrid>
+</Window>
