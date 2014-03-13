@@ -42,7 +42,7 @@ You can also get the binaries by going to the [Releases](https://github.com/dwmk
 Building the Code
 -----------------
 
-To build the code, clone the repo and open the SharpGL, Samples or Tools solution. All solutions are ready to go and require no additional components.
+To build the code, clone the repo and open the SharpGL, Samples or Tools solution. The Extensions solution is used for the Visual Studio Project Templates and requires additional components - you can find out more on the Wiki on the '[Developing SharpGL](https://github.com/dwmkerr/sharpgl/wiki/Developing-SharpGL)' page.
 
 Sample Applications
 -------------------
