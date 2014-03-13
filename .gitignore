@@ -21,3 +21,7 @@ obj/
 _ReSharper*/
 *.sdf
 *.opensdf
+
+# We don't want to ignore the main release folder scripts.
+!/release/
+/release/2.1*/
