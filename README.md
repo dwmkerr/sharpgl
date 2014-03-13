@@ -5,6 +5,9 @@ Unlock the power of OpenGL in any .NET application. SharpGL wraps all modern Ope
 
 ![Example of SharpGL](https://github.com/dwmkerr/sharpgl/blob/master/assets/samples/WinformsRadialBlurSample.png?raw=true)
 
+Contents
+--------
+
 1. [Gettings Started](#getting-started)
 2. [Building the Code](#building-the-code)
 3. [Sample Applications](#sample-applications)
