@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>SharpGLCore</id>
+        <version>2.1.0</version>
+        <title>SharpGL Core</title>
+        <authors>Dave Kerr</authors>
+        <owners />
+        <projectUrl>http://sharpgl.codeplex.com</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>SharpGL Core is the core library for SharpGL. It provides wrappers for all OpenGL functions and also includes the Scene Graph classes. Installed as part of SharpGL for WinForms or SharpGL for WPF.</description>
+        <summary>SharpGL Core is the core library for SharpGL. It provides wrappers for all OpenGL functions and also includes the Scene Graph classes. Installed as part of SharpGL for WinForms or SharpGL for WPF.</summary>
+        <copyright>Copyright © Dave Kerr 2013</copyright>
+    </metadata>
+</package>

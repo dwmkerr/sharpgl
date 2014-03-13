@@ -2,10 +2,17 @@
 function CopyItems($source, $destinationFolder) {
     
     # Create the any folders or subfolders up to the destination that don't exist.
-    if (!(Test-Path -path $destinationFolder)) {
-        New-Item $destinationFolder -Type Directory
-    }
+    EnsureFolderExists($destinationFolder)
 
     # Now copy the items.
     Copy-Item $source -Destination $destinationFolder
+}
+
+# Ensures that a folder exists.
+function EnsureFolderExists($folder) {
+
+    # Create the any folders or subfolders up to the destination that don't exist.
+    if (!(Test-Path -path $folder)) {
+        New-Item $folder -Type Directory
+    }
 }

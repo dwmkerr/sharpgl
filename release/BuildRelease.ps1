@@ -6,7 +6,7 @@ if ((Test-Path $msbuild) -eq $false) {
 }
 
 # Load useful functions.
-. .\Scripts\PowershellFunctions.ps1
+. .\Resources\PowershellFunctions.ps1
 
 # Keep track of the 'release' folder location - it's the root of everything else.
 # We can also build paths to the key locations we'll use.
@@ -14,6 +14,7 @@ $scriptParentPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 $folderReleaseRoot = $scriptParentPath
 $folderSourceRoot = Split-Path -parent $folderReleaseRoot
 $folderSolutionsRoot = Join-Path $folderSourceRoot "source\SharpGL"
+$folderNuspecRoot = Join-Path $folderSourceRoot "build\nuspec"
 
 # Part 1 - Build the core libraries.
 Write-Host "Preparing to build the core libraries..."
@@ -102,5 +103,18 @@ Write-Host "Built extensions."
 
 # Part 10 - Build the Nuget Packages
 Write-Host "Preparing to build the Nuget Packages..."
+$folderReleasePackages = Join-Path $folderRelease "Packages"
+EnsureFolderExists($folderReleasePackages)
+$nuget = Join-Path $scriptParentPath "Resources\nuget.exe"
 
-# TODO unzip the files, make sure the nuspec is good, move binaries to folders next to nuspec, use nuget commandline to build and optionally push.
+CopyItems (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") (Join-Path $folderNuspecRoot "SharpGLCore\lib")
+. $nuget pack (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec") -Version $releaseVersion -OutputDirectory $folderReleasePackages
+
+CopyItems (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") (Join-Path $folderNuspecRoot "SharpGLforWinForms\lib")
+. $nuget pack (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec") -Version $releaseVersion -OutputDirectory $folderReleasePackages
+
+CopyItems (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") (Join-Path $folderNuspecRoot "SharpGLforWPF\lib")
+. $nuget pack (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec") -Version $releaseVersion -OutputDirectory $folderReleasePackages
+
+# We're done!
+Write-Host "Successfully built version: $releaseVersion"
