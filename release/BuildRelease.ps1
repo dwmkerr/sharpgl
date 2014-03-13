@@ -102,3 +102,5 @@ Write-Host "Built extensions."
 
 # Part 10 - Build the Nuget Packages
 Write-Host "Preparing to build the Nuget Packages..."
+
+# TODO unzip the files, make sure the nuspec is good, move binaries to folders next to nuspec, use nuget commandline to build and optionally push.

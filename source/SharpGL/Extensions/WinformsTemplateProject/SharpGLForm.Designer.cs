@@ -34,7 +34,6 @@
             // 
             // openGLControl
             // 
-            this.openGLControl.BitDepth = 24;
             this.openGLControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.openGLControl.DrawFPS = true;
             this.openGLControl.FrameRate = 20;
@@ -44,7 +43,7 @@
             this.openGLControl.Size = new System.Drawing.Size(624, 391);
             this.openGLControl.TabIndex = 0;
             this.openGLControl.OpenGLInitialized += new System.EventHandler(this.openGLControl_OpenGLInitialized);
-            this.openGLControl.OpenGLDraw += new System.Windows.Forms.PaintEventHandler(this.openGLControl_OpenGLDraw);
+            this.openGLControl.OpenGLDraw += new new SharpGL.RenderEventHandler(this.openGLControl_OpenGLDraw);
             this.openGLControl.Resized += new System.EventHandler(this.openGLControl_Resized);
             // 
             // SharpGLForm

@@ -27,8 +27,8 @@ namespace WinformsTemplate
         /// Handles the OpenGLDraw event of the openGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.PaintEventArgs"/> instance containing the event data.</param>
-        private void openGLControl_OpenGLDraw(object sender, PaintEventArgs e)
+        /// <param name="e">The <see cref="RenderEventArgs"/> instance containing the event data.</param>
+        private void openGLControl_OpenGLDraw(object sender, RenderEventArgs e)
         {
             //  Get the OpenGL object.
             OpenGL gl = openGLControl.OpenGL;
