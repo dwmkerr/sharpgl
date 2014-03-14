@@ -45,9 +45,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpGL.SceneGraph">
-      <HintPath>..\..\..\Core\SharpGL.WPF\bin\Debug\SharpGL.SceneGraph.DLL</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -109,6 +106,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">
+      <Project>{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}</Project>
+      <Name>SharpGL.SceneGraph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Core\SharpGL.WPF\SharpGL.WPF.csproj">
       <Project>{53E67055-13D2-4467-BB57-79589AFAC2CD}</Project>
       <Name>SharpGL.WPF</Name>
