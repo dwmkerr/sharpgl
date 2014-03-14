@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using SharpGL;
 using System.Reflection;
+using SharpGL.Version;
 
 namespace OpenGLInfo
 {
@@ -32,7 +33,7 @@ namespace OpenGLInfo
         private void OpenGLInfoForm_Load(object sender, EventArgs e)
         {
             //  Create the OpenGL instance.
-            gl.Create(RenderContextType.FBO, 1, 1, 32, null);
+            gl.Create(OpenGLVersion.OpenGL4_4, RenderContextType.FBO, 1, 1, 32, null);
 
             //  Populate the OpenGL info.
             PopulateOpenGLInfo();

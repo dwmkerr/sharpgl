@@ -4791,5 +4791,20 @@ namespace SharpGL
         public const uint GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH_EXT           = 0x8C76;
 
         #endregion
+
+        #region WGL_ARB_extensions_string
+
+        /// <summary>
+        /// Gets the ARB extensions string.
+        /// </summary>
+        public string GetExtensionsStringARB()
+        {
+            return (string)InvokeExtensionFunction<wglGetExtensionsStringARB>(RenderContextProvider.DeviceContextHandle);
+        }
+
+        //  Delegates
+        private delegate string wglGetExtensionsStringARB(IntPtr hdc);
+
+        #endregion
     }
 }

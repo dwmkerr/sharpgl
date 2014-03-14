@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using SharpGL.RenderContextProviders;
+using SharpGL.Version;
 
 namespace SharpGL
 {
@@ -6699,13 +6700,14 @@ if (insideGLBegin == false)
         /// <summary>
         /// Creates the OpenGL instance.
         /// </summary>
+        /// <param name="openGLVersion">The OpenGL version requested.</param>
         /// <param name="renderContextType">Type of the render context.</param>
         /// <param name="width">The drawing context width.</param>
         /// <param name="height">The drawing context height.</param>
         /// <param name="bitDepth">The bit depth.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns></returns>
-		public virtual bool Create(RenderContextType renderContextType, int width, int height, int bitDepth, object parameter)
+		public virtual bool Create(OpenGLVersion openGLVersion, RenderContextType renderContextType, int width, int height, int bitDepth, object parameter)
 		{	
             //  Return if we don't have a sensible width or height.
 			if(width == 0 || height == 0 || bitDepth == 0)
@@ -6729,7 +6731,7 @@ if (insideGLBegin == false)
 			}
 
 			//	Create the render context.
-			renderContextProvider.Create(this, width, height, bitDepth, parameter);
+			renderContextProvider.Create(openGLVersion, this, width, height, bitDepth, parameter);
 			
 			return true;
 		}
@@ -6737,14 +6739,17 @@ if (insideGLBegin == false)
         /// <summary>
         /// Creates the OpenGL instance using an external, existing render context.
         /// </summary>
+        /// <param name="openGLVersion">The OpenGL version requested.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="bitDepth">The bit depth.</param>
         /// <param name="windowHandle">The window handle.</param>
         /// <param name="renderContextHandle">The render context handle.</param>
         /// <param name="deviceContextHandle">The device context handle.</param>
-        /// <returns>True on success</returns>
-        public virtual bool CreateFromExternalContext(int width, int height, int bitDepth, IntPtr windowHandle, IntPtr renderContextHandle, IntPtr deviceContextHandle)
+        /// <returns>
+        /// True on success
+        /// </returns>
+        public virtual bool CreateFromExternalContext(OpenGLVersion openGLVersion, int width, int height, int bitDepth, IntPtr windowHandle, IntPtr renderContextHandle, IntPtr deviceContextHandle)
         {
             // Return if we don't have a sensible width or height.
             if (width == 0 || height == 0 || bitDepth == 0)
@@ -6753,7 +6758,7 @@ if (insideGLBegin == false)
             }
 
             renderContextProvider = new ExternalRenderContextProvider(windowHandle, renderContextHandle, deviceContextHandle);
-            renderContextProvider.Create(this, width, height, bitDepth, null);
+            renderContextProvider.Create(openGLVersion, this, width, height, bitDepth, null);
 
             return true;
         }

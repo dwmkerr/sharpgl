@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpGL.Version;
 
 namespace SharpGL.RenderContextProviders
 {
+    /// <summary>
+    /// Defines the contract for a type that can provide an OpenGL render context.
+    /// </summary>
     public interface IRenderContextProvider : IDisposable
     {
         /// <summary>
         /// Creates the render context provider. Must also create the OpenGL extensions.
         /// </summary>
+        /// <param name="openGLVersion">The desired OpenGL version.</param>
         /// <param name="gl">The OpenGL context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="bitDepth">The bit depth.</param>
         /// <param name="parameter">The extra parameter.</param>
         /// <returns></returns>
-	    bool Create(OpenGL gl, int width, int height, int bitDepth, object parameter);
+	    bool Create(OpenGLVersion openGLVersion, OpenGL gl, int width, int height, int bitDepth, object parameter);
 	
         /// <summary>
         /// Destroys the render context provider instance.

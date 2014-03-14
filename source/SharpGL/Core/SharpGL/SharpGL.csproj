@@ -75,6 +75,8 @@
     <Compile Include="RenderContextProviders\NativeWindowRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\RenderContextProvider.cs" />
     <Compile Include="RenderContextType.cs" />
+    <Compile Include="Version\OpenGLVersion.cs" />
+    <Compile Include="Version\VersionAttribute.cs" />
     <Compile Include="Win32.cs" />
   </ItemGroup>
   <ItemGroup>

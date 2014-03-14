@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpGL.Version;
 
 namespace SharpGL.RenderContextProviders
 {
@@ -19,16 +20,18 @@ namespace SharpGL.RenderContextProviders
         /// <summary>
         /// Creates the render context provider. Must also create the OpenGL extensions.
         /// </summary>
+        /// <param name="openGLVersion">The desired OpenGL version.</param>
         /// <param name="gl">The OpenGL context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="bitDepth">The bit depth.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns></returns>
-        public override bool Create(OpenGL gl, int width, int height, int bitDepth, object parameter)
+        /// <exception cref="System.Exception">A valid Window Handle must be provided for the NativeWindowRenderContextProvider</exception>
+        public override bool Create(OpenGLVersion openGLVersion, OpenGL gl, int width, int height, int bitDepth, object parameter)
         {
             //  Call the base.
-            base.Create(gl, width, height, bitDepth, parameter);
+            base.Create(openGLVersion, gl, width, height, bitDepth, parameter);
 
             //  Cast the parameter to the device context.
             try
@@ -70,6 +73,9 @@ namespace SharpGL.RenderContextProviders
             
             //  Make the context current.
             MakeCurrent();
+
+            //  Update the render context if required.
+            UpdateContextVersion(gl);
 
             //  Return success.
             return true;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpGL.Version;
 
 namespace SharpGL.RenderContextProviders
 {
@@ -10,17 +11,23 @@ namespace SharpGL.RenderContextProviders
         /// <summary>
         /// Creates the render context provider. Must also create the OpenGL extensions.
         /// </summary>
+        /// <param name="openGLVersion">The desired OpenGL version.</param>
         /// <param name="gl">The OpenGL context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="bitDepth">The bit depth.</param>
+        /// <param name="parameter">The extra parameter.</param>
         /// <returns></returns>
-        public virtual bool Create(OpenGL gl, int width, int height, int bitDepth, object parameter)
+        public virtual bool Create(OpenGLVersion openGLVersion, OpenGL gl, int width, int height, int bitDepth, object parameter)
         {
 	        //  Set the width, height and bit depth.
             Width = width;
             Height = height;
             BitDepth = bitDepth;
+
+            //  For now, assume we're going to be able to create the requested OpenGL version.
+            requestedOpenGLVersion = openGLVersion;
+            createdOpenGLVersion = openGLVersion;
 
             return true;
         }
@@ -67,6 +74,27 @@ namespace SharpGL.RenderContextProviders
         {
             //  Destroy the context provider.
             Destroy();
+        }
+
+        /// <summary>
+        /// Only valid to be called after the render context is created, this function attempts to
+        /// move the render context to the OpenGL version originally requested. If this is &gt; 2.1, this
+        /// means building a new context. If this fails, we'll have to make do with 2.1.
+        /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
+        protected void UpdateContextVersion(OpenGL gl)
+        {
+            //  If the request version number is anything up to and including 2.1, standard render contexts
+            //  will provide what we need (as long as the graphics card drivers are up to date).
+            var requestedVersionNumber = VersionAttribute.GetVersionAttribute(requestedOpenGLVersion);
+            if (requestedVersionNumber.IsAtLeastVersion(3, 0) == false)
+            {
+                createdOpenGLVersion = requestedOpenGLVersion;
+                return;
+            }
+
+            //  Now the none-trivial case. We must use the WGL_ARB_create_context extension to 
+            //  attempt to create a 3.0+ context.
         }
 
         /// <summary>
@@ -128,6 +156,22 @@ namespace SharpGL.RenderContextProviders
         }
 
         /// <summary>
+        /// Gets the OpenGL version that was requested when creating the render context.
+        /// </summary>
+        public OpenGLVersion RequestedOpenGLVersion
+        {
+            get { return requestedOpenGLVersion; }
+        }
+
+        /// <summary>
+        /// Gets the OpenGL version that is supported by the render context, compare to <see cref="RequestedOpenGLVersion"/>.
+        /// </summary>
+        public OpenGLVersion CreatedOpenGLVersion
+        {
+            get { return createdOpenGLVersion; }
+        }
+
+        /// <summary>
         /// The render context handle.
         /// </summary>
         protected IntPtr renderContextHandle = IntPtr.Zero;
@@ -156,5 +200,16 @@ namespace SharpGL.RenderContextProviders
         /// Is gdi drawing enabled?
         /// </summary>
         protected bool gdiDrawingEnabled = true;
+
+        /// <summary>
+        /// The version of OpenGL that was requested when creating the render context.
+        /// </summary>
+        protected OpenGLVersion requestedOpenGLVersion;
+
+        /// <summary>
+        /// The actual version of OpenGL that is supported by the render context.
+        /// </summary>
+        protected OpenGLVersion createdOpenGLVersion;
+
     }
 }

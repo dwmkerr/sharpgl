@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Windows.Interop;
 using System.Diagnostics;
 using SharpGL.SceneGraph;
+using SharpGL.Version;
 
 namespace SharpGL.WPF
 {
@@ -85,7 +86,7 @@ namespace SharpGL.WPF
             lock (gl)
             {
                 //  Create OpenGL.
-                gl.Create(RenderContextType, 1, 1, 32, null);
+                gl.Create(OpenGLVersion, RenderContextType, 1, 1, 32, null);
             }
 
             //  Create our fast event args.
@@ -303,6 +304,23 @@ namespace SharpGL.WPF
         private static void OnRenderContextTypeChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
             OpenGLControl me = o as OpenGLControl;
+        }
+
+        /// <summary>
+        /// The OpenGL Version property.
+        /// </summary>
+        private static readonly DependencyProperty OpenGLVersionProperty =
+          DependencyProperty.Register("OpenGLVersion", typeof(OpenGLVersion), typeof(OpenGLControl),
+          new PropertyMetadata(OpenGLVersion.OpenGL2_1));
+
+        /// <summary>
+        /// Gets or sets the OpenGL Version requested for the control.
+        /// </summary>
+        /// <value>The type of the render context.</value>
+        public OpenGLVersion OpenGLVersion
+        {
+            get { return (OpenGLVersion)GetValue(OpenGLVersionProperty); }
+            set { SetValue(OpenGLVersionProperty, value); }
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Helpers;
 using SharpGL.Enumerations;
+using SharpGL.Version;
 
 namespace DataLoader
 {
@@ -70,7 +71,7 @@ namespace DataLoader
             Camera = camera;
 
             //  Create OpenGL.
-            gl.Create(RenderContextType.DIBSection, 800, 600, 32, null);
+            gl.Create(OpenGLVersion.OpenGL4_4, RenderContextType.DIBSection, 800, 600, 32, null);
 
             //   Create the scene object.
             Scene = new Scene() { OpenGL = gl };

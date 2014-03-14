@@ -6,6 +6,7 @@ using SharpGL;
 using System.IO;
 using System.Xml;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using SharpGL.Version;
 
 namespace ShaderBuilder
 {
@@ -20,7 +21,7 @@ namespace ShaderBuilder
             OpenGL = new OpenGL();
 
             //  Initialise the OpenGL instance.
-            OpenGL.Create(RenderContextType.FBO,
+            OpenGL.Create(OpenGLVersion.OpenGL4_4, RenderContextType.FBO,
                 800, 600, 24, null);
         }
 

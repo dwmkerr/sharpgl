@@ -9,6 +9,7 @@ using SharpGL;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Cameras;
 using System.Collections.ObjectModel;
+using SharpGL.Version;
 
 namespace SharpGLStudio
 {
@@ -31,7 +32,7 @@ namespace SharpGLStudio
         private void CreateScene()
         {
             //  Create OpenGL.
-            gl.Create(RenderContextType.DIBSection, 800, 600, 32, null);
+            gl.Create(OpenGLVersion.OpenGL4_4, RenderContextType.DIBSection, 800, 600, 32, null);
 
             //   Create the scene object.
             Scene = new Scene() { OpenGL = gl };

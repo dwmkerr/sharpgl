@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpGL.Version;
 
 namespace SharpGL.RenderContextProviders
 {
@@ -19,18 +20,19 @@ namespace SharpGL.RenderContextProviders
         /// <summary>
         /// Creates the render context provider. Must also create the OpenGL extensions.
         /// </summary>
+        /// <param name="openGLVersion">The desired OpenGL version.</param>
         /// <param name="gl">The OpenGL context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="bitDepth">The bit depth.</param>
-        /// <param name="parameter"></param>
+        /// <param name="parameter">The parameter</param>
         /// <returns></returns>
-        public override bool Create(OpenGL gl, int width, int height, int bitDepth, object parameter)
+        public override bool Create(OpenGLVersion openGLVersion, OpenGL gl, int width, int height, int bitDepth, object parameter)
         {
             this.gl = gl;
 
             //  Call the base class. 	        
-            base.Create(gl, width, height, bitDepth, parameter);
+            base.Create(openGLVersion, gl, width, height, bitDepth, parameter);
 
             uint[] ids = new uint[1];
 
