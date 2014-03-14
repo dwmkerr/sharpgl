@@ -28,3 +28,4 @@ _ReSharper*/
 build/nuspec/SharpGLCore/lib/
 build/nuspec/SharpGLforWinForms/lib/
 build/nuspec/SharpGLforWPF/lib/
+release/2.*

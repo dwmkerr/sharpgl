@@ -43,7 +43,7 @@
             this.openGLControl.Size = new System.Drawing.Size(624, 391);
             this.openGLControl.TabIndex = 0;
             this.openGLControl.OpenGLInitialized += new System.EventHandler(this.openGLControl_OpenGLInitialized);
-            this.openGLControl.OpenGLDraw += new new SharpGL.RenderEventHandler(this.openGLControl_OpenGLDraw);
+            this.openGLControl.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControl_OpenGLDraw);
             this.openGLControl.Resized += new System.EventHandler(this.openGLControl_Resized);
             // 
             // SharpGLForm

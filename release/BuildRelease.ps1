@@ -64,7 +64,7 @@ $solutionTools = Join-Path $folderSolutionsRoot "Tools.sln"
 
 # Part 7 - Copy the tools to the release.
 $folderReleaseTools = Join-Path $folderRelease "Tools"
-EnsureEmptyFolderExists($folderReleaseSamples)
+EnsureEmptyFolderExists($folderReleaseTools)
 $releaseFolders = gci (Join-Path $folderSolutionsRoot "Tools") -Recurse -Directory -filter "Release" | select FullName
 $releaseFolders | ForEach {
     $releaseFolder = $_.FullName
