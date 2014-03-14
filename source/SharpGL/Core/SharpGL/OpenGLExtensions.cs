@@ -2736,6 +2736,8 @@ namespace SharpGL
         public const uint GL_FUNC_ADD_EXT = 0x8006;
         public const uint GL_MIN_EXT = 0x8007;
         public const uint GL_MAX_EXT = 0x8008;
+        public const uint GL_FUNC_SUBTRACT_EXT = 0x800A;
+        public const uint GL_FUNC_REVERSE_SUBTRACT_EXT = 0x800B;
         public const uint GL_BLEND_EQUATION_EXT = 0x8009;
 
         #endregion
