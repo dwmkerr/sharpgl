@@ -25,3 +25,6 @@ _ReSharper*/
 # We don't want to ignore the main release folder scripts.
 !/release/
 /release/2.1*/
+build/nuspec/SharpGLCore/lib/
+build/nuspec/SharpGLforWinForms/lib/
+build/nuspec/SharpGLforWPF/lib/
