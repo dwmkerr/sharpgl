@@ -16,3 +16,10 @@ function EnsureFolderExists($folder) {
         New-Item $folder -Type Directory
     }
 }
+
+# Ensures that a folder exists and deletes anything in it.
+function EnsureEmptyFolderExists($folder) {
+    EnsureFolderExists($folder)
+    Remove-Item -Recurse -Force $folder
+    EnsureFolderExists($folder)
+}
