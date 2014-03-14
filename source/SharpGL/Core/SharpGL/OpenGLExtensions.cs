@@ -4806,5 +4806,48 @@ namespace SharpGL
         private delegate string wglGetExtensionsStringARB(IntPtr hdc);
 
         #endregion
+
+        #region WGL_ARB_create_context
+        
+        //  Methods
+
+        /// <summary>
+        /// Creates a render context with the specified attributes.
+        /// </summary>
+        /// <param name="hShareContext">
+        /// If is not null, then all shareable data (excluding
+        /// OpenGL texture objects named 0) will be shared by <hshareContext>,
+        /// all other contexts <hshareContext> already shares with, and the
+        /// newly created context. An arbitrary number of contexts can share
+        /// data in this fashion.</param>
+        /// <param name="attribList">
+        /// specifies a list of attributes for the context. The
+        /// list consists of a sequence of <name,value> pairs terminated by the
+        /// value 0. If an attribute is not specified in <attribList>, then the
+        /// default value specified below is used instead. If an attribute is
+        /// specified more than once, then the last value specified is used.
+        /// </param>
+        public IntPtr CreateContextAttribsARB(IntPtr hShareContext, int[] attribList)
+        {
+            return (IntPtr)InvokeExtensionFunction<wglCreateContextAttribsARB>(RenderContextProvider.DeviceContextHandle, hShareContext, attribList);
+        }
+
+        //  Delegates
+        private delegate IntPtr wglCreateContextAttribsARB(IntPtr hDC, IntPtr hShareContext, int[] attribList);
+    
+        //  Constants
+        public const int WGL_CONTEXT_MAJOR_VERSION_ARB            = 0x2091;
+        public const int WGL_CONTEXT_MINOR_VERSION_ARB            = 0x2092;
+        public const int WGL_CONTEXT_LAYER_PLANE_ARB              = 0x2093;
+        public const int WGL_CONTEXT_FLAGS_ARB                    = 0x2094;
+        public const int WGL_CONTEXT_PROFILE_MASK_ARB             = 0x9126;
+        public const int WGL_CONTEXT_DEBUG_BIT_ARB                = 0x0001;
+        public const int WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB   = 0x0002;
+        public const int WGL_CONTEXT_CORE_PROFILE_BIT_ARB         = 0x00000001;
+        public const int WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x00000002;
+        public const int ERROR_INVALID_VERSION_ARB = 0x2095;
+        public const int ERROR_INVALID_PROFILE_ARB                = 0x2096;
+
+        #endregion
     }
 }

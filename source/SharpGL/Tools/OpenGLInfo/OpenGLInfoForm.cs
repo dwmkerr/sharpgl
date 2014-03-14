@@ -33,7 +33,7 @@ namespace OpenGLInfo
         private void OpenGLInfoForm_Load(object sender, EventArgs e)
         {
             //  Create the OpenGL instance.
-            gl.Create(OpenGLVersion.OpenGL4_4, RenderContextType.FBO, 1, 1, 32, null);
+            gl.Create(OpenGLVersion.OpenGL2_1, RenderContextType.FBO, 1, 1, 32, null);
 
             //  Populate the OpenGL info.
             PopulateOpenGLInfo();
@@ -49,9 +49,20 @@ namespace OpenGLInfo
             textBoxRenderer.Text = gl.Renderer;
             textBoxVersion.Text = gl.Version;
 
-            //  Put each extension on a new line.
-            string[] extensions = gl.Extensions.Split(' ');
+            //  Set the extensions info.
+            var extensions = gl.Extensions.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries).OrderBy(s => s);
             textBoxExtensions.Text = string.Join(System.Environment.NewLine, extensions);
+
+            //  Set the arb extensions info.
+            try
+            {
+                var arbExtensions = gl.GetExtensionsStringARB().Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries).OrderBy(s => s);
+                textBoxARBExtensions.Text = string.Join(System.Environment.NewLine, arbExtensions);
+            }
+            catch (Exception e)
+            {
+                textBoxARBExtensions.Text = "The ARB Extensions cannot be loaded.";
+            }
 
             //  Get each member of the OpenGL object.
             var members = gl.GetType().GetMembers(BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Instance);
