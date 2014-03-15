@@ -188,58 +188,17 @@ namespace CelShadingSample
             //  Get the OpenGL instance.
             var gl = args.OpenGL;
 
-            //  Project.
-            gl.MatrixMode(MatrixMode.Projection);
-            gl.LoadIdentity();
-            camera.TransformProjectionMatrix(args.OpenGL);
-            gl.MatrixMode(MatrixMode.Modelview);
+            float theta = 0.0f;
 
-            //  Get the modelview and projection matrices.
-            float[] m = new float[16];
-            float[] p = new float[16];
-            gl.GetFloat(OpenGL.GL_MODELVIEW_MATRIX, m);
-            gl.GetFloat(OpenGL.GL_PROJECTION_MATRIX, p);
+            mat4 rotation = glm.rotate(mat4.identity(), theta, new vec3(0, 1, 0));
+            mat4 translation = glm.translate(mat4.identity(), new vec3(0, 0, -7));
 
-            //  Convert the matrices into the GLM format.
-            modelView = new mat4(new [] {
-                new vec4(m[0], m[1], m[2], m[3]),
-                new vec4(m[4], m[5], m[6], m[7]),
-                new vec4(m[8], m[9], m[10], m[11]),
-                new vec4(m[12], m[13], m[14], m[15])});
-            projection = new mat4(new [] {
-                new vec4(p[0], p[1], p[2], p[3]),
-                new vec4(p[4], p[5], p[6], p[7]),
-                new vec4(p[8], p[9], p[10], p[11]),
-                new vec4(p[12], p[13], p[14], p[15])});
-            normalMatrix = new mat3(new [] {
-                new vec3(p[0], p[1], p[2]),
-                new vec3(p[4], p[5], p[6]),
-                new vec3(p[8], p[9], p[10])
-            });
+            modelView = rotation * translation;
+            normalMatrix = modelView.to_mat3();
 
-            return;
-
-    time += elapsedMilliseconds;
-    if (time > InitialPause && (LoopForever || theta < 360))
-    {
-        theta += elapsedMilliseconds * 0.1f;
-    }
-            /*
-    mat4 rotation = mat4::Rotate(theta, vec3(0, 1, 0));
-    mat4 translation = mat4::Translate(0, 0, -7);
-
-    rc.Modelview = rotation * translation;
-    rc.NormalMatrix = rc.Modelview.ToMat3();
-
-    rc.Projection = mat4::Frustum(-S, S, -H, H, 4, 10);
-            */
     float S = 0.46f;
-    float H = S * (float)openGlCtrl.ActualHeight / (float)openGlCtrl.ActualWidth;
-
-            args.OpenGL.MatrixMode(MatrixMode.Projection);
-            args.OpenGL.LoadIdentity();
-            args.OpenGL.Frustum(-S, S, -H, H, 4, 10);
-            args.OpenGL.MatrixMode(MatrixMode.Modelview);
+    float H = S * (float)ActualHeight / (float)ActualWidth;
+    projection = glm.pfrustum(-S, S, -H, H, 4, 10);
         }
 
         /// <summary>
