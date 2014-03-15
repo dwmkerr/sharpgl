@@ -73,9 +73,16 @@ namespace CelShadingSample
         private void DrawTrefoilVertices(OpenGL gl)
         {
             //  Render each vertex.
-            gl.Begin(BeginMode.Points);
-            foreach(var vertex in trefoilKnot.Vertices)
+          /*  gl.Begin(BeginMode.Points);
+            foreach (var vertex in trefoilKnot.Vertices)
                 gl.Vertex(vertex);
+            gl.End();
+            */
+            //  OR  render each  triangle.
+            var vertices = trefoilKnot.Vertices.ToList();
+            gl.Begin(BeginMode.Triangles);
+            foreach (var index in trefoilKnot.indices)
+                gl.Vertex(vertices[index].x, vertices[index].y, vertices[index].z);
             gl.End();
         }
 
@@ -93,7 +100,8 @@ namespace CelShadingSample
             int normalOffset = Marshal.SizeOf(typeof(Vertex));
             gl.VertexAttribPointer(attrNormal, 3, OpenGL.GL_FLOAT, false, Marshal.SizeOf(typeof(Vertex)), IntPtr.Add(new IntPtr(0), normalOffset));
 
-            gl.DrawElements(OpenGL.GL_LINES, (int)trefoilKnot.IndexCount, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
+         //   gl.DrawElements(OpenGL.GL_TRIANGLES, 9/*(int)trefoilKnot.IndexCount*/, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
+            gl.DrawArrays(OpenGL.GL_TRIANGLES, 0, 50); // Draw our square  
 
         }
 
@@ -117,18 +125,7 @@ namespace CelShadingSample
             gl.UniformMatrix3(toonUniforms.NormalMatrix, 1, false, normalMatrix.to_array());
 
             //  Bind the vertex and index buffer.
-            gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, vertexBuffer);
-            gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-            gl.EnableVertexAttribArray(attrPosition);
-            gl.EnableVertexAttribArray(attrNormal);
-
-            //  Draw the geometry, straight from the vertex buffer.
-            gl.VertexAttribPointer(attrPosition, 3, OpenGL.GL_FLOAT, false, Marshal.SizeOf(typeof(Vertex)), IntPtr.Zero);
-            int normalOffset = Marshal.SizeOf(typeof(Vertex));
-            gl.VertexAttribPointer(attrNormal, 3, OpenGL.GL_FLOAT, false, Marshal.SizeOf(typeof(Vertex)), IntPtr.Add(new IntPtr(0), normalOffset));
-
-            gl.DrawElements(OpenGL.GL_TRIANGLES, (int)trefoilKnot.IndexCount, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
+            DrawTrefoilBuffers(gl);
 
             shaderProgram.Unbind(gl);
         }
@@ -138,7 +135,7 @@ namespace CelShadingSample
             OpenGL gl = args.OpenGL;
 
             //  Configure the camera.
-            camera.Position = new Vertex(10, 10, 10);
+            camera.Position = new Vertex(2, 2, 2);
             camera.Target = new Vertex(0, 0, 0);
 
             //  Initialise the trefoil.
@@ -151,6 +148,7 @@ namespace CelShadingSample
             CreateShader(gl);           
 
             gl.Enable(OpenGL.GL_DEPTH_TEST);
+            gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
         }
 
         private void CreateShader(OpenGL gl)
@@ -274,6 +272,8 @@ namespace CelShadingSample
         private uint indexBuffer = 0;
         private ShaderUniforms toonUniforms = new ShaderUniforms();
         private ShaderProgram shaderProgram;
+
+        //  We have our own matrices for this sample - no need for OpenGL matrix functionality.
         private mat4 modelView = mat4.identity();
         private mat4 projection = mat4.identity();
         private mat3 normalMatrix = mat3.identity();

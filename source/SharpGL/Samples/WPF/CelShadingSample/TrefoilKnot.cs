@@ -5,6 +5,7 @@ using System.Text;
 using SharpGL.SceneGraph;
 using SharpGL;
 using System.Runtime.InteropServices;
+using GlmNet;
 
 namespace CelShadingSample
 {
@@ -21,7 +22,7 @@ namespace CelShadingSample
             //  Generates the geometry for the trefoil knot.
 
             //  Create the vertices.
-            vertices = new List<Vertex>();
+            vertices = new List<vec3>();
 
             //  Generate the vertices and normals.
             vertexAndNormalBuffer = CreateVertexNormalBuffer(gl);
@@ -34,7 +35,7 @@ namespace CelShadingSample
         /// <param name="s">The s.</param>
         /// <param name="t">The t.</param>
         /// <returns>The vertex at (s,t).</returns>
-        private static Vertex EvaluateTrefoil(float s, float t)
+        private static vec3 EvaluateTrefoil(float s, float t)
         {
             const float TwoPi = (float)Math.PI * 2;
 
@@ -49,32 +50,26 @@ namespace CelShadingSample
             float y = (float)(r * Math.Sin(u));
             float z = (float)(c * Math.Sin(1.5f * u));
 
-            var dv = new Vertex
-            {
-                X = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Cos(u) - (a + b*Math.Cos(1.5f*u))*Math.Sin(u)), 
-                Y = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Sin(u) + (a + b*Math.Cos(1.5f*u))*Math.Cos(u)), 
-                Z = (float) (1.5f*c*Math.Cos(1.5f*u))
-            };
+            vec3 dv = new vec3();
+            dv.x = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Cos(u) - (a + b*Math.Cos(1.5f*u))*Math.Sin(u));
+            dv.y = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Sin(u) + (a + b*Math.Cos(1.5f*u))*Math.Cos(u)); 
+            dv.z = (float) (1.5f*c*Math.Cos(1.5f*u));
+            
+            vec3 q = glm.normalize(dv);
+            vec3 qvn = glm.normalize(new vec3(q.y, -q.x, 0.0f));
+            vec3 ww =  glm.cross(q, qvn);
 
-            Vertex q = new Vertex(dv);
-            q.Normalize();
-            Vertex qvn = new Vertex(q.Y, -q.X, 0);
-            qvn.Normalize();
-            Vertex ww = q.VectorProduct(qvn);
-
-            Vertex range = new Vertex()
-            {
-                X = (float) (x + d*(qvn.X*Math.Cos(v) + ww.X*Math.Sin(v))),
-                Y = (float)(y + d * (qvn.Y * Math.Cos(v) + ww.Y * Math.Sin(v))),
-                Z = (float)(z + d * ww.Z * Math.Sin(v))
-            };
-
+            vec3 range = new vec3();
+            range.x = (float) (x + d*(qvn.x*Math.Cos(v) + ww.x*Math.Sin(v)));
+            range.y = (float)(y + d * (qvn.y * Math.Cos(v) + ww.y * Math.Sin(v)));
+            range.z = (float)(z + d * ww.z * Math.Sin(v));
+            
             return range;
         }
 
         private uint CreateVertexNormalBuffer(OpenGL gl)
         {
-            Vertex[] verts = new Vertex[VertexCount * 2];
+            vec3[] verts = new vec3[VertexCount * 2];
             int count = 0;
 
             float ds = 1.0f / Slices;
@@ -88,37 +83,29 @@ namespace CelShadingSample
                 for (float t = 0; t < 1 - dt / 2; t += dt)
                 {
                     const float E = 0.01f;
-                    Vertex p = EvaluateTrefoil(s, t);
-                    Vertex u = EvaluateTrefoil(s + E, t) - p;
-                    Vertex v = EvaluateTrefoil(s, t + E) - p;
-                    Vertex n = u.VectorProduct(v);
-                    n.Normalize();
+                    vec3 p = EvaluateTrefoil(s, t);
+                    vec3 u = EvaluateTrefoil(s + E, t) - p;
+                    vec3 v = EvaluateTrefoil(s, t + E) - p;
+                    vec3 n = glm.normalize(glm.cross(u, v));
                     vertices.Add(p);
                     verts[count++] = p;
                     verts[count++] = n;
                 }
             }
             
-            //  Pin the data.
-            GCHandle vertsHandle = GCHandle.Alloc(verts, GCHandleType.Pinned);
-            IntPtr vertsPtr = vertsHandle.AddrOfPinnedObject();
-            var size = Marshal.SizeOf(typeof(Vertex)) * VertexCount;
-
+            
             uint[] buffers = new uint[1];
             gl.GenBuffers(1, buffers);
             uint handle = buffers[0];
             gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, handle);
-            gl.BufferData(OpenGL.GL_ARRAY_BUFFER, (int)size, vertsPtr, OpenGL.GL_STATIC_DRAW);
-
-            //  Free the data.
-            vertsHandle.Free();
-
+            gl.BufferData(OpenGL.GL_ARRAY_BUFFER, verts.SelectMany(v => v.to_array()).ToArray(), OpenGL.GL_STATIC_DRAW);
+            
             return handle;
         }
 
         private uint CreateIndexBuffer(OpenGL gl)
         {
-            ushort[] inds = new ushort[IndexCount];
+            indices = new ushort[IndexCount];
             int count = 0;
 
             ushort n = 0;
@@ -126,36 +113,30 @@ namespace CelShadingSample
             {
                 for (ushort j = 0; j < Stacks; j++)
                 {
-                    inds[count++] = (ushort)(n + j);
-                    inds[count++] = (ushort)(n + (j + 1) % Stacks);
-                    inds[count++] = (ushort)((n + j + Stacks) % VertexCount);
+                    indices[count++] = (ushort)(n + j);
+                    indices[count++] = (ushort)(n + (j + 1) % Stacks);
+                    indices[count++] = (ushort)((n + j + Stacks) % VertexCount);
 
-                    inds[count++] = (ushort)((n + j + Stacks) % VertexCount);
-                    inds[count++] = (ushort)((n + (j + 1) % Stacks) % VertexCount);
-                    inds[count++] = (ushort)((n + (j + 1) % Stacks + Stacks) % VertexCount);
+                    indices[count++] = (ushort)((n + j + Stacks) % VertexCount);
+                    indices[count++] = (ushort)((n + (j + 1) % Stacks) % VertexCount);
+                    indices[count++] = (ushort)((n + (j + 1) % Stacks + Stacks) % VertexCount);
                 }
 
                 n += (ushort)Stacks;
             }
             
-            //  Pin the data.
-            GCHandle indsHandle = GCHandle.Alloc(inds, GCHandleType.Pinned);
-            IntPtr indsPtr = indsHandle.AddrOfPinnedObject();
-            var size = Marshal.SizeOf(typeof(ushort)) * VertexCount;
-
             uint[] buffers = new uint[1];
             gl.GenBuffers(1, buffers);
             uint handle = buffers[0];
             gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, handle);
-            gl.BufferData(OpenGL.GL_ELEMENT_ARRAY_BUFFER, (int)size, indsPtr, OpenGL.GL_STATIC_DRAW);
-
-            //  Free the data.
-            indsHandle.Free();
+            gl.BufferData(OpenGL.GL_ELEMENT_ARRAY_BUFFER, indices, OpenGL.GL_STATIC_DRAW);
 
             return handle;
         }
 
-        private IList<Vertex> vertices; 
+        private IList<vec3> vertices;
+
+        public ushort[] indices;
 
         /// <summary>
         /// The number of slices.
@@ -236,6 +217,6 @@ namespace CelShadingSample
         /// <value>
         /// The vertices.
         /// </value>
-        public IEnumerable<Vertex> Vertices { get { return vertices; } } 
+        public IEnumerable<vec3> Vertices { get { return vertices; } } 
     }
 }

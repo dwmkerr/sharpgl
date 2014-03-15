@@ -18,7 +18,7 @@ namespace SharpGL.VertexBuffers
         public void SetData(OpenGL gl, uint attributeIndex, float[] rawData, bool isNormalised, int stride)
         {
             //  Set the data, specify its shape and assign it to a vertex attribute (so shaders can bind to it).
-            gl.BufferData(OpenGL.GL_ARRAY_BUFFER, rawData.Length * sizeof(float), rawData, OpenGL.GL_STATIC_DRAW);
+            gl.BufferData(OpenGL.GL_ARRAY_BUFFER, rawData, OpenGL.GL_STATIC_DRAW);
             gl.VertexAttribPointer(attributeIndex, stride, OpenGL.GL_FLOAT, isNormalised, 0, IntPtr.Zero);
             gl.EnableVertexAttribArray(attributeIndex);
         }
