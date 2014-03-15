@@ -15,11 +15,13 @@ using SharpGL;
 using SharpGL.SceneGraph.Cameras;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
-using SharpGL.SceneGraph.Shaders;
 using SharpGL.SceneGraph;
 using System.Runtime.InteropServices;
 using SharpGL.Enumerations;
-using Matrix = SharpGL.SceneGraph.Matrix;
+using GlmNet;
+using SharpGL.Shaders;
+using System.Reflection;
+using System.IO;
 
 namespace CelShadingSample
 {
@@ -62,8 +64,8 @@ namespace CelShadingSample
 
             //  Render the trefoil knot.
             if (checkBoxUseCelShader.IsChecked == true)
-                DrawTrefoilBuffers(gl);
-                //DrawTrefoilCelShaded(gl);
+                //DrawTrefoilBuffers(gl);
+                DrawTrefoilCelShaded(gl);
             else
                 DrawTrefoilVertices(gl);
         }
@@ -98,7 +100,7 @@ namespace CelShadingSample
         private void DrawTrefoilCelShaded(OpenGL gl)
         {
             //  Use the shader program.
-            gl.UseProgram(shaderProgram.ProgramObject);
+            shaderProgram.Bind(gl);
 
             //  Set the variables for the shader program.
             gl.Uniform3(toonUniforms.DiffuseMaterial, 0f, 0.75f, 0.75f);
@@ -110,9 +112,9 @@ namespace CelShadingSample
             gl.Uniform3(toonUniforms.LightPosition, 1, new float[4] { 0.25f, 0.25f, 1f, 0f });
 
             //  Set the matrices.
-            gl.UniformMatrix4(toonUniforms.Projection, 1, false, projection.AsColumnMajorArrayFloat);
-            gl.UniformMatrix4(toonUniforms.Modelview, 1, false, modelView.AsColumnMajorArrayFloat);
-            gl.UniformMatrix3(toonUniforms.NormalMatrix, 1, false, normalMatrix.AsColumnMajorArrayFloat);
+            gl.UniformMatrix4(toonUniforms.Projection, 1, false, projection.to_array());
+            gl.UniformMatrix4(toonUniforms.Modelview, 1, false, modelView.to_array());
+            gl.UniformMatrix3(toonUniforms.NormalMatrix, 1, false, normalMatrix.to_array());
 
             //  Bind the vertex and index buffer.
             gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, vertexBuffer);
@@ -127,6 +129,8 @@ namespace CelShadingSample
             gl.VertexAttribPointer(attrNormal, 3, OpenGL.GL_FLOAT, false, Marshal.SizeOf(typeof(Vertex)), IntPtr.Add(new IntPtr(0), normalOffset));
 
             gl.DrawElements(OpenGL.GL_TRIANGLES, (int)trefoilKnot.IndexCount, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
+
+            shaderProgram.Unbind(gl);
         }
 
         private void OpenGLControl_OpenGLInitialized(object sender, OpenGLEventArgs args)
@@ -140,71 +144,46 @@ namespace CelShadingSample
             //  Initialise the trefoil.
             trefoilKnot.GenerateGeometry(gl);
 
-          /* RenderContext& rc = GlobalRenderContext;
-
-    glswInit();
-    glswSetPath("../", ".glsl");
-    glswAddDirectiveToken("GL3", "#version 130");*/
-
             vertexBuffer = trefoilKnot.VertexAndNormalBuffer;
             indexBuffer = trefoilKnot.IndexBuffer;
-
-            //  Create a shader program.
-            shaderProgram.CreateInContext(gl);
-
-            //  Create the vertex program.
-            vertexShader.CreateInContext(gl);
-            vertexShader.LoadSource("PerPixelLightingVertex.glsl");
-            vertexShader.Compile();
-
-            var compileStatus = vertexShader.CompileStatus;
-            var info = vertexShader.InfoLog;
-
-            //  Create the fragment program.
-            fragmentShader.CreateInContext(gl); 
-            fragmentShader.LoadSource("PerPixelLightingFragment.glsl");
-            fragmentShader.Compile();
-
-            //  Attach the shaders to the program.
-            shaderProgram.AttachShader(vertexShader);
-            shaderProgram.AttachShader(fragmentShader);
-            shaderProgram.Link();
-    /*
-#if defined(__APPLE__)
-    rc.ToonHandle = BuildProgram("Toon.Vertex.GL2", "Toon.Fragment.GL2");
-#else
-    rc.ToonHandle = BuildProgram("Toon.Vertex.GL3", "Toon.Fragment.GL3");
-#endif*/
-
-            toonUniforms.Projection = gl.GetUniformLocation(shaderProgram.ProgramObject, "Projection");
-            toonUniforms.Modelview = gl.GetUniformLocation(shaderProgram.ProgramObject, "Modelview");
-            toonUniforms.NormalMatrix = gl.GetUniformLocation(shaderProgram.ProgramObject, "NormalMatrix");
-            toonUniforms.LightPosition = gl.GetUniformLocation(shaderProgram.ProgramObject, "LightPosition");
-            toonUniforms.AmbientMaterial = gl.GetUniformLocation(shaderProgram.ProgramObject, "AmbientMaterial");
-            toonUniforms.DiffuseMaterial = gl.GetUniformLocation(shaderProgram.ProgramObject, "DiffuseMaterial");
-            toonUniforms.SpecularMaterial = gl.GetUniformLocation(shaderProgram.ProgramObject, "SpecularMaterial");
-            toonUniforms.Shininess = gl.GetUniformLocation(shaderProgram.ProgramObject, "Shininess");
+            
+            //  Create the shader program.
+            CreateShader(gl);           
 
             gl.Enable(OpenGL.GL_DEPTH_TEST);
         }
-        
 
-        private float elapsedMilliseconds = 100;
+        private void CreateShader(OpenGL gl)
+        {
+            //  Load the shader source.
+            var vertexShaderSource = LoadManifestResourceTextFile("PerPixelLightingVertex.glsl");
+            var fragmentShaderSource = LoadManifestResourceTextFile("PerPixelLightingFragment.glsl");
 
-        private float theta = 0;
-        private float time = 0;
-        private const float InitialPause = 0;
-        private const bool LoopForever = true;
+            //  Create the shader.
+            shaderProgram = new ShaderProgram();
+            shaderProgram.Create(gl, vertexShaderSource, fragmentShaderSource);
+            
+            //  Now that we've created the shader, get all of the uniform locations.
+            toonUniforms.Projection = shaderProgram.GetUniformLocation(gl, "Projection");
+            toonUniforms.Modelview = shaderProgram.GetUniformLocation(gl, "Modelview");
+            toonUniforms.NormalMatrix = shaderProgram.GetUniformLocation(gl, "NormalMatrix");
+            toonUniforms.LightPosition = shaderProgram.GetUniformLocation(gl, "LightPosition");
+            toonUniforms.AmbientMaterial = shaderProgram.GetUniformLocation(gl, "AmbientMaterial");
+            toonUniforms.DiffuseMaterial = shaderProgram.GetUniformLocation(gl, "DiffuseMaterial");
+            toonUniforms.SpecularMaterial = shaderProgram.GetUniformLocation(gl, "SpecularMaterial");
+            toonUniforms.Shininess = shaderProgram.GetUniformLocation(gl, "Shininess");
+        }
 
-        private uint vertexBuffer = 0;
-        private uint indexBuffer = 0;
-        private ShaderUniforms toonUniforms = new ShaderUniforms();
-        private ShaderProgram shaderProgram = new ShaderProgram();
-        private VertexShader vertexShader = new VertexShader();
-        private FragmentShader fragmentShader = new FragmentShader();
-        private SharpGL.SceneGraph.Matrix modelView = new SharpGL.SceneGraph.Matrix(4, 4);
-        private SharpGL.SceneGraph.Matrix projection = new SharpGL.SceneGraph.Matrix(4, 4);
-        private SharpGL.SceneGraph.Matrix normalMatrix = new SharpGL.SceneGraph.Matrix(3, 3);
+        private string LoadManifestResourceTextFile(string textFileName)
+        {
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Format("CelShadingSample.{0}", textFileName)))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
 
         private void OpenGLControl_Resized(object sender, OpenGLEventArgs args)
         {
@@ -217,11 +196,28 @@ namespace CelShadingSample
             camera.TransformProjectionMatrix(args.OpenGL);
             gl.MatrixMode(MatrixMode.Modelview);
 
-            modelView = gl.GetModelViewMatrix();
-            projection = gl.GetProjectionMatrix();
-            //  TODO: this should be to mat3
-            normalMatrix = new Matrix(gl.GetModelViewMatrix());
-            normalMatrix.FromOtherMatrix(gl.GetModelViewMatrix(), 3, 3);
+            //  Get the modelview and projection matrices.
+            float[] m = new float[16];
+            float[] p = new float[16];
+            gl.GetFloat(OpenGL.GL_MODELVIEW_MATRIX, m);
+            gl.GetFloat(OpenGL.GL_PROJECTION_MATRIX, p);
+
+            //  Convert the matrices into the GLM format.
+            modelView = new mat4(new [] {
+                new vec4(m[0], m[1], m[2], m[3]),
+                new vec4(m[4], m[5], m[6], m[7]),
+                new vec4(m[8], m[9], m[10], m[11]),
+                new vec4(m[12], m[13], m[14], m[15])});
+            projection = new mat4(new [] {
+                new vec4(p[0], p[1], p[2], p[3]),
+                new vec4(p[4], p[5], p[6], p[7]),
+                new vec4(p[8], p[9], p[10], p[11]),
+                new vec4(p[12], p[13], p[14], p[15])});
+            normalMatrix = new mat3(new [] {
+                new vec3(p[0], p[1], p[2]),
+                new vec3(p[4], p[5], p[6]),
+                new vec3(p[8], p[9], p[10])
+            });
 
             return;
 
@@ -262,5 +258,24 @@ namespace CelShadingSample
         /// The look-at camera.
         /// </summary>
         private readonly LookAtCamera camera = new LookAtCamera();
+
+
+
+
+
+        private float elapsedMilliseconds = 100;
+
+        private float theta = 0;
+        private float time = 0;
+        private const float InitialPause = 0;
+        private const bool LoopForever = true;
+
+        private uint vertexBuffer = 0;
+        private uint indexBuffer = 0;
+        private ShaderUniforms toonUniforms = new ShaderUniforms();
+        private ShaderProgram shaderProgram;
+        private mat4 modelView = mat4.identity();
+        private mat4 projection = mat4.identity();
+        private mat3 normalMatrix = mat3.identity();
     }
 }

@@ -3,15 +3,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using GlmNet;
 using SharpGL;
+using SharpGL.Shaders;
+using SharpGL.VertexBuffers;
 
 namespace ModernOpenGLSample
 {
     public partial class FormModernOpenGLSample : Form
     {
+        mat4 projectionMatrix;
+        mat4 viewMatrix;
+        mat4 modelMatrix;
+
+        VertexArray vertexArray;
+
+        const uint attributeIndexPosition = 0;
+        const uint attributeIndexColour = 1;
+
         public FormModernOpenGLSample()
         {
             InitializeComponent();
@@ -22,6 +36,23 @@ namespace ModernOpenGLSample
             var gl = openGLControl1.OpenGL;
 
             gl.ClearColor(0.4f, 0.6f, 0.9f, 0.0f);
+
+            //  Create the shader program.
+            var vertexShaderSource = LoadManifestResourceTextFile("Shader.vert");
+            var fragmentShaderSource = LoadManifestResourceTextFile("Shader.frag");
+            shaderProgram = new ShaderProgram();
+            shaderProgram.Create(gl, vertexShaderSource, fragmentShaderSource);
+            shaderProgram.BindAttributeLocation(gl, attributeIndexPosition, "in_Position");
+            shaderProgram.BindAttributeLocation(gl, attributeIndexColour, "in_Color");
+            shaderProgram.AssertValid(gl);
+
+            var rads = (60.0f / 360.0f) * (float)Math.PI* 2.0f;
+
+            projectionMatrix = glm.perspective(rads, (float)Width / (float)Height, 0.1f, 100.0f);  // Create our perspective projection ma
+            viewMatrix = glm.translate(new mat4(1.0f), new vec3(0.0f, 0.0f, -5.0f)); // Create our view matrix which will translate us back 5 units  
+            modelMatrix = glm.scale(new mat4(1.0f), new vec3(0.5f));  // Create our model matrix which will halve the size of our model  
+
+            CreateVerticesForSquare(gl);
         }
 
         private void openGLControl1_OpenGLDraw(object sender, RenderEventArgs args)
@@ -29,95 +60,78 @@ namespace ModernOpenGLSample
             var gl = openGLControl1.OpenGL;
 
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT | OpenGL.GL_STENCIL_BUFFER_BIT);
-            DrawShapes(gl);
-        }
 
-        private void DrawShapes(OpenGL gl)
+            shaderProgram.Bind(gl);
+
+            //  Get the locations of the matrix uniforms.
+            var l1 = shaderProgram.GetUniformLocation(gl, "projectionMatrix");
+            var l2 = shaderProgram.GetUniformLocation(gl, "viewMatrix");
+            var l3 = shaderProgram.GetUniformLocation(gl, "modelMatrix");
+
+            shaderProgram.UniformMatrix(gl, l1, projectionMatrix.to_array());
+            shaderProgram.UniformMatrix(gl, l2, viewMatrix.to_array());
+            shaderProgram.UniformMatrix(gl, l3, modelMatrix.to_array());
+
+            //  Bind the out vertex array.
+            vertexArray.Bind(gl);
+            
+            gl.DrawArrays(OpenGL.GL_TRIANGLES, 0, 6); // Draw our square  
+
+            //  Unbind our vertex array.
+            vertexArray.Unbind(gl);
+
+            //  Unbind the shader.
+            shaderProgram.Unbind(gl);
+        }
+        private string LoadManifestResourceTextFile(string textFileName)
         {
-            gl.LoadIdentity();					// Reset The View
-
-            // gl.Color(1.0f, 1.0f, 1.0f);
-            // gl.FontBitmaps.DrawText(gl, 0, 0, "Arial", "Argh");
-
-
-
-            gl.Translate(-1.5f, 0.0f, -6.0f);				// Move Left And Into The Screen
-
-            gl.Begin(OpenGL.GL_TRIANGLES);					// Start Drawing The Pyramid
-
-            gl.Color(1.0f, 0.0f, 0.0f);			// Red
-            gl.Vertex(0.0f, 1.0f, 0.0f);			// Top Of Triangle (Front)
-            gl.Color(0.0f, 1.0f, 0.0f);			// Green
-            gl.Vertex(-1.0f, -1.0f, 1.0f);			// Left Of Triangle (Front)
-            gl.Color(0.0f, 0.0f, 1.0f);			// Blue
-            gl.Vertex(1.0f, -1.0f, 1.0f);			// Right Of Triangle (Front)
-
-            gl.Color(1.0f, 0.0f, 0.0f);			// Red
-            gl.Vertex(0.0f, 1.0f, 0.0f);			// Top Of Triangle (Right)
-            gl.Color(0.0f, 0.0f, 1.0f);			// Blue
-            gl.Vertex(1.0f, -1.0f, 1.0f);			// Left Of Triangle (Right)
-            gl.Color(0.0f, 1.0f, 0.0f);			// Green
-            gl.Vertex(1.0f, -1.0f, -1.0f);			// Right Of Triangle (Right)
-
-            gl.Color(1.0f, 0.0f, 0.0f);			// Red
-            gl.Vertex(0.0f, 1.0f, 0.0f);			// Top Of Triangle (Back)
-            gl.Color(0.0f, 1.0f, 0.0f);			// Green
-            gl.Vertex(1.0f, -1.0f, -1.0f);			// Left Of Triangle (Back)
-            gl.Color(0.0f, 0.0f, 1.0f);			// Blue
-            gl.Vertex(-1.0f, -1.0f, -1.0f);			// Right Of Triangle (Back)
-
-            gl.Color(1.0f, 0.0f, 0.0f);			// Red
-            gl.Vertex(0.0f, 1.0f, 0.0f);			// Top Of Triangle (Left)
-            gl.Color(0.0f, 0.0f, 1.0f);			// Blue
-            gl.Vertex(-1.0f, -1.0f, -1.0f);			// Left Of Triangle (Left)
-            gl.Color(0.0f, 1.0f, 0.0f);			// Green
-            gl.Vertex(-1.0f, -1.0f, 1.0f);			// Right Of Triangle (Left)
-            gl.End();						// Done Drawing The Pyramid
-
-            gl.LoadIdentity();
-            gl.Translate(1.5f, 0.0f, -7.0f);				// Move Right And Into The Screen
-
-            gl.Begin(OpenGL.GL_QUADS);					// Start Drawing The Cube
-
-            gl.Color(0.0f, 1.0f, 0.0f);			// Set The Color To Green
-            gl.Vertex(1.0f, 1.0f, -1.0f);			// Top Right Of The Quad (Top)
-            gl.Vertex(-1.0f, 1.0f, -1.0f);			// Top Left Of The Quad (Top)
-            gl.Vertex(-1.0f, 1.0f, 1.0f);			// Bottom Left Of The Quad (Top)
-            gl.Vertex(1.0f, 1.0f, 1.0f);			// Bottom Right Of The Quad (Top)
-
-
-            gl.Color(1.0f, 0.5f, 0.0f);			// Set The Color To Orange
-            gl.Vertex(1.0f, -1.0f, 1.0f);			// Top Right Of The Quad (Bottom)
-            gl.Vertex(-1.0f, -1.0f, 1.0f);			// Top Left Of The Quad (Bottom)
-            gl.Vertex(-1.0f, -1.0f, -1.0f);			// Bottom Left Of The Quad (Bottom)
-            gl.Vertex(1.0f, -1.0f, -1.0f);			// Bottom Right Of The Quad (Bottom)
-
-            gl.Color(1.0f, 0.0f, 0.0f);			// Set The Color To Red
-            gl.Vertex(1.0f, 1.0f, 1.0f);			// Top Right Of The Quad (Front)
-            gl.Vertex(-1.0f, 1.0f, 1.0f);			// Top Left Of The Quad (Front)
-            gl.Vertex(-1.0f, -1.0f, 1.0f);			// Bottom Left Of The Quad (Front)
-            gl.Vertex(1.0f, -1.0f, 1.0f);			// Bottom Right Of The Quad (Front)
-
-            gl.Color(1.0f, 1.0f, 0.0f);			// Set The Color To Yellow
-            gl.Vertex(1.0f, -1.0f, -1.0f);			// Bottom Left Of The Quad (Back)
-            gl.Vertex(-1.0f, -1.0f, -1.0f);			// Bottom Right Of The Quad (Back)
-            gl.Vertex(-1.0f, 1.0f, -1.0f);			// Top Right Of The Quad (Back)
-            gl.Vertex(1.0f, 1.0f, -1.0f);			// Top Left Of The Quad (Back)
-
-            gl.Color(0.0f, 0.0f, 1.0f);			// Set The Color To Blue
-            gl.Vertex(-1.0f, 1.0f, 1.0f);			// Top Right Of The Quad (Left)
-            gl.Vertex(-1.0f, 1.0f, -1.0f);			// Top Left Of The Quad (Left)
-            gl.Vertex(-1.0f, -1.0f, -1.0f);			// Bottom Left Of The Quad (Left)
-            gl.Vertex(-1.0f, -1.0f, 1.0f);			// Bottom Right Of The Quad (Left)
-
-            gl.Color(1.0f, 0.0f, 1.0f);			// Set The Color To Violet
-            gl.Vertex(1.0f, 1.0f, -1.0f);			// Top Right Of The Quad (Right)
-            gl.Vertex(1.0f, 1.0f, 1.0f);			// Top Left Of The Quad (Right)
-            gl.Vertex(1.0f, -1.0f, 1.0f);			// Bottom Left Of The Quad (Right)
-            gl.Vertex(1.0f, -1.0f, -1.0f);			// Bottom Right Of The Quad (Right)
-            gl.End();						// Done Drawing The Q
-
-            gl.Flush();
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Format("ModernOpenGLSample.{0}", textFileName)))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
+
+        private void CreateVerticesForSquare(OpenGL gl)
+        {
+            float[] vertices = new float[18];
+            float[] colors = new float[18]; // Colors for our vertices  
+            vertices[0] = -0.5f; vertices[1] = -0.5f; vertices[2] = 0.0f; // Bottom left corner  
+            colors[0] = 1.0f; colors[1] = 1.0f; colors[2] = 1.0f; // Bottom left corner  
+            vertices[3] = -0.5f; vertices[4] = 0.5f; vertices[5] = 0.0f; // Top left corner  
+            colors[3] = 1.0f; colors[4] = 0.0f; colors[5] = 0.0f; // Top left corner  
+            vertices[6] = 0.5f; vertices[7] = 0.5f; vertices[8] = 0.0f; // Top Right corner  
+            colors[6] = 0.0f; colors[7] = 1.0f; colors[8] = 0.0f; // Top Right corner  
+            vertices[9] = 0.5f; vertices[10] = -0.5f; vertices[11] = 0.0f; // Bottom right corner  
+            colors[9] = 0.0f; colors[10] = 0.0f; colors[11] = 1.0f; // Bottom right corner  
+            vertices[12] = -0.5f; vertices[13] = -0.5f; vertices[14] = 0.0f; // Bottom left corner  
+            colors[12] = 1.0f; colors[13] = 1.0f; colors[14] = 1.0f; // Bottom left corner  
+            vertices[15] = 0.5f; vertices[16] = 0.5f; vertices[17] = 0.0f; // Top Right corner  
+            colors[15] = 0.0f; colors[16] = 1.0f; colors[17] = 0.0f; // Top Right corner  
+
+            //  Create the vertex array object.
+            vertexArray = new VertexArray();
+            vertexArray.Create(gl);
+            vertexArray.Bind(gl);
+
+            //  Create a vertex buffer for the vertex data.
+            var vertexDataBuffer = new VertexBuffer();
+            vertexDataBuffer.Create(gl);
+            vertexDataBuffer.Bind(gl);
+            vertexDataBuffer.SetData(gl, 0, vertices, false, 3);
+
+            //  Now do the same for the colour data.
+            var colourDataBuffer = new VertexBuffer();
+            colourDataBuffer.Create(gl);
+            colourDataBuffer.Bind(gl);
+            colourDataBuffer.SetData(gl, 1, colors, false, 3);
+                        
+            //  Unbind the vertex array, we've finished specifying data for it.
+            vertexArray.Unbind(gl);
+        }
+
+        private ShaderProgram shaderProgram;
     }
 }

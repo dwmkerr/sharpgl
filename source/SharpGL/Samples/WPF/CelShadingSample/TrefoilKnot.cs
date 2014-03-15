@@ -95,7 +95,7 @@ namespace CelShadingSample
                     n.Normalize();
                     vertices.Add(p);
                     verts[count++] = p;
-                    verts[count++] = new Vertex(0, 0, 0);//n);
+                    verts[count++] = n;
                 }
             }
             

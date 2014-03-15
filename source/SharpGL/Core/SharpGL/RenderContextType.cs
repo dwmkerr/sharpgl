@@ -29,7 +29,7 @@ namespace SharpGL
         HiddenWindow,
 
 		/// <summary>
-		///	A Framebuffer Object - accelerated but may not be supported on some card.
+		///	A Framebuffer Object - accelerated but may not be supported on some cards.
 		/// </summary>
 		FBO
 	};
