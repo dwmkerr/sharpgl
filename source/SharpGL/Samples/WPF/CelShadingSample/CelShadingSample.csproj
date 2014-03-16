@@ -70,6 +70,8 @@
     <Compile Include="..\..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ManifestResourceLoader.cs" />
+    <Compile Include="Scene.cs" />
     <Compile Include="TrefoilKnot.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +112,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Shaders\PerPixel.frag" />
+    <EmbeddedResource Include="Shaders\PerPixel.vert" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">

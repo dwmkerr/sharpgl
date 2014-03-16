@@ -10,7 +10,7 @@ namespace SharpGL.VertexBuffers
     /// allow us to use a set of vertex buffers for vertices, indicies, normals and so on,
     /// without having to use more complicated interleaved arrays.
     /// </summary>
-    public class VertexArray
+    public class VertexBufferArray
     {
         public void Create(OpenGL gl)
         {

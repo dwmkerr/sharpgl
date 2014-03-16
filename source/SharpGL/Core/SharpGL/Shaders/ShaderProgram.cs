@@ -86,16 +86,46 @@ namespace SharpGL.Shaders
                 throw new Exception(GetInfoLog(gl));
         }
 
-        public int GetUniformLocation(OpenGL gl, string uniformName)
+        public void SetUniform1(OpenGL gl, string uniformName, float v1)
         {
-            return gl.GetUniformLocation(shaderProgramObject, uniformName);
+            gl.Uniform1(GetUniformLocation(gl, uniformName), v1);
         }
 
-        public void UniformMatrix(OpenGL gl, int uniformLocation, float[] matrix)
+        public void SetUniform3(OpenGL gl, string uniformName, float v1, float v2, float v3)
         {
-            gl.UniformMatrix4(uniformLocation, 1, false, matrix);
+            gl.Uniform3(GetUniformLocation(gl, uniformName), v1, v2, v3);
+        }
+
+        public void SetUniformMatrix3(OpenGL gl, string uniformName, float[] m)
+        {
+            gl.UniformMatrix3(GetUniformLocation(gl, uniformName), 1, false, m);
+        }
+
+        public void SetUniformMatrix4(OpenGL gl, string uniformName, float[] m)
+        {
+            gl.UniformMatrix4(GetUniformLocation(gl, uniformName), 1, false, m);
+        }
+
+        public int GetUniformLocation(OpenGL gl, string uniformName)
+        {
+            //  If we don't have the uniform name in the dictionary, get it's 
+            //  location and add it.
+            if (uniformNamesToLocations.ContainsKey(uniformName) == false)
+            {
+                uniformNamesToLocations[uniformName] = gl.GetUniformLocation(shaderProgramObject, uniformName);
+                //  TODO: if it's not found, we should probably throw an exception.
+            }
+
+            //  Return the uniform location.
+            return uniformNamesToLocations[uniformName];
         }
 
         private uint shaderProgramObject;
+
+        /// <summary>
+        /// A mapping of uniform names to locations. This allows us to very easily specify 
+        /// uniform data by name, quickly looking up the location first if needed.
+        /// </summary>
+        private readonly Dictionary<string, int> uniformNamesToLocations = new Dictionary<string, int>();
     }
 }

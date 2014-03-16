@@ -21,7 +21,7 @@ namespace ModernOpenGLSample
         mat4 viewMatrix;
         mat4 modelMatrix;
 
-        VertexArray vertexArray;
+        VertexBufferArray vertexArray;
 
         const uint attributeIndexPosition = 0;
         const uint attributeIndexColour = 1;
@@ -63,14 +63,9 @@ namespace ModernOpenGLSample
 
             shaderProgram.Bind(gl);
 
-            //  Get the locations of the matrix uniforms.
-            var l1 = shaderProgram.GetUniformLocation(gl, "projectionMatrix");
-            var l2 = shaderProgram.GetUniformLocation(gl, "viewMatrix");
-            var l3 = shaderProgram.GetUniformLocation(gl, "modelMatrix");
-
-            shaderProgram.UniformMatrix(gl, l1, projectionMatrix.to_array());
-            shaderProgram.UniformMatrix(gl, l2, viewMatrix.to_array());
-            shaderProgram.UniformMatrix(gl, l3, modelMatrix.to_array());
+            shaderProgram.SetUniformMatrix4(gl, "projectionMatrix", projectionMatrix.to_array());
+            shaderProgram.SetUniformMatrix4(gl, "viewMatrix", viewMatrix.to_array());
+            shaderProgram.SetUniformMatrix4(gl, "modelMatrix", modelMatrix.to_array());
 
             //  Bind the out vertex array.
             vertexArray.Bind(gl);
@@ -112,7 +107,7 @@ namespace ModernOpenGLSample
             colors[15] = 0.0f; colors[16] = 1.0f; colors[17] = 0.0f; // Top Right corner  
 
             //  Create the vertex array object.
-            vertexArray = new VertexArray();
+            vertexArray = new VertexBufferArray();
             vertexArray.Create(gl);
             vertexArray.Bind(gl);
 

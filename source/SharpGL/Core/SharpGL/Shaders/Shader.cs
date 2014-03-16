@@ -61,7 +61,7 @@ namespace SharpGL.Shaders
         /// <summary>
         /// The OpenGL shader object.
         /// </summary>
-        protected uint shaderObject;
+        private uint shaderObject;
 
         /// <summary>
         /// Gets the shader object.
