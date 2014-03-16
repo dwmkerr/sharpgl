@@ -1,9 +1,11 @@
 SharpGL
 =======
 
-Unlock the power of OpenGL in any .NET application. SharpGL wraps all modern OpenGL features and also offers a powerful Scene Graph and utility library to help you build your projects.
+Unlock the power of OpenGL in any .NET application. SharpGL wraps all modern OpenGL features, provides helpful wrappers for advanced objects like Vertex Buffer Arrays and Shader, as well as offering a powerful Scene Graph and utility library to help you build your projects.
 
 ![Example of SharpGL](https://github.com/dwmkerr/sharpgl/blob/master/assets/samples/WinformsRadialBlurSample.png?raw=true)
+
+Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they're a great place to start learning how to use SharpGL.
 
 Contents
 --------
