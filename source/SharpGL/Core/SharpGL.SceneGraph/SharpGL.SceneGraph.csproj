@@ -174,7 +174,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SharpGL\SharpGL.csproj">
       <Project>{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}</Project>
-      <Name>SharpGL %28Core\SharpGL%29</Name>
+      <Name>SharpGL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

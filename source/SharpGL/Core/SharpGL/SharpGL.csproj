@@ -75,8 +75,13 @@
     <Compile Include="RenderContextProviders\NativeWindowRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\RenderContextProvider.cs" />
     <Compile Include="RenderContextType.cs" />
+    <Compile Include="Shaders\Shader.cs" />
+    <Compile Include="Shaders\ShaderCompilationException.cs" />
+    <Compile Include="Shaders\ShaderProgram.cs" />
     <Compile Include="Version\OpenGLVersion.cs" />
     <Compile Include="Version\VersionAttribute.cs" />
+    <Compile Include="VertexBuffers\VertexBufferArray.cs" />
+    <Compile Include="VertexBuffers\VertexBuffer.cs" />
     <Compile Include="Win32.cs" />
   </ItemGroup>
   <ItemGroup>

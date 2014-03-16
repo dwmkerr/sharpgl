@@ -8,7 +8,12 @@
             
             <ToolBarPanel DockPanel.Dock="Top">
                 <ToolBar>
-                    <CheckBox x:Name="checkBoxUseCelShader" Content="Use Cel Shader" />
+                    <Label Target="{Binding ElementName=comboRenderMode}">Render Mode</Label>
+                    <ComboBox x:Name="comboRenderMode" SelectedIndex="0" Width="140">
+                        <ComboBoxItem>Retained Mode</ComboBoxItem>
+                        <ComboBoxItem>Immediate Mode</ComboBoxItem>
+                    </ComboBox>
+                    <CheckBox x:Name="checkBoxUseToonShader" Content="Use Toon Shader" />
                 </ToolBar>
             </ToolBarPanel>
             

@@ -29,3 +29,4 @@ build/nuspec/SharpGLCore/lib/
 build/nuspec/SharpGLforWinForms/lib/
 build/nuspec/SharpGLforWPF/lib/
 release/2.*
+source/SharpGL/packages/

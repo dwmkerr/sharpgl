@@ -95,6 +95,26 @@ namespace SharpGL.RenderContextProviders
 
             //  Now the none-trivial case. We must use the WGL_ARB_create_context extension to 
             //  attempt to create a 3.0+ context.
+            try
+            {
+                int[] attributes = 
+                {
+                    OpenGL.WGL_CONTEXT_MAJOR_VERSION_ARB, requestedVersionNumber.Major,  
+                    OpenGL.WGL_CONTEXT_MINOR_VERSION_ARB, requestedVersionNumber.Minor,
+                    OpenGL.WGL_CONTEXT_FLAGS_ARB, OpenGL.WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+                    0
+                };
+                var hrc = gl.CreateContextAttribsARB(IntPtr.Zero, attributes);
+                Win32.wglMakeCurrent(IntPtr.Zero, IntPtr.Zero);
+                Win32.wglDeleteContext(renderContextHandle);
+                Win32.wglMakeCurrent(deviceContextHandle, hrc);
+                renderContextHandle = hrc; 
+            }
+            catch(Exception)
+            {
+                //  TODO: can we actually get the real version?
+                createdOpenGLVersion = OpenGLVersion.OpenGL2_1;
+            }
         }
 
         /// <summary>

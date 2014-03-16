@@ -1035,6 +1035,23 @@ namespace SharpGL
         {
             InvokeExtensionFunction<glBufferData>(target, size, data, usage);
         }
+        public void BufferData(uint target, float[] data, uint usage)
+        {
+            IntPtr p = Marshal.AllocHGlobal(data.Length * sizeof(float));
+            Marshal.Copy(data, 0, p, data.Length);
+            InvokeExtensionFunction<glBufferData>(target, data.Length * sizeof(float), p, usage);
+            Marshal.FreeHGlobal(p);
+        }
+        public void BufferData(uint target, ushort[] data, uint usage)
+        {
+            var dataSize = data.Length * sizeof(ushort);
+            IntPtr p = Marshal.AllocHGlobal(dataSize);
+            var shortData = new short[data.Length];
+            Buffer.BlockCopy(data, 0, shortData, 0, dataSize);
+            Marshal.Copy(shortData, 0, p, data.Length);
+            InvokeExtensionFunction<glBufferData>(target, dataSize, p, usage);
+            Marshal.FreeHGlobal(p);
+        }
         public void BufferSubData(uint target, int offset, int size, IntPtr data)
         {
             InvokeExtensionFunction<glBufferSubData>(target, offset, size, data);
@@ -1073,7 +1090,7 @@ namespace SharpGL
         private delegate void glDeleteBuffers (int n, uint[] buffers);
         private delegate void glGenBuffers (int n, uint[] buffers);
         private delegate bool glIsBuffer (uint buffer);
-        private delegate void glBufferData (uint target, int size, IntPtr data, uint usage);
+        private delegate void glBufferData(uint target, int size, IntPtr data, uint usage);
         private delegate void glBufferSubData (uint target, int offset, int size, IntPtr data);
         private delegate void glGetBufferSubData (uint target, int offset, int size, IntPtr data);
         private delegate IntPtr glMapBuffer (uint target, uint access);
@@ -1143,6 +1160,10 @@ namespace SharpGL
         {
             InvokeExtensionFunction<glBindAttribLocation>(program, index, name);
         }
+        /// <summary>
+        /// Compile a shader object
+        /// </summary>
+        /// <param name="shader">Specifies the shader object to be compiled.</param>
         public void CompileShader (uint shader)
         {
             InvokeExtensionFunction<glCompileShader>(shader);
@@ -1151,6 +1172,11 @@ namespace SharpGL
         {
             return (uint)InvokeExtensionFunction<glCreateProgram>();
         }
+        /// <summary>
+        /// Create a shader object
+        /// </summary>
+        /// <param name="type">Specifies the type of shader to be created. Must be either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER.</param>
+        /// <returns>This function returns 0 if an error occurs creating the shader object. Otherwise the shader id is returned.</returns>
         public uint CreateShader (uint type)
         {
             return (uint)InvokeExtensionFunction<glCreateShader>(type);
@@ -1212,6 +1238,12 @@ namespace SharpGL
         {
             InvokeExtensionFunction<glGetShaderSource>(shader, bufSize, length, source);
         }
+        /// <summary>
+        /// Returns an integer that represents the location of a specific uniform variable within a program object. name must be a null terminated string that contains no white space. name must be an active uniform variable name in program that is not a structure, an array of structures, or a subcomponent of a vector or a matrix. This function returns -1 if name does not correspond to an active uniform variable in program, if name starts with the reserved prefix "gl_", or if name is associated with an atomic counter or a named uniform block.
+        /// </summary>
+        /// <param name="program">Specifies the program object to be queried.</param>
+        /// <param name="name">Points to a null terminated string containing the name of the uniform variable whose location is to be queried.</param>
+        /// <returns></returns>
         public int GetUniformLocation (uint program, string name)
         {
             return (int)InvokeExtensionFunction<glGetUniformLocation>(program, name);
@@ -1252,12 +1284,16 @@ namespace SharpGL
         {
             InvokeExtensionFunction<glLinkProgram>(program);
         }
-       
+
+        /// <summary>
+        /// Replace the source code in a shader object
+        /// </summary>
+        /// <param name="shader">Specifies the handle of the shader object whose source code is to be replaced.</param>
+        /// <param name="source">The source.</param>
         public void ShaderSource (uint shader, string source)
         {
-            source = source ?? string.Empty;
+            //  Remember, the function takes an array of strings but concatenates them, so we should NOT split into lines!
             InvokeExtensionFunction<glShaderSource>(shader, 1, new[] { source }, new[] { source.Length });
-
         }
 
         public static IntPtr StringToPtrAnsi(string str)
@@ -1539,6 +1575,12 @@ namespace SharpGL
         private delegate bool glIsProgram (uint program);
         private delegate bool glIsShader (uint shader);
         private delegate void glLinkProgram (uint program);
+        //  By specifying 'ThrowOnUnmappableChar' we protect ourselves from inadvertantly using a unicode character
+        //  in the source which the marshaller cannot map. Without this, it maps it to '?' leading to long and pointless
+        //  sessions of trying to find bugs in the shader, which are most often just copied and pasted unicode characters!
+        //  If you're getting exceptions here, remove all unicode crap from your input files (remember, some unicode 
+        //  characters you can't even see).
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, ThrowOnUnmappableChar = true)]
         private delegate void glShaderSource (uint shader, int count, string[] source, int[] length);
         private delegate void glUseProgram (uint program);
         private delegate void glUniform1f (int location, float v0);
@@ -4804,6 +4846,49 @@ namespace SharpGL
 
         //  Delegates
         private delegate string wglGetExtensionsStringARB(IntPtr hdc);
+
+        #endregion
+
+        #region WGL_ARB_create_context
+        
+        //  Methods
+
+        /// <summary>
+        /// Creates a render context with the specified attributes.
+        /// </summary>
+        /// <param name="hShareContext">
+        /// If is not null, then all shareable data (excluding
+        /// OpenGL texture objects named 0) will be shared by <hshareContext>,
+        /// all other contexts <hshareContext> already shares with, and the
+        /// newly created context. An arbitrary number of contexts can share
+        /// data in this fashion.</param>
+        /// <param name="attribList">
+        /// specifies a list of attributes for the context. The
+        /// list consists of a sequence of <name,value> pairs terminated by the
+        /// value 0. If an attribute is not specified in <attribList>, then the
+        /// default value specified below is used instead. If an attribute is
+        /// specified more than once, then the last value specified is used.
+        /// </param>
+        public IntPtr CreateContextAttribsARB(IntPtr hShareContext, int[] attribList)
+        {
+            return (IntPtr)InvokeExtensionFunction<wglCreateContextAttribsARB>(RenderContextProvider.DeviceContextHandle, hShareContext, attribList);
+        }
+
+        //  Delegates
+        private delegate IntPtr wglCreateContextAttribsARB(IntPtr hDC, IntPtr hShareContext, int[] attribList);
+    
+        //  Constants
+        public const int WGL_CONTEXT_MAJOR_VERSION_ARB            = 0x2091;
+        public const int WGL_CONTEXT_MINOR_VERSION_ARB            = 0x2092;
+        public const int WGL_CONTEXT_LAYER_PLANE_ARB              = 0x2093;
+        public const int WGL_CONTEXT_FLAGS_ARB                    = 0x2094;
+        public const int WGL_CONTEXT_PROFILE_MASK_ARB             = 0x9126;
+        public const int WGL_CONTEXT_DEBUG_BIT_ARB                = 0x0001;
+        public const int WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB   = 0x0002;
+        public const int WGL_CONTEXT_CORE_PROFILE_BIT_ARB         = 0x00000001;
+        public const int WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x00000002;
+        public const int ERROR_INVALID_VERSION_ARB = 0x2095;
+        public const int ERROR_INVALID_PROFILE_ARB                = 0x2096;
 
         #endregion
     }

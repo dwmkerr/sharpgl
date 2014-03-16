@@ -264,7 +264,7 @@ namespace SharpGL.SceneGraph
                 //  Create the array.
                 for (int i = 0; i < Columns; i++)
                     for (int j = 0; j < Rows; j++)
-                        ar.Add(this[i, j]);
+                        ar.Add(this[j, i]);
 
                 //  Return the array.
                 return ar.ToArray();
@@ -284,7 +284,7 @@ namespace SharpGL.SceneGraph
                 //  Create the array.
                 for (int i = 0; i < Columns; i++)
                     for (int j = 0; j < Rows; j++)
-                        ar.Add((float)this[i, j]);
+                        ar.Add((float)this[j, i]);
 
                 //  Return the array.
                 return ar.ToArray();

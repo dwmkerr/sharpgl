@@ -5,6 +5,8 @@ using System.Text;
 using SharpGL.SceneGraph;
 using SharpGL;
 using System.Runtime.InteropServices;
+using GlmNet;
+using SharpGL.VertexBuffers;
 
 namespace CelShadingSample
 {
@@ -18,14 +20,9 @@ namespace CelShadingSample
     {
         public void GenerateGeometry(OpenGL gl)
         {
-            //  Generates the geometry for the trefoil knot.
-
-            //  Create the vertices.
-            vertices = new List<Vertex>();
-
             //  Generate the vertices and normals.
-            vertexAndNormalBuffer = CreateVertexNormalBuffer(gl);
-            indexBuffer = CreateIndexBuffer(gl);
+            CreateVertexNormalBuffer(gl);
+            CreateIndexBuffer(gl);
         }
 
         /// <summary>
@@ -34,7 +31,7 @@ namespace CelShadingSample
         /// <param name="s">The s.</param>
         /// <param name="t">The t.</param>
         /// <returns>The vertex at (s,t).</returns>
-        private static Vertex EvaluateTrefoil(float s, float t)
+        private static vec3 EvaluateTrefoil(float s, float t)
         {
             const float TwoPi = (float)Math.PI * 2;
 
@@ -49,36 +46,34 @@ namespace CelShadingSample
             float y = (float)(r * Math.Sin(u));
             float z = (float)(c * Math.Sin(1.5f * u));
 
-            var dv = new Vertex
-            {
-                X = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Cos(u) - (a + b*Math.Cos(1.5f*u))*Math.Sin(u)), 
-                Y = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Sin(u) + (a + b*Math.Cos(1.5f*u))*Math.Cos(u)), 
-                Z = (float) (1.5f*c*Math.Cos(1.5f*u))
-            };
+            vec3 dv = new vec3();
+            dv.x = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Cos(u) - (a + b*Math.Cos(1.5f*u))*Math.Sin(u));
+            dv.y = (float) (-1.5f*b*Math.Sin(1.5f*u)*Math.Sin(u) + (a + b*Math.Cos(1.5f*u))*Math.Cos(u)); 
+            dv.z = (float) (1.5f*c*Math.Cos(1.5f*u));
+            
+            vec3 q = glm.normalize(dv);
+            vec3 qvn = glm.normalize(new vec3(q.y, -q.x, 0.0f));
+            vec3 ww =  glm.cross(q, qvn);
 
-            Vertex q = new Vertex(dv);
-            q.Normalize();
-            Vertex qvn = new Vertex(q.Y, -q.X, 0);
-            qvn.Normalize();
-            Vertex ww = q.VectorProduct(qvn);
-
-            Vertex range = new Vertex()
-            {
-                X = (float) (x + d*(qvn.X*Math.Cos(v) + ww.X*Math.Sin(v))),
-                Y = (float)(y + d * (qvn.Y * Math.Cos(v) + ww.Y * Math.Sin(v))),
-                Z = (float)(z + d * ww.Z * Math.Sin(v))
-            };
-
+            vec3 range = new vec3();
+            range.x = (float) (x + d*(qvn.x*Math.Cos(v) + ww.x*Math.Sin(v)));
+            range.y = (float)(y + d * (qvn.y * Math.Cos(v) + ww.y * Math.Sin(v)));
+            range.z = (float)(z + d * ww.z * Math.Sin(v));
+            
             return range;
         }
 
-        private uint CreateVertexNormalBuffer(OpenGL gl)
+        private void CreateVertexNormalBuffer(OpenGL gl)
         {
-            Vertex[] verts = new Vertex[VertexCount * 2];
+            var vertexCount = slices * stacks;
+
+            vertices = new vec3[vertexCount];
+            normals = new vec3[vertexCount];
+
             int count = 0;
 
-            float ds = 1.0f / Slices;
-            float dt = 1.0f / Stacks;
+            float ds = 1.0f / slices;
+            float dt = 1.0f / stacks;
 
             // The upper bounds in these loops are tweaked to reduce the
             // chance of precision error causing an incorrect # of iterations.
@@ -88,74 +83,66 @@ namespace CelShadingSample
                 for (float t = 0; t < 1 - dt / 2; t += dt)
                 {
                     const float E = 0.01f;
-                    Vertex p = EvaluateTrefoil(s, t);
-                    Vertex u = EvaluateTrefoil(s + E, t) - p;
-                    Vertex v = EvaluateTrefoil(s, t + E) - p;
-                    Vertex n = u.VectorProduct(v);
-                    n.Normalize();
-                    vertices.Add(p);
-                    verts[count++] = p;
-                    verts[count++] = new Vertex(0, 0, 0);//n);
+                    vec3 p = EvaluateTrefoil(s, t);
+                    vec3 u = EvaluateTrefoil(s + E, t) - p;
+                    vec3 v = EvaluateTrefoil(s, t + E) - p;
+                    vec3 n = glm.normalize(glm.cross(u, v));
+                    vertices[count] = p;
+                    normals[count] = n;
+                    count++;
                 }
             }
-            
-            //  Pin the data.
-            GCHandle vertsHandle = GCHandle.Alloc(verts, GCHandleType.Pinned);
-            IntPtr vertsPtr = vertsHandle.AddrOfPinnedObject();
-            var size = Marshal.SizeOf(typeof(Vertex)) * VertexCount;
 
-            uint[] buffers = new uint[1];
-            gl.GenBuffers(1, buffers);
-            uint handle = buffers[0];
-            gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, handle);
-            gl.BufferData(OpenGL.GL_ARRAY_BUFFER, (int)size, vertsPtr, OpenGL.GL_STATIC_DRAW);
+            //  Create the vertex data buffer.
+            vertexBuffer = new VertexBuffer();
+            vertexBuffer.Create(gl);
+            vertexBuffer.Bind(gl);
+            vertexBuffer.SetData(gl, VertexAttributes.Position, vertices.SelectMany(v => v.to_array()).ToArray(), false, 3);
+         
+            normalBuffer = new VertexBuffer();
+            normalBuffer.Create(gl);
+            normalBuffer.Bind(gl);
+            normalBuffer.SetData(gl, VertexAttributes.Normal, normals.SelectMany(v => v.to_array()).ToArray(), false, 3);            
 
-            //  Free the data.
-            vertsHandle.Free();
-
-            return handle;
+            //  Draw the geometry, straight from the vertex buffer.
+            //  TODO: pass in attributes
         }
 
-        private uint CreateIndexBuffer(OpenGL gl)
+        private void CreateIndexBuffer(OpenGL gl)
         {
-            ushort[] inds = new ushort[IndexCount];
+            var vertexCount = slices * stacks;
+            var indexCount = vertexCount * 6;
+            indices = new ushort[indexCount];
             int count = 0;
 
             ushort n = 0;
-            for (ushort i = 0; i < Slices; i++)
+            for (ushort i = 0; i < slices; i++)
             {
-                for (ushort j = 0; j < Stacks; j++)
+                for (ushort j = 0; j < stacks; j++)
                 {
-                    inds[count++] = (ushort)(n + j);
-                    inds[count++] = (ushort)(n + (j + 1) % Stacks);
-                    inds[count++] = (ushort)((n + j + Stacks) % VertexCount);
+                    indices[count++] = (ushort)(n + j);
+                    indices[count++] = (ushort)(n + (j + 1) % stacks);
+                    indices[count++] = (ushort)((n + j + stacks) % vertexCount);
 
-                    inds[count++] = (ushort)((n + j + Stacks) % VertexCount);
-                    inds[count++] = (ushort)((n + (j + 1) % Stacks) % VertexCount);
-                    inds[count++] = (ushort)((n + (j + 1) % Stacks + Stacks) % VertexCount);
+                    indices[count++] = (ushort)((n + j + stacks) % vertexCount);
+                    indices[count++] = (ushort)((n + (j + 1) % stacks) % vertexCount);
+                    indices[count++] = (ushort)((n + (j + 1) % stacks + stacks) % vertexCount);
                 }
 
-                n += (ushort)Stacks;
+                n += (ushort)stacks;
             }
+
+            indexBuffer = new IndexBuffer();
+            indexBuffer.Create(gl);
+            indexBuffer.Bind(gl);
+            indexBuffer.SetData(gl, indices);
             
-            //  Pin the data.
-            GCHandle indsHandle = GCHandle.Alloc(inds, GCHandleType.Pinned);
-            IntPtr indsPtr = indsHandle.AddrOfPinnedObject();
-            var size = Marshal.SizeOf(typeof(ushort)) * VertexCount;
-
-            uint[] buffers = new uint[1];
-            gl.GenBuffers(1, buffers);
-            uint handle = buffers[0];
-            gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, handle);
-            gl.BufferData(OpenGL.GL_ELEMENT_ARRAY_BUFFER, (int)size, indsPtr, OpenGL.GL_STATIC_DRAW);
-
-            //  Free the data.
-            indsHandle.Free();
-
-            return handle;
+            //  todo unbind
         }
 
-        private IList<Vertex> vertices; 
+        private vec3[] vertices;
+        private vec3[] normals;
+        private ushort[] indices;
 
         /// <summary>
         /// The number of slices.
@@ -167,75 +154,28 @@ namespace CelShadingSample
         /// </summary>
         private uint stacks = 32;
 
-        /// <summary>
-        /// The vertex and normal buffer.
-        /// </summary>
-        private uint vertexAndNormalBuffer = 0;
-
-        /// <summary>
-        /// The index buffer.
-        /// </summary>
-        private uint indexBuffer = 0;
-
-        /// <summary>
-        /// Gets or sets the slices.
-        /// </summary>
-        /// <value>
-        /// The slices.
-        /// </value>
-        public uint Slices
+        //  The vertex buffers used.
+        private VertexBuffer vertexBuffer;
+        private VertexBuffer normalBuffer;
+        private IndexBuffer indexBuffer;
+        
+        public VertexBuffer VertexBuffer
         {
-            get { return slices; }
-            set { slices = value; }
+            get { return vertexBuffer; }
         }
 
-        /// <summary>
-        /// Gets or sets the stacks.
-        /// </summary>
-        /// <value>
-        /// The stacks.
-        /// </value>
-        public uint Stacks
+        public VertexBuffer NormalBuffer
         {
-            get { return stacks; }
-            set { stacks = value; }
+            get { return normalBuffer; }
         }
 
-        /// <summary>
-        /// Gets the vertex count.
-        /// </summary>
-        /// <value>
-        /// The vertex count.
-        /// </value>
-        public uint VertexCount
+        public IndexBuffer IndexBuffer
         {
-            get {return Slices * Stacks;}
+            get { return indexBuffer; }
         }
 
-        /// <summary>
-        /// Gets the index count.
-        /// </summary>
-        /// <value>
-        /// The index count.
-        /// </value>
-        public uint IndexCount
-        {
-            get { return VertexCount * 6; }
-        }
-
-        public uint VertexAndNormalBuffer
-        {
-            get { return vertexAndNormalBuffer; }
-        }
-
-        public uint IndexBuffer { get { return indexBuffer; } }
-
-        /// <summary>
-        /// Gets the vertices.
-        /// </summary>
-        /// <value>
-        /// The vertices.
-        /// </value>
-        public IEnumerable<Vertex> Vertices { get { return vertices; } } 
+        public vec3[] Vertices { get { return vertices; } }
+        public vec3[] Normals { get { return normals; } }
+        public ushort[] Indices { get { return indices; } }
     }
 }

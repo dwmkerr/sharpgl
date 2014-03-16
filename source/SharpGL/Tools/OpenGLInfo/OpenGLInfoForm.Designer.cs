@@ -31,22 +31,28 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControlInfo = new System.Windows.Forms.TabControl();
             this.tabPageInfo = new System.Windows.Forms.TabPage();
-            this.textBoxExtensions = new System.Windows.Forms.TextBox();
             this.textBoxVersion = new System.Windows.Forms.TextBox();
             this.textBoxRenderer = new System.Windows.Forms.TextBox();
             this.textBoxVendor = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPageExtensionFunctions = new System.Windows.Forms.TabPage();
-            this.label6 = new System.Windows.Forms.Label();
             this.listViewExtensionFunctions = new System.Windows.Forms.ListView();
             this.columnHeaderExtensionFunction = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderAvailability = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.label6 = new System.Windows.Forms.Label();
+            this.tabPageExtensions = new System.Windows.Forms.TabPage();
+            this.tabPageARBExtensions = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxExtensions = new System.Windows.Forms.TextBox();
+            this.textBoxARBExtensions = new System.Windows.Forms.TextBox();
             this.tabControlInfo.SuspendLayout();
             this.tabPageInfo.SuspendLayout();
             this.tabPageExtensionFunctions.SuspendLayout();
+            this.tabPageExtensions.SuspendLayout();
+            this.tabPageARBExtensions.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -66,6 +72,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlInfo.Controls.Add(this.tabPageInfo);
+            this.tabControlInfo.Controls.Add(this.tabPageExtensions);
+            this.tabControlInfo.Controls.Add(this.tabPageARBExtensions);
             this.tabControlInfo.Controls.Add(this.tabPageExtensionFunctions);
             this.tabControlInfo.Location = new System.Drawing.Point(15, 40);
             this.tabControlInfo.Name = "tabControlInfo";
@@ -75,11 +83,9 @@
             // 
             // tabPageInfo
             // 
-            this.tabPageInfo.Controls.Add(this.textBoxExtensions);
             this.tabPageInfo.Controls.Add(this.textBoxVersion);
             this.tabPageInfo.Controls.Add(this.textBoxRenderer);
             this.tabPageInfo.Controls.Add(this.textBoxVendor);
-            this.tabPageInfo.Controls.Add(this.label5);
             this.tabPageInfo.Controls.Add(this.label4);
             this.tabPageInfo.Controls.Add(this.label3);
             this.tabPageInfo.Controls.Add(this.label2);
@@ -90,19 +96,6 @@
             this.tabPageInfo.TabIndex = 0;
             this.tabPageInfo.Text = "OpenGL";
             this.tabPageInfo.UseVisualStyleBackColor = true;
-            // 
-            // textBoxExtensions
-            // 
-            this.textBoxExtensions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxExtensions.Location = new System.Drawing.Point(95, 99);
-            this.textBoxExtensions.Multiline = true;
-            this.textBoxExtensions.Name = "textBoxExtensions";
-            this.textBoxExtensions.ReadOnly = true;
-            this.textBoxExtensions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxExtensions.Size = new System.Drawing.Size(358, 204);
-            this.textBoxExtensions.TabIndex = 1;
             // 
             // textBoxVersion
             // 
@@ -133,15 +126,6 @@
             this.textBoxVendor.ReadOnly = true;
             this.textBoxVendor.Size = new System.Drawing.Size(358, 20);
             this.textBoxVendor.TabIndex = 1;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(31, 102);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Extensions";
             // 
             // label4
             // 
@@ -181,16 +165,6 @@
             this.tabPageExtensionFunctions.Text = "Extension Functions";
             this.tabPageExtensionFunctions.UseVisualStyleBackColor = true;
             // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.Location = new System.Drawing.Point(10, 10);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(450, 19);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "All extension functions are listed below.";
-            // 
             // listViewExtensionFunctions
             // 
             this.listViewExtensionFunctions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -216,6 +190,87 @@
             this.columnHeaderAvailability.Text = "Availability";
             this.columnHeaderAvailability.Width = 180;
             // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.Location = new System.Drawing.Point(10, 10);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(450, 19);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "All extension functions are listed below.";
+            // 
+            // tabPageExtensions
+            // 
+            this.tabPageExtensions.Controls.Add(this.textBoxExtensions);
+            this.tabPageExtensions.Controls.Add(this.label7);
+            this.tabPageExtensions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageExtensions.Name = "tabPageExtensions";
+            this.tabPageExtensions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageExtensions.Size = new System.Drawing.Size(472, 323);
+            this.tabPageExtensions.TabIndex = 2;
+            this.tabPageExtensions.Text = "Extensions";
+            this.tabPageExtensions.UseVisualStyleBackColor = true;
+            // 
+            // tabPageARBExtensions
+            // 
+            this.tabPageARBExtensions.Controls.Add(this.textBoxARBExtensions);
+            this.tabPageARBExtensions.Controls.Add(this.label8);
+            this.tabPageARBExtensions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageARBExtensions.Name = "tabPageARBExtensions";
+            this.tabPageARBExtensions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageARBExtensions.Size = new System.Drawing.Size(472, 323);
+            this.tabPageARBExtensions.TabIndex = 3;
+            this.tabPageARBExtensions.Text = "ARB Extensions";
+            this.tabPageARBExtensions.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Location = new System.Drawing.Point(10, 10);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(450, 19);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Extensions supported by the driver are listed below.";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.Location = new System.Drawing.Point(10, 10);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(450, 19);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "ARB Extensions (if supported at all) that are offered by the driver are shown bel" +
+    "ow.";
+            // 
+            // textBoxExtensions
+            // 
+            this.textBoxExtensions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxExtensions.Location = new System.Drawing.Point(13, 32);
+            this.textBoxExtensions.Multiline = true;
+            this.textBoxExtensions.Name = "textBoxExtensions";
+            this.textBoxExtensions.ReadOnly = true;
+            this.textBoxExtensions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxExtensions.Size = new System.Drawing.Size(447, 279);
+            this.textBoxExtensions.TabIndex = 2;
+            // 
+            // textBoxARBExtensions
+            // 
+            this.textBoxARBExtensions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxARBExtensions.Location = new System.Drawing.Point(13, 32);
+            this.textBoxARBExtensions.Multiline = true;
+            this.textBoxARBExtensions.Name = "textBoxARBExtensions";
+            this.textBoxARBExtensions.ReadOnly = true;
+            this.textBoxARBExtensions.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxARBExtensions.Size = new System.Drawing.Size(447, 279);
+            this.textBoxARBExtensions.TabIndex = 3;
+            // 
             // OpenGLInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -230,6 +285,10 @@
             this.tabPageInfo.ResumeLayout(false);
             this.tabPageInfo.PerformLayout();
             this.tabPageExtensionFunctions.ResumeLayout(false);
+            this.tabPageExtensions.ResumeLayout(false);
+            this.tabPageExtensions.PerformLayout();
+            this.tabPageARBExtensions.ResumeLayout(false);
+            this.tabPageARBExtensions.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -241,17 +300,21 @@
         private System.Windows.Forms.TabPage tabPageInfo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxExtensions;
         private System.Windows.Forms.TextBox textBoxVersion;
         private System.Windows.Forms.TextBox textBoxRenderer;
         private System.Windows.Forms.TextBox textBoxVendor;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage tabPageExtensionFunctions;
         private System.Windows.Forms.ListView listViewExtensionFunctions;
         private System.Windows.Forms.ColumnHeader columnHeaderExtensionFunction;
         private System.Windows.Forms.ColumnHeader columnHeaderAvailability;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabPage tabPageExtensions;
+        private System.Windows.Forms.TextBox textBoxExtensions;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabPage tabPageARBExtensions;
+        private System.Windows.Forms.TextBox textBoxARBExtensions;
+        private System.Windows.Forms.Label label8;
     }
 }
 
