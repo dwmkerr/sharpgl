@@ -106,8 +106,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <EmbeddedResource Include="PerPixelLightingFragment.glsl" />
-    <EmbeddedResource Include="PerPixelLightingVertex.glsl" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

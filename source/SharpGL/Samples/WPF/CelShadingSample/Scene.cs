@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using GlmNet;
 using SharpGL;
 using SharpGL.Enumerations;
@@ -10,13 +6,11 @@ using SharpGL.Shaders;
 
 namespace CelShadingSample
 {
+    /// <summary>
+    /// A class that represents the scene for this sample.
+    /// </summary>
     public class Scene
     {
-        //  TODO: still not happy with this
-        private const uint attrPosition = 0;
-        private const uint attrNormal = 1;
-
-
         public void Initialise(OpenGL gl)
         {
             //  Create the per pixel shader.
@@ -40,6 +34,11 @@ namespace CelShadingSample
             trefoilKnot.GenerateGeometry(gl);
         }
 
+        /// <summary>
+        /// Creates the projection matrix for the given screen size.
+        /// </summary>
+        /// <param name="screenWidth">Width of the screen.</param>
+        /// <param name="screenHeight">Height of the screen.</param>
         public void CreateProjectionMatrix(float screenWidth, float screenHeight)
         {
             //  Create the projection matrix for our screen size.
@@ -48,6 +47,10 @@ namespace CelShadingSample
             projectionMatrix = glm.pfrustum(-S, S, -H, H, 1, 100);
         }
 
+        /// <summary>
+        /// Creates the modelview and normal matrix. Also rotates the sceen by a specified amount.
+        /// </summary>
+        /// <param name="rotationAngle">The rotation angle, in radians.</param>
         public void CreateModelviewAndNormalMatrix(float rotationAngle)
         {
             //  Create the modelview and normal matrix. We'll also rotate the scene
@@ -59,15 +62,18 @@ namespace CelShadingSample
             normalMatrix = modelviewMatrix.to_mat3();
         }
 
+        /// <summary>
+        /// Renders the scene in immediate mode.
+        /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
         public void RenderImmediateMode(OpenGL gl)
         {
-
             //  Setup the modelview matrix.
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
             gl.LoadIdentity();
             gl.MultMatrix(modelviewMatrix.to_array());
-
-
+            
+            //  Push the polygon attributes and set line mode.
             gl.PushAttrib(OpenGL.GL_POLYGON_BIT);
             gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
 
@@ -78,11 +84,18 @@ namespace CelShadingSample
                 gl.Vertex(vertices[index].x, vertices[index].y, vertices[index].z);
             gl.End();
 
+            //  Pop the attributes, restoring all polygon state.
             gl.PopAttrib();
         }
 
+        /// <summary>
+        /// Renders the scene in retained mode.
+        /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
+        /// <param name="useToonShader">if set to <c>true</c> use the toon shader, otherwise use a per-pixel shader.</param>
         public void RenderRetainedMode(OpenGL gl, bool useToonShader)
         {
+            //  Get a reference to the appropriate shader.
             var shader = useToonShader ? shaderToon : shaderPerPixel;
 
             //  Use the shader program.
@@ -107,8 +120,10 @@ namespace CelShadingSample
             trefoilKnot.NormalBuffer.Bind(gl);
             trefoilKnot.IndexBuffer.Bind(gl);
                         
-            gl.DrawElements(OpenGL.GL_TRIANGLES, (int)trefoilKnot.Indices.Length, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
+            //  Draw the elements.
+            gl.DrawElements(OpenGL.GL_TRIANGLES, trefoilKnot.Indices.Length, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
+            //  Unbind the shader.
             shader.Unbind(gl);
         }
 

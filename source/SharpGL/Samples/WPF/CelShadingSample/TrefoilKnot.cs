@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using SharpGL.SceneGraph;
 using SharpGL;
-using System.Runtime.InteropServices;
 using GlmNet;
 using SharpGL.VertexBuffers;
 
@@ -103,15 +99,12 @@ namespace CelShadingSample
             normalBuffer.Create(gl);
             normalBuffer.Bind(gl);
             normalBuffer.SetData(gl, VertexAttributes.Normal, normals.SelectMany(v => v.to_array()).ToArray(), false, 3);            
-
-            //  Draw the geometry, straight from the vertex buffer.
-            //  TODO: pass in attributes
         }
 
         private void CreateIndexBuffer(OpenGL gl)
         {
-            var vertexCount = slices * stacks;
-            var indexCount = vertexCount * 6;
+            const uint vertexCount = slices * stacks;
+            const uint indexCount = vertexCount * 6;
             indices = new ushort[indexCount];
             int count = 0;
 
@@ -136,46 +129,67 @@ namespace CelShadingSample
             indexBuffer.Create(gl);
             indexBuffer.Bind(gl);
             indexBuffer.SetData(gl, indices);
-            
-            //  todo unbind
         }
 
         private vec3[] vertices;
         private vec3[] normals;
         private ushort[] indices;
 
-        /// <summary>
-        /// The number of slices.
-        /// </summary>
-        private uint slices = 128;
-
-        /// <summary>
-        /// The number of stacks.
-        /// </summary>
-        private uint stacks = 32;
+        /// The number of slices and stacks.
+        private const uint slices = 128;
+        private const uint stacks = 32;
 
         //  The vertex buffers used.
         private VertexBuffer vertexBuffer;
         private VertexBuffer normalBuffer;
         private IndexBuffer indexBuffer;
-        
+
+        /// <summary>
+        /// Gets the vertex buffer.
+        /// </summary>
         public VertexBuffer VertexBuffer
         {
             get { return vertexBuffer; }
         }
 
+        /// <summary>
+        /// Gets the normal buffer.
+        /// </summary>
         public VertexBuffer NormalBuffer
         {
             get { return normalBuffer; }
         }
 
+        /// <summary>
+        /// Gets the index buffer.
+        /// </summary>
         public IndexBuffer IndexBuffer
         {
             get { return indexBuffer; }
         }
 
-        public vec3[] Vertices { get { return vertices; } }
-        public vec3[] Normals { get { return normals; } }
-        public ushort[] Indices { get { return indices; } }
+        /// <summary>
+        /// Gets the vertices.
+        /// </summary>
+        public vec3[] Vertices
+        { 
+            get { return vertices; } 
+        }
+
+        /// <summary>
+        /// Gets the normals.
+        /// </summary>
+        public vec3[] Normals
+        {
+            get { return normals; }
+        }
+
+        /// <summary>
+        /// Gets the indices.
+        /// </summary>
+        public ushort[] Indices
+        {
+            get { return indices; }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="CelShadingSample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Cel Shading Sample" Height="350" Width="525"
+        Title="Cel Shading Sample" Height="600" Width="800"
         xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF">
     <Grid>
         <DockPanel>

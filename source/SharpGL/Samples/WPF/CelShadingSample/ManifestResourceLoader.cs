@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace CelShadingSample
 {
+    /// <summary>
+    /// A small helper class to load manifest resource files.
+    /// </summary>
     public static class ManifestResourceLoader
     {
+        /// <summary>
+        /// Loads the named manifest resource as a text string.
+        /// </summary>
+        /// <param name="textFileName">Name of the text file.</param>
+        /// <returns>The contents of the manifest resource.</returns>
         public static string LoadTextFile(string textFileName)
         {
             var executingAssembly = Assembly.GetExecutingAssembly();
