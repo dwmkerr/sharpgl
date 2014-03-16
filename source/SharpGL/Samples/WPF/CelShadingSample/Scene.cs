@@ -54,17 +54,22 @@ namespace CelShadingSample
             //  by the provided rotation angle, which means things that draw it 
             //  can make the scene rotate easily.
             mat4 rotation = glm.rotate(mat4.identity(), rotationAngle, new vec3(0, 1, 0));
-            mat4 translation = glm.translate(mat4.identity(), new vec3(0, 0, -7));
+            mat4 translation = glm.translate(mat4.identity(), new vec3(0, 0, -4));
             modelviewMatrix = rotation * translation;
             normalMatrix = modelviewMatrix.to_mat3();
         }
 
         public void RenderImmediateMode(OpenGL gl)
         {
+
             //  Setup the modelview matrix.
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
             gl.LoadIdentity();
             gl.MultMatrix(modelviewMatrix.to_array());
+
+
+            gl.PushAttrib(OpenGL.GL_POLYGON_BIT);
+            gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
 
             //  Render the trefoil.
             var vertices = trefoilKnot.Vertices;
@@ -72,6 +77,8 @@ namespace CelShadingSample
             foreach (var index in trefoilKnot.Indices)
                 gl.Vertex(vertices[index].x, vertices[index].y, vertices[index].z);
             gl.End();
+
+            gl.PopAttrib();
         }
 
         public void RenderRetainedMode(OpenGL gl, bool useToonShader)
