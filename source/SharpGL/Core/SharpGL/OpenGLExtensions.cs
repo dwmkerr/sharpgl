@@ -1044,11 +1044,12 @@ namespace SharpGL
         }
         public void BufferData(uint target, ushort[] data, uint usage)
         {
-            IntPtr p = Marshal.AllocHGlobal(data.Length * sizeof(ushort));
+            var dataSize = data.Length * sizeof(ushort);
+            IntPtr p = Marshal.AllocHGlobal(dataSize);
             var shortData = new short[data.Length];
-            Buffer.BlockCopy(data, 0, shortData, 0, data.Length);
+            Buffer.BlockCopy(data, 0, shortData, 0, dataSize);
             Marshal.Copy(shortData, 0, p, data.Length);
-            InvokeExtensionFunction<glBufferData>(target, data.Length * sizeof(ushort), p, usage);
+            InvokeExtensionFunction<glBufferData>(target, dataSize, p, usage);
             Marshal.FreeHGlobal(p);
         }
         public void BufferSubData(uint target, int offset, int size, IntPtr data)

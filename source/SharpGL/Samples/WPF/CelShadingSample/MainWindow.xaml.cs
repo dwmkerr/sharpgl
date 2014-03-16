@@ -59,7 +59,7 @@ namespace CelShadingSample
             
             //  Clear the color and depth buffer.
             gl.ClearColor(0f, 0f, 0f, 1f);
-            gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+            gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT | OpenGL.GL_STENCIL_BUFFER_BIT);
 
             //  Draw the axies.
             axies.Render(gl, RenderMode.Design);
@@ -67,8 +67,8 @@ namespace CelShadingSample
             //  Render the scene in either immediate or retained mode.
             switch (comboRenderMode.SelectedIndex)
             {
-                case 0: scene.RenderImmediateMode(gl); break;
-                case 1: scene.RenderRetainedMode(gl); break;
+                case 0: scene.RenderRetainedMode(gl, checkBoxUseToonShader.IsChecked.Value); break;
+                case 1: scene.RenderImmediateMode(gl); break;
                 default: break;
             }
         }
@@ -81,7 +81,7 @@ namespace CelShadingSample
             scene.Initialise(gl);
 
             gl.Enable(OpenGL.GL_DEPTH_TEST);
-            gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
+        //    gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
         }
 
         private void OpenGLControl_Resized(object sender, OpenGLEventArgs args)

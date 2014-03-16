@@ -6,6 +6,7 @@ using SharpGL.SceneGraph;
 using SharpGL;
 using System.Runtime.InteropServices;
 using GlmNet;
+using SharpGL.VertexBuffers;
 
 namespace CelShadingSample
 {
@@ -19,14 +20,9 @@ namespace CelShadingSample
     {
         public void GenerateGeometry(OpenGL gl)
         {
-            //  Generates the geometry for the trefoil knot.
-
-            //  Create the vertices.
-            vertices = new List<vec3>();
-
             //  Generate the vertices and normals.
-            vertexAndNormalBuffer = CreateVertexNormalBuffer(gl);
-            indexBuffer = CreateIndexBuffer(gl);
+            CreateVertexNormalBuffer(gl);
+            CreateIndexBuffer(gl);
         }
 
         /// <summary>
@@ -67,13 +63,17 @@ namespace CelShadingSample
             return range;
         }
 
-        private uint CreateVertexNormalBuffer(OpenGL gl)
+        private void CreateVertexNormalBuffer(OpenGL gl)
         {
-            vec3[] verts = new vec3[VertexCount * 2];
+            var vertexCount = slices * stacks;
+
+            vertices = new vec3[vertexCount];
+            normals = new vec3[vertexCount];
+
             int count = 0;
 
-            float ds = 1.0f / Slices;
-            float dt = 1.0f / Stacks;
+            float ds = 1.0f / slices;
+            float dt = 1.0f / stacks;
 
             // The upper bounds in these loops are tweaked to reduce the
             // chance of precision error causing an incorrect # of iterations.
@@ -87,56 +87,62 @@ namespace CelShadingSample
                     vec3 u = EvaluateTrefoil(s + E, t) - p;
                     vec3 v = EvaluateTrefoil(s, t + E) - p;
                     vec3 n = glm.normalize(glm.cross(u, v));
-                    vertices.Add(p);
-                    verts[count++] = p;
-                    verts[count++] = n;
+                    vertices[count] = p;
+                    normals[count] = n;
+                    count++;
                 }
             }
-            
-            
-            uint[] buffers = new uint[1];
-            gl.GenBuffers(1, buffers);
-            uint handle = buffers[0];
-            gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, handle);
-            gl.BufferData(OpenGL.GL_ARRAY_BUFFER, verts.SelectMany(v => v.to_array()).ToArray(), OpenGL.GL_STATIC_DRAW);
-            
-            return handle;
+
+            //  Create the vertex data buffer.
+            vertexBuffer = new VertexBuffer();
+            vertexBuffer.Create(gl);
+            vertexBuffer.Bind(gl);
+            vertexBuffer.SetData(gl, VertexAttributes.Position, vertices.SelectMany(v => v.to_array()).ToArray(), false, 3);
+         
+            normalBuffer = new VertexBuffer();
+            normalBuffer.Create(gl);
+            normalBuffer.Bind(gl);
+            normalBuffer.SetData(gl, VertexAttributes.Normal, normals.SelectMany(v => v.to_array()).ToArray(), false, 3);            
+
+            //  Draw the geometry, straight from the vertex buffer.
+            //  TODO: pass in attributes
         }
 
-        private uint CreateIndexBuffer(OpenGL gl)
+        private void CreateIndexBuffer(OpenGL gl)
         {
-            indices = new ushort[IndexCount];
+            var vertexCount = slices * stacks;
+            var indexCount = vertexCount * 6;
+            indices = new ushort[indexCount];
             int count = 0;
 
             ushort n = 0;
-            for (ushort i = 0; i < Slices; i++)
+            for (ushort i = 0; i < slices; i++)
             {
-                for (ushort j = 0; j < Stacks; j++)
+                for (ushort j = 0; j < stacks; j++)
                 {
                     indices[count++] = (ushort)(n + j);
-                    indices[count++] = (ushort)(n + (j + 1) % Stacks);
-                    indices[count++] = (ushort)((n + j + Stacks) % VertexCount);
+                    indices[count++] = (ushort)(n + (j + 1) % stacks);
+                    indices[count++] = (ushort)((n + j + stacks) % vertexCount);
 
-                    indices[count++] = (ushort)((n + j + Stacks) % VertexCount);
-                    indices[count++] = (ushort)((n + (j + 1) % Stacks) % VertexCount);
-                    indices[count++] = (ushort)((n + (j + 1) % Stacks + Stacks) % VertexCount);
+                    indices[count++] = (ushort)((n + j + stacks) % vertexCount);
+                    indices[count++] = (ushort)((n + (j + 1) % stacks) % vertexCount);
+                    indices[count++] = (ushort)((n + (j + 1) % stacks + stacks) % vertexCount);
                 }
 
-                n += (ushort)Stacks;
+                n += (ushort)stacks;
             }
-            
-            uint[] buffers = new uint[1];
-            gl.GenBuffers(1, buffers);
-            uint handle = buffers[0];
-            gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, handle);
-            gl.BufferData(OpenGL.GL_ELEMENT_ARRAY_BUFFER, indices, OpenGL.GL_STATIC_DRAW);
 
-            return handle;
+            indexBuffer = new IndexBuffer();
+            indexBuffer.Create(gl);
+            indexBuffer.Bind(gl);
+            indexBuffer.SetData(gl, indices);
+            
+            //  todo unbind
         }
 
-        private IList<vec3> vertices;
-
-        public ushort[] indices;
+        private vec3[] vertices;
+        private vec3[] normals;
+        private ushort[] indices;
 
         /// <summary>
         /// The number of slices.
@@ -148,75 +154,28 @@ namespace CelShadingSample
         /// </summary>
         private uint stacks = 32;
 
-        /// <summary>
-        /// The vertex and normal buffer.
-        /// </summary>
-        private uint vertexAndNormalBuffer = 0;
-
-        /// <summary>
-        /// The index buffer.
-        /// </summary>
-        private uint indexBuffer = 0;
-
-        /// <summary>
-        /// Gets or sets the slices.
-        /// </summary>
-        /// <value>
-        /// The slices.
-        /// </value>
-        public uint Slices
+        //  The vertex buffers used.
+        private VertexBuffer vertexBuffer;
+        private VertexBuffer normalBuffer;
+        private IndexBuffer indexBuffer;
+        
+        public VertexBuffer VertexBuffer
         {
-            get { return slices; }
-            set { slices = value; }
+            get { return vertexBuffer; }
         }
 
-        /// <summary>
-        /// Gets or sets the stacks.
-        /// </summary>
-        /// <value>
-        /// The stacks.
-        /// </value>
-        public uint Stacks
+        public VertexBuffer NormalBuffer
         {
-            get { return stacks; }
-            set { stacks = value; }
+            get { return normalBuffer; }
         }
 
-        /// <summary>
-        /// Gets the vertex count.
-        /// </summary>
-        /// <value>
-        /// The vertex count.
-        /// </value>
-        public uint VertexCount
+        public IndexBuffer IndexBuffer
         {
-            get {return Slices * Stacks;}
+            get { return indexBuffer; }
         }
 
-        /// <summary>
-        /// Gets the index count.
-        /// </summary>
-        /// <value>
-        /// The index count.
-        /// </value>
-        public uint IndexCount
-        {
-            get { return VertexCount * 6; }
-        }
-
-        public uint VertexAndNormalBuffer
-        {
-            get { return vertexAndNormalBuffer; }
-        }
-
-        public uint IndexBuffer { get { return indexBuffer; } }
-
-        /// <summary>
-        /// Gets the vertices.
-        /// </summary>
-        /// <value>
-        /// The vertices.
-        /// </value>
-        public IEnumerable<vec3> Vertices { get { return vertices; } } 
+        public vec3[] Vertices { get { return vertices; } }
+        public vec3[] Normals { get { return normals; } }
+        public ushort[] Indices { get { return indices; } }
     }
 }

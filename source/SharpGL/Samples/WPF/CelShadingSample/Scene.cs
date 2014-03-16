@@ -24,6 +24,17 @@ namespace CelShadingSample
             shaderPerPixel.Create(gl, 
                 ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.vert"),
                 ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"));
+            shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
+            shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
+
+            //  Create the toon shader.
+            shaderToon = new ShaderProgram();
+            shaderToon.Create(gl,
+                ManifestResourceLoader.LoadTextFile(@"Shaders\Toon.vert"),
+                ManifestResourceLoader.LoadTextFile(@"Shaders\Toon.frag"));
+            shaderToon.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
+            shaderToon.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
+
             
             //  Generate the geometry and it's buffers.
             trefoilKnot.GenerateGeometry(gl);
@@ -34,7 +45,7 @@ namespace CelShadingSample
             //  Create the projection matrix for our screen size.
             const float S = 0.46f;
             float H = S * screenHeight / screenWidth;
-            projectionMatrix = glm.pfrustum(-S, S, -H, H, 4, 10);
+            projectionMatrix = glm.pfrustum(-S, S, -H, H, 1, 100);
         }
 
         public void CreateModelviewAndNormalMatrix(float rotationAngle)
@@ -56,49 +67,42 @@ namespace CelShadingSample
             gl.MultMatrix(modelviewMatrix.to_array());
 
             //  Render the trefoil.
-            var vertices = trefoilKnot.Vertices.ToList();
+            var vertices = trefoilKnot.Vertices;
             gl.Begin(BeginMode.Triangles);
-            foreach (var index in trefoilKnot.indices)
+            foreach (var index in trefoilKnot.Indices)
                 gl.Vertex(vertices[index].x, vertices[index].y, vertices[index].z);
             gl.End();
         }
 
-        public void RenderRetainedMode(OpenGL gl)
+        public void RenderRetainedMode(OpenGL gl, bool useToonShader)
         {
+            var shader = useToonShader ? shaderToon : shaderPerPixel;
+
             //  Use the shader program.
-            shaderPerPixel.Bind(gl);
+            shader.Bind(gl);
 
             //  Set the variables for the shader program.
-            shaderPerPixel.SetUniform3(gl, "DiffuseMaterial", 0f, 0.75f, 0.75f);
-            shaderPerPixel.SetUniform3(gl, "AmbientMaterial", 0.04f, 0.04f, 0.04f);
-            shaderPerPixel.SetUniform3(gl, "SpecularMaterial", 0.5f, 0.5f, 0.5f);
-            shaderPerPixel.SetUniform1(gl, "Shininess", 50f);
+            shader.SetUniform3(gl, "DiffuseMaterial", 0f, 0.75f, 0.75f);
+            shader.SetUniform3(gl, "AmbientMaterial", 0.04f, 0.04f, 0.04f);
+            shader.SetUniform3(gl, "SpecularMaterial", 0.5f, 0.5f, 0.5f);
+            shader.SetUniform1(gl, "Shininess", 50f);
 
             //  Set the light position.
-            shaderPerPixel.SetUniform3(gl, "LightPosition", 0.25f, 0.25f, 1f);
+            shader.SetUniform3(gl, "LightPosition", 0.25f, 0.25f, 1f);
 
             //  Set the matrices.
-            shaderPerPixel.SetUniformMatrix4(gl, "Projection", projectionMatrix.to_array());
-            shaderPerPixel.SetUniformMatrix4(gl, "Modelview", modelviewMatrix.to_array());
-            shaderPerPixel.SetUniformMatrix3(gl, "NormalMatrix", normalMatrix.to_array());
+            shader.SetUniformMatrix4(gl, "Projection", projectionMatrix.to_array());
+            shader.SetUniformMatrix4(gl, "Modelview", modelviewMatrix.to_array());
+            shader.SetUniformMatrix3(gl, "NormalMatrix", normalMatrix.to_array());
 
-            //  Bind the vertex and index buffer.
-            gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, trefoilKnot.VertexAndNormalBuffer);
-            gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, trefoilKnot.IndexBuffer);
+            //  Bind the vertex, normal and index buffers.
+            trefoilKnot.VertexBuffer.Bind(gl);
+            trefoilKnot.NormalBuffer.Bind(gl);
+            trefoilKnot.IndexBuffer.Bind(gl);
+                        
+            gl.DrawElements(OpenGL.GL_TRIANGLES, (int)trefoilKnot.Indices.Length, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-            gl.EnableVertexAttribArray(attrPosition);
-            gl.EnableVertexAttribArray(attrNormal);
-
-            //  Draw the geometry, straight from the vertex buffer.
-            //  TODO Move into buffer generation, only specify once.
-            gl.VertexAttribPointer(attrPosition, 3, OpenGL.GL_FLOAT, false, Marshal.SizeOf(typeof(vec3)), IntPtr.Zero);
-            int normalOffset = Marshal.SizeOf(typeof(vec3));
-            gl.VertexAttribPointer(attrNormal, 3, OpenGL.GL_FLOAT, false, Marshal.SizeOf(typeof(vec3)), IntPtr.Add(new IntPtr(0), normalOffset));
-
-            gl.DrawElements(OpenGL.GL_TRIANGLES, (int)trefoilKnot.IndexCount, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);
-            //gl.DrawArrays(OpenGL.GL_TRIANGLES, 0, 50);
-
-            shaderPerPixel.Unbind(gl);
+            shader.Unbind(gl);
         }
 
         /// <summary>
@@ -111,6 +115,7 @@ namespace CelShadingSample
         
         //  The shaders we use.
         private ShaderProgram shaderPerPixel;
+        private ShaderProgram shaderToon;
         
         //  The modelview, projection and normal matrices.
         private mat4 modelviewMatrix = mat4.identity();
