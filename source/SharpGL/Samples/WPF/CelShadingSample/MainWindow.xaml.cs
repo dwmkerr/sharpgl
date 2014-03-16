@@ -1,42 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using SharpGL;
-using SharpGL.SceneGraph.Cameras;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph;
-using System.Runtime.InteropServices;
-using SharpGL.Enumerations;
-using GlmNet;
-using SharpGL.Shaders;
-using System.Reflection;
-using System.IO;
 
 namespace CelShadingSample
 {
-    public struct ShaderUniforms
-    {
-        public int Projection;
-        public int Modelview;
-        public int NormalMatrix;
-        public int LightPosition;
-        public int AmbientMaterial;
-        public int DiffuseMaterial;
-        public int SpecularMaterial;
-        public int Shininess;
-    };
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -81,7 +50,6 @@ namespace CelShadingSample
             scene.Initialise(gl);
 
             gl.Enable(OpenGL.GL_DEPTH_TEST);
-        //    gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
         }
 
         private void OpenGLControl_Resized(object sender, OpenGLEventArgs args)
@@ -105,23 +73,11 @@ namespace CelShadingSample
         /// </summary>
         private readonly Axies axies = new Axies();
                 
-
-        private float elapsedMilliseconds = 100;
-
         private float theta = 0;
-        private float time = 0;
-        private const float InitialPause = 0;
-        private const bool LoopForever = true;
-
-        private uint vertexBuffer = 0;
-        private uint indexBuffer = 0;
-        private ShaderUniforms toonUniforms = new ShaderUniforms();
-        private ShaderProgram shaderProgram;
-
 
         /// <summary>
         /// The scene we're drawing.
         /// </summary>
-        private Scene scene = new Scene();
+        private readonly Scene scene = new Scene();
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9C91BBE9-AEC4-47C0-98D7-1732A3F205FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.WinForms", "Core\SharpGL.WinForms\SharpGL.WinForms.csproj", "{B2984A6D-AD1C-4BE9-94AB-BA002B338751}"
@@ -59,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BF3E19
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectLoadingSample", "Samples\WPF\ObjectLoadingSample\ObjectLoadingSample.csproj", "{66932482-AC9B-453A-AAE1-1CD292CD8FD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -313,6 +315,16 @@ Global
 		{52F6185C-F865-4BCF-9E02-EBD8C0A71133}.Release|Mixed Platforms.Build.0 = Release|x86
 		{52F6185C-F865-4BCF-9E02-EBD8C0A71133}.Release|x86.ActiveCfg = Release|x86
 		{52F6185C-F865-4BCF-9E02-EBD8C0A71133}.Release|x86.Build.0 = Release|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Debug|x86.ActiveCfg = Debug|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Debug|x86.Build.0 = Debug|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|Any CPU.ActiveCfg = Release|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|Mixed Platforms.Build.0 = Release|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|x86.ActiveCfg = Release|x86
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,5 +353,6 @@ Global
 		{A014D02B-51B5-430D-A7FE-EF4805D57276} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
 		{803A6DA5-5497-45B6-A738-1B56D12A83DF} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
 		{8C16EA4F-5C5C-4451-BEB3-AD2BFAE92A0F} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
+		{66932482-AC9B-453A-AAE1-1CD292CD8FD8} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
 	EndGlobalSection
 EndGlobal
