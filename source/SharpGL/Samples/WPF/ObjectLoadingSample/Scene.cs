@@ -79,8 +79,14 @@ namespace ObjectLoadingSample
             //  Go through each group.
             foreach (var bufferedGroup in meshes)
             {
+                uint mode = OpenGL.GL_TRIANGLES;
+                if (bufferedGroup.indicesPerFace == 4)
+                    mode = OpenGL.GL_QUADS;
+                else if(bufferedGroup.indicesPerFace > 4)
+                    mode = OpenGL.GL_POLYGON;
+
                 //  Render the group faces.
-                gl.Begin(BeginMode.Triangles);
+                gl.Begin(mode);
                 foreach (var vertex in bufferedGroup.vertices)
                     gl.Vertex(vertex.x, vertex.y, vertex.z);
                 gl.End();
@@ -118,7 +124,23 @@ namespace ObjectLoadingSample
 
                 var vertexBufferArray = meshVertexBufferArrays[mesh];
                 vertexBufferArray.Bind(gl);
-                gl.DrawArrays(OpenGL.GL_QUADS, 0, mesh.vertices.Length); 
+
+                //  IMPORTANT: This is interesting. If you use OpenGL 2.1, you can use quads. If you move to 3.0 or onwards, 
+                //  you can only draw the triangle types - cause 3.0 onwards deprecates other types.
+                //  see: http://stackoverflow.com/questions/8041361/simple-opengl-clarification
+                //  this shows that the OpenGL mode selection works - if I choose 2.1 I can draw quads, otherwise I can't.
+                //  There's a good article on tesselating quads to triangles here:
+                //  http://prideout.net/blog/?p=49
+                //  This should be a sample!
+
+                uint mode = OpenGL.GL_TRIANGLES;
+                if (mesh.indicesPerFace == 4)
+                    mode = OpenGL.GL_QUADS;
+                else if (mesh.indicesPerFace > 4)
+                    mode = OpenGL.GL_POLYGON;
+
+                if(mesh.indicesPerFace == 4)
+                    gl.DrawArrays(mode, 0, mesh.vertices.Length); 
             }
 
             //  Unbind the shader.
