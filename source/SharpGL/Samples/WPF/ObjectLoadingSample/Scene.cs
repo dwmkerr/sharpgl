@@ -56,7 +56,8 @@ namespace ObjectLoadingSample
             //  can make the scene rotate easily.
             mat4 rotation = glm.rotate(mat4.identity(), rotationAngle, new vec3(0, 1, 0));
             mat4 translation = glm.translate(mat4.identity(), new vec3(0, 0, -40));
-            mat4 scale = glm.scale(mat4.identity(), new vec3(0.02f, 0.02f, 0.02f));
+            float scaleFac = 0.02f;//5.0f; // 0.02 works well for downloaded models.
+            mat4 scale = glm.scale(mat4.identity(), new vec3(scaleFac, scaleFac, scaleFac));
             modelviewMatrix = scale * rotation * translation;
             normalMatrix = modelviewMatrix.to_mat3();
         }
@@ -139,8 +140,7 @@ namespace ObjectLoadingSample
                 else if (mesh.indicesPerFace > 4)
                     mode = OpenGL.GL_POLYGON;
 
-                if(mesh.indicesPerFace == 4)
-                    gl.DrawArrays(mode, 0, mesh.vertices.Length); 
+                gl.DrawArrays(mode, 0, mesh.vertices.Length); 
             }
 
             //  Unbind the shader.
@@ -149,6 +149,8 @@ namespace ObjectLoadingSample
 
         public void Load(OpenGL gl, string objectFilePath)
         {
+            //  TODO: cleanup old files.
+
             //  Load the object file.
             var result = FileFormatWavefront.FileFormatObj.Load(objectFilePath);
 

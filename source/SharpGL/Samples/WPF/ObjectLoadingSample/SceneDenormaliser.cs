@@ -26,22 +26,24 @@ namespace ObjectLoadingSample
             foreach(var group in scene.Groups)
             {
                 //  Go through each face.
-                foreach(var face in group.Faces)
+                for(int i=0; i< group.Faces.Count; i++)
                 {
+                    var face = group.Faces[i];
+
                     //  If this is the first face, set the current index count.
                     if(currentIndexCount == -1)
                         currentIndexCount = face.Indices.Count;
                     else if(currentIndexCount == face.Indices.Count)
                         facesWithSameIndexCount.Add(face);
-                    //  If this is a new index count, complete the mesh.
-                    if(currentIndexCount != face.Indices.Count)
+                    //  If this is a new index count, or the end, complete the mesh.
+                    if(currentIndexCount != face.Indices.Count || i == group.Faces.Count - 1)
                     {
                         var indices = facesWithSameIndexCount.SelectMany(f => f.Indices).ToList();
                         meshes.Add(new Mesh
                                    {
-                                       vertices = indices.Select(i => vertics[i.vertex]).Select(v => new vec3(v.x, v.y, v.z)).ToArray(),
-                                       normals = indices.Select(i => normals[i.normal.Value]).Select(v => new vec3(v.x, v.y, v.z)).ToArray(),
-                                       uvs = indices.Select(i => uvs[i.uv.Value]).Select(v => new vec2(v.u, v.v)).ToArray(),
+                                       vertices = indices.Select(ind => vertics[ind.vertex]).Select(v => new vec3(v.x, v.y, v.z)).ToArray(),
+                                       normals = indices.Select(ind => normals[ind.normal.Value]).Select(v => new vec3(v.x, v.y, v.z)).ToArray(),
+                                       uvs = indices.Select(ind => uvs[ind.uv.Value]).Select(v => new vec2(v.u, v.v)).ToArray(),
                                        material = facesWithSameIndexCount.First().Material,
                                        indicesPerFace = currentIndexCount
                                    });
