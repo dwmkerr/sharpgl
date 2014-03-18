@@ -80,6 +80,7 @@
     <Compile Include="Shaders\ShaderProgram.cs" />
     <Compile Include="Version\OpenGLVersion.cs" />
     <Compile Include="Version\VersionAttribute.cs" />
+    <Compile Include="VertexBuffers\IndexBuffer.cs" />
     <Compile Include="VertexBuffers\VertexBufferArray.cs" />
     <Compile Include="VertexBuffers\VertexBuffer.cs" />
     <Compile Include="Win32.cs" />

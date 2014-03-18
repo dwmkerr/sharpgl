@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using FileFormatWavefront.Model;
 using GlmNet;
 using SharpGL;
 using SharpGL.Enumerations;
 using SharpGL.Shaders;
+using SharpGL.Textures;
 using SharpGL.VertexBuffers;
 
 namespace ObjectLoadingSample
@@ -31,6 +34,9 @@ namespace ObjectLoadingSample
             shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
             shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
             gl.ClearColor(0f,0f, 0f, 1f);
+
+            //  Immediate mode only features!
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
         }
 
         /// <summary>
@@ -75,11 +81,15 @@ namespace ObjectLoadingSample
 
             //  Push the polygon attributes and set line mode.
             gl.PushAttrib(OpenGL.GL_POLYGON_BIT);
-            gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
+            gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Filled);
 
             //  Go through each group.
             foreach (var bufferedGroup in meshes)
             {
+                var texture = meshTextures.ContainsKey(bufferedGroup) ? meshTextures[bufferedGroup] : null;
+                if(texture != null)
+                    texture.Bind(gl);
+
                 uint mode = OpenGL.GL_TRIANGLES;
                 if (bufferedGroup.indicesPerFace == 4)
                     mode = OpenGL.GL_QUADS;
@@ -88,9 +98,16 @@ namespace ObjectLoadingSample
 
                 //  Render the group faces.
                 gl.Begin(mode);
-                foreach (var vertex in bufferedGroup.vertices)
-                    gl.Vertex(vertex.x, vertex.y, vertex.z);
+                for (int i = 0; i < bufferedGroup.vertices.Length; i++ )
+                {
+                    gl.Vertex(bufferedGroup.vertices[i].x, bufferedGroup.vertices[i].y, bufferedGroup.vertices[i].z);
+                    gl.Normal(bufferedGroup.normals[i].x, bufferedGroup.normals[i].y, bufferedGroup.normals[i].z);
+                    gl.TexCoord(bufferedGroup.uvs[i].x, bufferedGroup.uvs[i].y);
+                }
                 gl.End();
+
+                if(texture != null)
+                    texture.Unbind(gl);
             }
 
             //  Pop the attributes, restoring all polygon state.
@@ -151,13 +168,22 @@ namespace ObjectLoadingSample
         {
             //  TODO: cleanup old files.
 
+            //  Destroy all of the vertex buffer arrays in the meshes.
+            foreach(var vertexBufferArray in meshVertexBufferArrays.Values)
+                vertexBufferArray.Delete(gl);
+            meshes.Clear();
+            meshVertexBufferArrays.Clear();
+
             //  Load the object file.
-            var result = FileFormatWavefront.FileFormatObj.Load(objectFilePath);
+            var result = FileFormatWavefront.FileFormatObj.Load(objectFilePath, true);
 
             meshes.AddRange(SceneDenormaliser.Denormalize(result.Model));
 
             //  Create a vertex buffer array for each mesh.
             meshes.ForEach(m => CreateVertexBufferArray(gl, m));
+
+            //  Create textures for each texture map.
+            CreateTextures(gl, meshes);
 
             //  TODO: handle errors and warnings.
 
@@ -197,6 +223,24 @@ namespace ObjectLoadingSample
             meshVertexBufferArrays[mesh] = vertexBufferArray;
         }
 
+        private void CreateTextures(OpenGL gl, IEnumerable<Mesh> meshes)
+        {
+            foreach(var mesh in meshes.Where(m => m.material.TextureMapAmbient != null))
+            {
+                //  Create a new texture and bind it.
+                var texture = new Texture2D();
+                texture.Create(gl);
+                texture.Bind(gl);
+                texture.SetParameter(gl, OpenGL.GL_TEXTURE_MIN_FILTER, OpenGL.GL_LINEAR);
+                texture.SetParameter(gl, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR);
+                texture.SetParameter(gl, OpenGL.GL_TEXTURE_WRAP_S, OpenGL.GL_CLAMP_TO_EDGE);
+                texture.SetParameter(gl, OpenGL.GL_TEXTURE_WRAP_T, OpenGL.GL_CLAMP_TO_EDGE);
+                texture.SetImage(gl, (Bitmap)mesh.material.TextureMapAmbient.Image);
+                texture.Unbind(gl);
+                meshTextures[mesh] = texture;
+            }
+        }
+
         /// <summary>
         /// Sets the scale factor automatically based on the size of the geometry.
         /// Returns the computed scale factor.
@@ -221,7 +265,7 @@ namespace ObjectLoadingSample
 
             //  Set the scale factor accordingly.
             //  sf = max/c
-            scaleFactor = max / 1000.0f;
+            scaleFactor = 8.0f/max;
             return scaleFactor;
         }
 
@@ -244,7 +288,7 @@ namespace ObjectLoadingSample
 
         private readonly List<Mesh> meshes = new List<Mesh>();
         private readonly Dictionary<Mesh, VertexBufferArray> meshVertexBufferArrays = new Dictionary<Mesh, VertexBufferArray>(); 
-
+        private readonly Dictionary<Mesh, Texture2D> meshTextures = new Dictionary<Mesh, Texture2D>(); 
 
         //  The shaders we use.
         private ShaderProgram shaderPerPixel;

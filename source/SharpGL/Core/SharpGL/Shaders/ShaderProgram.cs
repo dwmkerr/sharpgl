@@ -120,6 +120,17 @@ namespace SharpGL.Shaders
             return uniformNamesToLocations[uniformName];
         }
 
+        /// <summary>
+        /// Gets the shader program object.
+        /// </summary>
+        /// <value>
+        /// The shader program object.
+        /// </value>
+        public uint ShaderProgramObject
+        {
+            get { return shaderProgramObject; }
+        }
+
         private uint shaderProgramObject;
 
         /// <summary>

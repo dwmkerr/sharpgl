@@ -35,6 +35,14 @@ namespace SharpGL.VertexBuffers
             gl.BindVertexArray(0);
         }
 
+        /// <summary>
+        /// Gets the vertex buffer array object.
+        /// </summary>
+        public uint VertexBufferArrayObject
+        {
+            get { return vertexArrayObject; }
+        }
+
         private uint vertexArrayObject;
     }
 }

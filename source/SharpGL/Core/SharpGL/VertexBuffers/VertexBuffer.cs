@@ -35,36 +35,14 @@ namespace SharpGL.VertexBuffers
 
         public bool IsCreated() { return vertexBufferObject != 0; }
 
+        /// <summary>
+        /// Gets the vertex buffer object.
+        /// </summary>
+        public uint VertexBufferObject
+        {
+            get { return vertexBufferObject; }
+        }
+
         private uint vertexBufferObject;
-    }
-
-    public class IndexBuffer
-    {
-        public void Create(OpenGL gl)
-        {
-            //  Generate the vertex array.
-            uint[] ids = new uint[1];
-            gl.GenBuffers(1, ids);
-            bufferObject = ids[0];
-        }
-
-        public void SetData(OpenGL gl, ushort[] rawData)
-        {
-            gl.BufferData(OpenGL.GL_ELEMENT_ARRAY_BUFFER, rawData, OpenGL.GL_STATIC_DRAW);
-        }
-
-        public void Bind(OpenGL gl)
-        {
-            gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, bufferObject);
-        }
-
-        public void Unbind(OpenGL gl)
-        {
-            gl.BindBuffer(OpenGL.GL_ELEMENT_ARRAY_BUFFER, 0);
-        }
-
-        public bool IsCreated() { return bufferObject != 0; }
-
-        private uint bufferObject;
     }
 }

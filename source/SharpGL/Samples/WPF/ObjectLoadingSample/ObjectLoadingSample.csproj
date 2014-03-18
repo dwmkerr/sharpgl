@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\Texture2D.cs" />
     <Compile Include="ManifestResourceLoader.cs" />
     <Compile Include="SceneDenormaliser.cs" />
     <Compile Include="Scene.cs" />
