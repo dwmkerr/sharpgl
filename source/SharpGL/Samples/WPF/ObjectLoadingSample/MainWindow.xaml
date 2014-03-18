@@ -17,6 +17,14 @@
                 </Menu>
             </ToolBarPanel>
 
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar>
+                    <Label Target="{Binding ElementName=textBoxScale}">Scale: </Label>
+                    <TextBox x:Name="textBoxScale" Width="60" IsEnabled="False">1</TextBox>
+                    <CheckBox x:Name="checkBoxAutoScale" IsChecked="True" IsEnabled="False">Auto</CheckBox>
+                </ToolBar>
+            </ToolBarTray>
+
             <sharpGL:OpenGLControl x:Name="openGlCtrl"
             OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized" 
             RenderContextType="FBO" Resized="OpenGLControl_Resized" />

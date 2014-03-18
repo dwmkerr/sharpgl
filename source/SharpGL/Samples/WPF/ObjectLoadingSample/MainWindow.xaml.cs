@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using SharpGL;
+using SharpGL.Enumerations;
 using SharpGL.SceneGraph;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
@@ -40,7 +41,6 @@ namespace ObjectLoadingSample
             scene.CreateModelviewAndNormalMatrix(theta);
 
             //  Clear the color and depth buffer.
-            gl.ClearColor(0.94509f, 0.94509f, 0.83137f, 1f);
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT | OpenGL.GL_STENCIL_BUFFER_BIT);
 
             //  Draw the axies.
@@ -91,6 +91,9 @@ namespace ObjectLoadingSample
 
                 //  Load the data into the scene.
                 scene.Load(openGlCtrl.OpenGL, filePath);
+
+                //  Auto scale.
+                textBoxScale.Text = scene.SetScaleFactorAuto().ToString();
             }
         }
 

@@ -30,6 +30,7 @@ namespace ObjectLoadingSample
                 ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"));
             shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
             shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
+            gl.ClearColor(0f,0f, 0f, 1f);
         }
 
         /// <summary>
@@ -56,8 +57,7 @@ namespace ObjectLoadingSample
             //  can make the scene rotate easily.
             mat4 rotation = glm.rotate(mat4.identity(), rotationAngle, new vec3(0, 1, 0));
             mat4 translation = glm.translate(mat4.identity(), new vec3(0, 0, -40));
-            float scaleFac = 0.02f;//5.0f; // 0.02 works well for downloaded models.
-            mat4 scale = glm.scale(mat4.identity(), new vec3(scaleFac, scaleFac, scaleFac));
+            mat4 scale = glm.scale(mat4.identity(), new vec3(scaleFactor, scaleFactor, scaleFactor));
             modelviewMatrix = scale * rotation * translation;
             normalMatrix = modelviewMatrix.to_mat3();
         }
@@ -198,6 +198,43 @@ namespace ObjectLoadingSample
         }
 
         /// <summary>
+        /// Sets the scale factor automatically based on the size of the geometry.
+        /// Returns the computed scale factor.
+        /// </summary>
+        /// <returns>The computed scale factor.</returns>
+        public float SetScaleFactorAuto()
+        {
+            //  0.02 good for inet models.
+
+            //  If we have no meshes, just use 1.0f.
+            if (!meshes.Any())
+            {
+                scaleFactor = 1.0f;
+                return scaleFactor;
+            }
+            
+            //  Find the maximum vertex value.
+            var maxX = meshes.SelectMany(m => m.vertices).AsParallel().Max(v => Math.Abs(v.x));
+            var maxY = meshes.SelectMany(m => m.vertices).AsParallel().Max(v => Math.Abs(v.y));
+            var maxZ = meshes.SelectMany(m => m.vertices).AsParallel().Max(v => Math.Abs(v.z));
+            var max = (new[] {maxX, maxY, maxZ}).Max();
+
+            //  Set the scale factor accordingly.
+            //  sf = max/c
+            scaleFactor = max / 1000.0f;
+            return scaleFactor;
+        }
+
+        /// <summary>
+        /// Gets or sets the scale factor.
+        /// </summary>
+        public float ScaleFactor
+        {
+            get { return scaleFactor; }
+            set { scaleFactor = value; }
+        }
+
+        /// <summary>
         /// Gets the projection matrix.
         /// </summary>
         public mat4 ProjectionMatrix
@@ -216,5 +253,7 @@ namespace ObjectLoadingSample
         private mat4 modelviewMatrix = mat4.identity();
         private mat4 projectionMatrix = mat4.identity();
         private mat3 normalMatrix = mat3.identity();
+
+        private float scaleFactor = 1.0f;
     }
 }
