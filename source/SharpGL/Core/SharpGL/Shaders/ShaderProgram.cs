@@ -66,9 +66,7 @@ namespace SharpGL.Shaders
 
         public void BindAttributeLocation(OpenGL gl, uint location, string attribute)
         {
-            var er = gl.GetError();
             gl.BindAttribLocation(shaderProgramObject, location, attribute);
-            er = gl.GetError();
         }
 
         public void Bind(OpenGL gl)
