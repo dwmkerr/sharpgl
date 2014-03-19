@@ -39,9 +39,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileFormatWavefront, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FileFormatWavefront.1.0.1.0\lib\net40\FileFormatWavefront.dll</HintPath>
+    <Reference Include="FileFormatWavefront">
+      <HintPath>..\..\..\packages\FileFormatWavefront.1.0.2.0\lib\net40\FileFormatWavefront.dll</HintPath>
     </Reference>
     <Reference Include="GlmNet">
       <HintPath>..\..\..\packages\GlmNet.0.0.2.0\lib\net40\GlmNet.dll</HintPath>

@@ -70,7 +70,6 @@
     <Compile Include="..\..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="VertexAttributes.cs" />
     <Compile Include="ManifestResourceLoader.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="TrefoilKnot.cs" />

@@ -14,13 +14,24 @@ namespace CelShadingSample
     /// </summary>
     public class TrefoilKnot
     {
-        public void GenerateGeometry(OpenGL gl)
+        public void GenerateGeometry(OpenGL gl, uint vertexAttributeLocation, uint normalAttributeLocation)
         {
-            //  Generate the vertices and normals.
-            CreateVertexNormalBuffer(gl);
-            CreateIndexBuffer(gl);
-        }
 
+            //  Create the vertex array object. This will hold the state of all of the
+            //  vertex buffer operations that follow it's binding, meaning instead of setting the 
+            //  vertex buffer data and binding it each time, we can just bind the array and call
+            //  DrawElements - much easier.
+            vertexBufferArray = new VertexBufferArray();
+            vertexBufferArray.Create(gl);
+            vertexBufferArray.Bind(gl);
+
+            //  Generate the vertices and normals.
+            CreateVertexNormalBuffer(gl, vertexAttributeLocation, normalAttributeLocation);
+            CreateIndexBuffer(gl);
+
+
+            vertexBufferArray.Unbind(gl);
+        }
         /// <summary>
         /// Evaluates the trefoil, providing the vertex at a given coordinate.
         /// </summary>
@@ -59,7 +70,7 @@ namespace CelShadingSample
             return range;
         }
 
-        private void CreateVertexNormalBuffer(OpenGL gl)
+        private void CreateVertexNormalBuffer(OpenGL gl, uint vertexAttributeLocation, uint normalAttributeLocation)
         {
             var vertexCount = slices * stacks;
 
@@ -88,17 +99,16 @@ namespace CelShadingSample
                     count++;
                 }
             }
-
             //  Create the vertex data buffer.
-            vertexBuffer = new VertexBuffer();
+            var vertexBuffer = new VertexBuffer();
             vertexBuffer.Create(gl);
             vertexBuffer.Bind(gl);
-            vertexBuffer.SetData(gl, VertexAttributes.Position, vertices.SelectMany(v => v.to_array()).ToArray(), false, 3);
+            vertexBuffer.SetData(gl, vertexAttributeLocation, vertices.SelectMany(v => v.to_array()).ToArray(), false, 3);
          
-            normalBuffer = new VertexBuffer();
+            var normalBuffer = new VertexBuffer();
             normalBuffer.Create(gl);
             normalBuffer.Bind(gl);
-            normalBuffer.SetData(gl, VertexAttributes.Normal, normals.SelectMany(v => v.to_array()).ToArray(), false, 3);            
+            normalBuffer.SetData(gl, normalAttributeLocation, normals.SelectMany(v => v.to_array()).ToArray(), false, 3);        
         }
 
         private void CreateIndexBuffer(OpenGL gl)
@@ -125,7 +135,7 @@ namespace CelShadingSample
                 n += (ushort)stacks;
             }
 
-            indexBuffer = new IndexBuffer();
+            var indexBuffer = new IndexBuffer();
             indexBuffer.Create(gl);
             indexBuffer.Bind(gl);
             indexBuffer.SetData(gl, indices);
@@ -139,33 +149,15 @@ namespace CelShadingSample
         private const uint slices = 128;
         private const uint stacks = 32;
 
-        //  The vertex buffers used.
-        private VertexBuffer vertexBuffer;
-        private VertexBuffer normalBuffer;
-        private IndexBuffer indexBuffer;
+        //  The vertex buffer array that handles the state of all vertex buffers.
+        private VertexBufferArray vertexBufferArray;
 
         /// <summary>
-        /// Gets the vertex buffer.
+        /// Gets the vertex buffer array.
         /// </summary>
-        public VertexBuffer VertexBuffer
+        public VertexBufferArray VertexBufferArray
         {
-            get { return vertexBuffer; }
-        }
-
-        /// <summary>
-        /// Gets the normal buffer.
-        /// </summary>
-        public VertexBuffer NormalBuffer
-        {
-            get { return normalBuffer; }
-        }
-
-        /// <summary>
-        /// Gets the index buffer.
-        /// </summary>
-        public IndexBuffer IndexBuffer
-        {
-            get { return indexBuffer; }
+            get { return vertexBufferArray; }
         }
 
         /// <summary>

@@ -10,16 +10,35 @@ namespace SharpGL.Shaders
         private readonly Shader vertexShader = new Shader();
         private readonly Shader fragmentShader = new Shader();
 
-        public void Create(OpenGL gl, string vertexShaderSource, string fragmentShaderSource)
+        /// <summary>
+        /// Creates the shader program.
+        /// </summary>
+        /// <param name="gl">The gl.</param>
+        /// <param name="vertexShaderSource">The vertex shader source.</param>
+        /// <param name="fragmentShaderSource">The fragment shader source.</param>
+        /// <param name="attributeLocations">The attribute locations. This is an optional array of
+        /// uint attribute locations to their names.</param>
+        /// <exception cref="ShaderCompilationException"></exception>
+        public void Create(OpenGL gl, string vertexShaderSource, string fragmentShaderSource, 
+            Dictionary<uint, string> attributeLocations)
         {
             //  Create the shaders.
             vertexShader.Create(gl, OpenGL.GL_VERTEX_SHADER, vertexShaderSource);
             fragmentShader.Create(gl, OpenGL.GL_FRAGMENT_SHADER, fragmentShaderSource);
 
-            //  Create the program, attach the shaders then link the program.
+            //  Create the program, attach the shaders.
             shaderProgramObject = gl.CreateProgram();
             gl.AttachShader(shaderProgramObject, vertexShader.ShaderObject);
             gl.AttachShader(shaderProgramObject, fragmentShader.ShaderObject);
+
+            //  Before we link, bind any vertex attribute locations.
+            if (attributeLocations != null)
+            {
+                foreach (var vertexAttributeLocation in attributeLocations)
+                    gl.BindAttribLocation(shaderProgramObject, vertexAttributeLocation.Key, vertexAttributeLocation.Value);
+            }
+
+            //  Now we can link the program.
             gl.LinkProgram(shaderProgramObject);
 
             //  Now that we've compiled and linked the shader, check it's link status. If it's not linked properly, we're
@@ -40,9 +59,16 @@ namespace SharpGL.Shaders
             shaderProgramObject = 0;
         }
 
+        public int GetAttributeLocation(OpenGL gl, string attributeName)
+        {
+            return gl.GetAttribLocation(shaderProgramObject, attributeName);
+        }
+
         public void BindAttributeLocation(OpenGL gl, uint location, string attribute)
         {
+            var er = gl.GetError();
             gl.BindAttribLocation(shaderProgramObject, location, attribute);
+            er = gl.GetError();
         }
 
         public void Bind(OpenGL gl)

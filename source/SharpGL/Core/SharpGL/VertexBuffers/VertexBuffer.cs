@@ -5,6 +5,13 @@ using System.Text;
 
 namespace SharpGL.VertexBuffers
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>
+    /// Very useful reference for management of VBOs and VBAs:
+    /// http://stackoverflow.com/questions/8704801/glvertexattribpointer-clarification
+    /// </remarks>
     public class VertexBuffer
     {
         public void Create(OpenGL gl)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GlmNet;
 using SharpGL;
 using SharpGL.Enumerations;
@@ -13,25 +14,30 @@ namespace CelShadingSample
     {
         public void Initialise(OpenGL gl)
         {
+            //  We're going to specify the attribute locations for the position and normal, 
+            //  so that we can force both shaders to explicitly have the same locations.
+            const uint positionAttribute = 0;
+            const uint normalAttribute = 1;
+            var attributeLocations = new Dictionary<uint, string>
+            {
+                {positionAttribute, "Position"},
+                {normalAttribute, "Normal"},
+            };
+
             //  Create the per pixel shader.
             shaderPerPixel = new ShaderProgram();
             shaderPerPixel.Create(gl, 
                 ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.vert"),
-                ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"));
-            shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
-            shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
-
+                ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"), attributeLocations);
+            
             //  Create the toon shader.
             shaderToon = new ShaderProgram();
             shaderToon.Create(gl,
                 ManifestResourceLoader.LoadTextFile(@"Shaders\Toon.vert"),
-                ManifestResourceLoader.LoadTextFile(@"Shaders\Toon.frag"));
-            shaderToon.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
-            shaderToon.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
-
+                ManifestResourceLoader.LoadTextFile(@"Shaders\Toon.frag"), attributeLocations);
             
             //  Generate the geometry and it's buffers.
-            trefoilKnot.GenerateGeometry(gl);
+            trefoilKnot.GenerateGeometry(gl, positionAttribute, normalAttribute);
         }
 
         /// <summary>
@@ -115,10 +121,8 @@ namespace CelShadingSample
             shader.SetUniformMatrix4(gl, "Modelview", modelviewMatrix.to_array());
             shader.SetUniformMatrix3(gl, "NormalMatrix", normalMatrix.to_array());
 
-            //  Bind the vertex, normal and index buffers.
-            trefoilKnot.VertexBuffer.Bind(gl);
-            trefoilKnot.NormalBuffer.Bind(gl);
-            trefoilKnot.IndexBuffer.Bind(gl);
+            //  Bind the vertex buffer array.
+            trefoilKnot.VertexBufferArray.Bind(gl);
                         
             //  Draw the elements.
             gl.DrawElements(OpenGL.GL_TRIANGLES, trefoilKnot.Indices.Length, OpenGL.GL_UNSIGNED_SHORT, IntPtr.Zero);

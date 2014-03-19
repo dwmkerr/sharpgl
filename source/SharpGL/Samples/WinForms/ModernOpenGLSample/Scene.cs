@@ -45,7 +45,7 @@ namespace ModernOpenGLSample
             var vertexShaderSource = ManifestResourceLoader.LoadTextFile("Shader.vert");
             var fragmentShaderSource = ManifestResourceLoader.LoadTextFile("Shader.frag");
             shaderProgram = new ShaderProgram();
-            shaderProgram.Create(gl, vertexShaderSource, fragmentShaderSource);
+            shaderProgram.Create(gl, vertexShaderSource, fragmentShaderSource, null);
             shaderProgram.BindAttributeLocation(gl, attributeIndexPosition, "in_Position");
             shaderProgram.BindAttributeLocation(gl, attributeIndexColour, "in_Color");
             shaderProgram.AssertValid(gl);

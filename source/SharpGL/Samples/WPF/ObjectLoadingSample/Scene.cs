@@ -30,7 +30,7 @@ namespace ObjectLoadingSample
             shaderPerPixel = new ShaderProgram();
             shaderPerPixel.Create(gl, 
                 ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.vert"),
-                ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"));
+                ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"), null);
             shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
             shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
             gl.ClearColor(0f,0f, 0f, 1f);
