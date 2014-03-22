@@ -120,6 +120,11 @@ namespace SharpGL.Shaders
             gl.Uniform3(GetUniformLocation(gl, uniformName), v1, v2, v3);
         }
 
+        public void SetUniform3(OpenGL gl, string uniformName, float[] v)
+        {
+            gl.Uniform3(GetUniformLocation(gl, uniformName), 3, v);
+        }
+
         public void SetUniformMatrix3(OpenGL gl, string uniformName, float[] m)
         {
             gl.UniformMatrix3(GetUniformLocation(gl, uniformName), 1, false, m);

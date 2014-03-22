@@ -19,6 +19,15 @@ namespace ObjectLoadingSample
         public const uint TexCoord = 2;
     }
 
+    public struct Light
+    {
+        public vec3 position;
+        public vec3 intensities;
+        public float attenuation;
+        public float ambientCoefficient;
+    };
+
+
     /// <summary>
     /// A class that represents the scene for this sample.
     /// </summary>
@@ -26,17 +35,37 @@ namespace ObjectLoadingSample
     {
         public void Initialise(OpenGL gl)
         {
+            var attributeLocations = new Dictionary<uint, string>
+            {
+                {VertexAttributes.Position, "Position"},
+                {VertexAttributes.Normal, "Normal"},
+                {VertexAttributes.TexCoord, "TexCoord"},
+            };
+
             //  Create the per pixel shader.
             shaderPerPixel = new ShaderProgram();
             shaderPerPixel.Create(gl, 
-                ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.vert"),
-                ManifestResourceLoader.LoadTextFile(@"Shaders\PerPixel.frag"), null);
-            shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Position, "Position");
-            shaderPerPixel.BindAttributeLocation(gl, VertexAttributes.Normal, "Normal");
-            gl.ClearColor(0f,0f, 0f, 1f);
+                ManifestResourceLoader.LoadTextFile(@"Shaders\Phong.vert"),
+                ManifestResourceLoader.LoadTextFile(@"Shaders\Phong.frag"), 
+                attributeLocations);
+
+            gl.ClearColor(1f,1f, 1f, 1f);
+
+            //  Setup the light.
+            light = new Light
+                    {
+                        position = new vec3(-4.0f, 0.0f, 4.0f),
+                        intensities = new vec3(1.0f, 1.0f, 1.0f),
+                        attenuation = 0.2f,
+                        ambientCoefficient = 0.005f
+                    };
 
             //  Immediate mode only features!
+            gl.Enable(OpenGL.GL_LIGHTING);
+            gl.Enable(OpenGL.GL_LIGHT0);
             gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.Enable(OpenGL.GL_DEPTH_TEST);
+            gl.Enable(OpenGL.GL_CULL_FACE); 
         }
 
         /// <summary>
@@ -119,22 +148,39 @@ namespace ObjectLoadingSample
             shaderPerPixel.Bind(gl);
 
             //  Set the light position.
-            shaderPerPixel.SetUniform3(gl, "LightPosition", 0.25f, 0.25f, 10f);
+            //shaderPerPixel.SetUniform3(gl, "LightPosition", 0.25f, 0.25f, 10f);
 
             //  Set the matrices.
             shaderPerPixel.SetUniformMatrix4(gl, "Projection", projectionMatrix.to_array());
             shaderPerPixel.SetUniformMatrix4(gl, "Modelview", modelviewMatrix.to_array());
             shaderPerPixel.SetUniformMatrix3(gl, "NormalMatrix", normalMatrix.to_array());
 
+            //  Set the light properties.
+            shaderPerPixel.SetUniform3(gl, "light.position", light.position.to_array());
+            shaderPerPixel.SetUniform3(gl, "light.intensities", light.intensities.to_array());
+            shaderPerPixel.SetUniform1(gl, "light.attenuation", light.attenuation);
+            shaderPerPixel.SetUniform1(gl, "light.ambientCoefficient", light.ambientCoefficient);
+
+            //  TODO set up the camera.
+            shaderPerPixel.SetUniform3(gl, "cameraPosition", 0, 0,0);
+
+
             //  Go through each mesh and render the vertex buffer array.
             foreach(var mesh in meshes)
             {
-                //  Set the variables for the shader program.
-                shaderPerPixel.SetUniform3(gl, "DiffuseMaterial", mesh.material.Diffuse.r, mesh.material.Diffuse.g, mesh.material.Diffuse.b);
-                shaderPerPixel.SetUniform3(gl, "AmbientMaterial", mesh.material.Ambient.r, mesh.material.Ambient.g, mesh.material.Ambient.b);
-                shaderPerPixel.SetUniform3(gl, "SpecularMaterial", mesh.material.Specular.r, mesh.material.Specular.g, mesh.material.Specular.b);
-                shaderPerPixel.SetUniform1(gl, "Shininess", mesh.material.Shininess);
+                gl.ActiveTexture(OpenGL.GL_TEXTURE0);
 
+                var texture = meshTextures.ContainsKey(mesh) ? meshTextures[mesh] : null;
+                if (texture != null)
+                    texture.Bind(gl);
+
+                //  TODO set up the material
+                shaderPerPixel.SetUniform1(gl, "materialTex", 0); //set to 0 because the texture will be bound to GL_TEXTURE0
+                shaderPerPixel.SetUniform1(gl, "materialShininess", mesh.material.Shininess);
+                shaderPerPixel.SetUniform3(gl, "materialDiffuseColor", mesh.material.Diffuse.r, mesh.material.Diffuse.g, mesh.material.Diffuse.b);
+                shaderPerPixel.SetUniform3(gl, "materialAmbientColor", mesh.material.Ambient.r, mesh.material.Ambient.g, mesh.material.Ambient.b);
+                shaderPerPixel.SetUniform3(gl, "materialSpecularColor", mesh.material.Specular.r, mesh.material.Specular.g, mesh.material.Specular.b);
+                
                 var vertexBufferArray = meshVertexBufferArrays[mesh];
                 vertexBufferArray.Bind(gl);
 
@@ -152,7 +198,10 @@ namespace ObjectLoadingSample
                 else if (mesh.indicesPerFace > 4)
                     mode = OpenGL.GL_POLYGON;
 
-                gl.DrawArrays(mode, 0, mesh.vertices.Length); 
+                gl.DrawArrays(mode, 0, mesh.vertices.Length);
+
+                if (texture != null)
+                    texture.Unbind(gl);
             }
 
             //  Unbind the shader.
@@ -300,5 +349,7 @@ namespace ObjectLoadingSample
         private mat3 normalMatrix = mat3.identity();
 
         private float scaleFactor = 1.0f;
+
+        private Light light;
     }
 }

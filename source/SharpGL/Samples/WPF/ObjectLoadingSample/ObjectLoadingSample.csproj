@@ -119,6 +119,8 @@
     <EmbeddedResource Include="Shaders\PerPixel.vert" />
     <EmbeddedResource Include="Shaders\Toon.frag" />
     <EmbeddedResource Include="Shaders\Toon.vert" />
+    <EmbeddedResource Include="Shaders\Phong.vert" />
+    <EmbeddedResource Include="Shaders\Phong.frag" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\SharpGL.WPF\SharpGL.WPF.csproj">
