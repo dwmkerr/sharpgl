@@ -79,39 +79,34 @@ namespace ObjectLoadingSample
             gl.LoadIdentity();
             gl.MultMatrix(modelviewMatrix.to_array());
 
-            //  Push the polygon attributes and set line mode.
-            gl.PushAttrib(OpenGL.GL_POLYGON_BIT);
-            gl.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Filled);
-
             //  Go through each group.
-            foreach (var bufferedGroup in meshes)
+            foreach (var mesh in meshes)
             {
-                var texture = meshTextures.ContainsKey(bufferedGroup) ? meshTextures[bufferedGroup] : null;
+                var texture = meshTextures.ContainsKey(mesh) ? meshTextures[mesh] : null;
                 if(texture != null)
                     texture.Bind(gl);
 
                 uint mode = OpenGL.GL_TRIANGLES;
-                if (bufferedGroup.indicesPerFace == 4)
+                if (mesh.indicesPerFace == 4)
                     mode = OpenGL.GL_QUADS;
-                else if(bufferedGroup.indicesPerFace > 4)
+                else if(mesh.indicesPerFace > 4)
                     mode = OpenGL.GL_POLYGON;
 
                 //  Render the group faces.
                 gl.Begin(mode);
-                for (int i = 0; i < bufferedGroup.vertices.Length; i++ )
+                for (int i = 0; i < mesh.vertices.Length; i++ )
                 {
-                    gl.Vertex(bufferedGroup.vertices[i].x, bufferedGroup.vertices[i].y, bufferedGroup.vertices[i].z);
-                    gl.Normal(bufferedGroup.normals[i].x, bufferedGroup.normals[i].y, bufferedGroup.normals[i].z);
-                    gl.TexCoord(bufferedGroup.uvs[i].x, bufferedGroup.uvs[i].y);
+                    gl.Vertex(mesh.vertices[i].x, mesh.vertices[i].y, mesh.vertices[i].z);
+                    if(mesh.normals != null)
+                        gl.Normal(mesh.normals[i].x, mesh.normals[i].y, mesh.normals[i].z);
+                    if(mesh.uvs != null)
+                        gl.TexCoord(mesh.uvs[i].x, mesh.uvs[i].y);
                 }
                 gl.End();
 
                 if(texture != null)
                     texture.Unbind(gl);
             }
-
-            //  Pop the attributes, restoring all polygon state.
-            gl.PopAttrib();
         }
 
         /// <summary>
@@ -205,19 +200,25 @@ namespace ObjectLoadingSample
             verticesVertexBuffer.SetData(gl, VertexAttributes.Position,
                                  mesh.vertices.SelectMany(v => v.to_array()).ToArray(),
                                  false, 3);
-            var normalsVertexBuffer = new VertexBuffer();
-            normalsVertexBuffer.Create(gl);
-            normalsVertexBuffer.Bind(gl);
-            normalsVertexBuffer.SetData(gl, VertexAttributes.Normal,
-                                 mesh.normals.SelectMany(v => v.to_array()).ToArray(),
-                                 false, 3);
-            var texCoordsVertexBuffer = new VertexBuffer();
-            texCoordsVertexBuffer.Create(gl);
-            texCoordsVertexBuffer.Bind(gl);
-            texCoordsVertexBuffer.SetData(gl, VertexAttributes.TexCoord,
-                                 mesh.normals.SelectMany(v => v.to_array()).ToArray(),
-                                 false, 2);
+            if (mesh.normals != null)
+            {
+                var normalsVertexBuffer = new VertexBuffer();
+                normalsVertexBuffer.Create(gl);
+                normalsVertexBuffer.Bind(gl);
+                normalsVertexBuffer.SetData(gl, VertexAttributes.Normal,
+                                            mesh.normals.SelectMany(v => v.to_array()).ToArray(),
+                                            false, 3);
+            }
 
+            if (mesh.uvs != null)
+            {
+                var texCoordsVertexBuffer = new VertexBuffer();
+                texCoordsVertexBuffer.Create(gl);
+                texCoordsVertexBuffer.Bind(gl);
+                texCoordsVertexBuffer.SetData(gl, VertexAttributes.TexCoord,
+                                              mesh.uvs.SelectMany(v => v.to_array()).ToArray(),
+                                              false, 2);
+            }
             //  We're done creating the vertex buffer array - unbind it and add it to the dictionary.
             verticesVertexBuffer.Unbind(gl);
             meshVertexBufferArrays[mesh] = vertexBufferArray;
@@ -225,7 +226,7 @@ namespace ObjectLoadingSample
 
         private void CreateTextures(OpenGL gl, IEnumerable<Mesh> meshes)
         {
-            foreach(var mesh in meshes.Where(m => m.material.TextureMapAmbient != null))
+            foreach(var mesh in meshes.Where(m => m.material.TextureMapDiffuse != null))
             {
                 //  Create a new texture and bind it.
                 var texture = new Texture2D();
@@ -235,7 +236,7 @@ namespace ObjectLoadingSample
                 texture.SetParameter(gl, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR);
                 texture.SetParameter(gl, OpenGL.GL_TEXTURE_WRAP_S, OpenGL.GL_CLAMP_TO_EDGE);
                 texture.SetParameter(gl, OpenGL.GL_TEXTURE_WRAP_T, OpenGL.GL_CLAMP_TO_EDGE);
-                texture.SetImage(gl, (Bitmap)mesh.material.TextureMapAmbient.Image);
+                texture.SetImage(gl, (Bitmap)mesh.material.TextureMapDiffuse.Image);
                 texture.Unbind(gl);
                 meshTextures[mesh] = texture;
             }

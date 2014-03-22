@@ -11,9 +11,6 @@
                     <MenuItem Header="_File">
                         <MenuItem x:Name="fileOpenItem" Header="_Open..." Click="fileOpenItem_Click" />
                     </MenuItem>
-                    <MenuItem Header="_Settings">
-                        <MenuItem x:Name="menuItemRetainedMode" Header="_Retained Mode" IsCheckable="True" IsChecked="True" />
-                    </MenuItem>
                 </Menu>
             </ToolBarPanel>
 
@@ -22,6 +19,18 @@
                     <Label Target="{Binding ElementName=textBoxScale}">Scale: </Label>
                     <TextBox x:Name="textBoxScale" Width="60" IsEnabled="False">1</TextBox>
                     <CheckBox x:Name="checkBoxAutoScale" IsChecked="True" IsEnabled="False">Auto</CheckBox>
+                    <Separator />
+                    <Label Target="{Binding ElementName=comboBoxRenderMode}">Render Mode: </Label>
+                    <ComboBox x:Name="comboBoxRenderMode" Width="100" SelectedIndex="1">
+                        <ComboBoxItem>Immediate</ComboBoxItem>
+                        <ComboBoxItem>Retained</ComboBoxItem>
+                    </ComboBox>
+                    <Label Target="{Binding ElementName=comboBoxPolygonMode}">Polygon Mode:</Label>
+                    <ComboBox x:Name="comboBoxPolygonMode" Width="100" SelectedIndex="2" SelectionChanged="comboBoxPolygonMode_SelectionChanged">
+                        <ComboBoxItem>Points</ComboBoxItem>
+                        <ComboBoxItem>Lines</ComboBoxItem>
+                        <ComboBoxItem>Polygons</ComboBoxItem>
+                    </ComboBox>
                 </ToolBar>
             </ToolBarTray>
 

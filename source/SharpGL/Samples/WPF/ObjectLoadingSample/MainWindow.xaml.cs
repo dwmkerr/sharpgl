@@ -47,10 +47,11 @@ namespace ObjectLoadingSample
             axies.Render(gl, RenderMode.Design);
 
             //  Render the scene in either immediate or retained mode.
-            if(menuItemRetainedMode.IsChecked)
-                scene.RenderRetainedMode(gl);
-            else 
-                scene.RenderImmediateMode(gl);
+            switch(comboBoxRenderMode.SelectedIndex)
+            {
+                case 0: scene.RenderImmediateMode(gl); break;
+                case 1: scene.RenderRetainedMode(gl); break;
+            }
         }
 
         private void OpenGLControl_OpenGLInitialized(object sender, OpenGLEventArgs args)
@@ -108,5 +109,21 @@ namespace ObjectLoadingSample
         /// The scene we're drawing.
         /// </summary>
         private readonly Scene scene = new Scene();
+
+        private void comboBoxPolygonMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (openGlCtrl == null || openGlCtrl.OpenGL == null)
+                return;
+
+            switch(comboBoxPolygonMode.SelectedIndex)
+            {
+                case 0: openGlCtrl.OpenGL.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Points);
+                    break;
+                case 1: openGlCtrl.OpenGL.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Lines);
+                    break;
+                case 2: openGlCtrl.OpenGL.PolygonMode(FaceMode.FrontAndBack, PolygonMode.Filled);
+                    break;
+            }
+        }
     }
 }

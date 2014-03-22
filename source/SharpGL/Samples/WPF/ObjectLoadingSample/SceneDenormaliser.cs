@@ -39,11 +39,21 @@ namespace ObjectLoadingSample
                     if(currentIndexCount != face.Indices.Count || i == group.Faces.Count - 1)
                     {
                         var indices = facesWithSameIndexCount.SelectMany(f => f.Indices).ToList();
+
+                        //  Create the mesh vertices.
+                        var vs = indices.Select(ind => vertics[ind.vertex]).Select(v => new vec3(v.x, v.y, v.z)).ToArray();
+                        var ns = indices.Any(ind => ind.normal.HasValue == false)
+                                          ? null
+                                          : indices.Select(ind => normals[ind.normal.Value]).Select(
+                                              v => new vec3(v.x, v.y, v.z)).ToArray();
+                        var ts = indices.Any(ind => ind.uv.HasValue == false)
+                                     ? null
+                                     : indices.Select(ind => uvs[ind.uv.Value]).Select(v => new vec2(v.u, v.v)).ToArray();
                         meshes.Add(new Mesh
                                    {
-                                       vertices = indices.Select(ind => vertics[ind.vertex]).Select(v => new vec3(v.x, v.y, v.z)).ToArray(),
-                                       normals = indices.Select(ind => normals[ind.normal.Value]).Select(v => new vec3(v.x, v.y, v.z)).ToArray(),
-                                       uvs = indices.Select(ind => uvs[ind.uv.Value]).Select(v => new vec2(v.u, v.v)).ToArray(),
+                                       vertices = vs,
+                                       normals = ns,
+                                       uvs = ts,
                                        material = facesWithSameIndexCount.First().Material,
                                        indicesPerFace = currentIndexCount
                                    });
