@@ -5,13 +5,14 @@
     <DisplayName>SharpGL</DisplayName>
     <Description xml:space="preserve">SharpGL unlocks the power of OpenGL for the .NET Framework. The SharpGL Visual Studio Extensions add project templates to Visual Studio that give you a quick start for OpenGL applications for WinForms or WPF.</Description>
     <MoreInfo>https://github.com/dwmkerr/sharpgl</MoreInfo>
+    <License>License.txt</License>
     <ReleaseNotes>https://github.com/dwmkerr/sharpgl/releases</ReleaseNotes>
     <Icon>SharpGL.ico</Icon>
     <PreviewImage>SharpGL.JPG</PreviewImage>
     <Tags>SharpGL, OpenGL, 3D</Tags>
   </Metadata>
   <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[11.0,12.0)" />
+    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Pro" />
     <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Premium" />
     <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Ultimate" />
   </Installation>
