@@ -39,6 +39,11 @@ PM> Install-Package SharpGLforWPF
 
 SharpGL for WPF includes the Core as well as OpenGL controls to drop into your WPF app.
 
+There are project templates available for SharpGL WinForms and WPF projects - just search for SharpGL on the Visual Studio Extensions gallery, or get the extensions directly:
+
+* [SharpGL for Visual Studio 2010](http://visualstudiogallery.msdn.microsoft.com/ba57efa3-4061-4cdf-97f5-51715c4f120a)
+* [SharpGL for Visual Studio 2012](http://visualstudiogallery.msdn.microsoft.com/b61cc443-4790-42b7-b7ab-2691119667d2)
+
 You can also get the binaries by going to the [Releases](https://github.com/dwmkerr/sharpgl/releases) page of this site.
 
 Building the Code
