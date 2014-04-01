@@ -28,7 +28,7 @@ $folderBinariesSharpGLSceneGraph = Join-Path $folderSharpGLRoot "Core\SharpGL.Sc
 $folderBinariesSharpGLSerialization = Join-Path $folderSharpGLRoot "Core\SharpGL.Serialization\bin\Release"
 $folderBinariesSharpGLWinForms = Join-Path $folderSharpGLRoot "Core\SharpGL.WinForms\bin\Release"
 $folderBinariesSharpGLWPF = Join-Path $folderSharpGLRoot "Core\SharpGL.WPF\bin\Release"
-$releaseVersion = [Reflection.Assembly]::LoadFile((Join-Path $folderBinariesSharpGL "SharpGL.dll")).GetName().Version
+$releaseVersion = [Reflection.Assembly]::LoadFile((Join-Path $folderBinariesSharpGL "SharpGL.dll")).GetName().Version.ToString()
 Write-Host "Built Core Libraries. Release Version: $releaseVersion"
 
 # Part 3 - Copy the core libraries to the release.
@@ -132,13 +132,18 @@ EnsureEmptyFolderExists($folderReleasePackages)
 $nuget = Join-Path $scriptParentPath "Resources\nuget.exe"
 
 CopyItems (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") (Join-Path $folderNuspecRoot "SharpGLCore\lib\net40")
-. $nuget pack (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec") -Version $releaseVersion -OutputDirectory $folderReleasePackages
+$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec")
+. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
 
 CopyItems (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") (Join-Path $folderNuspecRoot "SharpGLforWinForms\lib\net40")
-. $nuget pack (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec") -Version $releaseVersion -OutputDirectory $folderReleasePackages
+$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec")
+SetNuspecDependencyVersion $nuspecPath "SharpGLCore" $releaseVersion
+. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
 
 CopyItems (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") (Join-Path $folderNuspecRoot "SharpGLforWPF\lib\net40")
-. $nuget pack (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec") -Version $releaseVersion -OutputDirectory $folderReleasePackages
+$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec")
+SetNuspecDependencyVersion $nuspecPath "SharpGLCore" $releaseVersion
+. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
 
 # We're done!
 Write-Host "Successfully built version: $releaseVersion"
