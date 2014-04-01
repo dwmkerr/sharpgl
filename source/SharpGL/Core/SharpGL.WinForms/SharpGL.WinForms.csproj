@@ -63,6 +63,7 @@
     <Compile Include="GLColourPicker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IdleTimeManager.cs" />
     <Compile Include="MaterialListViewItem.cs" />
     <Compile Include="OpenGLControl.cs">
       <SubType>UserControl</SubType>

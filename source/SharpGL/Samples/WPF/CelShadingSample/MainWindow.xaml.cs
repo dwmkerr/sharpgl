@@ -29,15 +29,20 @@ namespace CelShadingSample
             //  Clear the color and depth buffer.
             gl.ClearColor(0f, 0f, 0f, 1f);
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT | OpenGL.GL_STENCIL_BUFFER_BIT);
-
-            //  Draw the axies.
-            axies.Render(gl, RenderMode.Design);
-
+            
             //  Render the scene in either immediate or retained mode.
             switch (comboRenderMode.SelectedIndex)
             {
-                case 0: scene.RenderRetainedMode(gl, checkBoxUseToonShader.IsChecked.Value); break;
-                case 1: scene.RenderImmediateMode(gl); break;
+                case 0: 
+                    {
+                        scene.RenderRetainedMode(gl, checkBoxUseToonShader.IsChecked.Value); break;
+                    }
+                case 1:
+                    {
+                        axies.Render(gl, RenderMode.Design);
+                        scene.RenderImmediateMode(gl); 
+                        break;
+                    }
                 default: break;
             }
         }
