@@ -117,7 +117,7 @@ $folderReleaseExtensions = Join-Path $folderRelease "Extensions"
 EnsureEmptyFolderExists($folderReleaseExtensions)
 CopyItems (Join-Path $folderExtensionsRoot "SharpGL.2010\bin\Release\SharpGL.2010.vsix") $folderReleaseExtensions
 CopyItems (Join-Path $folderExtensionsRoot "SharpGL\bin\Release\SharpGL.vsix") $folderReleaseExtensions
-Write-Host "Built extensions."
+Write-Host "Built extensions, updating VSIX files for the Visual Studio Gallery..."
 
 # Now use vsix tools to tweak the extensions.
 Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
