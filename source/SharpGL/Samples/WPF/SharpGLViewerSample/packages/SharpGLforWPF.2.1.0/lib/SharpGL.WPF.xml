@@ -1,0 +1,341 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpGL.WPF</name>
+    </assembly>
+    <members>
+        <member name="T:SharpGL.WPF.BitmapConversion">
+            <summary>
+            This class handles conversion to and from various bitmap types.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.BitmapConversion.HBitmapToBitmapSource(System.IntPtr)">
+            <summary>
+            Converts an HBitmap the bitmap to a bitmap source.
+            </summary>
+            <param name="hBitmap">The hbitmap.</param>
+            <returns>A BitmapSource.</returns>
+        </member>
+        <member name="M:SharpGL.WPF.BitmapConversion.DIBSectionToBitmapSource(SharpGL.DIBSection)">
+            <summary>
+            Convert a DIB section to a BitmapSource.
+            </summary>
+            <param name="dibSection">The dib section.</param>
+            <returns>The BitmapSource.</returns>
+        </member>
+        <member name="T:SharpGL.WPF.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SharpGL.WPF.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SharpGL.WPF.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:SharpGL.WPF.OpenGLControl">
+            <summary>
+            Interaction logic for OpenGLControl.xaml
+            </summary>
+            <summary>
+            OpenGLControl
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SharpGL.WPF.OpenGLControl"/> class.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.OpenGLControl_SizeChanged(System.Object,System.Windows.SizeChangedEventArgs)">
+            <summary>
+            Handles the SizeChanged event of the OpenGLControl control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.SizeChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or 
+            internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.timer_Tick(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Tick event of the timer control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.OnFrameRateChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the frame rate is changed.
+            </summary>
+            <param name="o">The object.</param>
+            <param name="args">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.eventArgsFast">
+            <summary>
+            A single event args for all our needs.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.gl">
+            <summary>
+            The OpenGL instance.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.timer">
+            <summary>
+            The dispatcher timer.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.stopwatch">
+            <summary>
+            A stopwatch used for timing rendering.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.frameTime">
+            <summary>
+            The last frame time in milliseconds.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.FrameRateProperty">
+            <summary>
+            The frame rate dependency property.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.RenderContextTypeProperty">
+            <summary>
+            The render context type property.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.OnRenderContextTypeChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when [render context type changed].
+            </summary>
+            <param name="o">The o.</param>
+            <param name="args">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:SharpGL.WPF.OpenGLControl.DrawFPSProperty">
+            <summary>
+            The DrawFPS property.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.OpenGLControl.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="E:SharpGL.WPF.OpenGLControl.OpenGLInitialized">
+            <summary>
+            Occurs when OpenGL should be initialised.
+            </summary>
+        </member>
+        <member name="E:SharpGL.WPF.OpenGLControl.OpenGLDraw">
+            <summary>
+            Occurs when OpenGL drawing should occur.
+            </summary>
+        </member>
+        <member name="E:SharpGL.WPF.OpenGLControl.Resized">
+            <summary>
+            Occurs when the control is resized. This can be used to perform custom projections.
+            </summary>
+        </member>
+        <member name="P:SharpGL.WPF.OpenGLControl.FrameRate">
+            <summary>
+            Gets or sets the frame rate.
+            </summary>
+            <value>The frame rate.</value>
+        </member>
+        <member name="P:SharpGL.WPF.OpenGLControl.RenderContextType">
+            <summary>
+            Gets or sets the type of the render context.
+            </summary>
+            <value>The type of the render context.</value>
+        </member>
+        <member name="P:SharpGL.WPF.OpenGLControl.DrawFPS">
+            <summary>
+            Gets or sets a value indicating whether to draw FPS.
+            </summary>
+            <value>
+              <c>true</c> if draw FPS; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:SharpGL.WPF.OpenGLControl.OpenGL">
+            <summary>
+            Gets the OpenGL instance.
+            </summary>
+        </member>
+        <member name="T:SharpGL.WPF.SceneTree.SceneTree">
+            <summary>
+            Interaction logic for SceneTree.xaml
+            </summary>
+            <summary>
+            SceneTree
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.SceneTree.SceneTree.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:SharpGL.WPF.CollectionCountToVisibilityConverter">
+            <summary>
+            If the count of a collection is zero, this converter returns collapsed.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.CollectionCountToVisibilityConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:SharpGL.WPF.CollectionCountToVisibilityConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:SharpGL.WPF.SceneView">
+            <summary>
+            Interaction logic for SceneView.xaml
+            </summary>
+            <summary>
+            SceneView
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SharpGL.WPF.SceneView"/> class.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.SceneView_SizeChanged(System.Object,System.Windows.SizeChangedEventArgs)">
+            <summary>
+            Handles the SizeChanged event of the SceneView control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.Windows.SizeChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or 
+            internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.timer_Tick(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Tick event of the timer control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.OnFrameRateChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the frame rate is changed.
+            </summary>
+            <param name="o">The object.</param>
+            <param name="args">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.timer">
+            <summary>
+            The dispatcher timer.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.stopwatch">
+            <summary>
+            A stopwatch used for timing rendering.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.frameTime">
+            <summary>
+            The last frame time in milliseconds.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.FrameRateProperty">
+            <summary>
+            The frame rate dependency property.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.DrawFPSProperty">
+            <summary>
+            The DrawFPS property.
+            </summary>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.SceneProperty">
+            <summary>
+            The Scene Dependency Property.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.OnSceneChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when [scene changed].
+            </summary>
+            <param name="o">The o.</param>
+            <param name="args">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:SharpGL.WPF.SceneView.CameraProperty">
+            <summary>
+            The camera dependency property.
+            </summary>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.OnCameraChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when [camera changed].
+            </summary>
+            <param name="o">The o.</param>
+            <param name="args">The <see cref="T:System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:SharpGL.WPF.SceneView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:SharpGL.WPF.SceneView.FrameRate">
+            <summary>
+            Gets or sets the frame rate.
+            </summary>
+            <value>The frame rate.</value>
+        </member>
+        <member name="P:SharpGL.WPF.SceneView.DrawFPS">
+            <summary>
+            Gets or sets a value indicating whether to draw FPS.
+            </summary>
+            <value>
+              <c>true</c> if draw FPS; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:SharpGL.WPF.SceneView.Scene">
+            <summary>
+            Gets or sets the scene.
+            </summary>
+            <value>
+            The scene.
+            </value>
+        </member>
+        <member name="P:SharpGL.WPF.SceneView.Camera">
+            <summary>
+            Gets or sets the camera.
+            </summary>
+            <value>
+            The camera.
+            </value>
+        </member>
+    </members>
+</doc>

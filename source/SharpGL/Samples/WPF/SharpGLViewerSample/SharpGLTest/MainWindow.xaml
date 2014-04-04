@@ -1,0 +1,14 @@
+﻿<Window x:Class="SharpGLTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF"
+        Title="SharpGL Viewer Sample" Height="350" Width="525" WindowState="Maximized"
+        MouseMove="MainWindow_MouseMove" MouseWheel="MainWindow_MouseWheel" MouseDown="MainWindow_MouseDown" MouseLeave="MainWindow_MouseLeave">
+    <Grid>
+        <sharpGL:OpenGLControl
+            OpenGLDraw="OpenGLControl_OpenGLDraw" OpenGLInitialized="OpenGLControl_OpenGLInitialized"
+            RenderContextType="FBO" Resized="OpenGLControl_Resized" DrawFPS="True">
+        </sharpGL:OpenGLControl>
+        <Label Content="{Binding Path=OnScreenDat, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" Foreground="Red"/>
+    </Grid>
+</Window>
