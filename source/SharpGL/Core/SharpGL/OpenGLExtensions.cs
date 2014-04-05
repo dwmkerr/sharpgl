@@ -5322,5 +5322,21 @@ namespace SharpGL
             int x, int y, uint width, uint height);
 
         #endregion
+
+        #region ARB_multi_draw_indirect
+
+        public void MultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride)
+        {
+            InvokeExtensionFunction<glMultiDrawArraysIndirect>(mode, indirect, primcount, stride);
+        }
+        public void MultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride)
+        {
+            InvokeExtensionFunction<glMultiDrawElementsIndirect>(mode, type, indirect, primcount, stride);
+        }
+
+        private delegate void glMultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride);
+        private delegate void glMultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride);
+
+        #endregion
     }
 }
