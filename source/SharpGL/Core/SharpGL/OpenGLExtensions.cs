@@ -5031,5 +5031,24 @@ namespace SharpGL
             uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, uint srcWidth, uint srcHeight, uint srcDepth);
 
         #endregion
+
+        #region GL_ARB_ES3_compatibility
+        
+        public const uint GL_COMPRESSED_RGB8_ETC2                          = 0x9274;
+        public const uint GL_COMPRESSED_SRGB8_ETC2                         = 0x9275;
+        public const uint GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2      = 0x9276;
+        public const uint GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2     = 0x9277;
+        public const uint GL_COMPRESSED_RGBA8_ETC2_EAC                     = 0x9278;
+        public const uint GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC              = 0x9279;
+        public const uint GL_COMPRESSED_R11_EAC                            = 0x9270;
+        public const uint GL_COMPRESSED_SIGNED_R11_EAC                     = 0x9271;
+        public const uint GL_COMPRESSED_RG11_EAC                           = 0x9272;
+        public const uint GL_COMPRESSED_SIGNED_RG11_EAC                    = 0x9273;
+        public const uint GL_PRIMITIVE_RESTART_FIXED_INDEX                 = 0x8D69;
+        public const uint GL_ANY_SAMPLES_PASSED_CONSERVATIVE               = 0x8D6A;
+        public const uint GL_MAX_ELEMENT_INDEX                             = 0x8D6B;
+        public const uint GL_TEXTURE_IMMUTABLE_LEVELS                      = 0x82DF;
+
+        #endregion
     }
 }
