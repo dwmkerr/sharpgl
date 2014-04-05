@@ -5483,5 +5483,115 @@ namespace SharpGL
         public const uint GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES          = 0x8F39;
 
         #endregion
+
+        #region GL_ARB_stencil_texturing
+
+        //  Constants
+        public const uint GL_DEPTH_STENCIL_TEXTURE_MODE = 0x90EA;
+
+        #endregion
+
+        #region GL_ARB_texture_buffer_range
+
+        /// <summary>
+        /// Bind a range of a buffer's data store to a buffer texture
+        /// </summary>
+        /// <param name="target">Specifies the target of the operation and must be GL_TEXTURE_BUFFER​.</param>
+        /// <param name="internalformat">Specifies the internal format of the data in the store belonging to buffer​.</param>
+        /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
+        /// <param name="offset">Specifies the offset of the start of the range of the buffer's data store to attach.</param>
+        /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
+        public void TexBufferRange(uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size)
+        {
+            InvokeExtensionFunction<glTexBufferRange>(target, internalformat, buffer, offset, size);
+        }
+
+        /// <summary>
+        /// Bind a range of a buffer's data store to a buffer texture
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="target">Specifies the target of the operation and must be GL_TEXTURE_BUFFER​.</param>
+        /// <param name="internalformat">Specifies the internal format of the data in the store belonging to buffer​.</param>
+        /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
+        /// <param name="offset">Specifies the offset of the start of the range of the buffer's data store to attach.</param>
+        /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
+        public void TextureBufferRangeEXT(uint texture, uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size)
+        {
+            InvokeExtensionFunction<glTextureBufferRangeEXT>(texture, target, internalformat, buffer, offset, size);
+        }
+
+        private delegate void glTexBufferRange(uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size);
+        private delegate void glTextureBufferRangeEXT(uint texture, uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size);
+
+        #endregion
+
+        #region GL_ARB_texture_storage_multisample
+
+        /// <summary>
+        /// Specify storage for a two-dimensional multisample texture.
+        /// </summary>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_2D_MULTISAMPLE​ or GL_PROXY_TEXTURE_2D_MULTISAMPLE​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+        public void TexStorage2DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations)
+        {
+            InvokeExtensionFunction<glTexStorage2DMultisample>(target, samples, internalformat, width, height, fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Specify storage for a three-dimensional multisample array texture
+        /// </summary>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_3D_MULTISAMPLE_ARRAY​ or GL_PROXY_TEXTURE_3D_MULTISAMPLE_ARRAY​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="depth">Specifies the depth of the texture, in layers.</param>
+        /// <param name="fixedsamplelocations">Specifies the depth of the texture, in layers.</param>
+        public void TexStorage3DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations)
+        {
+            InvokeExtensionFunction<glTexStorage3DMultisample>(target, samples, internalformat, width, height, depth, fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Specify storage for a two-dimensional multisample texture.
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_2D_MULTISAMPLE​ or GL_PROXY_TEXTURE_2D_MULTISAMPLE​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+        public void TexStorage2DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations)
+        {
+            InvokeExtensionFunction<glTexStorage2DMultisampleEXT>(texture, target, samples, internalformat, width, height, fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Specify storage for a three-dimensional multisample array texture
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_3D_MULTISAMPLE_ARRAY​ or GL_PROXY_TEXTURE_3D_MULTISAMPLE_ARRAY​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="depth">Specifies the depth of the texture, in layers.</param>
+        /// <param name="fixedsamplelocations">Specifies the depth of the texture, in layers.</param>
+        public void TexStorage3DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations)
+        {
+            InvokeExtensionFunction<glTexStorage3DMultisampleEXT>(texture, target, samples, internalformat, width, height, depth, fixedsamplelocations);
+        }
+
+        private delegate void glTexStorage2DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations);
+        private delegate void glTexStorage3DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations);
+        private delegate void glTexStorage2DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations);
+        private delegate void glTexStorage3DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations);
+
+        #endregion
     }
 }
