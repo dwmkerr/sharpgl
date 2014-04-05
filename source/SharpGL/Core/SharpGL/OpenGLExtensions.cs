@@ -4998,5 +4998,38 @@ namespace SharpGL
         public const uint GL_COMPUTE_SHADER_BIT = 0x00000020;
 
         #endregion
+
+        #region GL_ARB_copy_image
+
+        /// <summary>
+        /// Perform a raw data copy between two images
+        /// </summary>
+        /// <param name="srcName">The name of a texture or renderbuffer object from which to copy.</param>
+        /// <param name="srcTarget">The target representing the namespace of the source name srcName​.</param>
+        /// <param name="srcLevel">The mipmap level to read from the source.</param>
+        /// <param name="srcX">The X coordinate of the left edge of the souce region to copy.</param>
+        /// <param name="srcY">The Y coordinate of the top edge of the souce region to copy.</param>
+        /// <param name="srcZ">The Z coordinate of the near edge of the souce region to copy.</param>
+        /// <param name="dstName">The name of a texture or renderbuffer object to which to copy.</param>
+        /// <param name="dstTarget">The target representing the namespace of the destination name dstName​.</param>
+        /// <param name="dstLevel">The desination mipmap level.</param>
+        /// <param name="dstX">The X coordinate of the left edge of the destination region.</param>
+        /// <param name="dstY">The Y coordinate of the top edge of the destination region.</param>
+        /// <param name="dstZ">The Z coordinate of the near edge of the destination region.</param>
+        /// <param name="srcWidth">The width of the region to be copied.</param>
+        /// <param name="srcHeight">The height of the region to be copied.</param>
+        /// <param name="srcDepth">The depth of the region to be copied.</param>
+        public void CopyImageSubData(uint srcName, uint srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName,
+            uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, uint srcWidth, uint srcHeight, uint srcDepth)
+        {
+            InvokeExtensionFunction<glCopyImageSubData>(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, 
+            dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth);
+        }
+
+        //  Delegates
+        private delegate void glCopyImageSubData(uint srcName, uint srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName, 
+            uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, uint srcWidth, uint srcHeight, uint srcDepth);
+
+        #endregion
     }
 }
