@@ -4903,5 +4903,32 @@ namespace SharpGL
         public const int GL_MAX_UNIFORM_LOCATIONS = 0x826E;
 
         #endregion
+
+        #region GL_ARB_clear_buffer_object
+
+        public void ClearBufferData(uint target, uint internalformat, uint format, uint type, IntPtr data)
+        {
+            InvokeExtensionFunction<glClearBufferData>(target, internalformat, format, type, data);
+        }
+        public void ClearBufferSubData(uint target, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data)
+        {
+            InvokeExtensionFunction<glClearBufferSubData>(target, internalformat, offset, size, format, type, data);
+        }
+        public void ClearNamedBufferDataEXT(uint buffer, uint internalformat, uint format, uint type, IntPtr data)
+        {
+            InvokeExtensionFunction<glClearNamedBufferDataEXT>(buffer, internalformat, format, type, data);
+        }
+        public void ClearNamedBufferSubDataEXT(uint buffer, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data)
+        {
+            InvokeExtensionFunction<glClearNamedBufferSubDataEXT>(buffer, internalformat, offset, size, format, type, data);
+        }
+        
+        //  Delegates
+        private delegate void glClearBufferData(uint target, uint internalformat, uint format, uint type, IntPtr data);
+        private delegate void glClearBufferSubData(uint target, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data);
+        private delegate void glClearNamedBufferDataEXT(uint buffer, uint internalformat, uint format, uint type, IntPtr data);
+        private delegate void glClearNamedBufferSubDataEXT(uint buffer, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data);
+
+        #endregion
     }
 }
