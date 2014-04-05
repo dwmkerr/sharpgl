@@ -4891,5 +4891,17 @@ namespace SharpGL
         public const int ERROR_INVALID_PROFILE_ARB                = 0x2096;
 
         #endregion
+
+        #region GL_ARB_explicit_uniform_location
+
+        //  Constants
+
+        /// <summary>
+        /// The number of available pre-assigned uniform locations to that can default be 
+        /// allocated in the default uniform block.
+        /// </summary>
+        public const int GL_MAX_UNIFORM_LOCATIONS = 0x826E;
+
+        #endregion
     }
 }
