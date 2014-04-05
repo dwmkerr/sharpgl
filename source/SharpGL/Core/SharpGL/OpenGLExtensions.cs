@@ -5448,5 +5448,40 @@ namespace SharpGL
         private delegate int glGetProgramResourceLocationIndex(uint program, uint programInterface, string name);
 
         #endregion
+
+        #region GL_ARB_shader_storage_buffer_object
+
+        /// <summary>
+        /// Change an active shader storage block binding.
+        /// </summary>
+        /// <param name="program">The name of the program containing the block whose binding to change.</param>
+        /// <param name="storageBlockIndex">The index storage block within the program.</param>
+        /// <param name="storageBlockBinding">The index storage block binding to associate with the specified storage block.</param>
+        public void ShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding)
+        {
+            InvokeExtensionFunction<glShaderStorageBlockBinding>(program, storageBlockIndex, storageBlockBinding);
+        }
+
+        private delegate void glShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding);
+
+        //  Constants
+        public const uint GL_SHADER_STORAGE_BUFFER                         = 0x90D2;
+        public const uint GL_SHADER_STORAGE_BUFFER_BINDING                 = 0x90D3;
+        public const uint GL_SHADER_STORAGE_BUFFER_START                   = 0x90D4;
+        public const uint GL_SHADER_STORAGE_BUFFER_SIZE                    = 0x90D5;
+        public const uint GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS              = 0x90D6;
+        public const uint GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS            = 0x90D7;
+        public const uint GL_MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS        = 0x90D8;
+        public const uint GL_MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS     = 0x90D9;
+        public const uint GL_MAX_FRAGMENT_SHADER_STORAGE_BLOCKS            = 0x90DA;
+        public const uint GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS             = 0x90DB;
+        public const uint GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS            = 0x90DC;
+        public const uint GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS            = 0x90DD;
+        public const uint GL_MAX_SHADER_STORAGE_BLOCK_SIZE                 = 0x90DE;
+        public const uint GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT        = 0x90DF;
+        public const uint GL_SHADER_STORAGE_BARRIER_BIT                    = 0x2000;       
+        public const uint GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES          = 0x8F39;
+
+        #endregion
     }
 }
