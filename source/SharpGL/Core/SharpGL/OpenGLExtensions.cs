@@ -5325,10 +5325,26 @@ namespace SharpGL
 
         #region ARB_multi_draw_indirect
 
+        /// <summary>
+        /// Render multiple sets of primitives from array data, taking parameters from memory
+        /// </summary>
+        /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants GL_POINTS​, GL_LINE_STRIP​, GL_LINE_LOOP​, GL_LINES​, GL_LINE_STRIP_ADJACENCY​, GL_LINES_ADJACENCY​, GL_TRIANGLE_STRIP​, GL_TRIANGLE_FAN​, GL_TRIANGLES​, GL_TRIANGLE_STRIP_ADJACENCY​, GL_TRIANGLES_ADJACENCY​, and GL_PATCHES​ are accepted.</param>
+        /// <param name="indirect">Specifies the address of an array of structures containing the draw parameters.</param>
+        /// <param name="primcount">Specifies the the number of elements in the array of draw parameter structures.</param>
+        /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
         public void MultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride)
         {
             InvokeExtensionFunction<glMultiDrawArraysIndirect>(mode, indirect, primcount, stride);
         }
+
+        /// <summary>
+        /// Render indexed primitives from array data, taking parameters from memory
+        /// </summary>
+        /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants GL_POINTS​, GL_LINE_STRIP​, GL_LINE_LOOP​, GL_LINES​, GL_LINE_STRIP_ADJACENCY​, GL_LINES_ADJACENCY​, GL_TRIANGLE_STRIP​, GL_TRIANGLE_FAN​, GL_TRIANGLES​, GL_TRIANGLE_STRIP_ADJACENCY​, GL_TRIANGLES_ADJACENCY​, and GL_PATCHES​ are accepted.</param>
+        /// <param name="type">Specifies the type of data in the buffer bound to the GL_ELEMENT_ARRAY_BUFFER​ binding.</param>
+        /// <param name="indirect">Specifies a byte offset (cast to a pointer type) into the buffer bound to GL_DRAW_INDIRECT_BUFFER​, which designates the starting point of the structure containing the draw parameters.</param>
+        /// <param name="primcount">Specifies the number of elements in the array addressed by indirect​.</param>
+        /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
         public void MultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride)
         {
             InvokeExtensionFunction<glMultiDrawElementsIndirect>(mode, type, indirect, primcount, stride);
@@ -5336,6 +5352,100 @@ namespace SharpGL
 
         private delegate void glMultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride);
         private delegate void glMultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride);
+
+        #endregion
+
+        #region GL_ARB_program_interface_query
+
+        /// <summary>
+        /// Query a property of an interface in a program
+        /// </summary>
+        /// <param name="program">The name of a program object whose interface to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ to query.</param>
+        /// <param name="pname">The name of the parameter within programInterface​ to query.</param>
+        /// <param name="parameters">The address of a variable to retrieve the value of pname​ for the program interface..</param>
+        public void GetProgramInterface(uint program, uint programInterface, uint pname, int[] parameters)
+        {
+            InvokeExtensionFunction<glGetProgramInterfaceiv>(program, programInterface, pname, parameters);
+        }
+
+        /// <summary>
+        /// Query the index of a named resource within a program
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="name">The name of the resource to query the index of.</param>
+        public void GetProgramResourceIndex(uint program, uint programInterface, string name)
+        {
+            InvokeExtensionFunction<glGetProgramResourceIndex>(program, programInterface, name);
+        }
+
+        /// <summary>
+        /// Query the name of an indexed resource within a program
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the indexed resource.</param>
+        /// <param name="index">The index of the resource within programInterface​ of program​.</param>
+        /// <param name="bufSize">The size of the character array whose address is given by name​.</param>
+        /// <param name="length">The address of a variable which will receive the length of the resource name.</param>
+        /// <param name="name">The address of a character array into which will be written the name of the resource.</param>
+        public void GetProgramResourceName(uint program, uint programInterface, uint index, uint bufSize, out uint length, out string name)
+        {
+            var lengthParameter = new uint[1];
+            var nameParameter = new string[1];
+            InvokeExtensionFunction<glGetProgramResourceName>(program, programInterface, index, bufSize, lengthParameter, nameParameter);
+            length = lengthParameter[0];
+            name = nameParameter[0];
+        }
+
+        /// <summary>
+        /// Retrieve values for multiple properties of a single active resource within a program object
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="index">The index within the programInterface​ to query information about.</param>
+        /// <param name="propCount">The number of properties being queried.</param>
+        /// <param name="props">An array of properties of length propCount​ to query.</param>
+        /// <param name="bufSize">The number of GLint values in the params​ array.</param>
+        /// <param name="length">If not NULL, then this value will be filled in with the number of actual parameters written to params​.</param>
+        /// <param name="parameters">The output array of parameters to write.</param>
+        public void GetProgramResource(uint program, uint programInterface, uint index, uint propCount, uint[] props, uint bufSize, out uint length, out int[] parameters)
+        {
+            var lengthParameter = new uint[1];
+            var parametersParameter = new int[1][];
+            InvokeExtensionFunction<glGetProgramResourceiv>(program, programInterface, index, propCount, props, bufSize, lengthParameter, parametersParameter);
+            length = lengthParameter[0];
+            parameters = parametersParameter[0];
+        }
+
+        /// <summary>
+        /// Query the location of a named resource within a program.
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="name">The name of the resource to query the location of.</param>
+        public void GetProgramResourceLocation(uint program, uint programInterface, string name)
+        {
+            InvokeExtensionFunction<glGetProgramResourceLocation>(program, programInterface, name);
+        }
+
+        /// <summary>
+        /// Query the fragment color index of a named variable within a program.
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="name">The name of the resource to query the location of.</param>
+        public void GetProgramResourceLocationIndex(uint program, uint programInterface, string name)
+        {
+            InvokeExtensionFunction<glGetProgramResourceLocationIndex>(program, programInterface, name);
+        }
+
+        private delegate void glGetProgramInterfaceiv(uint program, uint programInterface, uint pname, int[] parameters);
+        private delegate uint glGetProgramResourceIndex(uint program, uint programInterface, string name);
+        private delegate void glGetProgramResourceName(uint program, uint programInterface, uint index, uint bufSize, uint[] length, string[] name);
+        private delegate void glGetProgramResourceiv(uint program, uint programInterface, uint index, uint propCount, uint[] props, uint bufSize, uint[] length, int[] parameters);
+        private delegate int glGetProgramResourceLocation(uint program, uint programInterface, string name);
+        private delegate int glGetProgramResourceLocationIndex(uint program, uint programInterface, string name);
 
         #endregion
     }
