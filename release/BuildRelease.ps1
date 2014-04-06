@@ -121,10 +121,10 @@ CopyItems (Join-Path $folderExtensionsRoot "SharpGL\bin\Release\SharpGL.vsix") $
 Write-Host "Built extensions, updating VSIX files for the Visual Studio Gallery..."
 
 # Now use vsix tools to tweak the extensions.
-#Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
-#Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") -Version $releaseVersion
-#Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") 
-#Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") 
+Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
+Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") -Version $releaseVersion
+Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") 
+Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") 
 
 # Part 10 - Build the Nuget Packages
 Write-Host "Preparing to build the Nuget Packages..."
