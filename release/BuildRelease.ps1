@@ -15,8 +15,7 @@ $scriptParentPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 $folderReleaseRoot = $scriptParentPath
 $folderSourceRoot = Split-Path -parent $folderReleaseRoot
 $folderSharpGLRoot = Join-Path $folderSourceRoot "source\SharpGL"
-$folderNuspecRoot = Join-Path $folderSourceRoot "build\nuspec"
-$folderNewNuspecRoot = Join-Path $folderSourceRoot "release\Specs"
+$folderNuspecRoot = Join-Path $folderSourceRoot "release\Specs"
 
 # Part 1 - Build the core libraries.
 Write-Host "Preparing to build the core libraries..."
@@ -53,9 +52,15 @@ EnsureEmptyFolderExists($folderReleaseSamples)
 $releaseFolders = gci (Join-Path $folderSharpGLRoot "Samples") -Recurse -Directory -filter "Release" | select FullName
 $releaseFolders | ForEach {
     $releaseFolder = $_.FullName
-    $sampleName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
-    Write-Host "Built Sample: $sampleName"
-    CopyItems (Join-Path $releaseFolder "*.*") (Join-Path $folderReleaseSamples "$sampleName")
+    if ((GetParentFolderName $releaseFolder) -eq "bin") {
+        $sampleName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
+        Write-Host "Built Sample: $sampleName"
+
+        # Make sure the destination directory exists, copy the files over.
+        $destinationFolder = (Join-Path $folderReleaseSamples "$sampleName")
+        EnsureFolderExists $destinationFolder    
+        Get-ChildItem $releaseFolder -Recurse -Exclude '*.pdb*', '*.xml*' | Copy-Item -Destination $destinationFolder
+    }
 }
 Write-Host "Built samples."
 
@@ -70,9 +75,15 @@ EnsureEmptyFolderExists($folderReleaseTools)
 $releaseFolders = gci (Join-Path $folderSharpGLRoot "Tools") -Recurse -Directory -filter "Release" | select FullName
 $releaseFolders | ForEach {
     $releaseFolder = $_.FullName
-    $toolName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
-    Write-Host "Built Tool: $toolName"
-    CopyItems (Join-Path $releaseFolder "*.*") (Join-Path $folderReleaseTools "$toolName")
+    if ((GetParentFolderName $releaseFolder) -eq "bin") {
+        $toolName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
+        Write-Host "Built Tool: $toolName"
+
+        # Make sure the destination directory exists, copy the files over.
+        $destinationFolder = (Join-Path $folderReleaseTools "$toolName")
+        EnsureFolderExists $destinationFolder    
+        Get-ChildItem $releaseFolder -Recurse -Exclude '*.pdb*' | Copy-Item -Destination $destinationFolder
+    }
 }
 Write-Host "Built tools."
 
@@ -132,12 +143,12 @@ $folderReleasePackages = Join-Path $folderRelease "Packages"
 EnsureEmptyFolderExists($folderReleasePackages)
 $nuget = Join-Path $scriptParentPath "Resources\nuget.exe"
 
-CreateNugetPackage $nuget (Join-Path $folderNewNuspecRoot "SharpGL.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNewNuspecRoot "SharpGL.WinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNewNuspecRoot "SharpGL.WPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.WinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.WPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLCore.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
 
 # We're done!
 Write-Host "Successfully built version: $releaseVersion"

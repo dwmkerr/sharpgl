@@ -24,6 +24,12 @@ function EnsureEmptyFolderExists($folder) {
     EnsureFolderExists($folder)
 }
 
+# Gets the name of the parent folder.
+function GetParentFolderName($folderPath) {
+    return Split-Path (Split-Path $releaseFolder) -leaf
+}
+
+
 # Creates a temporary directory, returning the path.
 function CreateTemporaryDirectory {   
     
