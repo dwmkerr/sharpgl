@@ -16,6 +16,7 @@ $folderReleaseRoot = $scriptParentPath
 $folderSourceRoot = Split-Path -parent $folderReleaseRoot
 $folderSharpGLRoot = Join-Path $folderSourceRoot "source\SharpGL"
 $folderNuspecRoot = Join-Path $folderSourceRoot "build\nuspec"
+$folderNewNuspecRoot = Join-Path $folderSourceRoot "release\Specs"
 
 # Part 1 - Build the core libraries.
 Write-Host "Preparing to build the core libraries..."
@@ -120,10 +121,10 @@ CopyItems (Join-Path $folderExtensionsRoot "SharpGL\bin\Release\SharpGL.vsix") $
 Write-Host "Built extensions, updating VSIX files for the Visual Studio Gallery..."
 
 # Now use vsix tools to tweak the extensions.
-Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
-Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") -Version $releaseVersion
-Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") 
-Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") 
+#Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
+#Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") -Version $releaseVersion
+#Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") 
+#Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") 
 
 # Part 10 - Build the Nuget Packages
 Write-Host "Preparing to build the Nuget Packages..."
@@ -131,19 +132,12 @@ $folderReleasePackages = Join-Path $folderRelease "Packages"
 EnsureEmptyFolderExists($folderReleasePackages)
 $nuget = Join-Path $scriptParentPath "Resources\nuget.exe"
 
-CopyItems (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") (Join-Path $folderNuspecRoot "SharpGLCore\lib\net40")
-$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec")
-. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
-
-CopyItems (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") (Join-Path $folderNuspecRoot "SharpGLforWinForms\lib\net40")
-$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec")
-SetNuspecDependencyVersion $nuspecPath "SharpGLCore" $releaseVersion
-. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
-
-CopyItems (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") (Join-Path $folderNuspecRoot "SharpGLforWPF\lib\net40")
-$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec")
-SetNuspecDependencyVersion $nuspecPath "SharpGLCore" $releaseVersion
-. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNewNuspecRoot "SharpGL.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNewNuspecRoot "SharpGL.WinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNewNuspecRoot "SharpGL.WPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
 
 # We're done!
 Write-Host "Successfully built version: $releaseVersion"
