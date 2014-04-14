@@ -12,6 +12,10 @@ namespace CelShadingSample
     /// </summary>
     public class Scene
     {
+        /// <summary>
+        /// Initialises the Scene.
+        /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
         public void Initialise(OpenGL gl)
         {
             //  We're going to specify the attribute locations for the position and normal, 
