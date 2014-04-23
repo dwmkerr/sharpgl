@@ -61,9 +61,19 @@ namespace FastGL
 		Surface _renderBuffer;
 
 		/// <summary>
+		/// BackBuffer of our device
+		/// </summary>
+		Surface _backBuffer;
+
+		/// <summary>
 		/// The DirectX-texture to render on.
 		/// </summary>
 		Texture _texture;
+
+		/// <summary>
+		/// The handle of our dummy-window.
+		/// </summary>
+		IntPtr _hwnd;
 
 		/// <summary>
 		/// Creates a new instance of the FastGLControl-class.
@@ -99,23 +109,9 @@ namespace FastGL
 		{
 			_gl = new OpenGL();
 
-			IntPtr hwnd = new HwndSource(0, 0, 0, 0, 0, "test", IntPtr.Zero).Handle;
+			_hwnd = new HwndSource(0, 0, 0, 0, 0, "test", IntPtr.Zero).Handle;
 
-			_gl.Create(SharpGL.Version.OpenGLVersion.OpenGL2_1, RenderContextType.HiddenWindow, 1, 1, 32, hwnd);
-
-			PresentParameters pp = new PresentParameters();
-			pp.DeviceWindowHandle = hwnd;
-			pp.Windowed = true;
-			pp.SwapEffect = SwapEffect.Flip;
-			pp.PresentationInterval = PresentInterval.Default;
-			pp.BackBufferWidth = (int)ActualWidth;
-			pp.BackBufferHeight = (int)ActualHeight;
-			pp.BackBufferFormat = Format.X8R8G8B8;
-			pp.BackBufferCount = 1;
-
-			_device = new DeviceEx(_d3dex, 0, DeviceType.Hardware, hwnd, CreateFlags.HardwareVertexProcessing | CreateFlags.PureDevice | CreateFlags.FpuPreserve | CreateFlags.Multithreaded, pp);
-			_gl.MakeCurrent();
-			_dxDeviceGLHandle = _gl.DXOpenDeviceNV(_device.ComPointer);
+			_gl.Create(SharpGL.Version.OpenGLVersion.OpenGL2_1, RenderContextType.HiddenWindow, 1, 1, 32, _hwnd);
 
 			//  Set the most basic OpenGL styles.
 			_gl.ShadeModel(OpenGL.GL_SMOOTH);
@@ -130,15 +126,16 @@ namespace FastGL
 
 			_gl.BlendFunc(OpenGL.GL_SRC_ALPHA, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
 
+			//_gl.Enable(OpenGL.GL_MULTISAMPLE);
+			//_gl.Enable(OpenGL.GL_MULTISAMPLE_ARB);
+
+			_gl.Hint(0x8534, OpenGL.GL_FASTEST);
+
 			ResizeRendering();
 
 			// leverage the Rendering event of WPF's composition target to
 			// update the custom D3D scene
 			CompositionTarget.Rendering += OnRenderOpenGL;
-
-			_image.Lock();
-			_image.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _device.GetBackBuffer(0, 0).ComPointer);
-			_image.Unlock();
 
 			if (GLInitialize != null)
 				GLInitialize(this, new EventArgs());
@@ -148,7 +145,7 @@ namespace FastGL
 		/// Change the size of the rendering.
 		/// </summary>
 		private void ResizeRendering()
-		{	
+		{
 			if (_gl.IsTexture(_glRenderBufferName) == 1)
 				_gl.DeleteTextures(1, new uint[] { _glRenderBufferName });
 
@@ -169,9 +166,30 @@ namespace FastGL
 			}
 
 			if (_renderBuffer != null)
-			{
 				_renderBuffer.Dispose();
-			}
+
+			if (_backBuffer != null)
+				_backBuffer.Dispose();
+
+			if (_device != null)
+				_device.Dispose();
+
+			if (_dxDeviceGLHandle != IntPtr.Zero)
+				_gl.DXCloseDeviceNV(_dxDeviceGLHandle);
+
+			PresentParameters pp = new PresentParameters();
+			pp.DeviceWindowHandle = _hwnd;
+			pp.Windowed = true;
+			pp.SwapEffect = SwapEffect.Flip;
+			pp.PresentationInterval = PresentInterval.Default;
+			pp.BackBufferWidth = (int)ActualWidth;
+			pp.BackBufferHeight = (int)ActualHeight;
+			pp.BackBufferFormat = Format.X8R8G8B8;
+			pp.BackBufferCount = 1;
+
+			_device = new DeviceEx(_d3dex, 0, DeviceType.Hardware, _hwnd, CreateFlags.HardwareVertexProcessing | CreateFlags.PureDevice | CreateFlags.FpuPreserve | CreateFlags.Multithreaded, pp);
+			_gl.MakeCurrent();
+			_dxDeviceGLHandle = _gl.DXOpenDeviceNV(_device.ComPointer);
 
 			_texture = new Texture(_device, (int)ActualWidth, (int)ActualHeight, 1, Usage.None, Format.X8R8G8B8, Pool.Default);
 			_renderBuffer = _texture.GetSurfaceLevel(0);
@@ -200,11 +218,16 @@ namespace FastGL
 			_gl.MatrixMode(OpenGL.GL_MODELVIEW);
 			_gl.LoadIdentity();
 
-			// Correction for rendering pixel-accurate.
+			// Korrektur, siehe auch:
 			// http://msdn.microsoft.com/en-us/library/windows/desktop/dd374282(v=vs.85).aspx
 			_gl.Translate(0.375, 0.375, 0);
 
 			_gl.DXUnlockObjectsNV(_dxDeviceGLHandle, new IntPtr[] { _glRenderBufferHandle });
+
+			_image.Lock();
+			_backBuffer = _device.GetBackBuffer(0, 0);
+			_image.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _backBuffer.ComPointer);
+			_image.Unlock();
 		}
 
 		/// <summary>
@@ -218,6 +241,8 @@ namespace FastGL
 			_gl.DXCloseDeviceNV(_dxDeviceGLHandle);
 
 			_renderBuffer.Dispose();
+			_texture.Dispose();
+			_backBuffer.Dispose();
 			_device.Dispose();
 
 			// This method is called when WPF loses its D3D device.
