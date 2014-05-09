@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SharpGL
 {
-	public partial class OpenGL
+    public partial class OpenGL
     {
 
         #region Missing constants
@@ -43,7 +43,7 @@ namespace SharpGL
         public IntPtr MapBufferRange(uint target, int offset, int length, uint access)
         {
             return (IntPtr)InvokeExtensionFunction<glMapBufferRange>(target, offset, length, access);
-		}
+        }
 
         #endregion Missing Wrapped OpenGL Functions
 
@@ -57,7 +57,7 @@ namespace SharpGL
             var intData = new int[data.Length];
             Buffer.BlockCopy(data, 0, intData, 0, dataSize);
             Marshal.Copy(intData, 0, p, data.Length);
-            InvokeExtensionFunction<glBufferData>(target, dataSize, data, usage);
+            InvokeExtensionFunction<glBufferData>(target, dataSize, p, usage);
             Marshal.FreeHGlobal(p);
         }
 
@@ -68,7 +68,7 @@ namespace SharpGL
             var byteData = new byte[data.Length];
             Buffer.BlockCopy(data, 0, byteData, 0, dataSize);
             Marshal.Copy(byteData, 0, p, data.Length);
-            InvokeExtensionFunction<glBufferData>(target, dataSize, data, usage);
+            InvokeExtensionFunction<glBufferData>(target, dataSize, p, usage);
             Marshal.FreeHGlobal(p);
         }
     }
