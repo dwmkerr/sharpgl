@@ -1,0 +1,11 @@
+﻿<Window x:Class="SharpGLMaterialSample.MainWindow"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SharpGLMaterialSample" Height="350" Width="525" WindowState="Maximized">
+    <Grid>
+        <sharpGL:OpenGLControlJOG OpenGLDraw="Draw" OpenGLInitialized="Init" Resized="Resized" RenderContextType="FBO"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0"/>
+
+    </Grid>
+</Window>

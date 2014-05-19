@@ -33,6 +33,7 @@ namespace SharpGL
         public const uint GL_SHADER_STORAGE_BUFFER = 0x90D2;
 
         public const uint GL_MAP_READ_BIT = 0x0001;
+
         #endregion Missing constants
 
         #region Missing DLL Functions

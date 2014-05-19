@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,6 +73,9 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CollectionCountToVisibilityConverter.cs" />
+    <Compile Include="OpenGLControlJOG.xaml.cs">
+      <DependentUpon>OpenGLControlJOG.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SceneTree\SceneTree.xaml.cs">
       <DependentUpon>SceneTree.xaml</DependentUpon>
     </Compile>
@@ -81,6 +85,10 @@
     <Page Include="OpenGLControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OpenGLControlJOG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SceneTree\SceneTree.xaml">
       <SubType>Designer</SubType>
@@ -131,11 +139,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">
-      <Project>{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}</Project>
+      <Project>{47bcaa39-edad-4404-b6bd-4742b0abb523}</Project>
       <Name>SharpGL.SceneGraph</Name>
     </ProjectReference>
     <ProjectReference Include="..\SharpGL\SharpGL.csproj">
-      <Project>{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}</Project>
+      <Project>{5ef45533-e2c7-46f2-b4a3-b8f36cd406e0}</Project>
       <Name>SharpGL</Name>
     </ProjectReference>
   </ItemGroup>
