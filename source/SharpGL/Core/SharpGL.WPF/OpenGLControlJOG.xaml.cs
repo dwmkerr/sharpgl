@@ -77,8 +77,14 @@ namespace SharpGL.WPF
         /// </summary>
         public ImageSource ImgSource 
         { 
-            get { return _imgSource; } 
-            set { _imgSource = value; }
+            get { return _imgSource; }
+            set
+            {
+                if (RefreshImgSource) _imgSource = value;
+
+                // Notify that the frame was updated.
+                OnPropertyChanged("ImgSource");
+            }
         }
         
         /// <summary>
@@ -109,9 +115,14 @@ namespace SharpGL.WPF
         //}
         /// <summary>
         /// Whether or not the image has to be refreshed by retrieving an update from the GPU.
+        /// Prevents setting ImgSource.
         /// </summary>
-        public bool RefreshImage { get; set; }
+        public bool RefreshImgSource { get; set; }
 
+        /// <summary>
+        /// Prevents executing GetFrame(...).
+        /// </summary>
+        public bool BlitImage { get; set; }
 
 
 
@@ -205,7 +216,8 @@ namespace SharpGL.WPF
         {
             InitializeComponent();
             DataContext = this;
-            RefreshImage = true;
+            RefreshImgSource = true;
+            BlitImage = true;
         }
         #endregion constructors
 
@@ -220,18 +232,20 @@ namespace SharpGL.WPF
         /// <summary>
         /// Calls Viewport.GetFrame() and updates the ImgSource.
         /// </summary>
-        public void Refresh(bool notifyChanged = true)
+        public void Refresh()
         {
             // Update the frame.
-            ImgSource = GetFrame();
-
-            // Notify that the frame was updated.
-            if (notifyChanged)
-                OnPropertyChanged("ImgSource");
+            if (BlitImage)
+            {
+                ImgSource = GetFrame();
+            }
         }
 
         public ImageSource GetFrame()
         {
+            if (!BlitImage)
+                return ImgSource;
+
             lock (Gl)
             {
                 Gl.Blit(IntPtr.Zero);
@@ -373,8 +387,7 @@ namespace SharpGL.WPF
         public virtual void Timer_Tick(object sender, EventArgs e)
         {
             stopwatch.Restart();
-            if (RefreshImage)
-                Refresh();
+            Refresh();
             OnOpenGLDraw();
 
             stopwatch.Stop();

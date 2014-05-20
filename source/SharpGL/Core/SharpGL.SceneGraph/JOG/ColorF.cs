@@ -129,5 +129,22 @@ namespace SharpGL.SceneGraph.JOG
             // Get color id from pixel data.
             return (uint)(R * 255 + G * 65025 + B * 16581375); // r * 255 + g * 255² + b * 255³.
         }
+
+        public float[] ToRGB()
+        {
+            return new float[] { R, G, B };
+        }
+        public float[] ToRGBA()
+        {
+            return new float[] { R, G, B, A };
+        }
+        public float[] ToBGR()
+        {
+            return new float[] { B, G, R };
+        }
+        public float[] ToBGRA()
+        {
+            return new float[] { B, G, R, A };
+        }
     }
 }
