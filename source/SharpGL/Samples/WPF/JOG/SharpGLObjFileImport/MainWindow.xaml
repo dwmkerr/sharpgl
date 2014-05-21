@@ -1,0 +1,18 @@
+﻿<Window x:Class="SharpGLObjFileImport.MainWindow"
+        xmlns:sharpGL="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SharpGLObjFileImport" Height="350" Width="525" WindowState="Maximized">
+    <Grid>
+        <sharpGL:OpenGLControlJOG OpenGLDraw="Draw" OpenGLInitialized="Init" Resized="Resized" RenderContextType="FBO"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,30,0,0"/>
+        <ToolBar HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30">
+            <ToolBar.Items>
+                <Button Content="Open using dialog" Click="BtnOpen_Click"/>
+                <TextBox Height="25" Margin="0" TextWrapping="Wrap" Width="250" Text="{Binding Path=URL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" />
+                <Button Content="Open from URL" Click="BtnOpenUrl_Click"/>
+            </ToolBar.Items>
+        </ToolBar>
+
+    </Grid>
+</Window>

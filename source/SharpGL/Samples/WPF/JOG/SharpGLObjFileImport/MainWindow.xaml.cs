@@ -1,12 +1,12 @@
 ﻿using GlmNet;
+using Microsoft.Win32;
 using SharpGL.SceneGraph;
-using SharpGL.WPF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SharpGLHitTestSample
+namespace SharpGLObjFileImport
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -44,6 +44,8 @@ namespace SharpGLHitTestSample
         public Action<object, OpenGLEventArgs> Draw { get { return Controller.Draw; } }
         public Action<object, OpenGLEventArgs> Init { get { return Controller.Init; } }
         public Action<object, OpenGLEventArgs> Resized { get { return Controller.Resized; } }
+
+        public string URL { get; set; }
         #endregion properties
 
         #region events
@@ -63,27 +65,17 @@ namespace SharpGLHitTestSample
         {
             InitializeComponent();
             DataContext = this;
+            MouseMove += MainWindow_MouseMove;
             MouseWheel += MainWindow_MouseWheel;
-
+            MouseDown += MainWindow_MouseDown;
 
         }
         #endregion constructors
 
-        private void OpenGLControlJOG_MouseDown(object sender, MouseButtonEventArgs e)
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var control = sender as OpenGLControlJOG;
-
             // Click
-            _previousPosition = e.GetPosition(control);
-
-            // Check if hittest scene is up to date.
-            if (Controller.HtProgram.ChangedUniforms.Count == 0)
-            {
-                var id = Controller.DoHitTest(control.Gl, (int)(_previousPosition.X), (int)(control.ActualHeight - _previousPosition.Y));
-
-                if (id > 0)
-                    MessageBox.Show("Clicked object has ID " + id);
-            }
+            _previousPosition = e.GetPosition(sender as Window);
         }
 
         private void MainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -93,10 +85,9 @@ namespace SharpGLHitTestSample
             Controller.RefreshModelview();
         }
 
-        private void OpenGLControlJOG_MouseMove(object sender, MouseEventArgs e)
+        private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
-            var pos = e.GetPosition(sender as OpenGLControlJOG);
-
+            var pos = e.GetPosition(sender as Window);
 
             float xDiff = (float)(_previousPosition.X - pos.X);
             float yDiff = (float)(_previousPosition.Y - pos.Y);
@@ -121,5 +112,36 @@ namespace SharpGLHitTestSample
             _previousPosition = pos;
         }
 
+        private void BtnOpen_Click(object sender, RoutedEventArgs e)
+        {
+
+            var ofDlg = new OpenFileDialog();
+            
+            // Set filter for file extension and default file extension
+            ofDlg.DefaultExt = ".obj";
+            ofDlg.Filter = "OBJ WaveFront (.obj)|*.obj";
+            var res = ofDlg.ShowDialog();
+            if (res == true)
+            {
+                Controller.RunOnNextDraw.Add(() =>
+                {
+                    var fileName = ofDlg.FileName;
+                    var objFM = new ObjFileModel(fileName);
+
+                    Controller.AddData(objFM.Indices, objFM.Vertices.Select(x => x.ToVec3()).ToArray(), objFM.Normals);
+                });
+            }
+        }
+
+        private void BtnOpenUrl_Click(object sender, RoutedEventArgs e)
+        {
+            Controller.RunOnNextDraw.Add(() =>
+            {
+                var fileName = URL;
+                var objFM = new ObjFileModel(fileName);
+
+                Controller.AddData(objFM.Indices, objFM.Vertices.Select(x => x.ToVec3()).ToArray(), objFM.Normals);
+            });
+        }
     }
 }
