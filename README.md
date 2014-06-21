@@ -78,3 +78,8 @@ SharpGL is proudly sponsored by NDepend! Find out more at [www.NDepend.com](http
 
 Many thanks to [Red Gate](http://www.red-gate.com/) who have kindly provided SharpGL with a copy of their superb [.NET Developer Bundle](http://www.red-gate.com/products/dotnet-development/dotnet-developer-bundle/)
 
+### JetBrains ###
+
+![JetBrains](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/jetbrains.png?raw=true "JetBrains")
+
+Thanks for [JetBrains](http://www.jetbrains.com/) for sponsoring SharpGL with [Resharper](http://www.jetbrains.com/resharper/)!
