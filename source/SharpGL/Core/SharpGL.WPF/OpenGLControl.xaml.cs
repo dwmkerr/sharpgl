@@ -17,6 +17,7 @@ using System.Windows.Interop;
 using System.Diagnostics;
 using SharpGL.SceneGraph;
 using SharpGL.Version;
+using SharpGL.RenderContextProviders;
 
 namespace SharpGL.WPF
 {
@@ -31,6 +32,8 @@ namespace SharpGL.WPF
         public OpenGLControl()
         {
             InitializeComponent();
+            // Set default size.
+            writeableBitmap = new WriteableBitmap(100, 100, 96, 96, PixelFormats.Bgra32, null);
             SizeChanged += new SizeChangedEventHandler(OpenGLControl_SizeChanged);
         }
 
@@ -59,16 +62,19 @@ namespace SharpGL.WPF
                         handler(this, eventArgsFast);
                     else
                     {
+                        /// ---- Removed because it only slows down and is deprecated. User should create it's own projection matrix. ----
                         //  Otherwise we do our own projection.
-                        gl.MatrixMode(OpenGL.GL_PROJECTION);
-                        gl.LoadIdentity();
+                        //gl.MatrixMode(OpenGL.GL_PROJECTION);
+                        //gl.LoadIdentity();
 
-                        // Calculate The Aspect Ratio Of The Window
-                        gl.Perspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
+                        //// Calculate The Aspect Ratio Of The Window
+                        //gl.Perspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
 
-                        gl.MatrixMode(OpenGL.GL_MODELVIEW);
-                        gl.LoadIdentity();
+                        //gl.MatrixMode(OpenGL.GL_MODELVIEW);
+                        //gl.LoadIdentity();
+                        /// ---------------------------------------------------------------------------------------------------------------
                     }
+                    writeableBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
                 }
             }
         }
@@ -92,13 +98,15 @@ namespace SharpGL.WPF
             //  Create our fast event args.
             eventArgsFast = new OpenGLEventArgs(gl);
 
+            /// ---- This does not belong here! If user would want this, he'll set it himself. ----
             //  Set the most basic OpenGL styles.
-            gl.ShadeModel(OpenGL.GL_SMOOTH);
-            gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            gl.ClearDepth(1.0f);
-            gl.Enable(OpenGL.GL_DEPTH_TEST);
-            gl.DepthFunc(OpenGL.GL_LEQUAL);
-            gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
+            //gl.ShadeModel(OpenGL.GL_SMOOTH);
+            //gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            //gl.ClearDepth(1.0f);
+            //gl.Enable(OpenGL.GL_DEPTH_TEST);
+            //gl.DepthFunc(OpenGL.GL_LEQUAL);
+            //gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
+            /// ---------------------------------------------------------------------------------------------------------------
 
             //  Fire the OpenGL initialised event.
             var handler = OpenGLInitialized;
@@ -183,6 +191,19 @@ namespace SharpGL.WPF
                             image.Source = newFormatedBitmapSource;
                         }
                         break;
+                    case RenderContextType.PBO:
+                        {
+                            PBORenderContextProvider provider = gl.RenderContextProvider as PBORenderContextProvider;
+                            var width = provider.Width;
+                            var height = provider.Height;
+                            var pixelsPtr = provider.PixelPtr;
+                            var size = provider.Size;
+                            var stride = provider.Stride;
+                            writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelsPtr, size, stride, 0, 0);
+
+                            image.Source = writeableBitmap; 
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -218,6 +239,11 @@ namespace SharpGL.WPF
                 me.timer.Start();
             }
         }
+
+        /// <summary>
+        /// A writeableBitmap for the PBO.
+        /// </summary>
+        private WriteableBitmap writeableBitmap;
 
         /// <summary>
         /// A single event args for all our needs.

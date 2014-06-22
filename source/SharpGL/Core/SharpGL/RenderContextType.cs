@@ -31,6 +31,11 @@ namespace SharpGL
 		/// <summary>
 		///	A Framebuffer Object - accelerated but may not be supported on some cards.
 		/// </summary>
-		FBO
+		FBO,
+
+        /// <summary>
+        /// A Pixel Buffer Object - Allow asynchronous data download, so OpenGL can continue working during a download.
+        /// </summary>
+        PBO,
 	};
 }

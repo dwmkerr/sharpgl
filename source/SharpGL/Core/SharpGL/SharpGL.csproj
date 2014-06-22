@@ -35,6 +35,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +55,7 @@
     <AssemblyOriginatorKeyFile>SharpGL.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +68,11 @@
     <Compile Include="OpenGL.cs" />
     <Compile Include="Enumerations\OpenGLEnumerations.cs" />
     <Compile Include="OpenGLExtensions.cs" />
+    <Compile Include="OpenGLExtensionsJOG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderContextProviders\DIBSectionRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\ExternalRenderContextProvider.cs" />
+    <Compile Include="RenderContextProviders\PBORenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\FBORenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\HiddenWindowRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\IRenderContextProvider.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderCompilationException.cs" />
     <Compile Include="Shaders\ShaderProgram.cs" />
+    <Compile Include="Shaders\ShaderProgramJOG.cs" />
     <Compile Include="Version\OpenGLVersion.cs" />
     <Compile Include="Version\VersionAttribute.cs" />
     <Compile Include="VertexBuffers\IndexBuffer.cs" />

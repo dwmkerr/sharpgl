@@ -972,7 +972,7 @@ namespace SharpGL
 		[DllImport(LIBRARY_OPENGL)] private static extern void glDeleteLists (uint list, int range);
 		[DllImport(LIBRARY_OPENGL)] private static extern void glDeleteTextures (int n,  uint []textures);
 		[DllImport(LIBRARY_OPENGL)] private static extern void glDepthFunc (uint func);
-		[DllImport(LIBRARY_OPENGL)] private static extern void glDepthMask (byte flag);
+		[DllImport(LIBRARY_OPENGL)] private static extern void glDepthMask (uint flag);
 		[DllImport(LIBRARY_OPENGL)] private static extern void glDepthRange (double zNear, double zFar);
 		[DllImport(LIBRARY_OPENGL)] private static extern void glDisable (uint cap);
 		[DllImport(LIBRARY_OPENGL)] private static extern void glDisableClientState (uint array);
@@ -2185,7 +2185,7 @@ namespace SharpGL
 		/// This function sets the depth mask.
 		/// </summary>
 		/// <param name="flag">The depth mask flag, normally 1.</param>
-		public void DepthMask(byte flag)
+		public void DepthMask(uint flag)
 		{
 			PreGLCall();
 			glDepthMask(flag);
@@ -6724,10 +6724,13 @@ if (insideGLBegin == false)
                 break;
 			case RenderContextType.HiddenWindow:
 				renderContextProvider = new HiddenWindowRenderContextProvider();
-				break;
-			case RenderContextType.FBO:
-				renderContextProvider = new FBORenderContextProvider();
-				break;
+                break;
+            case RenderContextType.FBO:
+                renderContextProvider = new FBORenderContextProvider();
+                break;
+            case RenderContextType.PBO:
+                renderContextProvider = new PBORenderContextProvider();
+                break;
 			}
 
 			//	Create the render context.

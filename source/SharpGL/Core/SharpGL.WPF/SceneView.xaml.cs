@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Threading;
 using SharpGL.SceneGraph.Cameras;
+using SharpGL.RenderContextProviders;
 
 namespace SharpGL.WPF
 {
@@ -33,6 +34,9 @@ namespace SharpGL.WPF
 
             //  Handle the size changed event.
             SizeChanged += new SizeChangedEventHandler(SceneView_SizeChanged);
+
+            // Set default size.
+            writeableBitmap = new WriteableBitmap(100, 100, 96, 96, PixelFormats.Bgra32, null);
         }
 
         /// <summary>
@@ -56,6 +60,7 @@ namespace SharpGL.WPF
                 //  Resize the scene.
                 Scene.OpenGL.SetDimensions(width, height);
                 Scene.Resize(width, height);
+                writeableBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
             }
         }
 
@@ -129,6 +134,18 @@ namespace SharpGL.WPF
                     //  Copy the pixels over.
                     image.Source = newFormatedBitmapSource;
                 }
+                else if (Scene.OpenGL.RenderContextProvider is RenderContextProviders.PBORenderContextProvider)
+                {
+                    PBORenderContextProvider provider = Scene.OpenGL.RenderContextProvider as PBORenderContextProvider;
+                    var width = provider.Width;
+                    var height = provider.Height;
+                    var pixelsPtr = provider.PixelPtr;
+                    var size = provider.Size;
+                    var stride = provider.Stride;
+                    writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelsPtr, size, stride, 0, 0);
+
+                    image.Source = writeableBitmap;
+                }
 
                 //  Stop the stopwatch.
                 stopwatch.Stop();
@@ -157,6 +174,8 @@ namespace SharpGL.WPF
             //  Start the timer.
             me.timer.Start();
         }
+
+        private WriteableBitmap writeableBitmap;
         
         /// <summary>
         /// The dispatcher timer.

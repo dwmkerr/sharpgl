@@ -37,7 +37,6 @@ namespace SharpGL
 			//	Create the bitmap.
 			hBitmap = Win32.CreateDIBSection(hDC, ref info, Win32.DIB_RGB_COLORS,
 				out bits, IntPtr.Zero, 0);
-
             Win32.SelectObject(hDC, hBitmap);
 			
 			//	Set the OpenGL pixel format.
@@ -75,6 +74,7 @@ namespace SharpGL
             hBitmap = Win32.CreateDIBSection(parentDC, ref info, Win32.DIB_RGB_COLORS,
                 out bits, IntPtr.Zero, 0);
 
+            
             Win32.SelectObject(parentDC, hBitmap);
         }
 

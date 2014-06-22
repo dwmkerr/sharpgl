@@ -21,6 +21,7 @@ namespace SharpGL.RenderContextProviders
         public virtual bool Create(OpenGLVersion openGLVersion, OpenGL gl, int width, int height, int bitDepth, object parameter)
         {
 	        //  Set the width, height and bit depth.
+            // TODO: consider setting the width and height by calling SetDimensions?
             Width = width;
             Height = height;
             BitDepth = bitDepth;
