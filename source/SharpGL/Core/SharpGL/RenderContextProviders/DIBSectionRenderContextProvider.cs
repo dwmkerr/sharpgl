@@ -84,15 +84,18 @@ namespace SharpGL.RenderContextProviders
 
 	    public override void Blit(IntPtr hdc) 
 	    {
+            // [RS] Because of this warning, we remove the if-statement.
+            // Warning 1: The result of the expression is always 'true' since a value of type 'System.IntPtr' is never equal to 'null' of type 'System.IntPtr?'	F:\Git Repositories\SharpGL\source\SharpGL\Core\SharpGL\RenderContextProviders\DIBSectionRenderContextProvider.cs	88	17	SharpGL
+
             //  We must have a device context.
-            if (deviceContextHandle != null)
-		    {
+            //if (deviceContextHandle != null)
+		    //{
 			    //	Swap the buffers.
                 Win32.SwapBuffers(deviceContextHandle);
 
                 //  Blit to the device context.
                 Win32.BitBlt(hdc, 0, 0, Width, Height, deviceContextHandle, 0, 0, Win32.SRCCOPY);
-		    }
+		    //}
 	    }
 	
 	    public override void MakeCurrent()
