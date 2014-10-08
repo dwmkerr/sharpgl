@@ -122,15 +122,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\..\Core\SharpGL.WinForms\SharpGL.WinForms.csproj">
-      <Project>{B2984A6D-AD1C-4BE9-94AB-BA002B338751}</Project>
-      <Name>SharpGL.WinForms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\SharpGL\SharpGL.csproj">
-      <Name>SharpGL</Name>
-      <Project>{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
@@ -198,6 +189,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\SharpGL.WinForms\SharpGL.WinForms.csproj">
+      <Project>{b2984a6d-ad1c-4be9-94ab-ba002b338751}</Project>
+      <Name>SharpGL.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\SharpGL\SharpGL.csproj">
+      <Project>{5ef45533-e2c7-46f2-b4a3-b8f36cd406e0}</Project>
+      <Name>SharpGL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

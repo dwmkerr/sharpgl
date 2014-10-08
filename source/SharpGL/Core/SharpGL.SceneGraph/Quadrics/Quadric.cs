@@ -158,6 +158,7 @@ namespace SharpGL.SceneGraph.Quadrics
         [Description("The Quadric Object Space Transformation"), Category("Quadric")]
         public LinearTransformation Transformation
         {
+            set { hasObjectSpaceHelper.Transformation = value; }
             get { return hasObjectSpaceHelper.Transformation; }
         }
 

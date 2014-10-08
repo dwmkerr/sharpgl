@@ -1,7 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Assets;
+using SharpGL.SceneGraph.Helpers;
+using SharpGL.SceneGraph.Transformations;
 
 namespace SharpGL.SceneGraph.Primitives
 {
@@ -10,9 +13,15 @@ namespace SharpGL.SceneGraph.Primitives
     /// </summary>
     public class Teapot : 
         SceneElement, 
+        IHasObjectSpace,
         IRenderable,
         IHasMaterial
     {
+        /// <summary>
+        /// The IHasObjectSpace helper.
+        /// </summary>
+        private HasObjectSpaceHelper hasObjectSpaceHelper = new HasObjectSpaceHelper();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Teapot"/> class.
         /// </summary>
@@ -239,6 +248,36 @@ namespace SharpGL.SceneGraph.Primitives
         { 
             get; 
             set; 
+        }
+
+        /// <summary>
+        /// Pushes us into Object Space using the transformation into the specified OpenGL instance.
+        /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
+        public void PushObjectSpace(OpenGL gl)
+        {
+            //  Use the helper to push us into object space.
+            hasObjectSpaceHelper.PushObjectSpace(gl);
+        }
+
+        /// <summary>
+        /// Pops us from Object Space using the transformation into the specified OpenGL instance.
+        /// </summary>
+        /// <param name="gl">The gl.</param>
+        public void PopObjectSpace(OpenGL gl)
+        {
+            //  Use the helper to pop us from object space.
+            hasObjectSpaceHelper.PopObjectSpace(gl);
+        }
+
+        /// <summary>
+        /// Gets the transformation that pushes us into object space.
+        /// </summary>
+        [Description("The Teapot Object Space Transformation"), Category("Teapot")]
+        public LinearTransformation Transformation
+        {
+            get { return hasObjectSpaceHelper.Transformation; }
+            set { hasObjectSpaceHelper.Transformation = value; }
         }
     }
 

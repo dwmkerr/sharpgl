@@ -120,6 +120,7 @@ namespace SharpGL.SceneGraph.Evaluators
         [Description("The Quadric Object Space Transformation"), Category("Evaluator")]
         public LinearTransformation Transformation
         {
+            set { hasObjectSpaceHelper.Transformation = value; }
             get { return hasObjectSpaceHelper.Transformation; }
         }
 	}
