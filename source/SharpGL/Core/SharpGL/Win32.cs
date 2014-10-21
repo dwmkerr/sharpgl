@@ -27,7 +27,7 @@ namespace SharpGL
 
         #region Kernel32 Functions
 
-        [DllImport(Kernel32)]
+        [DllImport(Kernel32, SetLastError = true)]
         public static extern IntPtr LoadLibrary(string lpFileName);
 
         #endregion
@@ -38,7 +38,7 @@ namespace SharpGL
         /// Gets the current render context.
         /// </summary>
         /// <returns>The current render context.</returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern IntPtr wglGetCurrentContext();
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace SharpGL
         /// <param name="hdc">The handle to the device context.</param>
         /// <param name="hrc">The handle to the render context.</param>
         /// <returns></returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern int wglMakeCurrent(IntPtr hdc, IntPtr hrc);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SharpGL
         /// </summary>
         /// <param name="hdc">The handle to the device context.</param>
         /// <returns>The handle to the render context.</returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern IntPtr wglCreateContext(IntPtr hdc);
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace SharpGL
         /// </summary>
         /// <param name="hrc">The handle to the render context.</param>
         /// <returns></returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern int wglDeleteContext(IntPtr hrc);
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace SharpGL
         /// </summary>
         /// <param name="name">The name of the function.</param>
         /// <returns>The address of the function.</returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern IntPtr wglGetProcAddress(string name);
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace SharpGL
         /// <param name="count">Specifies the number of glyphs in the run of glyphs that will be used to form glyph bitmap display lists. The function creates count display lists, one for each glyph in the run.</param>
         /// <param name="listBase">Specifies a starting display list.</param>
         /// <returns>If the function succeeds, the return value is TRUE. If the function fails, the return value is FALSE. To get extended error information, call GetLastError.</returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern bool wglUseFontBitmaps(IntPtr hDC, uint first, uint count, uint listBase);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SharpGL
         /// <param name="format">The format.</param>
         /// <param name="lpgmf">The LPGMF.</param>
         /// <returns></returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern bool wglUseFontOutlines(IntPtr hDC, uint first, uint count, uint listBase,
             float deviation, float extrusion, int format, [Out, MarshalAs(UnmanagedType.LPArray)] GLYPHMETRICSFLOAT[] lpgmf);
 
@@ -108,7 +108,7 @@ namespace SharpGL
         /// <param name="hrc2">The second context.</param>
         /// <returns>If the function succeeds, the return value is TRUE. If the function fails, the return value is FALSE. 
         /// To get extended error information, call GetLastError.</returns>
-        [DllImport(OpenGL32)]
+        [DllImport(OpenGL32, SetLastError = true)]
         public static extern bool wglShareLists(IntPtr hrc1, IntPtr hrc2);
 
         #endregion
@@ -232,7 +232,7 @@ namespace SharpGL
 
         public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport(User32)]
+        [DllImport(User32, SetLastError = true)]
         public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
         [DllImport(User32, SetLastError = true)]
@@ -523,34 +523,34 @@ namespace SharpGL
 		public unsafe static extern int SetPixelFormat(IntPtr hDC, int iPixelFormat, 
 			[In, MarshalAs(UnmanagedType.LPStruct)] PIXELFORMATDESCRIPTOR ppfd );
 
-        [DllImport(Gdi32)]
+        [DllImport(Gdi32, SetLastError = true)]
         public static extern IntPtr GetStockObject(uint fnObject);
 
-		[DllImport(Gdi32)] 
+		[DllImport(Gdi32, SetLastError = true)] 
 		public static extern int SwapBuffers(IntPtr hDC);
 
-		[DllImport(Gdi32)] 
+		[DllImport(Gdi32, SetLastError = true)] 
 		public static extern bool BitBlt(IntPtr hDC, int x, int y, int width, 
 			int height, IntPtr hDCSource, int sourceX, int sourceY, uint type);
 
-        [DllImport(Gdi32)]
+        [DllImport(Gdi32, SetLastError = true)]
         public static extern IntPtr CreateDIBSection(IntPtr hdc, [In] ref BITMAPINFO pbmi,
            uint pila, out IntPtr ppvBits, IntPtr hSection, uint dwOffset);
 
         [DllImport(Gdi32, SetLastError = true)]
         public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
 
-        [DllImport(Gdi32)]
+        [DllImport(Gdi32, SetLastError = true)]
         public static extern bool DeleteObject(IntPtr hObject);
 
-        [DllImport(Gdi32)]
+        [DllImport(Gdi32, SetLastError = true)]
         public static extern IntPtr CreateCompatibleDC(IntPtr hDC);
 
-        [DllImport(Gdi32)]
+        [DllImport(Gdi32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteDC(IntPtr hDC);
 
-        [DllImport(Gdi32)]
+        [DllImport(Gdi32, SetLastError = true)]
         public static extern IntPtr CreateFont(int nHeight, int nWidth, int nEscapement,
            int nOrientation, uint fnWeight, uint fdwItalic, uint fdwUnderline, uint
            fdwStrikeOut, uint fdwCharSet, uint fdwOutputPrecision, uint
@@ -560,21 +560,21 @@ namespace SharpGL
 
         #region User32 Functions
 
-        [DllImport(User32)]
+        [DllImport(User32, SetLastError = true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
 
-		[DllImport(User32)]
+		[DllImport(User32, SetLastError = true)]
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
-        [DllImport(User32)]
+        [DllImport(User32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DestroyWindow(IntPtr hWnd);
 
-        [DllImport(User32)]
+        [DllImport(User32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
-        [DllImport(User32)]
+        [DllImport(User32, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.U2)]
         public static extern short RegisterClassEx([In] ref WNDCLASSEX lpwcx);
 
