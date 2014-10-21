@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SharpGL.WinForms
@@ -33,7 +30,7 @@ namespace SharpGL.WinForms
         public static event EventHandler OnIdle;
 
         [System.Security.SuppressUnmanagedCodeSecurity] // We won't use this maliciously
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        [DllImport("User32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool PeekMessage(out IntPtr msg, IntPtr hWnd, uint messageFilterMin, uint messageFilterMax, uint flags);
     }
 }
