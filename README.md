@@ -64,7 +64,10 @@ All documentation is available on [the Wiki](https://github.com/dwmkerr/sharpgl/
 Credits, Sponsorship & Thanks
 -----------------------------
 
-SharpGL is written and maintained by me.
+SharpGL is written and maintained by me. Special thanks go to the following contributors:
+
+ * [robinsedlaczek](https://github.com/robinsedlaczek) - Code and documentation updates, tireless patience 
+   while I get through a backlog of work!
 
 ### NDepend ###
 
