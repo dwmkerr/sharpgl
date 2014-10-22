@@ -149,18 +149,16 @@ namespace SharpGL.WPF
                 {
                     case RenderContextType.DIBSection:
                         {
-                            RenderContextProviders.DIBSectionRenderContextProvider provider = gl.RenderContextProvider as RenderContextProviders.DIBSectionRenderContextProvider;
+                            var provider = gl.RenderContextProvider as RenderContextProviders.DIBSectionRenderContextProvider;
+                            var hBitmap = provider.DIBSection.HBitmap;
 
-                            //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
-                            //  meaning the drawing comes out transparent.
-                            FormatConvertedBitmap newFormatedBitmapSource = new FormatConvertedBitmap();
-                            newFormatedBitmapSource.BeginInit();
-                            newFormatedBitmapSource.Source = BitmapConversion.HBitmapToBitmapSource(provider.DIBSection.HBitmap);
-                            newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgb24;
-                            newFormatedBitmapSource.EndInit();
+                            if (hBitmap != IntPtr.Zero)
+                            {
+                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
 
-                            //  Copy the pixels over.
-                            image.Source = newFormatedBitmapSource;
+                                //  Copy the pixels over.
+                                image.Source = newFormatedBitmapSource;
+                            }
                         }
                         break;
                     case RenderContextType.NativeWindow:
@@ -169,18 +167,16 @@ namespace SharpGL.WPF
                         break;
                     case RenderContextType.FBO:
                         {
-                            RenderContextProviders.FBORenderContextProvider provider = gl.RenderContextProvider as RenderContextProviders.FBORenderContextProvider;
+                            var provider = gl.RenderContextProvider as RenderContextProviders.FBORenderContextProvider;
+                            var hBitmap = provider.InternalDIBSection.HBitmap;
 
-                            //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
-                            //  meaning the drawing comes out transparent.
-                            FormatConvertedBitmap newFormatedBitmapSource = new FormatConvertedBitmap();
-                            newFormatedBitmapSource.BeginInit();                                
-                            newFormatedBitmapSource.Source = BitmapConversion.HBitmapToBitmapSource(provider.InternalDIBSection.HBitmap);
-                            newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgb24;
-                            newFormatedBitmapSource.EndInit();
+                            if (hBitmap != IntPtr.Zero)
+                            {
+                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
 
-                            //  Copy the pixels over.
-                            image.Source = newFormatedBitmapSource;
+                                //  Copy the pixels over.
+                                image.Source = newFormatedBitmapSource;
+                            }
                         }
                         break;
                     default:
@@ -193,6 +189,26 @@ namespace SharpGL.WPF
                 //  Store the frame time.
                 frameTime = stopwatch.Elapsed.TotalMilliseconds;      
             }
+        }
+
+        /// <summary>
+        /// This method converts the output from the OpenGL render context provider to a 
+        /// FormatConvertedBitmap in order to show it in the image.
+        /// </summary>
+        /// <param name="hBitmap">The handle of the bitmap from the OpenGL render context.</param>
+        /// <returns>Returns the new format converted bitmap.</returns>
+        private static FormatConvertedBitmap GetFormatedBitmapSource(IntPtr hBitmap)
+        {
+            //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
+            //  meaning the drawing comes out transparent.
+
+            FormatConvertedBitmap newFormatedBitmapSource = new FormatConvertedBitmap();
+            newFormatedBitmapSource.BeginInit();
+            newFormatedBitmapSource.Source = BitmapConversion.HBitmapToBitmapSource(hBitmap);
+            newFormatedBitmapSource.DestinationFormat = PixelFormats.Rgb24;
+            newFormatedBitmapSource.EndInit();
+
+            return newFormatedBitmapSource;
         }
 
         /// <summary>
