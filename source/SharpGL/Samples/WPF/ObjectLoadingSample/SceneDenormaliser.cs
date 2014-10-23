@@ -49,6 +49,7 @@ namespace ObjectLoadingSample
                         var ts = indices.Any(ind => ind.uv.HasValue == false)
                                      ? null
                                      : indices.Select(ind => uvs[ind.uv.Value]).Select(v => new vec2(v.u, v.v)).ToArray();
+
                         meshes.Add(new Mesh
                                    {
                                        vertices = vs,
@@ -57,6 +58,7 @@ namespace ObjectLoadingSample
                                        material = facesWithSameIndexCount.First().Material,
                                        indicesPerFace = currentIndexCount
                                    });
+
                         facesWithSameIndexCount = new List<Face>();
                         facesWithSameIndexCount.Add(face);
                         currentIndexCount = face.Indices.Count;
