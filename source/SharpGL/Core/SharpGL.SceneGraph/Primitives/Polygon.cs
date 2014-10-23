@@ -53,13 +53,13 @@ namespace SharpGL.SceneGraph.Primitives
 			foreach(Vertex v in vertexData)
 			{
 				//	Do we have this vertex already?
-				int at = VertexSearch.Search(vertices, 0, v, 0.01f);
+				int at = VertexSearch.Search(Vertices, 0, v, 0.01f);
 				
 				//	Add the vertex, and index it.
                 if (at == -1)
                 {
-                    newFace.Indices.Add(new Index(vertices.Count));
-                    vertices.Add(v);
+                    newFace.Indices.Add(new Index(Vertices.Count));
+                    Vertices.Add(v);
                 }
                 else
                 {
@@ -67,8 +67,11 @@ namespace SharpGL.SceneGraph.Primitives
                 }
 			}
 
-			//	Add the face.
-			faces.Add(newFace);
+            boundingVolumeHelper.BoundingVolume.FromVertices(vertices);
+            boundingVolumeHelper.BoundingVolume.Pad(0.1f);
+
+            //	Add the face.
+            faces.Add(newFace);
 		}
 
 		/// <summary>
@@ -163,7 +166,7 @@ namespace SharpGL.SceneGraph.Primitives
                     }
 
                     //	Set the vertex.
-                    gl.Vertex(vertices[index.Vertex]);
+                    gl.Vertex(Vertices[index.Vertex]);
                 }
 
                 gl.End();
@@ -191,7 +194,7 @@ namespace SharpGL.SceneGraph.Primitives
                         if (index.Normal != -1 && index.Vertex != -1)
                         {
                             //	Get the vertex.
-                            Vertex vertex = vertices[index.Vertex];
+                            Vertex vertex = Vertices[index.Vertex];
 
                             //	Get the normal vertex.
                             Vertex normal = normals[index.Normal];
@@ -279,7 +282,10 @@ namespace SharpGL.SceneGraph.Primitives
 				}
 			}
 
-			return true;
+            boundingVolumeHelper.BoundingVolume.FromVertices(vertices);
+            boundingVolumeHelper.BoundingVolume.Pad(0.1f);
+
+            return true;
 		}
 
 		/// <summary>
@@ -356,9 +362,9 @@ namespace SharpGL.SceneGraph.Primitives
 			
 				//	Find the point of intersection upon the plane, as a point 't' along
 				//	the ray.
-				Vertex point1OnPlane = vertices[face.Indices[0].Vertex];
-				Vertex point2OnPlane = vertices[face.Indices[1].Vertex];
-				Vertex point3OnPlane = vertices[face.Indices[2].Vertex];
+				Vertex point1OnPlane = Vertices[face.Indices[0].Vertex];
+				Vertex point2OnPlane = Vertices[face.Indices[1].Vertex];
+				Vertex point3OnPlane = Vertices[face.Indices[2].Vertex];
 				Vertex midpointOpp1 = (point2OnPlane + point3OnPlane) / 2;
 				Vertex midpointOpp2 = (point1OnPlane + point3OnPlane) / 2;
 				Vertex midpointOpp3 = (point1OnPlane + point2OnPlane) / 2;
@@ -520,7 +526,10 @@ namespace SharpGL.SceneGraph.Primitives
 
 			faces = newFaces;
 
-			return faces.Count;
+            boundingVolumeHelper.BoundingVolume.FromVertices(vertices);
+            boundingVolumeHelper.BoundingVolume.Pad(0.1f);
+
+            return faces.Count;
 		}
 
         /// <summary>
@@ -644,9 +653,22 @@ namespace SharpGL.SceneGraph.Primitives
 		[Description("The vertices that make up the polygon."), Category("Polygon")]
 		public List<Vertex> Vertices
 		{
-			get {return vertices;}
-			set {vertices = value; }
-		}
+			get
+            {
+                return vertices;
+            }
+
+			set
+            {
+                vertices = value;
+
+                // TODO: [RS] Create bv when vertices changed. We need a mechanism that creates the bounding volume
+                //            if one verte is changed, removed or added. Use INotifyPropertyChanged for vertices or
+                //            some other observer pattern? 
+                boundingVolumeHelper.BoundingVolume.FromVertices(vertices);
+                boundingVolumeHelper.BoundingVolume.Pad(0.1f);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the U vs.
@@ -706,9 +728,6 @@ namespace SharpGL.SceneGraph.Primitives
         {
             get 
             {
-                //  todo; only create bv when vertices changed.
-                boundingVolumeHelper.BoundingVolume.FromVertices(vertices);
-                boundingVolumeHelper.BoundingVolume.Pad(0.1f); 
                 return boundingVolumeHelper.BoundingVolume;
             }
         }

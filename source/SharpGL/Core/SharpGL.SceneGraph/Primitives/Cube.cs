@@ -87,6 +87,9 @@ namespace SharpGL.SceneGraph.Primitives
 			face.Indices.Add(new Index(3, 2));
 			face.Indices.Add(new Index(2, 3));
             Faces.Add(face);
-		}
+
+            BoundingVolume.FromVertices(Vertices);
+            BoundingVolume.Pad(0.1f);
+        }
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
 using SharpGL.SceneGraph.Core;
+using System.Xml.Serialization;
+using SharpGL.SceneGraph.Helpers;
 
 namespace SharpGL.SceneGraph.Quadrics
 {
@@ -8,7 +10,7 @@ namespace SharpGL.SceneGraph.Quadrics
     /// The Disk class wraps both the disk and partial disk quadrics.
     /// </summary>
     [Serializable()]
-    public class Disk : Quadric
+    public class Disk : Quadric, IVolumeBound
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Disk"/> class.
@@ -16,6 +18,9 @@ namespace SharpGL.SceneGraph.Quadrics
         public Disk() 
         { 
             Name = "Disk";
+
+            //  Set the outer radius via the property, sets the BV.
+            OuterRadius = 1.0;
         }
 
         /// <summary>
@@ -42,6 +47,11 @@ namespace SharpGL.SceneGraph.Quadrics
         int loops = 20;
 
         /// <summary>
+        /// Helps us implement IVolumeBound.
+        /// </summary>
+        private BoundingVolumeHelper boundingVolumeHelper = new BoundingVolumeHelper();
+
+        /// <summary>
         /// Gets or sets the inner radius.
         /// </summary>
         /// <value>
@@ -63,8 +73,16 @@ namespace SharpGL.SceneGraph.Quadrics
         [Description("Radius of the disk."), Category("Quadric")]
         public double OuterRadius
         {
-            get { return outerRadius; }
-            set { outerRadius = value; }
+            get
+            {
+                return outerRadius;
+            }
+
+            set
+            {
+                outerRadius = value;
+                BoundingVolume.FromCylindricalVolume(new Vertex(), 0f, (float)outerRadius, (float)outerRadius);
+            }
         }
 
         /// <summary>
@@ -118,5 +136,16 @@ namespace SharpGL.SceneGraph.Quadrics
             get { return loops; }
             set { loops = value; }
         }
+
+        /// <summary>
+        /// Gets the bounding volume.
+        /// </summary>
+        [Browsable(false)]
+        [XmlIgnore]
+        public BoundingVolume BoundingVolume
+        {
+            get { return boundingVolumeHelper.BoundingVolume; }
+        }
+
     }
 }

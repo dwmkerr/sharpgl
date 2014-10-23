@@ -92,6 +92,7 @@
     <Compile Include="OpenGLSceneGraphExtensions.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
     <Compile Include="ParticleSystem\ParticleSystems.cs" />
+    <Compile Include="Primitives\ArrayExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\Asset.cs" />
     <Compile Include="Assets\Material.cs" />
