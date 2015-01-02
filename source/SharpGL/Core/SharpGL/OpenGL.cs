@@ -6714,22 +6714,24 @@ if (insideGLBegin == false)
 			if(width == 0 || height == 0 || bitDepth == 0)
 				return false;
 
-			//	Create an instance of the render context provider.
-			switch(renderContextType)
-			{
-			case RenderContextType.DIBSection:
-				renderContextProvider = new DIBSectionRenderContextProvider();
-				break;
-            case RenderContextType.NativeWindow:
-                renderContextProvider = new NativeWindowRenderContextProvider();
-                break;
-			case RenderContextType.HiddenWindow:
-				renderContextProvider = new HiddenWindowRenderContextProvider();
-				break;
-			case RenderContextType.FBO:
-				renderContextProvider = new FBORenderContextProvider();
-				break;
-			}
+            // TODO: [RS] I suggest to replace the switch-case statement with a RenderContextProviderFactory.
+
+            //	Create an instance of the render context provider.
+            switch (renderContextType)
+            {
+                case RenderContextType.DIBSection:
+                    renderContextProvider = new DIBSectionRenderContextProvider();
+                    break;
+                case RenderContextType.NativeWindow:
+                    renderContextProvider = new NativeWindowRenderContextProvider();
+                    break;
+                case RenderContextType.HiddenWindow:
+                    renderContextProvider = new HiddenWindowRenderContextProvider();
+                    break;
+                case RenderContextType.FBO:
+                    renderContextProvider = new FBORenderContextProvider();
+                    break;
+            }
 
 			//	Create the render context.
 			renderContextProvider.Create(openGLVersion, this, width, height, bitDepth, parameter);
