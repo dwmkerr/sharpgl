@@ -45,7 +45,7 @@ namespace SimpleShaderSample
             Teapot tp = new Teapot();
             tp.Draw(gl, 14, 1, OpenGL.GL_FILL);
 
-            rotation += 1.0f;
+            rotation += 3.0f;
             program.Pop(gl, null);
         }
 
