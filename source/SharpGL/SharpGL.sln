@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D2E990
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleShaderSample", "Samples\WPF\SimpleShaderSample\SimpleShaderSample.csproj", "{6DB0A8E3-0385-4B1A-BF61-44F8275909A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SceneSample", "Samples\WinForms\SceneSample\SceneSample.csproj", "{5DDE8F09-0202-41F1-BE23-E4843CA38A07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,18 @@ Global
 		{6DB0A8E3-0385-4B1A-BF61-44F8275909A2}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6DB0A8E3-0385-4B1A-BF61-44F8275909A2}.Release|x86.ActiveCfg = Release|x86
 		{6DB0A8E3-0385-4B1A-BF61-44F8275909A2}.Release|x86.Build.0 = Release|x86
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Debug|x86.Build.0 = Debug|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Release|x86.ActiveCfg = Release|Any CPU
+		{5DDE8F09-0202-41F1-BE23-E4843CA38A07}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
