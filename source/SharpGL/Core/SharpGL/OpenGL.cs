@@ -6837,7 +6837,30 @@ if (insideGLBegin == false)
             string faceName, float fontSize, string text)
         {
             //  Use the font bitmaps object to render the text.
-            fontBitmaps.DrawText(this, x, y, r, g, b, faceName, fontSize, text);
+            fontBitmaps.DrawText(this, x, y, r, g, b, faceName, fontSize, text,
+                renderContextProvider.Width, renderContextProvider.Height);
+        }
+
+        /// <summary>
+        /// Draws the text.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="r">The r.</param>
+        /// <param name="g">The g.</param>
+        /// <param name="b">The b.</param>
+        /// <param name="faceName">Name of the face.</param>
+        /// <param name="fontSize">Size of the font.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="resWidth">Horizontal resolution.</param>
+        /// <param name="resWidth">Vertical resolution.</param>
+        public void DrawText(int x, int y, float r, float g, float b,
+            string faceName, float fontSize, string text,
+            int resWidth, int resHeight)
+        {
+            //  Use the font bitmaps object to render the text.
+            fontBitmaps.DrawText(this, x, y, r, g, b, faceName, fontSize, text,
+                resWidth, resHeight);
         }
 
         /// <summary>
