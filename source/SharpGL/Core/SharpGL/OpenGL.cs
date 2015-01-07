@@ -963,7 +963,9 @@ namespace SharpGL
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColor4usv ( ushort []v);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColorMask (byte red, byte green, byte blue, byte alpha);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColorMaterial (uint face, uint mode);
-		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColorPointer (int size, uint type, int stride,  IntPtr pointer);
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColorPointer (int size, uint type, int stride, IntPtr pointer);
+        [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColorPointer(int size, uint type, int stride, byte[] pointer);
+        [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glColorPointer(int size, uint type, int stride, float[] pointer);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glCopyPixels (int x, int y, int width, int height, uint type);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glCopyTexImage1D (uint target, int level, uint internalFormat, int x, int y, int width, int border);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glCopyTexImage2D (uint target, int level, uint internalFormat, int x, int y, int width, int height, int border);
@@ -1991,11 +1993,39 @@ namespace SharpGL
         /// <summary>
         /// Define an array of colors.
         /// </summary>
-        /// <param name="size">Specifies the number	of components per color. Must be 3	or 4.</param>
+        /// <param name="size">Specifies the number	of components per color. Must be 3 or 4.</param>
         /// <param name="type">Specifies the data type of each color component in the array. Symbolic constants OpenGL.BYTE, OpenGL.UNSIGNED_BYTE, OpenGL.SHORT, OpenGL.UNSIGNED_SHORT, OpenGL.INT, OpenGL.UNSIGNED_INT, OpenGL.FLOAT and OpenGL.DOUBLE are accepted.</param>
         /// <param name="stride">Specifies the byte offset between consecutive colors. If stride is 0, (the initial value), the colors are understood to be tightly packed in the array.</param>
         /// <param name="pointer">Specifies a pointer to the first component of the first color element in the array.</param>
 		public void ColorPointer (int size, uint type, int stride,  IntPtr pointer)
+        {
+            PreGLCall();
+            glColorPointer(size, type, stride, pointer);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// Define an array of colors.
+        /// </summary>
+        /// <param name="size">Specifies the number	of components per color. Must be 3 or 4.</param>
+        /// <param name="type">Specifies the data type of each color component in the array. Symbolic constants OpenGL.BYTE, OpenGL.UNSIGNED_BYTE, OpenGL.SHORT, OpenGL.UNSIGNED_SHORT, OpenGL.INT, OpenGL.UNSIGNED_INT, OpenGL.FLOAT and OpenGL.DOUBLE are accepted.</param>
+        /// <param name="stride">Specifies the byte offset between consecutive colors. If stride is 0, (the initial value), the colors are understood to be tightly packed in the array.</param>
+        /// <param name="pointer">The array.</param>
+        public void ColorPointer(int size, uint type, int stride, byte[] pointer)
+        {
+            PreGLCall();
+            glColorPointer(size, type, stride, pointer);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// Define an array of colors.
+        /// </summary>
+        /// <param name="size">Specifies the number	of components per color. Must be 3 or 4.</param>
+        /// <param name="type">Specifies the data type of each color component in the array. Symbolic constants OpenGL.BYTE, OpenGL.UNSIGNED_BYTE, OpenGL.SHORT, OpenGL.UNSIGNED_SHORT, OpenGL.INT, OpenGL.UNSIGNED_INT, OpenGL.FLOAT and OpenGL.DOUBLE are accepted.</param>
+        /// <param name="stride">Specifies the byte offset between consecutive colors. If stride is 0, (the initial value), the colors are understood to be tightly packed in the array.</param>
+        /// <param name="pointer">The array.</param>
+        public void ColorPointer(int size, uint type, int stride, float[] pointer)
         {
             PreGLCall();
             glColorPointer(size, type, stride, pointer);
