@@ -107,7 +107,7 @@ namespace SharpGL
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="text">The text.</param>
         /// <param name="resWidth">Horizontal resolution.</param>
-        /// <param name="resWidth">Vertical resolution.</param>
+        /// <param name="resHeight">Vertical resolution.</param>
         public void DrawText(OpenGL gl, int x, int y, float r, float g, float b, string faceName, float fontSize, string text,
             double resWidth, double resHeight)
         {
