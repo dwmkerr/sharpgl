@@ -62,6 +62,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BF3E19
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectLoadingSample", "Samples\WPF\ObjectLoadingSample\ObjectLoadingSample.csproj", "{66932482-AC9B-453A-AAE1-1CD292CD8FD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastGL", "Samples\WPF\FastGLControl.WPF\FastGL.csproj", "{D077860D-9316-4E13-9C0C-A2628E4FBE16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -325,6 +327,16 @@ Global
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|x86.ActiveCfg = Release|x86
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|x86.Build.0 = Release|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Debug|x86.ActiveCfg = Debug|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Debug|x86.Build.0 = Debug|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Release|Any CPU.ActiveCfg = Release|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Release|x86.ActiveCfg = Release|x86
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,5 +366,6 @@ Global
 		{803A6DA5-5497-45B6-A738-1B56D12A83DF} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
 		{8C16EA4F-5C5C-4451-BEB3-AD2BFAE92A0F} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
+		{D077860D-9316-4E13-9C0C-A2628E4FBE16} = {B8FC469E-614B-44E1-8F5C-6DB9DD34C9B0}
 	EndGlobalSection
 EndGlobal
