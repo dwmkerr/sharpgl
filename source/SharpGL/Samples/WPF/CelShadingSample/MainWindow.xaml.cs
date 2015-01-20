@@ -1,4 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
 using SharpGL;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
@@ -11,13 +17,31 @@ namespace CelShadingSample
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IList<double> _drawDurations;
+        private IList<double> _fps;
+
         public MainWindow()
         {
+            _drawDurations = new List<double>();
+            _fps = new List<double>();
+
             InitializeComponent();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var message = string.Format(CultureInfo.CurrentUICulture, "Average Draw Duration: {0} = {1} fps",
+                _drawDurations.Average(), _fps.Average());
+            MessageBox.Show(message);
+
+            base.OnClosing(e);
         }
 
         private void OpenGLControl_OpenGLDraw(object sender, OpenGLEventArgs args)
         {
+            var watch = new Stopwatch();
+            watch.Start();
+
             //  Get the OpenGL instance.
             var gl = args.OpenGL;	
 
@@ -35,7 +59,7 @@ namespace CelShadingSample
             {
                 case 0: 
                     {
-                        scene.RenderRetainedMode(gl, checkBoxUseToonShader.IsChecked.Value); break;
+                        scene.RenderRetainedMode(gl, checkBoxUseToonShader.IsChecked != null && checkBoxUseToonShader.IsChecked.Value); break;
                     }
                 case 1:
                     {
@@ -45,8 +69,20 @@ namespace CelShadingSample
                     }
                 default: break;
             }
+
+            watch.Stop();
+            _drawDurations.Add(watch.Elapsed.TotalMilliseconds);
+
+            var fps = 1000 / watch.Elapsed.TotalMilliseconds;
+            _fps.Add(fps);
+
+            var messageDuration = string.Format(CultureInfo.CurrentUICulture, "Duration (ms): {0}", watch.Elapsed.TotalMilliseconds);
+            var messageFps = string.Format(CultureInfo.CurrentUICulture, "FpS: {0}", fps);
+
+            gl.DrawText(10, 20, 1, 1, 1, "Times", 10, messageDuration);
+            gl.DrawText(10, 10, 1, 1, 1, "Times", 10, messageFps);
         }
-        
+
         private void OpenGLControl_OpenGLInitialized(object sender, OpenGLEventArgs args)
         {
             OpenGL gl = args.OpenGL;
