@@ -8,6 +8,7 @@ namespace SharpGL
 {
     public partial class OpenGL
     {
+
         /// <summary>
         /// Determines whether a named extension function is supported.
         /// </summary>

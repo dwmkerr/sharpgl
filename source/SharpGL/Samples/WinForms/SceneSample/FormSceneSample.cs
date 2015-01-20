@@ -67,7 +67,9 @@ namespace SceneSample
                 Transformation = new LinearTransformation()
                 {
                     TranslateZ = 1.5f,
-                    ScaleX = 0.4f, ScaleY = 0.4f, ScaleZ = 0.4f
+                    ScaleX = 0.4f,
+                    ScaleY = 0.4f,
+                    ScaleZ = 0.4f
                 },
                 Name = "Left Arm"
             };

@@ -128,4 +128,7 @@ Global
 		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 		{D2E99047-F511-4CE1-B07F-41412E9FF7B4} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\SharpGL1.ndproj"
+	EndGlobalSection
 EndGlobal
