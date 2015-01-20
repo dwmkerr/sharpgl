@@ -29,6 +29,7 @@ namespace SharpGL.SceneGraph.Core
         /// </summary>
         LinearTransformation Transformation
         {
+            set;
             get;
         }
     }

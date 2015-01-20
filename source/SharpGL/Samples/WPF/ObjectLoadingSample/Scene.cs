@@ -129,12 +129,19 @@ namespace ObjectLoadingSample
             //  Go through each mesh and render the vertex buffer array.
             foreach(var mesh in meshes)
             {
-                //  Set the variables for the shader program.
-                shaderPerPixel.SetUniform3(gl, "DiffuseMaterial", mesh.material.Diffuse.r, mesh.material.Diffuse.g, mesh.material.Diffuse.b);
-                shaderPerPixel.SetUniform3(gl, "AmbientMaterial", mesh.material.Ambient.r, mesh.material.Ambient.g, mesh.material.Ambient.b);
-                shaderPerPixel.SetUniform3(gl, "SpecularMaterial", mesh.material.Specular.r, mesh.material.Specular.g, mesh.material.Specular.b);
-                shaderPerPixel.SetUniform1(gl, "Shininess", mesh.material.Shininess);
-
+                //  If we have a material for the mesh, we'll use it. If we don't, we'll use the default material.
+                if (mesh.material != null)
+                {
+                    shaderPerPixel.SetUniform3(gl, "DiffuseMaterial", mesh.material.Diffuse.r, mesh.material.Diffuse.g, mesh.material.Diffuse.b);
+                    shaderPerPixel.SetUniform3(gl, "AmbientMaterial", mesh.material.Ambient.r, mesh.material.Ambient.g, mesh.material.Ambient.b);
+                    shaderPerPixel.SetUniform3(gl, "SpecularMaterial", mesh.material.Specular.r, mesh.material.Specular.g, mesh.material.Specular.b);
+                    shaderPerPixel.SetUniform1(gl, "Shininess", mesh.material.Shininess);
+                }
+                else
+                {
+                    int i = 0;
+                    //  TODO: we should really set a default material here.
+                }
                 var vertexBufferArray = meshVertexBufferArrays[mesh];
                 vertexBufferArray.Bind(gl);
 
@@ -226,7 +233,7 @@ namespace ObjectLoadingSample
 
         private void CreateTextures(OpenGL gl, IEnumerable<Mesh> meshes)
         {
-            foreach(var mesh in meshes.Where(m => m.material.TextureMapDiffuse != null))
+            foreach(var mesh in meshes.Where(m => m.material != null && m.material.TextureMapDiffuse != null))
             {
                 //  Create a new texture and bind it.
                 var texture = new Texture2D();
@@ -286,6 +293,8 @@ namespace ObjectLoadingSample
         {
             get { return projectionMatrix; }
         }
+
+        private readonly Material defaultMaterial;
 
         private readonly List<Mesh> meshes = new List<Mesh>();
         private readonly Dictionary<Mesh, VertexBufferArray> meshVertexBufferArrays = new Dictionary<Mesh, VertexBufferArray>(); 

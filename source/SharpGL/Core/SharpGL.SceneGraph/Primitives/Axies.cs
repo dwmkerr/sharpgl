@@ -61,19 +61,19 @@ namespace SharpGL.SceneGraph.Primitives
             gl.DepthFunc(OpenGL.GL_ALWAYS);
 
             //  Set a nice fat line width.
-            gl.LineWidth(1.50f);
+            gl.LineWidth(2.0f);
 
             //  Draw the axies.
             gl.Begin(OpenGL.GL_LINES);
-            gl.Color(1f, 0f, 0f, 1f);
+            gl.Color(0.75f, 0f, 0f, 0.5f);
             gl.Vertex(0, 0, 0);
-            gl.Vertex(3, 0, 0);
-            gl.Color(0f, 1f, 0f, 1f);
+            gl.Vertex(1.5, 0, 0);
+            gl.Color(0f, 0.75f, 0f, 0.5f);
             gl.Vertex(0, 0, 0);
-            gl.Vertex(0, 3, 0);
-            gl.Color(0f, 0f, 1f, 1f);
+            gl.Vertex(0, 1.5, 0);
+            gl.Color(0f, 0f, 0.75f, 0.5f);
             gl.Vertex(0, 0, 0);
-            gl.Vertex(0, 0, 3);
+            gl.Vertex(0, 0, 1.5);
             gl.End();
 
             //  Restore attributes.
