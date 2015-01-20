@@ -85,7 +85,8 @@ namespace ObjectLoadingSample
             //  Create a file open dialog.
             var fileOpenDialog = new OpenFileDialog();
             fileOpenDialog.Filter = "Wavefront Files (*.obj)|*.obj|All Files (*.*)|*.*";
-            if(fileOpenDialog.ShowDialog(this) == true)
+
+            if (fileOpenDialog.ShowDialog(this) == true)
             {
                 //  Get the path.
                 var filePath = fileOpenDialog.FileName;

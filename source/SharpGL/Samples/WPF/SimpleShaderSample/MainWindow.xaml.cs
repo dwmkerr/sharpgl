@@ -58,7 +58,7 @@ namespace SimpleShaderSample
             gl.Enable(OpenGL.GL_DEPTH_TEST);
 
             float[] global_ambient = new float[] { 0.5f, 0.5f, 0.5f, 1.0f };
-            float[] light0pos = new float[] { 0.0f, 5.0f, 10.0f, 1.0f };
+            float[] light0pos = new float[] { 0.5f, 0.75f, 0.75f, 1.0f };
             float[] light0ambient = new float[] { 0.2f, 0.2f, 0.2f, 1.0f };
             float[] light0diffuse = new float[] { 0.3f, 0.3f, 0.3f, 1.0f };
             float[] light0specular = new float[] { 0.8f, 0.8f, 0.8f, 1.0f };
@@ -80,19 +80,39 @@ namespace SimpleShaderSample
             VertexShader vertexShader = new VertexShader();
             vertexShader.CreateInContext(gl);
             vertexShader.SetSource(
+                "varying vec3 normal;" + Environment.NewLine +
+
                 "void main()" + Environment.NewLine +
                 "{" + Environment.NewLine +
-                "gl_Position = ftransform();" + Environment.NewLine +
-                "}" + Environment.NewLine);
+                    "normal = gl_NormalMatrix * gl_Normal;" + Environment.NewLine +
+                    "gl_Position = ftransform();" + Environment.NewLine +
+                "}" + Environment.NewLine
+            );
 
             //  Create a fragment shader.
             FragmentShader fragmentShader = new FragmentShader();
             fragmentShader.CreateInContext(gl);
             fragmentShader.SetSource(
+                "varying vec3 normal;" + Environment.NewLine +
+
                 "void main()" + Environment.NewLine +
                 "{" + Environment.NewLine +
-                "gl_FragColor = vec4(0.4,0.4,0.8,1.0);" + Environment.NewLine +
-                "}" + Environment.NewLine);
+                    "float intensity;" + Environment.NewLine +
+                    "vec4 color;" + Environment.NewLine +
+                    "vec3 n = normalize(normal);" + Environment.NewLine +
+                    "intensity = dot(vec3(gl_LightSource[0].position), n);" + Environment.NewLine +
+
+                    "if (intensity > 0.95)" + Environment.NewLine +
+                        "color = vec4(0.5, 0.5, 1.0, 1.0);" + Environment.NewLine +
+                    "else if (intensity > 0.5)" + Environment.NewLine +
+                        "color = vec4(0.3, 0.3, 0.6, 1.0);" + Environment.NewLine +
+                    "else if (intensity > 0.25)" + Environment.NewLine +
+                        "color = vec4(0.2, 0.2, 0.4, 1.0);" + Environment.NewLine +
+                    "else" + Environment.NewLine +
+                        "color = vec4(0.1, 0.1, 0.2, 1.0);" + Environment.NewLine +
+                    "gl_FragColor = color;" + Environment.NewLine +
+                "}" + Environment.NewLine
+            );
 
             //  Compile them both.
             vertexShader.Compile();

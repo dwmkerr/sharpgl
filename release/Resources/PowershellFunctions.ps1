@@ -24,6 +24,20 @@ function EnsureEmptyFolderExists($folder) {
     EnsureFolderExists($folder)
 }
 
+# Gets the name of the parent folder.
+function GetParentFolderName($folderPath) {
+    return Split-Path (Split-Path $releaseFolder) -leaf
+}
+
+
+# Creates a temporary directory, returning the path.
+function CreateTemporaryDirectory {   
+    
+    $folderPath = (Join-Path $env:temp ([System.Guid]::NewGuid().ToString()))
+    [Void](New-Item -Type Directory $folderPath)
+    return $folderPath
+}
+
 # Sets the version of a dependency in a nuspec.
 # e.g:
 # SetNuspecDependencyVersion "SharpGLforWinForms.nuspec" "SharpGLCore" "2.3.0.1"
@@ -40,4 +54,28 @@ function SetNuspecDependencyVersion($nuspecPath, $dependencyId, $version) {
     }
 
     $nuspecXml.Save($nuspecPath)
+}
+
+# Creates a Nuget package from a spec and a set of items. The items will be
+# copied into the ,p
+function CreateNugetPackage($nuget, $nuspecPath, $version, $dependencyVersions, $libNet4Items, $outputPath) {
+
+    # Create a temporary directory, set the temp spec path.
+    $tempFolder = CreateTemporaryDirectory
+    $tempNuspecPath = Join-Path $tempFolder (Split-Path $nuspecPath -leaf)
+
+    # Copy the source items into the lib/net4 folder.
+    Copy-Item $nuspecPath -Destination $tempNuspecPath
+    CopyItems $libNet4Items (Join-Path $tempFolder "lib/net40")
+
+    # Set the dependency versions.
+    foreach ($dependencyVersion in $dependencyVersions.GetEnumerator()) {
+        SetNuspecDependencyVersion $tempNuspecPath $dependencyVersion.Name $dependencyVersion.Value
+    }
+
+    # Create the package.
+    . $nuget pack $tempNuspecPath -Version $version -OutputDirectory $outputPath
+
+    # Clean up the temporary directory.
+    Remove-Item $tempFolder -Force -Recurse
 }

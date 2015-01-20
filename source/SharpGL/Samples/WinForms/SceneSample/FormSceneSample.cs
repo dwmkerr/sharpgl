@@ -15,6 +15,8 @@ using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Lighting;
 using SharpGL.SceneGraph.Effects;
 using SharpGL.SceneGraph.Primitives;
+using SharpGL.SceneGraph.Transformations;
+using SharpGL.SceneGraph.Quadrics;
 
 namespace SceneSample
 {
@@ -31,31 +33,109 @@ namespace SceneSample
             sceneControl1.MouseMove += new MouseEventHandler(FormSceneSample_MouseMove);
             sceneControl1.MouseUp += new MouseEventHandler(sceneControl1_MouseUp);
 
-            //  Add some design-time primitives.
-            sceneControl1.Scene.SceneContainer.AddChild(new
-                SharpGL.SceneGraph.Primitives.Grid());
-            sceneControl1.Scene.SceneContainer.AddChild(new 
-                SharpGL.SceneGraph.Primitives.Axies());
+            // Add some design-time primitives.
+            sceneControl1.Scene.SceneContainer.AddChild(new Grid());
+            sceneControl1.Scene.SceneContainer.AddChild(new Axies());
 
-            //  Create a light.
+            // Create a light.
             Light light = new Light()
             {
                 On = true,
-                Position = new Vertex(3, 10, 3),
+                Position = new Vertex(-3, 10, 3),
                 GLCode = OpenGL.GL_LIGHT0
             };
 
-            //  Add the light.
+            // Add the light.
             sceneControl1.Scene.SceneContainer.AddChild(light);
 
-            //  Create a sphere.
-            Cube cube = new Cube();
-            cube.AddEffect(arcBallEffect);
-            
-            //  Add it.
-            sceneControl1.Scene.SceneContainer.AddChild(cube);
+            // Create the torso.
+            Cube torso = new Cube()
+            {
+                Transformation = new LinearTransformation()
+                {
+                    TranslateZ = 4.0f,
+                    ScaleX = 1.0f, ScaleY = 1.25f, ScaleZ = 1.25f
+                },
+                Name = "Torso"
+            };
 
-            //  Add the root element to the tree.
+            torso.AddEffect(arcBallEffect);
+
+            // Create the head.
+            Cube head = new Cube()
+            {
+                Transformation = new LinearTransformation()
+                {
+                    TranslateZ = 1.5f,
+                    ScaleX = 0.4f,
+                    ScaleY = 0.4f,
+                    ScaleZ = 0.4f
+                },
+                Name = "Left Arm"
+            };
+
+            // Create the arms.
+            Cube rightArm = new Cube()
+            {
+                Transformation = new LinearTransformation()
+                {
+                    TranslateY = -1.3f, TranslateZ = -0.5f,
+                    ScaleX = 0.2f, ScaleY = 0.2f
+                },
+                Name = "Right Arm"
+            };
+
+            Cube leftArm = new Cube()
+            {
+                Transformation = new LinearTransformation()
+                {
+                    TranslateX = -1.0f, TranslateY = 1.3f, TranslateZ = -0.1f,
+                    RotateY = 45.0f,
+                    ScaleX = 0.2f, ScaleY = 0.2f
+                },
+                Name = "Left Leg"
+            };
+
+            // Create the legs.
+            Cube rightLeg = new Cube()
+            {
+                Transformation = new LinearTransformation()
+                {
+                    TranslateY = -0.7f, TranslateZ = -1.3f,
+                    ScaleX = 0.2f, ScaleY = 0.2f, ScaleZ = 2f
+                },
+                Name = "Right Leg"
+            };
+
+            Cube leftLeg = new Cube()
+            {
+                Transformation = new LinearTransformation()
+                {
+                    TranslateY = 0.7f, TranslateZ = -1.3f,
+                    ScaleX = 0.2f, ScaleY = 0.2f, ScaleZ = 2f
+                },
+                Name = "Left Leg"
+            };
+
+            //Sphere head = new Sphere()
+            //{
+            //    Transformation = new LinearTransformation()
+            //    {
+            //        TranslateZ = 0.5f
+            //    },
+            //    Name = "Head"
+            //};
+
+            torso.AddChild(head);
+            torso.AddChild(rightArm);
+            torso.AddChild(leftArm);
+            torso.AddChild(rightLeg);
+            torso.AddChild(leftLeg);
+
+            //  Add torso to scene.
+            sceneControl1.Scene.SceneContainer.AddChild(torso);
+
+            //  Add the root element to the scene tree view control.
             AddElementToTree(sceneControl1.Scene.SceneContainer, treeView1.Nodes);
         }
 
