@@ -5,6 +5,10 @@ if ((Test-Path $msbuild) -eq $false) {
     Break
 }
 
+# TODO: We need to build the VS2013 tools with the VS2013 msbuild. This means
+# to correctly build the vsix files for 2010-2013 we need VS2010 and VS2013 physically
+# installed.
+
 # Load useful functions.
 . .\Resources\PowershellFunctions.ps1
 . .\Resources\VsixTools.ps1
