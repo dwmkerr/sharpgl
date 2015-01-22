@@ -85,14 +85,15 @@ namespace SharpGL.RenderContextProviders
 	    public override void Blit(IntPtr hdc) 
 	    {
             //  We must have a device context.
-            if (deviceContextHandle != null)
-		    {
-			    //	Swap the buffers.
-                Win32.SwapBuffers(deviceContextHandle);
+            // [RS] Why can the deviceContextHandle be zero?
+            if (deviceContextHandle == IntPtr.Zero)
+                return;
 
-                //  Blit to the device context.
-                Win32.BitBlt(hdc, 0, 0, Width, Height, deviceContextHandle, 0, 0, Win32.SRCCOPY);
-		    }
+			//	Swap the buffers.
+            Win32.SwapBuffers(deviceContextHandle);
+
+            //  Blit to the device context.
+            Win32.BitBlt(hdc, 0, 0, Width, Height, deviceContextHandle, 0, 0, Win32.SRCCOPY);
 	    }
 	
 	    public override void MakeCurrent()
