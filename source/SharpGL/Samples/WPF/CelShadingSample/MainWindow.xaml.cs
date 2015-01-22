@@ -43,7 +43,6 @@ namespace CelShadingSample
                         scene.RenderImmediateMode(gl); 
                         break;
                     }
-                default: break;
             }
         }
         
@@ -53,8 +52,6 @@ namespace CelShadingSample
             
             //  Initialise the scene.
             scene.Initialise(gl);
-
-            gl.Enable(OpenGL.GL_DEPTH_TEST);
         }
 
         private void OpenGLControl_Resized(object sender, OpenGLEventArgs args)
@@ -62,15 +59,8 @@ namespace CelShadingSample
             //  Get the OpenGL instance.
             var gl = args.OpenGL;       
      
-            //  Create a projection matrix for the scene with the screen size.
-            scene.CreateProjectionMatrix((float)ActualWidth, (float)ActualHeight);
-            
-            //  When we do immediate mode drawing, OpenGL needs to know what our projection matrix
-            //  is, so set it now.
-            gl.MatrixMode(OpenGL.GL_PROJECTION);
-            gl.LoadIdentity();
-            gl.MultMatrix(scene.ProjectionMatrix.to_array());
-            gl.MatrixMode(OpenGL.GL_MODELVIEW);
+            //  Create the projection matrix for the screen size.
+            scene.CreateProjectionMatrix(gl, (float)ActualWidth, (float)ActualHeight);
         }
 
         /// <summary>
