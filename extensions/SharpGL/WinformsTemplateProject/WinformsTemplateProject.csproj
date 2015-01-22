@@ -90,11 +90,6 @@
     <None Include="Properties\Resources.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\SharpGL.dll" />
-    <None Include="Dependencies\SharpGL.SceneGraph.dll" />
-    <None Include="Dependencies\SharpGL.WinForms.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="SharpGLForm.resx">
       <DependentUpon>SharpGLForm.cs</DependentUpon>
     </None>

@@ -210,7 +210,7 @@ function Vsix-FixInvalidMultipleFiles {
         $assetsNode = $manifestXml.PackageManifest.SelectSingleNode("ns:Assets", $ns)
         $projectTemplateNodes = $manifestXml.PackageManifest.Assets.SelectNodes("ns:Asset[@Type='Microsoft.VisualStudio.ProjectTemplate']", $ns)
         foreach($projectTemplateNode in $projectTemplateNodes) {
-            $manifestXml.PackageManifest.Assets.RemoveChild($projectTemplateNode)
+            $manifestXml.PackageManifest.Assets.RemoveChild($projectTemplateNode) | Out-Null
         }
         foreach ($projectTemplateFolder in $projectTemplateFolders) {
             $newnode = $projectTemplateNodes[0].CloneNode($true)
@@ -225,8 +225,9 @@ function Vsix-FixInvalidMultipleFiles {
     $manifestXml.save($manifestPath)
 
 
-    # Finally, save the updated working folder as the vsix.
+    # Finally, save the updated working folder as the vsix and delete the backup.
     ZipWorkingFolderToVsix $workingFolder $vsixPath
+    Remove-Item ($vsixPath + ".backup") -Force
 }
 
 function Vsix-GetManifestVersion {

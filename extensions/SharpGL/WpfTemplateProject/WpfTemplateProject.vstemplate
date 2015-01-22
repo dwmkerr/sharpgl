@@ -12,17 +12,13 @@
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>__TemplateIcon.ico</Icon>
+    <PromptForSaveOnCreation>true</PromptForSaveOnCreation>
   </TemplateData>
   <TemplateContent>
     <Project TargetFileName="WpfTemplate.csproj" File="WpfTemplate.csproj" ReplaceParameters="true">
       <ProjectItem ReplaceParameters="true" TargetFileName="app.config">app.config</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml">App.xaml</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml.cs">App.xaml.cs</ProjectItem>
-      <Folder Name="Dependencies" TargetFolderName="Dependencies">
-        <ProjectItem ReplaceParameters="false" TargetFileName="SharpGL.dll">SharpGL.dll</ProjectItem>
-        <ProjectItem ReplaceParameters="false" TargetFileName="SharpGL.SceneGraph.dll">SharpGL.SceneGraph.dll</ProjectItem>
-        <ProjectItem ReplaceParameters="false" TargetFileName="SharpGL.WPF.dll">SharpGL.WPF.dll</ProjectItem>
-      </Folder>
       <ProjectItem ReplaceParameters="true" TargetFileName="MainWindow.xaml">MainWindow.xaml</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="MainWindow.xaml.cs">MainWindow.xaml.cs</ProjectItem>
       <Folder Name="Properties" TargetFolderName="Properties">
@@ -34,4 +30,14 @@
       </Folder>
     </Project>
   </TemplateContent>
+  <WizardExtension>
+    <Assembly>NuGet.VisualStudio.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
+  </WizardExtension>
+  <WizardData>
+    <packages repository="extension" repositoryId="SharpGL..f2635109-640b-4fcc-94af-9a642165a4bb">
+      <package id="SharpGLCore" version="2.3.0.1" />
+      <package id="SharpGLforWPF" version="2.3.0.1" />
+    </packages>
+  </WizardData>
 </VSTemplate>

@@ -12,9 +12,11 @@
     <Tags>SharpGL, OpenGL, 3D</Tags>
   </Metadata>
   <Installation>
-    <InstallationTarget Version="[11.0,13.0)" Id="Microsoft.VisualStudio.Pro" />
-    <InstallationTarget Version="[11.0,13.0)" Id="Microsoft.VisualStudio.Premium" />
-    <InstallationTarget Version="[11.0,13.0)" Id="Microsoft.VisualStudio.Ultimate" />
+    <InstallationTarget Version="[10.0,12.0]" Id="Microsoft.VisualStudio.Pro" />
+    <InstallationTarget Version="[10.0,12.0]" Id="Microsoft.VisualStudio.Ultimate" />
+    <InstallationTarget Version="[10.0,12.0]" Id="Microsoft.VisualStudio.Premium" />
+    <InstallationTarget Version="[10.0,12.0]" Id="Microsoft.VisualStudio.VSWinExpress" />
+    <InstallationTarget Version="[10.0,12.0]" Id="Microsoft.VisualStudio.VSWinDesktopExpress" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.0" />
@@ -23,4 +25,8 @@
     <Asset d:Source="Project" Type="Microsoft.VisualStudio.ProjectTemplate" d:ProjectName="WinformsTemplateProject" d:TargetPath="|WinformsTemplateProject;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
     <Asset d:Source="Project" Type="Microsoft.VisualStudio.ProjectTemplate" d:ProjectName="WpfTemplateProject" d:TargetPath="|WpfTemplateProject;TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
   </Assets>
+  <Reference Id="NuPackToolsVsix.Microsoft.67e54e40-0ae3-42c5-a949-fddf5739e7a5" MinVersion="1.7.30402.9028">
+    <Name>NuGet Package Manager</Name>
+    <MoreInfoUrl>http://docs.nuget.org/</MoreInfoUrl>
+  </Reference>
 </PackageManifest>

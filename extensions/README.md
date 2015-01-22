@@ -8,6 +8,17 @@ Visual Studio Extensions for SharpGL.
 `SharpGL`: Code for `SharpGL.vsix`.
 `build`: Scripts and code to build the vsix packages.
 
+Building the VS2012 Extensions
+------------------------------
+
+To build the VS 2012 extensions, run the script below:
+
+```
+.\extensions\build\BuildSharpGL2010Extensions.ps1
+```
+
+The VSIX is built to `.\extensions\build\SharpGL.vsix`.
+
 Building the VS2010 Extensions
 ------------------------------
 
@@ -19,8 +30,3 @@ To build these extensions, run the script below:
 ```
 
 The VSIX is built to `.\extensions\build\SharpGL.2010.vsix`.
-
-Building the VS2012 and VS2013 Extensions
------------------------------------------
-
-TODO: Document the software required to build SharpGL.

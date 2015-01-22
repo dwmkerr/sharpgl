@@ -87,11 +87,6 @@
     <None Include="Properties\Resources.resx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dependencies\SharpGL.dll" />
-    <None Include="Dependencies\SharpGL.SceneGraph.dll" />
-    <None Include="Dependencies\SharpGL.WPF.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="__TemplateIcon.ico" />
   </ItemGroup>
   <ItemGroup>
