@@ -4899,7 +4899,7 @@ namespace SharpGL
         /// <param name="data">Specifies a pointer to a single pixel of data to upload. This parameter may not be NULL.</param>
         public void ClearBufferData(uint target, uint internalformat, uint format, uint type, IntPtr data)
         {
-            InvokeExtensionFunction<glClearBufferData>(target, internalformat, format, type, data);
+            GetDelegateFor<glClearBufferData>()(target, internalformat, format, type, data);
         }
 
         /// <summary>
@@ -4914,16 +4914,16 @@ namespace SharpGL
         /// <param name="data">Specifies a pointer to a single pixel of data to upload. This parameter may not be NULL.</param>
         public void ClearBufferSubData(uint target, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data)
         {
-            InvokeExtensionFunction<glClearBufferSubData>(target, internalformat, offset, size, format, type, data);
+            GetDelegateFor<glClearBufferSubData>()(target, internalformat, offset, size, format, type, data);
         }
 
         public void ClearNamedBufferDataEXT(uint buffer, uint internalformat, uint format, uint type, IntPtr data)
         {
-            InvokeExtensionFunction<glClearNamedBufferDataEXT>(buffer, internalformat, format, type, data);
+            GetDelegateFor<glClearNamedBufferDataEXT>()(buffer, internalformat, format, type, data);
         }
         public void ClearNamedBufferSubDataEXT(uint buffer, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data)
         {
-            InvokeExtensionFunction<glClearNamedBufferSubDataEXT>(buffer, internalformat, offset, size, format, type, data);
+            GetDelegateFor<glClearNamedBufferSubDataEXT>()(buffer, internalformat, offset, size, format, type, data);
         }
         
         //  Delegates
@@ -4944,7 +4944,7 @@ namespace SharpGL
         /// <param name="num_groups_z">The number of work groups to be launched in the Z dimension.</param>
         public void DispatchCompute(uint num_groups_x, uint num_groups_y, uint num_groups_z)
         {
-            InvokeExtensionFunction<glDispatchCompute>(num_groups_x, num_groups_y, num_groups_z);
+            GetDelegateFor<glDispatchCompute>()(num_groups_x, num_groups_y, num_groups_z);
         }
 
         /// <summary>
@@ -4953,7 +4953,7 @@ namespace SharpGL
         /// <param name="indirect">The offset into the buffer object currently bound to the GL_DISPATCH_INDIRECT_BUFFER​ buffer target at which the dispatch parameters are stored.</param>
         public void DispatchComputeIndirect(IntPtr indirect)
         {
-            InvokeExtensionFunction<glDispatchComputeIndirect>(indirect);
+            GetDelegateFor<glDispatchComputeIndirect>()(indirect);
         }
 
         //  Delegates
@@ -5005,7 +5005,7 @@ namespace SharpGL
         public void CopyImageSubData(uint srcName, uint srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName,
             uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, uint srcWidth, uint srcHeight, uint srcDepth)
         {
-            InvokeExtensionFunction<glCopyImageSubData>(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, 
+            GetDelegateFor<glCopyImageSubData>()(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, 
             dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth);
         }
 
@@ -5046,7 +5046,7 @@ namespace SharpGL
         /// <param name="param">The new value for the parameter named pname​.</param>
         public void FramebufferParameter(uint target, uint pname, int param)
         {
-            InvokeExtensionFunction<glFramebufferParameteri>(target, pname, param);
+            GetDelegateFor<glFramebufferParameteri>()(target, pname, param);
         }
 
         /// <summary>
@@ -5057,17 +5057,17 @@ namespace SharpGL
         /// <param name="parameters">The address of a variable to receive the value of the parameter named pname​.</param>
         public void GetFramebufferParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetFramebufferParameteriv>(target, pname, parameters);
+            GetDelegateFor<glGetFramebufferParameteriv>()(target, pname, parameters);
         }
 
         public void NamedFramebufferParameterEXT(uint framebuffer, uint pname, int param)
         {
-            InvokeExtensionFunction<glNamedFramebufferParameteriEXT>(framebuffer, pname, param);
+            GetDelegateFor<glNamedFramebufferParameteriEXT>()(framebuffer, pname, param);
         }
 
         public void GetNamedFramebufferParameterEXT(uint framebuffer, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetNamedFramebufferParameterivEXT>(framebuffer, pname, parameters);
+            GetDelegateFor<glGetNamedFramebufferParameterivEXT>()(framebuffer, pname, parameters);
         }
 
         //  Delegates
@@ -5090,7 +5090,7 @@ namespace SharpGL
         /// <param name="parameters">Specifies the address of a variable into which to write the retrieved information.</param>
         public void GetInternalformat(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters)
         {
-            InvokeExtensionFunction<glGetInternalformativ>(target, internalformat, pname, bufSize, parameters);
+            GetDelegateFor<glGetInternalformativ>()(target, internalformat, pname, bufSize, parameters);
         }
 
         /// <summary>
@@ -5103,7 +5103,7 @@ namespace SharpGL
         /// <param name="parameters">Specifies the address of a variable into which to write the retrieved information.</param>
         public void GetInternalformat(uint target, uint internalformat, uint pname, uint bufSize, Int64[] parameters)
         {
-            InvokeExtensionFunction<glGetInternalformati64v>(target, internalformat, pname, bufSize, parameters);
+            GetDelegateFor<glGetInternalformati64v>()(target, internalformat, pname, bufSize, parameters);
         }
 
         //  Delegates
@@ -5234,7 +5234,7 @@ namespace SharpGL
         public void InvalidateTexSubImage(uint texture, int level, int xoffset, int yoffset, int zoffset,
             uint width, uint height, uint depth)
         {
-            InvokeExtensionFunction<glInvalidateTexSubImage>(texture, level, xoffset, yoffset, zoffset, width, height, depth);
+            GetDelegateFor<glInvalidateTexSubImage>()(texture, level, xoffset, yoffset, zoffset, width, height, depth);
         }
 
         /// <summary>
@@ -5244,7 +5244,7 @@ namespace SharpGL
         /// <param name="level">The level of detail of the texture object to invalidate.</param>
         public void InvalidateTexImage(uint texture, int level)
         {
-            InvokeExtensionFunction<glInvalidateTexImage>(texture, level);
+            GetDelegateFor<glInvalidateTexImage>()(texture, level);
         }
 
         /// <summary>
@@ -5255,7 +5255,7 @@ namespace SharpGL
         /// <param name="length">The length of the range within the buffer's data store to be invalidated.</param>
         public void InvalidateBufferSubData(uint buffer, IntPtr offset, IntPtr length)
         {
-            InvokeExtensionFunction<glInvalidateBufferSubData>(buffer, offset, length);
+            GetDelegateFor<glInvalidateBufferSubData>()(buffer, offset, length);
         }
 
         /// <summary>
@@ -5264,7 +5264,7 @@ namespace SharpGL
         /// <param name="buffer">The name of a buffer object whose data store to invalidate.</param>
         public void InvalidateBufferData(uint buffer)
         {
-            InvokeExtensionFunction<glInvalidateBufferData>(buffer);
+            GetDelegateFor<glInvalidateBufferData>()(buffer);
         }
 
         /// <summary>
@@ -5275,7 +5275,7 @@ namespace SharpGL
         /// <param name="attachments">The address of an array identifying the attachments to be invalidated.</param>
         public void InvalidateFramebuffer(uint target, uint numAttachments, uint[] attachments)
         {
-            InvokeExtensionFunction<glInvalidateFramebuffer>(target, numAttachments, attachments);
+            GetDelegateFor<glInvalidateFramebuffer>()(target, numAttachments, attachments);
         }
 
         /// <summary>
@@ -5291,7 +5291,7 @@ namespace SharpGL
         public void InvalidateSubFramebuffer(uint target, uint numAttachments, uint[] attachments,
             int x, int y, uint width, uint height)
         {
-            InvokeExtensionFunction<glInvalidateSubFramebuffer>(target, numAttachments, attachments, x, y, width, height);
+            GetDelegateFor<glInvalidateSubFramebuffer>()(target, numAttachments, attachments, x, y, width, height);
         }
 
         //  Delegates
@@ -5317,7 +5317,7 @@ namespace SharpGL
         /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
         public void MultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride)
         {
-            InvokeExtensionFunction<glMultiDrawArraysIndirect>(mode, indirect, primcount, stride);
+            GetDelegateFor<glMultiDrawArraysIndirect>()(mode, indirect, primcount, stride);
         }
 
         /// <summary>
@@ -5330,7 +5330,7 @@ namespace SharpGL
         /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
         public void MultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride)
         {
-            InvokeExtensionFunction<glMultiDrawElementsIndirect>(mode, type, indirect, primcount, stride);
+            GetDelegateFor<glMultiDrawElementsIndirect>()(mode, type, indirect, primcount, stride);
         }
 
         private delegate void glMultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride);
@@ -5349,7 +5349,7 @@ namespace SharpGL
         /// <param name="parameters">The address of a variable to retrieve the value of pname​ for the program interface..</param>
         public void GetProgramInterface(uint program, uint programInterface, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramInterfaceiv>(program, programInterface, pname, parameters);
+            GetDelegateFor<glGetProgramInterfaceiv>()(program, programInterface, pname, parameters);
         }
 
         /// <summary>
@@ -5360,7 +5360,7 @@ namespace SharpGL
         /// <param name="name">The name of the resource to query the index of.</param>
         public void GetProgramResourceIndex(uint program, uint programInterface, string name)
         {
-            InvokeExtensionFunction<glGetProgramResourceIndex>(program, programInterface, name);
+            GetDelegateFor<glGetProgramResourceIndex>()(program, programInterface, name);
         }
 
         /// <summary>
@@ -5376,7 +5376,7 @@ namespace SharpGL
         {
             var lengthParameter = new uint[1];
             var nameParameter = new string[1];
-            InvokeExtensionFunction<glGetProgramResourceName>(program, programInterface, index, bufSize, lengthParameter, nameParameter);
+            GetDelegateFor<glGetProgramResourceName>()(program, programInterface, index, bufSize, lengthParameter, nameParameter);
             length = lengthParameter[0];
             name = nameParameter[0];
         }
@@ -5396,9 +5396,11 @@ namespace SharpGL
         {
             var lengthParameter = new uint[1];
             var parametersParameter = new int[1][];
-            InvokeExtensionFunction<glGetProgramResourceiv>(program, programInterface, index, propCount, props, bufSize, lengthParameter, parametersParameter);
+
+            // [TODO] [RS] We have to check if output parameters in 'parametersParameter' works correctly here.
+            GetDelegateFor<glGetProgramResourceiv>()(program, programInterface, index, propCount, props, bufSize, lengthParameter, parametersParameter[1]);
             length = lengthParameter[0];
-            parameters = parametersParameter[0];
+            parameters = parametersParameter[1];
         }
 
         /// <summary>
@@ -5409,7 +5411,7 @@ namespace SharpGL
         /// <param name="name">The name of the resource to query the location of.</param>
         public void GetProgramResourceLocation(uint program, uint programInterface, string name)
         {
-            InvokeExtensionFunction<glGetProgramResourceLocation>(program, programInterface, name);
+            GetDelegateFor<glGetProgramResourceLocation>()(program, programInterface, name);
         }
 
         /// <summary>
@@ -5420,7 +5422,7 @@ namespace SharpGL
         /// <param name="name">The name of the resource to query the location of.</param>
         public void GetProgramResourceLocationIndex(uint program, uint programInterface, string name)
         {
-            InvokeExtensionFunction<glGetProgramResourceLocationIndex>(program, programInterface, name);
+            GetDelegateFor<glGetProgramResourceLocationIndex>()(program, programInterface, name);
         }
 
         private delegate void glGetProgramInterfaceiv(uint program, uint programInterface, uint pname, int[] parameters);
@@ -5442,7 +5444,7 @@ namespace SharpGL
         /// <param name="storageBlockBinding">The index storage block binding to associate with the specified storage block.</param>
         public void ShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding)
         {
-            InvokeExtensionFunction<glShaderStorageBlockBinding>(program, storageBlockIndex, storageBlockBinding);
+            GetDelegateFor<glShaderStorageBlockBinding>()(program, storageBlockIndex, storageBlockBinding);
         }
 
         private delegate void glShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding);
@@ -5486,7 +5488,7 @@ namespace SharpGL
         /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
         public void TexBufferRange(uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size)
         {
-            InvokeExtensionFunction<glTexBufferRange>(target, internalformat, buffer, offset, size);
+            GetDelegateFor<glTexBufferRange>()(target, internalformat, buffer, offset, size);
         }
 
         /// <summary>
@@ -5500,7 +5502,7 @@ namespace SharpGL
         /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
         public void TextureBufferRangeEXT(uint texture, uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size)
         {
-            InvokeExtensionFunction<glTextureBufferRangeEXT>(texture, target, internalformat, buffer, offset, size);
+            GetDelegateFor<glTextureBufferRangeEXT>()(texture, target, internalformat, buffer, offset, size);
         }
 
         private delegate void glTexBufferRange(uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size);
@@ -5521,7 +5523,7 @@ namespace SharpGL
         /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
         public void TexStorage2DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations)
         {
-            InvokeExtensionFunction<glTexStorage2DMultisample>(target, samples, internalformat, width, height, fixedsamplelocations);
+            GetDelegateFor<glTexStorage2DMultisample>()(target, samples, internalformat, width, height, fixedsamplelocations);
         }
 
         /// <summary>
@@ -5536,7 +5538,7 @@ namespace SharpGL
         /// <param name="fixedsamplelocations">Specifies the depth of the texture, in layers.</param>
         public void TexStorage3DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations)
         {
-            InvokeExtensionFunction<glTexStorage3DMultisample>(target, samples, internalformat, width, height, depth, fixedsamplelocations);
+            GetDelegateFor<glTexStorage3DMultisample>()(target, samples, internalformat, width, height, depth, fixedsamplelocations);
         }
 
         /// <summary>
@@ -5551,7 +5553,7 @@ namespace SharpGL
         /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
         public void TexStorage2DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations)
         {
-            InvokeExtensionFunction<glTexStorage2DMultisampleEXT>(texture, target, samples, internalformat, width, height, fixedsamplelocations);
+            GetDelegateFor<glTexStorage2DMultisampleEXT>()(texture, target, samples, internalformat, width, height, fixedsamplelocations);
         }
 
         /// <summary>
@@ -5567,7 +5569,7 @@ namespace SharpGL
         /// <param name="fixedsamplelocations">Specifies the depth of the texture, in layers.</param>
         public void TexStorage3DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations)
         {
-            InvokeExtensionFunction<glTexStorage3DMultisampleEXT>(texture, target, samples, internalformat, width, height, depth, fixedsamplelocations);
+            GetDelegateFor<glTexStorage3DMultisampleEXT>()(texture, target, samples, internalformat, width, height, depth, fixedsamplelocations);
         }
 
         //  Delegates
@@ -5593,7 +5595,7 @@ namespace SharpGL
         /// <param name="numlayers">Specifies the number of layers to include in the view.</param>
         public void TextureView(uint texture, uint target, uint origtexture, uint internalformat, uint minlevel, uint numlevels, uint minlayer, uint numlayers)
         {
-            InvokeExtensionFunction<glTextureView>(texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers);
+            GetDelegateFor<glTextureView>()(texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers);
         }
 
         //  Delegates
@@ -5618,7 +5620,7 @@ namespace SharpGL
         /// <param name="stride">The distance between elements within the buffer.</param>
         public void BindVertexBuffer(uint bindingindex, uint buffer, IntPtr offset, uint stride)
         {
-            InvokeExtensionFunction<glBindVertexBuffer>(bindingindex, buffer, offset, stride);
+            GetDelegateFor<glBindVertexBuffer>()(bindingindex, buffer, offset, stride);
         }
         
         /// <summary>
@@ -5631,7 +5633,7 @@ namespace SharpGL
         /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
         public void VertexAttribFormat(uint attribindex, int size, uint type, bool normalized, uint relativeoffset)
         {
-            InvokeExtensionFunction<glVertexAttribFormat>(attribindex, size, type, normalized, relativeoffset);
+            GetDelegateFor<glVertexAttribFormat>()(attribindex, size, type, normalized, relativeoffset);
         }
 
         /// <summary>
@@ -5643,7 +5645,7 @@ namespace SharpGL
         /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
         public void VertexAttribIFormat(uint attribindex, int size, uint type, uint relativeoffset)
         {
-            InvokeExtensionFunction<glVertexAttribIFormat>(attribindex, size, type, relativeoffset);
+            GetDelegateFor<glVertexAttribIFormat>()(attribindex, size, type, relativeoffset);
         }
 
         /// <summary>
@@ -5655,7 +5657,7 @@ namespace SharpGL
         /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
         public void VertexAttribLFormat(uint attribindex, int size, uint type, uint relativeoffset)
         {
-            InvokeExtensionFunction<glVertexAttribLFormat>(attribindex, size, type, relativeoffset);
+            GetDelegateFor<glVertexAttribLFormat>()(attribindex, size, type, relativeoffset);
         }
         
         /// <summary>
@@ -5665,7 +5667,7 @@ namespace SharpGL
         /// <param name="bindingindex">The index of the vertex buffer binding with which to associate the generic vertex attribute.</param>
         public void VertexAttribBinding(uint attribindex, uint bindingindex)
         {
-            InvokeExtensionFunction<glVertexAttribBinding>(attribindex, bindingindex);
+            GetDelegateFor<glVertexAttribBinding>()(attribindex, bindingindex);
         }
         
         /// <summary>
@@ -5675,7 +5677,7 @@ namespace SharpGL
         /// <param name="divisor">The new value for the instance step rate to apply.</param>
         public void VertexBindingDivisor(uint bindingindex, uint divisor)
         {
-            InvokeExtensionFunction<glVertexBindingDivisor>(bindingindex, divisor);
+            GetDelegateFor<glVertexBindingDivisor>()(bindingindex, divisor);
         }
 
         /// <summary>
@@ -5689,7 +5691,7 @@ namespace SharpGL
         /// <param name="stride">The distance between elements within the buffer.</param>
         public void VertexArrayBindVertexBufferEXT(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, uint stride)
         {
-            InvokeExtensionFunction<glVertexArrayBindVertexBufferEXT>(vaobj, bindingindex, buffer, offset, stride);
+            GetDelegateFor<glVertexArrayBindVertexBufferEXT>()(vaobj, bindingindex, buffer, offset, stride);
         }
 
         /// <summary>
@@ -5704,7 +5706,7 @@ namespace SharpGL
         /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
         public void VertexArrayVertexAttribFormatEXT(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativeoffset)
         {
-            InvokeExtensionFunction<glVertexArrayVertexAttribFormatEXT>(vaobj, attribindex, size, type, normalized, relativeoffset);
+            GetDelegateFor<glVertexArrayVertexAttribFormatEXT>()(vaobj, attribindex, size, type, normalized, relativeoffset);
         }
 
         /// <summary>
@@ -5718,7 +5720,7 @@ namespace SharpGL
         /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
         public void VertexArrayVertexAttribIFormatEXT(uint vaobj, uint attribindex, int size, uint type, uint relativeoffset)
         {
-            InvokeExtensionFunction<glVertexArrayVertexAttribIFormatEXT>(vaobj, attribindex, size, type, relativeoffset);
+            GetDelegateFor<glVertexArrayVertexAttribIFormatEXT>()(vaobj, attribindex, size, type, relativeoffset);
         }
 
         /// <summary>
@@ -5732,7 +5734,7 @@ namespace SharpGL
         /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
         public void VertexArrayVertexAttribLFormatEXT(uint vaobj, uint attribindex, int size, uint type, uint relativeoffset)
         {
-            InvokeExtensionFunction<glVertexArrayVertexAttribLFormatEXT>(vaobj, attribindex, size, type, relativeoffset);
+            GetDelegateFor<glVertexArrayVertexAttribLFormatEXT>()(vaobj, attribindex, size, type, relativeoffset);
         }
 
         /// <summary>
@@ -5744,7 +5746,7 @@ namespace SharpGL
         /// <param name="bindingindex">The index of the vertex buffer binding with which to associate the generic vertex attribute.</param>
         public void VertexArrayVertexAttribBindingEXT(uint vaobj, uint attribindex, uint bindingindex)
         {
-            InvokeExtensionFunction<glVertexArrayVertexAttribBindingEXT>(vaobj, attribindex, bindingindex);
+            GetDelegateFor<glVertexArrayVertexAttribBindingEXT>()(vaobj, attribindex, bindingindex);
         }
 
         /// <summary>
@@ -5756,7 +5758,7 @@ namespace SharpGL
         /// <param name="divisor">The new value for the instance step rate to apply.</param>
         public void VertexArrayVertexBindingDivisorEXT(uint vaobj, uint bindingindex, uint divisor)
         {
-            InvokeExtensionFunction<glVertexArrayVertexBindingDivisorEXT>(vaobj, bindingindex, divisor);
+            GetDelegateFor<glVertexArrayVertexBindingDivisorEXT>()(vaobj, bindingindex, divisor);
         }
 
         //  Delegates
