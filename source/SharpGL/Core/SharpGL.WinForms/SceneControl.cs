@@ -11,7 +11,7 @@ namespace SharpGL
     [System.Drawing.ToolboxBitmap(typeof(SceneControl), "SharpGL.png")]
 	public class SceneControl : SharpGL.OpenGLControl
 	{
-		private System.ComponentModel.IContainer components;
+		private System.ComponentModel.IContainer components = null;
 
         public SceneControl()
 		{
