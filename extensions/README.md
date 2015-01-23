@@ -4,10 +4,10 @@ Extensions
 This folder contains all of the code and scripts required to build the
 Visual Studio Extensions for SharpGL.
 
-`Seeds`: Actual SharpGL projects which are the seeds of the project templates.
-`SharpGL.2010`: Code for `SharpGL.2010.vsix`.
-`SharpGL`: Code for `SharpGL.vsix`.
-`build`: Scripts and code to build the vsix packages.
+ * `Seeds`: Actual SharpGL projects which are the seeds of the project templates.
+ * `SharpGL.2010`: Code for `SharpGL.2010.vsix`.
+ * `SharpGL`: Code for `SharpGL.vsix`.
+ * `build`: Scripts and code to build the vsix packages.
 
 Building the VS2012 & VS2013 Extensions
 ---------------------------------------
