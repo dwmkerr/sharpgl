@@ -5,13 +5,8 @@ if ((Test-Path $msbuild) -eq $false) {
     Break
 }
 
-# TODO: We need to build the VS2013 tools with the VS2013 msbuild. This means
-# to correctly build the vsix files for 2010-2013 we need VS2010 and VS2013 physically
-# installed.
-
 # Load useful functions.
 . .\Resources\PowershellFunctions.ps1
-. .\Resources\VsixTools.ps1
 
 # Keep track of the 'release' folder location - it's the root of everything else.
 # We can also build paths to the key locations we'll use.
@@ -91,57 +86,7 @@ $releaseFolders | ForEach {
 }
 Write-Host "Built tools."
 
-# Part 8 - Move the core libraries to the dependencies folders of the extensions, then build the extensions.
-Write-Host "Preparing to build the extensions..."
-$folderExtensionsRoot = Join-Path $folderSourceRoot "source\Extensions"
-$dllSharpGL = Join-Path $folderReleaseCore "SharpGL\SharpGL.dll"
-$dllSharpGLSceneGraph = Join-Path $folderReleaseCore "SharpGL.SceneGraph\SharpGL.SceneGraph.dll"
-$dllSharpGLWPF = Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.dll"
-$dllSharpGLWinForms = Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.dll"
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WinformsTemplate\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WinformsTemplate\Dependencies")
-Copy-Item $dllSharpGLWinForms -Destination (Join-Path $folderExtensionsRoot "WinformsTemplate\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLWinForms -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject.2010\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject\Dependencies")
-Copy-Item $dllSharpGLWinForms -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WpfTemplate\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WpfTemplate\Dependencies")
-Copy-Item $dllSharpGLWPF -Destination (Join-Path $folderExtensionsRoot "WpfTemplate\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLWPF -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject.2010\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject\Dependencies")
-Copy-Item $dllSharpGLWPF -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject\Dependencies")
-
-$solutionExtensions2010 = Join-Path $folderExtensionsRoot "Extensions.2010.sln"
-. $msbuild $solutionExtensions2010 /p:Configuration=Release /verbosity:quiet
-$solutionExtensions = Join-Path $folderExtensionsRoot "Extensions.sln"
-. $msbuild $solutionExtensions /p:Configuration=Release /verbosity:quiet
-
-# Part 9 - Copy the extensions to the release.
-$folderReleaseExtensions = Join-Path $folderRelease "Extensions"
-EnsureEmptyFolderExists($folderReleaseExtensions)
-CopyItems (Join-Path $folderExtensionsRoot "SharpGL.2010\bin\Release\SharpGL.2010.vsix") $folderReleaseExtensions
-CopyItems (Join-Path $folderExtensionsRoot "SharpGL\bin\Release\SharpGL.vsix") $folderReleaseExtensions
-Write-Host "Built extensions, updating VSIX files for the Visual Studio Gallery..."
-
-# Now use vsix tools to tweak the extensions.
-Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
-Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") -Version $releaseVersion
-Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") 
-Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") 
-
-# Part 10 - Build the Nuget Packages
+# Part 8 - Build the Nuget Packages
 Write-Host "Preparing to build the Nuget Packages..."
 $folderReleasePackages = Join-Path $folderRelease "Packages"
 EnsureEmptyFolderExists($folderReleasePackages)
