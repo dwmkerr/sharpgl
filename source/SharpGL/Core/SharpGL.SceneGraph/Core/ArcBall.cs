@@ -12,7 +12,7 @@ namespace SharpGL.SceneGraph.Core
     public class ArcBall
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PerspectiveCamera"/> class.
+        /// Initializes a new instance 
         /// </summary>
         public ArcBall()
         {
@@ -34,14 +34,20 @@ namespace SharpGL.SceneGraph.Core
         public void MouseDown(int x, int y)
         {
             //  Map the start vertex.
-            MapToSphere((float)x, (float)y, out startVector);
+            //MapToSphere((float)x, (float)y, out startVector);
+
+            startVector = MapToSphere((float)x, (float)y);
         }
+
+
 
         public void MouseMove(int x, int y)
         {
+            currentVector = MapToSphere((float)x, (float)y);
+
             //  todo need solid tuple types.
             //  Calculate the quaternion.
-            float[] quaternion = CalculateQuaternion(x, y);
+            float[] quaternion = CalculateQuaternion();
 
             thisRotationMatrix = Matrix3fSetRotationFromQuat4f(quaternion);
             thisRotationMatrix = thisRotationMatrix * lastRotationMatrix;
@@ -52,7 +58,8 @@ namespace SharpGL.SceneGraph.Core
         {
             lastRotationMatrix.FromOtherMatrix(thisRotationMatrix, 3, 3);
             thisRotationMatrix.SetIdentity();
-            //Matrix4fSetRotationFromMatrix3f(ref transformMatrix, thisRotationMatrix);          // Set Our Final Transform's Rotation From This One
+
+            startVector = new Vertex(0, 0, 0);
         }
 
         private Matrix Matrix3fSetRotationFromQuat4f(float[] q1)
@@ -86,11 +93,8 @@ namespace SharpGL.SceneGraph.Core
             transform.Multiply(scale, 3, 3);
         }
 
-        private float[] CalculateQuaternion(int x, int y)
+        private float[] CalculateQuaternion()
         {
-            //  Map the current vector.
-            MapToSphere((float)x, (float)y, out currentVector);
-
             //  Compute the cross product of the begin and end vectors.
             Vertex cross = startVector.VectorProduct(currentVector);
 
@@ -107,41 +111,56 @@ namespace SharpGL.SceneGraph.Core
             }
         }
 
-        private void MapToSphere(float x, float y, out Vertex newVector)
+        public Vertex MapToSphere(float x, float y)
         {
-            float scaledX = x * adjustWidth - 1.0f;
-            float scaledY = 1.0f - y * adjustHeight;
+            //hyperboloid mapping taken from https://www.opengl.org/wiki/Object_Mouse_Trackball
 
-            //  Get square of length of vector to point from centre.
-            float length = scaledX * scaledX + scaledY * scaledY;
+            float pX = x * adjustWidth - 1.0f;
+            float pY = y * adjustHeight - 1.0f;
 
-            //  Are we outside the sphere?
-            if (length > 1.0f)
-            {
-                //  Get normalising factor.
-                float norm = 1.0f / (float)Math.Sqrt(length);
+            Vertex P = new Vertex(pX, -pY, 0);
 
-                //  Return normalised vector, a point on the sphere.
-                newVector = new Vertex(-scaledX * norm, 0, scaledY * norm);
-            }
+            //sphere radius
+            const float radius = .5f;
+            const float radius_squared = radius * radius;
+
+            float XY_squared = P.X * P.X + P.Y * P.Y;
+
+            if (XY_squared <= .5f * radius_squared)
+                P.Z = (float)Math.Sqrt(radius_squared - XY_squared);  // Pythagore
             else
-            {
-                //  Return a vector to a point mapped inside the sphere.
-                newVector = new Vertex(-scaledX, (float)Math.Sqrt(1.0f - length), scaledY);
-            }
+                P.Z = (float)(0.5f * (radius_squared)) / (float)Math.Sqrt(XY_squared);  // hyperboloid
+
+            return P;
         }
+
 
         public void SetBounds(float width, float height)
         {
-            //  Set the adjust width and height.
-            adjustWidth = 1.0f / ((width - 1.0f) * 0.5f);
-            adjustHeight = 1.0f / ((height - 1.0f) * 0.5f);
+            SetBounds(width, height, 1.0f);
         }
 
+        /// <summary>
+        /// set screen boundaried bounds 
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="sphereRadius">arcball radius [0.0-1.0f]</param>
+        public void SetBounds(float width, float height, float sphereRadius)
+        {
+            //  Set the adjust width and height 
+            //  normalize x,y to [-1,1] and center to screen center
+            adjustWidth = 2.0f / width;
+            adjustHeight = 2.0f / height;
+
+        }
+
+        private float radius = 1.0f;
         private float adjustWidth = 1.0f;
         private float adjustHeight = 1.0f;
-        private Vertex startVector = new Vertex(0, 0, 0);
-        private Vertex currentVector = new Vertex(0, 0, 0);
+
+        public Vertex startVector = new Vertex(0, 0, 0);
+        public Vertex currentVector = new Vertex(0, 0, 0);
 
         Matrix transformMatrix = new Matrix(4, 4);
 
@@ -149,4 +168,6 @@ namespace SharpGL.SceneGraph.Core
 
         Matrix thisRotationMatrix = new Matrix(3, 3);
     }
+
+
 }
