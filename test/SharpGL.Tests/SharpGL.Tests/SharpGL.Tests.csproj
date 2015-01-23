@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GlmNet">
+      <HintPath>..\packages\GlmNet.0.0.3.0\lib\net40\GlmNet.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -44,12 +47,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicRendering\BasicRenderingTest.cs" />
+    <Compile Include="BasicShaders\BasicRenderingTest.cs" />
+    <Compile Include="BasicShaders\ManifestResourceLoader.cs" />
+    <Compile Include="BasicShaders\TorusGeometry.cs" />
     <Compile Include="Helpers\ReadmeGenerator.cs" />
     <Compile Include="RenderingTest.cs" />
     <Compile Include="Helpers\ImageCompare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BasicShaders\PerPixel.frag" />
+    <EmbeddedResource Include="BasicShaders\PerPixel.vert" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

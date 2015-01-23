@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using SharpGL.Version;
 
@@ -158,6 +159,16 @@ namespace SharpGL.RenderContextProviders
 			    Win32.BitBlt(hdc, 0, 0, Width, Height,
                     dibSectionDeviceContext, 0, 0, Win32.SRCCOPY);
 		    }
+        }
+
+        public void ReadBuffer()
+        {
+            //  Set the read buffer.
+            gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0_EXT);
+
+            //	Read the pixels into the DIB section.
+            gl.ReadPixels(0, 0, Width, Height, OpenGL.GL_BGRA,
+                OpenGL.GL_UNSIGNED_BYTE, dibSection.Bits);
         }
 
         protected uint colourRenderBufferID = 0;
