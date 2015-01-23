@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL", "SharpGL\SharpGL.csproj", "{B008CF5B-E6B4-4AE6-9800-2BB34AC785C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformsTemplateProject", "WinformsTemplateProject\WinformsTemplateProject.csproj", "{F121FFB2-8F7F-4374-930C-D8C80AFFB6BF}"
