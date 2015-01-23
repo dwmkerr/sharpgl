@@ -5395,12 +5395,11 @@ namespace SharpGL
         public void GetProgramResource(uint program, uint programInterface, uint index, uint propCount, uint[] props, uint bufSize, out uint length, out int[] parameters)
         {
             var lengthParameter = new uint[1];
-            var parametersParameter = new int[1][];
+            var parametersParameter = new int[bufSize];
 
-            // [TODO] [RS] We have to check if output parameters in 'parametersParameter' works correctly here.
-            GetDelegateFor<glGetProgramResourceiv>()(program, programInterface, index, propCount, props, bufSize, lengthParameter, parametersParameter[1]);
+            GetDelegateFor<glGetProgramResourceiv>()(program, programInterface, index, propCount, props, bufSize, lengthParameter, parametersParameter);
             length = lengthParameter[0];
-            parameters = parametersParameter[1];
+            parameters = parametersParameter;
         }
 
         /// <summary>
