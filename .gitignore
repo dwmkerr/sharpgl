@@ -32,6 +32,6 @@ release/2.*
 source/SharpGL/packages/
 
 # Ignores for the extensions.
-extensions/SharpGL/packages
 extensions/build/SharpGL.2010.vsix
 extensions/build/SharpGL.vsix
+extensions/Seeds/packages
