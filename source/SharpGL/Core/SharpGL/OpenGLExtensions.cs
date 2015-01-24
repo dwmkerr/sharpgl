@@ -1183,14 +1183,44 @@ namespace SharpGL
         {
             GetDelegateFor<glEnableVertexAttribArray>()(index);
         }
-        public void GetActiveAttrib (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
+
+
+        /// <summary>
+        /// Return information about an active attribute variable
+        /// </summary>
+        /// <param name="program">Specifies the program object to be queried.</param>
+        /// <param name="index">Specifies the index of the attribute variable to be queried.</param>
+        /// <param name="bufSize">Specifies the maximum number of characters OpenGL is allowed to write in the character buffer indicated by <paramref name="name"/>.</param>
+        /// <param name="length">Returns the number of characters actually written by OpenGL in the string indicated by name (excluding the null terminator) if a value other than NULL is passed.</param>
+        /// <param name="size">Returns the size of the attribute variable.</param>
+        /// <param name="type">Returns the data type of the attribute variable.</param>
+        /// <param name="name">Returns a null terminated string containing the name of the attribute variable.</param>
+        public void GetActiveAttrib (uint program, uint index, int bufSize, out int length, out int size, out uint type, out string name)
         {
-            GetDelegateFor<glGetActiveAttrib>()(program, index, bufSize, length, size, type, name);
+            var builder = new StringBuilder(bufSize);
+            GetDelegateFor<glGetActiveAttrib>()(program, index, bufSize, out length, out size, out type, builder);
+            name = builder.ToString();
         }
-        public void GetActiveUniform (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
+
+        /// <summary>
+        /// Return information about an active uniform variable
+        /// </summary>
+        /// <param name="program">Specifies the program object to be queried.</param>
+        /// <param name="index">Specifies the index of the uniform variable to be queried.</param>
+        /// <param name="bufSize">Specifies the maximum number of characters OpenGL is allowed 
+        /// to write in the character buffer indicated by <paramref name="name"/>.</param>
+        /// <param name="length">Returns the number of characters actually written by OpenGL in the string indicated by name 
+        /// (excluding the null terminator) if a value other than NULL is passed.</param>
+        /// <param name="size">Returns the size of the uniform variable.</param>
+        /// <param name="type">Returns the data type of the uniform variable.</param>
+        /// <param name="name">Returns a null terminated string containing the name of the uniform variable.</param>
+        public void GetActiveUniform (uint program, uint index, int bufSize, out int length, out int size, out uint type, out string name)
         {
-            GetDelegateFor<glGetActiveUniform>()(program, index, bufSize, length, size, type, name);
+            var builder = new StringBuilder(bufSize);
+            GetDelegateFor<glGetActiveUniform>()(program, index, bufSize, out length, out size, out type, builder);
+            name = builder.ToString();
         }
+
         public void GetAttachedShaders (uint program, int maxCount, int[] count, uint[] obj)
         {
             GetDelegateFor<glGetAttachedShaders>()(program, maxCount, count, obj);
@@ -1538,8 +1568,8 @@ namespace SharpGL
         private delegate void glDetachShader (uint program, uint shader);
         private delegate void glDisableVertexAttribArray (uint index);
         private delegate void glEnableVertexAttribArray (uint index);
-        private delegate void glGetActiveAttrib (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name);
-        private delegate void glGetActiveUniform (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name);
+        private delegate void glGetActiveAttrib (uint program, uint index, int bufSize, out int length, out int size, out uint type, StringBuilder name);
+        private delegate void glGetActiveUniform (uint program, uint index, int bufSize, out int length, out int size, out uint type, StringBuilder name);
         private delegate void glGetAttachedShaders (uint program, int maxCount, int[] count, uint[] obj);
         private delegate int glGetAttribLocation (uint program, string name);
         private delegate void glGetProgramiv (uint program, uint pname, int[] parameters);
