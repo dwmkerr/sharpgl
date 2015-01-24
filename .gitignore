@@ -35,3 +35,4 @@ source/SharpGL/packages/
 extensions/build/SharpGL.2010.vsix
 extensions/build/SharpGL.vsix
 extensions/Seeds/packages
+test/SharpGL.Tests/packages

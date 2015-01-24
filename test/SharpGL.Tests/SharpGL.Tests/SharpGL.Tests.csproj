@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GlmNet">
-      <HintPath>..\packages\GlmNet.0.0.3.0\lib\net40\GlmNet.dll</HintPath>
+    <Reference Include="GlmNet, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\GlmNet.0.5.0.0\lib\net40\GlmNet.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -47,18 +48,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicRendering\BasicRenderingTest.cs" />
-    <Compile Include="BasicShaders\BasicRenderingTest.cs" />
+    <Compile Include="BasicShaders\BasicShadersTest.cs" />
     <Compile Include="BasicShaders\ManifestResourceLoader.cs" />
     <Compile Include="BasicShaders\TorusGeometry.cs" />
     <Compile Include="Helpers\ReadmeGenerator.cs" />
     <Compile Include="RenderingTest.cs" />
     <Compile Include="Helpers\ImageCompare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShaderPrograms\ShaderProgramsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BasicShaders\PerPixel.frag" />
     <EmbeddedResource Include="BasicShaders\PerPixel.vert" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="ShaderPrograms\PerPixel.frag" />
+    <EmbeddedResource Include="ShaderPrograms\PerPixel.vert" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\source\SharpGL\Core\SharpGL\SharpGL.csproj">
@@ -68,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BasicRendering\BasicRenderingTest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BasicShaders\BasicShadersTest.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
