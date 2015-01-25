@@ -60,6 +60,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="OpenGL_4_5.cs" />
     <Compile Include="DIBSection.cs" />
     <Compile Include="FontBitmaps.cs" />
     <Compile Include="FontOutlines.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Win32.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="README.md" />
     <None Include="SharpGL.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
