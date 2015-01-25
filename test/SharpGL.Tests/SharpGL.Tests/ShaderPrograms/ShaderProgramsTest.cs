@@ -15,6 +15,7 @@ namespace SharpGL.Tests.ShaderPrograms
     class ShaderProgramsTest : RenderingTest
     {
         [Test]
+        [Ignore("It is impossible to let this test run until we can successfully demand a specific OpenGL version.")]
         public void CanPerformBasicRendering()
         {
             //  TODO: Demand 3.0 minimum (to give us access to GLSL 1.3).
