@@ -44,6 +44,12 @@ namespace SharpGL.WPF
             }
 
             UpdateOpenGLControl((int) RenderSize.Width, (int) RenderSize.Height);
+
+            //  DispatcherTimer setup
+            timer = new DispatcherTimer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, (int)(1000.0 / FrameRate));
+            timer.Start();
         }
 
         /// <summary>
@@ -56,7 +62,10 @@ namespace SharpGL.WPF
             SizeChanged -= OpenGLControl_SizeChanged;
 
             if (timer != null)
+            {
+                timer.Stop();
                 timer.Tick -= timer_Tick;
+            }
         }
 
         /// <summary>
@@ -138,12 +147,6 @@ namespace SharpGL.WPF
             var handler = OpenGLInitialized;
             if (handler != null)
                 handler(this, eventArgsFast);
-
-            //  DispatcherTimer setup
-            timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, (int)(1000.0 / FrameRate));
-            timer.Start();
         }
 
         /// <summary>
