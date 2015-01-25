@@ -26,39 +26,6 @@ namespace SharpGL.WPF
 
             Unloaded += OpenGLControl_Unloaded;
             Loaded += OpenGLControl_Loaded;
-
-            var frameworkElement = Parent as FrameworkElement;
-
-            if (frameworkElement != null)
-            {
-                frameworkElement.Loaded += Parent_Loaded;
-                frameworkElement.Unloaded += Parent_Unloaded;
-            }
-        }
-
-        /// <summary>
-        /// Handles the Loaded event of the parent control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
-        private void Parent_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (timer != null)
-            {
-                timer.Tick -= timer_Tick;
-                timer.Tick += timer_Tick; // to avoid twice call, ensure timer_Tick event handler is registered only once, because it is also registred on apply template
-            }
-        }
-
-        /// <summary>
-        /// Handles the Unloaded event of the parent control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
-        private void Parent_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (timer != null)
-                timer.Tick -= timer_Tick;
         }
 
         /// <summary>
@@ -69,6 +36,12 @@ namespace SharpGL.WPF
         private void OpenGLControl_Loaded(object sender, RoutedEventArgs routedEventArgs)
         {
             SizeChanged += OpenGLControl_SizeChanged;
+
+            if (timer != null)
+            {
+                timer.Tick -= timer_Tick;
+                timer.Tick += timer_Tick; // to avoid twice call, ensure timer_Tick event handler is registered only once, because it is also registred on apply template
+            }
 
             UpdateOpenGLControl((int) RenderSize.Width, (int) RenderSize.Height);
         }
@@ -81,6 +54,9 @@ namespace SharpGL.WPF
         private void OpenGLControl_Unloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             SizeChanged -= OpenGLControl_SizeChanged;
+
+            if (timer != null)
+                timer.Tick -= timer_Tick;
         }
 
         /// <summary>
