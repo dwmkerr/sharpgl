@@ -39,9 +39,6 @@ namespace SharpGL.WPF
         {
             SizeChanged += OpenGLControl_SizeChanged;
 
-            timer.Tick -= timer_Tick;
-            timer.Tick += timer_Tick; // to avoid twice call, ensure timer_Tick event handler is registered only once, because it is also registred on apply template
-
             UpdateOpenGLControl((int) RenderSize.Width, (int) RenderSize.Height);
 
             //  DispatcherTimer setup
