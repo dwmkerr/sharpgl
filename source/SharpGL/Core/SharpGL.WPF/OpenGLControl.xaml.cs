@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.ComponentModel;
-using System.Windows.Interop;
-using System.Diagnostics;
+using SharpGL.RenderContextProviders;
 using SharpGL.SceneGraph;
 using SharpGL.Version;
 
@@ -31,21 +23,63 @@ namespace SharpGL.WPF
         public OpenGLControl()
         {
             InitializeComponent();
-            SizeChanged += new SizeChangedEventHandler(OpenGLControl_SizeChanged);
+
+            timer = new DispatcherTimer();
+
+            Unloaded += OpenGLControl_Unloaded;
+            Loaded += OpenGLControl_Loaded;
+        }
+
+        /// <summary>
+        /// Handles the Loaded event of the OpenGLControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
+        private void OpenGLControl_Loaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SizeChanged += OpenGLControl_SizeChanged;
+
+            UpdateOpenGLControl((int) RenderSize.Width, (int) RenderSize.Height);
+
+            //  DispatcherTimer setup
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
+        }
+
+        /// <summary>
+        /// Handles the Unloaded event of the OpenGLControl control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
+        private void OpenGLControl_Unloaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SizeChanged -= OpenGLControl_SizeChanged;
+
+            timer.Stop();
+            timer.Tick -= timer_Tick;
         }
 
         /// <summary>
         /// Handles the SizeChanged event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.SizeChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.SizeChangedEventArgs"/> Instance containing the event data.</param>
         void OpenGLControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //  Lock on OpenGL.
+            UpdateOpenGLControl((int) e.NewSize.Width, (int) e.NewSize.Height);
+        }
+
+        /// <summary>
+        /// This method is used to set the dimensions and the viewport of the opengl control.
+        /// </summary>
+        /// <param name="width">The width of the OpenGL drawing area.</param>
+        /// <param name="height">The height of the OpenGL drawing area.</param>
+        private void UpdateOpenGLControl(int width, int height)
+        {
+            SizeChangedEventArgs e;
+            // Lock on OpenGL.
             lock (gl)
             {
-                int width = (int)e.NewSize.Width;
-                int height = (int)e.NewSize.Height;
                 gl.SetDimensions(width, height);
 
                 //	Set the viewport.
@@ -64,7 +98,7 @@ namespace SharpGL.WPF
                         gl.LoadIdentity();
 
                         // Calculate The Aspect Ratio Of The Window
-                        gl.Perspective(45.0f, (float)width / (float)height, 0.1f, 100.0f);
+                        gl.Perspective(45.0f, (float) width/(float) height, 0.1f, 100.0f);
 
                         gl.MatrixMode(OpenGL.GL_MODELVIEW);
                         gl.LoadIdentity();
@@ -105,11 +139,7 @@ namespace SharpGL.WPF
             if (handler != null)
                 handler(this, eventArgsFast);
 
-            //  DispatcherTimer setup
-            timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 0, 0, (int)(1000.0 / FrameRate));
-            timer.Start();
         }
 
         /// <summary>
@@ -149,7 +179,7 @@ namespace SharpGL.WPF
                 {
                     case RenderContextType.DIBSection:
                         {
-                            var provider = gl.RenderContextProvider as RenderContextProviders.DIBSectionRenderContextProvider;
+                            var provider = gl.RenderContextProvider as DIBSectionRenderContextProvider;
                             var hBitmap = provider.DIBSection.HBitmap;
 
                             if (hBitmap != IntPtr.Zero)
@@ -167,7 +197,7 @@ namespace SharpGL.WPF
                         break;
                     case RenderContextType.FBO:
                         {
-                            var provider = gl.RenderContextProvider as RenderContextProviders.FBORenderContextProvider;
+                            var provider = gl.RenderContextProvider as FBORenderContextProvider;
                             var hBitmap = provider.InternalDIBSection.HBitmap;
 
                             if (hBitmap != IntPtr.Zero)
