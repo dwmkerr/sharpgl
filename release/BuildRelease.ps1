@@ -95,9 +95,6 @@ $nuget = Join-Path $scriptParentPath "Resources\nuget.exe"
 CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
 CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.WinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
 CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.WPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLCore.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
-CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGLforWPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
 
 # We're done!
 Write-Host "Successfully built version: $releaseVersion"
