@@ -25,12 +25,11 @@ namespace SharpGL
         }
 
         /// <summary>
-        /// Invokes an extension function.
+        /// Returns a delegate for an extension function. This delegate  can be called to execute the extension function.
         /// </summary>
         /// <typeparam name="T">The extension delegate type.</typeparam>
-        /// <param name="args">The arguments to the pass to the function.</param>
-        /// <returns>The return value of the extension function.</returns>
-        private object InvokeExtensionFunction<T>(params object[] args)
+        /// <returns>The delegate that points to the extension function.</returns>
+        private T GetDelegateFor<T>() where T : class
         {
             //  Get the type of the extension function.
             Type delegateType = typeof(T);
@@ -38,39 +37,22 @@ namespace SharpGL
             //  Get the name of the extension function.
             string name = delegateType.Name;
 
-            //  Does the dictionary contain our extension function?
+            // ftlPhysicsGuy - Better way
             Delegate del = null;
-            if (extensionFunctions.ContainsKey(name) == false)
+            if (extensionFunctions.TryGetValue(name, out del) == false)
             {
-                //  We haven't loaded it yet. Load it now.
                 IntPtr proc = Win32.wglGetProcAddress(name);
                 if (proc == IntPtr.Zero)
                     throw new Exception("Extension function " + name + " not supported");
 
                 //  Get the delegate for the function pointer.
                 del = Marshal.GetDelegateForFunctionPointer(proc, delegateType);
-                if (del == null)
-                    throw new Exception("Extension function " + name + " marshalled incorrectly");
 
                 //  Add to the dictionary.
                 extensionFunctions.Add(name, del);
             }
 
-            //  Get the delegate.
-            del = extensionFunctions[name];
-
-            //  Try and invoke it.
-            object result = null;
-            try
-            {
-                result = del.DynamicInvoke(args);
-            }
-            catch(Exception e)
-            {
-                throw new Exception("Cannot invoke extension function " + name, e);
-            }
-
-            return result;
+            return del as T;
         }
 
         /// <summary>
@@ -83,189 +65,189 @@ namespace SharpGL
         //  Methods
         public void BlendColor(float red, float green, float blue, float alpha)
         {
-            InvokeExtensionFunction<glBlendColor>(red, green, blue, alpha);
+            GetDelegateFor<glBlendColor>()(red, green, blue, alpha);
         }
         public void BlendEquation(uint mode)
         {
-            InvokeExtensionFunction<glBlendEquation>(mode);
+            GetDelegateFor<glBlendEquation>()(mode);
         }
         public void DrawRangeElements(uint mode, uint start, uint end, int count, uint type, IntPtr indices)
         {
-            InvokeExtensionFunction<glDrawRangeElements>(mode, start, end, count, type, indices);
+            GetDelegateFor<glDrawRangeElements>()(mode, start, end, count, type, indices);
         }
         public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, IntPtr pixels)
         {
-            InvokeExtensionFunction<glTexImage3D>(target, level, internalformat, width, height, depth, border, format, type, pixels);
+            GetDelegateFor<glTexImage3D>()(target, level, internalformat, width, height, depth, border, format, type, pixels);
         }
         public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, IntPtr pixels)
         {
-            InvokeExtensionFunction<glTexSubImage3D>(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+            GetDelegateFor<glTexSubImage3D>()(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
         }
         public void CopyTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
         {
-            InvokeExtensionFunction<glCopyTexSubImage3D>(target, level, xoffset, yoffset, zoffset, x, y, width, height);
+            GetDelegateFor<glCopyTexSubImage3D>()(target, level, xoffset, yoffset, zoffset, x, y, width, height);
         }
 
         //  Deprecated Methods
         [Obsolete]
         public void ColorTable(uint target, uint internalformat, int width, uint format, uint type, IntPtr table)
         {
-            InvokeExtensionFunction<glColorTable>(target, internalformat, width, format, type, table);
+            GetDelegateFor<glColorTable>()(target, internalformat, width, format, type, table);
         }
         [Obsolete]
         public void ColorTableParameterfv(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glColorTableParameterfv>(target, pname, parameters);
+            GetDelegateFor<glColorTableParameterfv>()(target, pname, parameters);
         }
         [Obsolete]
         public void ColorTableParameteriv(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glColorTableParameteriv>(target, pname, parameters);
+            GetDelegateFor<glColorTableParameteriv>()(target, pname, parameters);
         }
         [Obsolete]
         public void CopyColorTable(uint target, uint internalformat, int x, int y, int width)
         {
-            InvokeExtensionFunction<glCopyColorTable>(target, internalformat, x, y, width);
+            GetDelegateFor<glCopyColorTable>()(target, internalformat, x, y, width);
         }
         [Obsolete]
         public void GetColorTable(uint target, uint format, uint type, IntPtr table)
         {
-            InvokeExtensionFunction<glGetColorTable>(target, format, type, table);
+            GetDelegateFor<glGetColorTable>()(target, format, type, table);
         }
         [Obsolete]
         public void GetColorTableParameter(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetColorTableParameterfv>(target, pname, parameters);
+            GetDelegateFor<glGetColorTableParameterfv>()(target, pname, parameters);
         }
         [Obsolete]
         public void GetColorTableParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetColorTableParameteriv>(target, pname, parameters);
+            GetDelegateFor<glGetColorTableParameteriv>()(target, pname, parameters);
         }
         [Obsolete]
         public void ColorSubTable(uint target, int start, int count, uint format, uint type, IntPtr data)
         {
-            InvokeExtensionFunction<glColorSubTable>(target, start, count, format, type, data);
+            GetDelegateFor<glColorSubTable>()(target, start, count, format, type, data);
         }
         [Obsolete]
         public void CopyColorSubTable(uint target, int start, int x, int y, int width)
         {
-            InvokeExtensionFunction<glCopyColorSubTable>(target, start, x, y, width);
+            GetDelegateFor<glCopyColorSubTable>()(target, start, x, y, width);
         }
         [Obsolete]
         public void ConvolutionFilter1D(uint target, uint internalformat, int width, uint format, uint type, IntPtr image)
         {
-            InvokeExtensionFunction<glConvolutionFilter1D>(target, internalformat, width, format, type, image);
+            GetDelegateFor<glConvolutionFilter1D>()(target, internalformat, width, format, type, image);
         }
         [Obsolete]
         public void ConvolutionFilter2D(uint target, uint internalformat, int width, int height, uint format, uint type, IntPtr image)
         {
-            InvokeExtensionFunction<glConvolutionFilter2D>(target, internalformat, width, height, format, type, image);
+            GetDelegateFor<glConvolutionFilter2D>()(target, internalformat, width, height, format, type, image);
         }
         [Obsolete]
         public void ConvolutionParameter(uint target, uint pname, float parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameterf>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameterf>()(target, pname, parameters);
         }
         [Obsolete]
         public void ConvolutionParameter(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameterfv>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameterfv>()(target, pname, parameters);
         }
         [Obsolete]
         public void ConvolutionParameter(uint target, uint pname, int parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameteri>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameteri>()(target, pname, parameters);
         }
         [Obsolete]
         public void ConvolutionParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameteriv>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameteriv>()(target, pname, parameters);
         }
         [Obsolete]
         public void CopyConvolutionFilter1D(uint target, uint internalformat, int x, int y, int width)
         {
-            InvokeExtensionFunction<glCopyConvolutionFilter1D>(target, internalformat, x, y, width);
+            GetDelegateFor<glCopyConvolutionFilter1D>()(target, internalformat, x, y, width);
         }
         [Obsolete]
         public void CopyConvolutionFilter2D(uint target, uint internalformat, int x, int y, int width, int height)
         {
-            InvokeExtensionFunction<glCopyConvolutionFilter2D>(target, internalformat, x, y, width, height);
+            GetDelegateFor<glCopyConvolutionFilter2D>()(target, internalformat, x, y, width, height);
         }
         [Obsolete]
         public void GetConvolutionFilter(uint target, uint format, uint type, IntPtr image)
         {
-            InvokeExtensionFunction<glGetConvolutionFilter>(target, format, type, image);
+            GetDelegateFor<glGetConvolutionFilter>()(target, format, type, image);
         }
         [Obsolete]
         public void GetConvolutionParameter(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetConvolutionParameterfv>(target, pname, parameters);
+            GetDelegateFor<glGetConvolutionParameterfv>()(target, pname, parameters);
         }
         [Obsolete]
         public void GetConvolutionParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetConvolutionParameteriv>(target, pname, parameters);
+            GetDelegateFor<glGetConvolutionParameteriv>()(target, pname, parameters);
         }
         [Obsolete]
         public void GetSeparableFilter(uint target, uint format, uint type, IntPtr row, IntPtr column, IntPtr span)
         {
-            InvokeExtensionFunction<glGetSeparableFilter>(target, format, type, row, column, span);
+            GetDelegateFor<glGetSeparableFilter>()(target, format, type, row, column, span);
         }
         [Obsolete]
         public void SeparableFilter2D(uint target, uint internalformat, int width, int height, uint format, uint type, IntPtr row, IntPtr column)
         {
-            InvokeExtensionFunction<glSeparableFilter2D>(target, internalformat, width, height, format, type, row, column);
+            GetDelegateFor<glSeparableFilter2D>()(target, internalformat, width, height, format, type, row, column);
         }
         [Obsolete]
         public void GetHistogram(uint target, bool reset, uint format, uint type, IntPtr values)
         {
-            InvokeExtensionFunction<glGetHistogram>(target, reset, format, type, values);
+            GetDelegateFor<glGetHistogram>()(target, reset, format, type, values);
         }
         [Obsolete]
         public void GetHistogramParameter(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetHistogramParameterfv>(target, pname, parameters);
+            GetDelegateFor<glGetHistogramParameterfv>()(target, pname, parameters);
         }
         [Obsolete]
         public void GetHistogramParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetHistogramParameteriv>(target, pname, parameters);
+            GetDelegateFor<glGetHistogramParameteriv>()(target, pname, parameters);
         }
         [Obsolete]
         public void GetMinmax(uint target, bool reset, uint format, uint type, IntPtr values)
         {
-            InvokeExtensionFunction<glGetMinmax>(target, reset, format, type, values);
+            GetDelegateFor<glGetMinmax>()(target, reset, format, type, values);
         }
         [Obsolete]
         public void GetMinmaxParameter(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetMinmaxParameterfv>(target, pname, parameters);
+            GetDelegateFor<glGetMinmaxParameterfv>()(target, pname, parameters);
         }
         [Obsolete]
         public void GetMinmaxParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetMinmaxParameteriv>(target, pname, parameters);
+            GetDelegateFor<glGetMinmaxParameteriv>()(target, pname, parameters);
         }
         [Obsolete]
         public void Histogram(uint target, int width, uint internalformat, bool sink)
         {
-            InvokeExtensionFunction<glHistogram>(target, width, internalformat, sink);
+            GetDelegateFor<glHistogram>()(target, width, internalformat, sink);
         }
         [Obsolete]
         public void Minmax(uint target, uint internalformat, bool sink)
         {
-            InvokeExtensionFunction<glMinmax>(target, internalformat, sink);
+            GetDelegateFor<glMinmax>()(target, internalformat, sink);
         }
         [Obsolete]
         public void ResetHistogram(uint target)
         {
-            InvokeExtensionFunction<glResetHistogram>(target);
+            GetDelegateFor<glResetHistogram>()(target);
         }
         [Obsolete]
         public void ResetMinmax(uint target)
         {
-            InvokeExtensionFunction<glResetMinmax>(target);
+            GetDelegateFor<glResetMinmax>()(target);
         }
 
         //  Delegates
@@ -355,226 +337,226 @@ namespace SharpGL
         
         public void ActiveTexture(uint texture)
         {
-            InvokeExtensionFunction<glActiveTexture>(texture);
+            GetDelegateFor<glActiveTexture>()(texture);
         }
         public void SampleCoverage(float value, bool invert)
         {
-            InvokeExtensionFunction<glSampleCoverage>(value, invert);
+            GetDelegateFor<glSampleCoverage>()(value, invert);
         }
         public void CompressedTexImage3D(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexImage3D>(target, level, internalformat, width, height, depth, border, imageSize, data);
+            GetDelegateFor<glCompressedTexImage3D>()(target, level, internalformat, width, height, depth, border, imageSize, data);
         }
         public void CompressedTexImage2D(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexImage2D>(target, level, internalformat, width, height, border, imageSize, data);
+            GetDelegateFor<glCompressedTexImage2D>()(target, level, internalformat, width, height, border, imageSize, data);
         }
         public void CompressedTexImage1D(uint target, int level, uint internalformat, int width, int border, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexImage1D>(target, level, internalformat, width, border, imageSize, data);
+            GetDelegateFor<glCompressedTexImage1D>()(target, level, internalformat, width, border, imageSize, data);
         }
         public void CompressedTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexSubImage3D>(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
+            GetDelegateFor<glCompressedTexSubImage3D>()(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
         }
         public void CompressedTexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexSubImage2D>(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+            GetDelegateFor<glCompressedTexSubImage2D>()(target, level, xoffset, yoffset, width, height, format, imageSize, data);
         }
         public void CompressedTexSubImage1D(uint target, int level, int xoffset, int width, uint format, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexSubImage1D>(target, level, xoffset, width, format, imageSize, data);
+            GetDelegateFor<glCompressedTexSubImage1D>()(target, level, xoffset, width, format, imageSize, data);
         }
         public void GetCompressedTexImage(uint target, int level, IntPtr img)
         {
-            InvokeExtensionFunction<glGetCompressedTexImage>(target, level, img);
+            GetDelegateFor<glGetCompressedTexImage>()(target, level, img);
         }
 
         //  Deprecated Methods
         [Obsolete]
         public void ClientActiveTexture(uint texture)
         {
-            InvokeExtensionFunction<glClientActiveTexture>(texture);
+            GetDelegateFor<glClientActiveTexture>()(texture);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, double s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1d>(target, s);
+            GetDelegateFor<glMultiTexCoord1d>()(target, s);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1dv>(target, v);
+            GetDelegateFor<glMultiTexCoord1dv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, float s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1f>(target, s);
+            GetDelegateFor<glMultiTexCoord1f>()(target, s);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1fv>(target, v);
+            GetDelegateFor<glMultiTexCoord1fv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, int s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1i>(target, s);
+            GetDelegateFor<glMultiTexCoord1i>()(target, s);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1iv>(target, v);
+            GetDelegateFor<glMultiTexCoord1iv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, short s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1s>(target, s);
+            GetDelegateFor<glMultiTexCoord1s>()(target, s);
         }
         [Obsolete]
         public void MultiTexCoord1(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1sv>(target, v);
+            GetDelegateFor<glMultiTexCoord1sv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, double s, double t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2d>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2d>()(target, s, t);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2dv>(target, v);
+            GetDelegateFor<glMultiTexCoord2dv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, float s, float t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2f>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2f>()(target, s, t);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2fv>(target, v);
+            GetDelegateFor<glMultiTexCoord2fv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, int s, int t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2i>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2i>()(target, s, t);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2iv>(target, v);
+            GetDelegateFor<glMultiTexCoord2iv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, short s, short t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2s>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2s>()(target, s, t);
         }
         [Obsolete]
         public void MultiTexCoord2(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2sv>(target, v);
+            GetDelegateFor<glMultiTexCoord2sv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, double s, double t, double r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3d>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3d>()(target, s, t, r);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3dv>(target, v);
+            GetDelegateFor<glMultiTexCoord3dv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, float s, float t, float r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3f>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3f>()(target, s, t, r);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3fv>(target, v);
+            GetDelegateFor<glMultiTexCoord3fv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, int s, int t, int r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3i>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3i>()(target, s, t, r);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3iv>(target, v);
+            GetDelegateFor<glMultiTexCoord3iv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, short s, short t, short r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3s>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3s>()(target, s, t, r);
         }
         [Obsolete]
         public void MultiTexCoord3(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3sv>(target, v);
+            GetDelegateFor<glMultiTexCoord3sv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, double s, double t, double r, double q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4d>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4d>()(target, s, t, r, q);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4dv>(target, v);
+            GetDelegateFor<glMultiTexCoord4dv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, float s, float t, float r, float q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4f>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4f>()(target, s, t, r, q);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4fv>(target, v);
+            GetDelegateFor<glMultiTexCoord4fv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, int s, int t, int r, int q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4i>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4i>()(target, s, t, r, q);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4iv>(target, v);
+            GetDelegateFor<glMultiTexCoord4iv>()(target, v);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, short s, short t, short r, short q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4s>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4s>()(target, s, t, r, q);
         }
         [Obsolete]
         public void MultiTexCoord4(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4sv>(target, v);
+            GetDelegateFor<glMultiTexCoord4sv>()(target, v);
         }
         [Obsolete]
         public void LoadTransposeMatrix(float[] m)
         {
-            InvokeExtensionFunction<glLoadTransposeMatrixf>(m);
+            GetDelegateFor<glLoadTransposeMatrixf>()(m);
         }
         [Obsolete]
         public void LoadTransposeMatrix(double[] m)
         {
-            InvokeExtensionFunction<glLoadTransposeMatrixd>(m);
+            GetDelegateFor<glLoadTransposeMatrixd>()(m);
         }
         [Obsolete]
         public void MultTransposeMatrix(float[] m)
         {
-            InvokeExtensionFunction<glMultTransposeMatrixf>(m);
+            GetDelegateFor<glMultTransposeMatrixf>()(m);
         }
         [Obsolete]
         public void MultTransposeMatrix(double[] m)
         {
-            InvokeExtensionFunction<glMultTransposeMatrixd>(m);
+            GetDelegateFor<glMultTransposeMatrixd>()(m);
         }
 
         //  Delegates
@@ -694,223 +676,223 @@ namespace SharpGL
         //  Methods
         public void BlendFuncSeparate(uint sfactorRGB, uint dfactorRGB, uint sfactorAlpha, uint dfactorAlpha)
         {
-            InvokeExtensionFunction<glBlendFuncSeparate>(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
+            GetDelegateFor<glBlendFuncSeparate>()(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
         }
         public void MultiDrawArrays(uint mode, int[] first, int[] count, int primcount)
         {
-            InvokeExtensionFunction<glMultiDrawArrays>(mode, first, count, primcount);
+            GetDelegateFor<glMultiDrawArrays>()(mode, first, count, primcount);
         }
         public void MultiDrawElements(uint mode, int[] count, uint type, IntPtr indices, int primcount)
         {
-            InvokeExtensionFunction<glMultiDrawElements>(mode, count, type, indices, primcount);
+            GetDelegateFor<glMultiDrawElements>()(mode, count, type, indices, primcount);
         }
         public void PointParameter(uint pname, float parameter)
         {
-            InvokeExtensionFunction<glPointParameterf>(pname, parameter);
+            GetDelegateFor<glPointParameterf>()(pname, parameter);
         }
         public void PointParameter(uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glPointParameterfv>(pname, parameters);
+            GetDelegateFor<glPointParameterfv>()(pname, parameters);
         }
         public void PointParameter(uint pname, int parameter)
         {
-            InvokeExtensionFunction<glPointParameteri>(pname, parameter);
+            GetDelegateFor<glPointParameteri>()(pname, parameter);
         }
         public void PointParameter(uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glPointParameteriv>(pname, parameters);
+            GetDelegateFor<glPointParameteriv>()(pname, parameters);
         }
         
         //  Deprecated Methods
         [Obsolete]
         public void FogCoord(float coord)
         {
-            InvokeExtensionFunction<glFogCoordf>(coord);
+            GetDelegateFor<glFogCoordf>()(coord);
         }
         [Obsolete]
         public void FogCoord(float[] coord)
         {
-            InvokeExtensionFunction<glFogCoordfv>(coord);
+            GetDelegateFor<glFogCoordfv>()(coord);
         }
         [Obsolete]
         public void FogCoord(double coord)
         {
-            InvokeExtensionFunction<glFogCoordd>(coord);
+            GetDelegateFor<glFogCoordd>()(coord);
         }
         [Obsolete]
         public void FogCoord(double[] coord)
         {
-            InvokeExtensionFunction<glFogCoorddv>(coord);
+            GetDelegateFor<glFogCoorddv>()(coord);
         }
         [Obsolete]
         public void FogCoordPointer(uint type, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glFogCoordPointer>(type, stride, pointer);
+            GetDelegateFor<glFogCoordPointer>()(type, stride, pointer);
         }
         [Obsolete]
         public void SecondaryColor3(sbyte red, sbyte green, sbyte blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3b>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3b>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(sbyte[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3bv>(v);
+            GetDelegateFor<glSecondaryColor3bv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(double red, double green, double blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3d>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3d>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(double[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3dv>(v);
+            GetDelegateFor<glSecondaryColor3dv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(float red, float green, float blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3f>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3f>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(float[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3fv>(v);
+            GetDelegateFor<glSecondaryColor3fv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(int red, int green, int blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3i>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3i>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(int[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3iv>(v);
+            GetDelegateFor<glSecondaryColor3iv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(short red, short green, short blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3s>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3s>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(short[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3sv>(v);
+            GetDelegateFor<glSecondaryColor3sv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(byte red, byte green, byte blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3ub>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3ub>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(byte[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3ubv>(v);
+            GetDelegateFor<glSecondaryColor3ubv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(uint red, uint green, uint blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3ui>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3ui>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(uint[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3uiv>(v);
+            GetDelegateFor<glSecondaryColor3uiv>()(v);
         }
         [Obsolete]
         public void SecondaryColor3(ushort red, ushort green, ushort blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3us>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3us>()(red, green, blue);
         }
         [Obsolete]
         public void SecondaryColor3(ushort[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3usv>(v);
+            GetDelegateFor<glSecondaryColor3usv>()(v);
         }
         [Obsolete]
         public void SecondaryColorPointer(int size, uint type, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glSecondaryColorPointer>(size, type, stride, pointer);
+            GetDelegateFor<glSecondaryColorPointer>()(size, type, stride, pointer);
         }
         [Obsolete]
         public void WindowPos2(double x, double y)
         {
-            InvokeExtensionFunction<glWindowPos2d>(x, y);
+            GetDelegateFor<glWindowPos2d>()(x, y);
         }
         [Obsolete]
         public void WindowPos2(double[] v)
         {
-            InvokeExtensionFunction<glWindowPos2dv>(v);
+            GetDelegateFor<glWindowPos2dv>()(v);
         }
         [Obsolete]
         public void WindowPos2(float x, float y)
         {
-            InvokeExtensionFunction<glWindowPos2f>(x, y);
+            GetDelegateFor<glWindowPos2f>()(x, y);
         }
         [Obsolete]
         public void WindowPos2(float[] v)
         {
-            InvokeExtensionFunction<glWindowPos2fv>(v);
+            GetDelegateFor<glWindowPos2fv>()(v);
         }
         [Obsolete]
         public void WindowPos2(int x, int y)
         {
-            InvokeExtensionFunction<glWindowPos2i>(x, y);
+            GetDelegateFor<glWindowPos2i>()(x, y);
         }
         [Obsolete]
         public void WindowPos2(int[] v)
         {
-            InvokeExtensionFunction<glWindowPos2iv>(v);
+            GetDelegateFor<glWindowPos2iv>()(v);
         }
         [Obsolete]
         public void WindowPos2(short x, short y)
         {
-            InvokeExtensionFunction<glWindowPos2s>(x, y);
+            GetDelegateFor<glWindowPos2s>()(x, y);
         }
         [Obsolete]
         public void WindowPos2(short[] v)
         {
-            InvokeExtensionFunction<glWindowPos2sv>(v);
+            GetDelegateFor<glWindowPos2sv>()(v);
         }
         [Obsolete]
         public void WindowPos3(double x, double y, double z)
         {
-            InvokeExtensionFunction<glWindowPos3d>(x, y, z);
+            GetDelegateFor<glWindowPos3d>()(x, y, z);
         }
         [Obsolete]
         public void WindowPos3(double[] v)
         {
-            InvokeExtensionFunction<glWindowPos3dv>(v);
+            GetDelegateFor<glWindowPos3dv>()(v);
         }
         [Obsolete]
         public void WindowPos3(float x, float y, float z)
         {
-            InvokeExtensionFunction<glWindowPos3f>(x, y, z);
+            GetDelegateFor<glWindowPos3f>()(x, y, z);
         }
         [Obsolete]
         public void WindowPos3(float[] v)
         {
-            InvokeExtensionFunction<glWindowPos3fv>(v);
+            GetDelegateFor<glWindowPos3fv>()(v);
         }
         [Obsolete]
         public void WindowPos3(int x, int y, int z)
         {
-            InvokeExtensionFunction<glWindowPos3i>(x, y, z);
+            GetDelegateFor<glWindowPos3i>()(x, y, z);
         }
         [Obsolete]
         public void WindowPos3(int[] v)
         {
-            InvokeExtensionFunction<glWindowPos3iv>(v);
+            GetDelegateFor<glWindowPos3iv>()(v);
         }
         [Obsolete]
         public void WindowPos3(short x, short y, short z)
         {
-            InvokeExtensionFunction<glWindowPos3s>(x, y, z);
+            GetDelegateFor<glWindowPos3s>()(x, y, z);
         }
         [Obsolete]
         public void WindowPos3(short[] v)
         {
-            InvokeExtensionFunction<glWindowPos3sv>(v);
+            GetDelegateFor<glWindowPos3sv>()(v);
         }
 
         //  Delegates
@@ -985,61 +967,61 @@ namespace SharpGL
         //  Methods
         public void GenQueries(int n, uint[] ids)
         {
-            InvokeExtensionFunction<glGenQueries>(n, ids);
+            GetDelegateFor<glGenQueries>()(n, ids);
         }
         public void DeleteQueries(int n, uint[] ids)
         {
-            InvokeExtensionFunction<glDeleteQueries>(n, ids);
+            GetDelegateFor<glDeleteQueries>()(n, ids);
         }
         public bool IsQuery(uint id)
         {
-            return (bool)InvokeExtensionFunction<glIsQuery>(id);
+            return (bool)GetDelegateFor<glIsQuery>()(id);
         }
         public void BeginQuery(uint target, uint id)
         {
-            InvokeExtensionFunction<glBeginQuery>(target, id);
+            GetDelegateFor<glBeginQuery>()(target, id);
         }
         public void EndQuery(uint target)
         {
-            InvokeExtensionFunction<glEndQuery>(target);
+            GetDelegateFor<glEndQuery>()(target);
         }
         public void GetQuery(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetQueryiv>(target, pname, parameters);
+            GetDelegateFor<glGetQueryiv>()(target, pname, parameters);
         }
         public void GetQueryObject(uint id, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetQueryObjectiv>(id, pname, parameters);
+            GetDelegateFor<glGetQueryObjectiv>()(id, pname, parameters);
         }
         public void GetQueryObject(uint id, uint pname, uint[] parameters)
         {
-            InvokeExtensionFunction<glGetQueryObjectuiv>(id, pname, parameters);
+            GetDelegateFor<glGetQueryObjectuiv>()(id, pname, parameters);
         }
         public void BindBuffer(uint target, uint buffer)
         {
-            InvokeExtensionFunction<glBindBuffer>(target, buffer);
+            GetDelegateFor<glBindBuffer>()(target, buffer);
         }
         public void DeleteBuffers(int n, uint[] buffers)
         {
-            InvokeExtensionFunction<glDeleteBuffers>(n, buffers);
+            GetDelegateFor<glDeleteBuffers>()(n, buffers);
         }
         public void GenBuffers(int n, uint[] buffers)
         {
-            InvokeExtensionFunction<glGenBuffers>(n, buffers);
+            GetDelegateFor<glGenBuffers>()(n, buffers);
         }
         public bool IsBuffer(uint buffer)
         {
-            return (bool)InvokeExtensionFunction<glIsBuffer>(buffer);
+            return (bool)GetDelegateFor<glIsBuffer>()(buffer);
         }
         public void BufferData(uint target, int size, IntPtr data, uint usage)
         {
-            InvokeExtensionFunction<glBufferData>(target, size, data, usage);
+            GetDelegateFor<glBufferData>()(target, size, data, usage);
         }
         public void BufferData(uint target, float[] data, uint usage)
         {
             IntPtr p = Marshal.AllocHGlobal(data.Length * sizeof(float));
             Marshal.Copy(data, 0, p, data.Length);
-            InvokeExtensionFunction<glBufferData>(target, data.Length * sizeof(float), p, usage);
+            GetDelegateFor<glBufferData>()(target, data.Length * sizeof(float), p, usage);
             Marshal.FreeHGlobal(p);
         }
         public void BufferData(uint target, ushort[] data, uint usage)
@@ -1049,32 +1031,32 @@ namespace SharpGL
             var shortData = new short[data.Length];
             Buffer.BlockCopy(data, 0, shortData, 0, dataSize);
             Marshal.Copy(shortData, 0, p, data.Length);
-            InvokeExtensionFunction<glBufferData>(target, dataSize, p, usage);
+            GetDelegateFor<glBufferData>()(target, dataSize, p, usage);
             Marshal.FreeHGlobal(p);
         }
         public void BufferSubData(uint target, int offset, int size, IntPtr data)
         {
-            InvokeExtensionFunction<glBufferSubData>(target, offset, size, data);
+            GetDelegateFor<glBufferSubData>()(target, offset, size, data);
         }
         public void GetBufferSubData(uint target, int offset, int size, IntPtr data)
         {
-            InvokeExtensionFunction<glGetBufferSubData>(target, offset, size, data);
+            GetDelegateFor<glGetBufferSubData>()(target, offset, size, data);
         }
         public IntPtr MapBuffer(uint target, uint access)
         {
-            return (IntPtr)InvokeExtensionFunction<glMapBuffer>(target, access);
+            return (IntPtr)GetDelegateFor<glMapBuffer>()(target, access);
         }
         public bool UnmapBuffer(uint target)
         {
-            return (bool)InvokeExtensionFunction<glUnmapBuffer>(target);
+            return (bool)GetDelegateFor<glUnmapBuffer>()(target);
         }
         public void GetBufferParameter(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetBufferParameteriv>(target, pname, parameters);
+            GetDelegateFor<glGetBufferParameteriv>()(target, pname, parameters);
         }
         public void GetBufferPointer(uint target, uint pname, IntPtr[] parameters)
         {
-            InvokeExtensionFunction<glGetBufferPointerv>();
+            GetDelegateFor<glGetBufferPointerv>()(target, pname, parameters);
         }
         
         //  Delegates
@@ -1134,31 +1116,31 @@ namespace SharpGL
         //  Methods
         public void BlendEquationSeparate (uint modeRGB, uint modeAlpha)
         {
-            InvokeExtensionFunction<glBlendEquationSeparate>(modeRGB, modeAlpha);
+            GetDelegateFor<glBlendEquationSeparate>()(modeRGB, modeAlpha);
         }
         public void DrawBuffers (int n, uint[] bufs)
         {
-            InvokeExtensionFunction<glDrawBuffers>(n, bufs);
+            GetDelegateFor<glDrawBuffers>()(n, bufs);
         }
         public void StencilOpSeparate (uint face, uint sfail, uint dpfail, uint dppass)
         {
-            InvokeExtensionFunction<glStencilOpSeparate>(face, sfail, dpfail, dppass);
+            GetDelegateFor<glStencilOpSeparate>()(face, sfail, dpfail, dppass);
         }
         public void StencilFuncSeparate (uint face, uint func, int reference, uint mask)
         {
-            InvokeExtensionFunction<glStencilFuncSeparate>(face, func, reference, mask);
+            GetDelegateFor<glStencilFuncSeparate>()(face, func, reference, mask);
         }
         public void StencilMaskSeparate (uint face, uint mask)
         {
-            InvokeExtensionFunction<glStencilMaskSeparate>(face, mask);
+            GetDelegateFor<glStencilMaskSeparate>()(face, mask);
         }
         public void AttachShader (uint program, uint shader)
         {
-            InvokeExtensionFunction<glAttachShader>(program, shader);
+            GetDelegateFor<glAttachShader>()(program, shader);
         }
         public void BindAttribLocation (uint program, uint index, string name)
         {
-            InvokeExtensionFunction<glBindAttribLocation>(program, index, name);
+            GetDelegateFor<glBindAttribLocation>()(program, index, name);
         }
         /// <summary>
         /// Compile a shader object
@@ -1166,11 +1148,11 @@ namespace SharpGL
         /// <param name="shader">Specifies the shader object to be compiled.</param>
         public void CompileShader (uint shader)
         {
-            InvokeExtensionFunction<glCompileShader>(shader);
+            GetDelegateFor<glCompileShader>()(shader);
         }
         public uint CreateProgram ()
         {
-            return (uint)InvokeExtensionFunction<glCreateProgram>();
+            return (uint)GetDelegateFor<glCreateProgram>()();
         }
         /// <summary>
         /// Create a shader object
@@ -1179,64 +1161,94 @@ namespace SharpGL
         /// <returns>This function returns 0 if an error occurs creating the shader object. Otherwise the shader id is returned.</returns>
         public uint CreateShader (uint type)
         {
-            return (uint)InvokeExtensionFunction<glCreateShader>(type);
+            return (uint)GetDelegateFor<glCreateShader>()(type);
         }
         public void DeleteProgram (uint program)
         {
-            InvokeExtensionFunction<glDeleteProgram>(program);
+            GetDelegateFor<glDeleteProgram>()(program);
         }
         public void DeleteShader (uint shader)
         {
-            InvokeExtensionFunction<glDeleteShader>(shader);
+            GetDelegateFor<glDeleteShader>()(shader);
         }
         public void DetachShader (uint program, uint shader)
         {
-            InvokeExtensionFunction<glDetachShader>(program, shader);
+            GetDelegateFor<glDetachShader>()(program, shader);
         }
         public void DisableVertexAttribArray (uint index)
         {
-            InvokeExtensionFunction<glDisableVertexAttribArray>(index);
+            GetDelegateFor<glDisableVertexAttribArray>()(index);
         }
         public void EnableVertexAttribArray (uint index)
         {
-            InvokeExtensionFunction<glEnableVertexAttribArray>(index);
+            GetDelegateFor<glEnableVertexAttribArray>()(index);
         }
-        public void GetActiveAttrib (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
+
+
+        /// <summary>
+        /// Return information about an active attribute variable
+        /// </summary>
+        /// <param name="program">Specifies the program object to be queried.</param>
+        /// <param name="index">Specifies the index of the attribute variable to be queried.</param>
+        /// <param name="bufSize">Specifies the maximum number of characters OpenGL is allowed to write in the character buffer indicated by <paramref name="name"/>.</param>
+        /// <param name="length">Returns the number of characters actually written by OpenGL in the string indicated by name (excluding the null terminator) if a value other than NULL is passed.</param>
+        /// <param name="size">Returns the size of the attribute variable.</param>
+        /// <param name="type">Returns the data type of the attribute variable.</param>
+        /// <param name="name">Returns a null terminated string containing the name of the attribute variable.</param>
+        public void GetActiveAttrib (uint program, uint index, int bufSize, out int length, out int size, out uint type, out string name)
         {
-            InvokeExtensionFunction<glGetActiveAttrib>(program, index, bufSize, length, size, type, name);
+            var builder = new StringBuilder(bufSize);
+            GetDelegateFor<glGetActiveAttrib>()(program, index, bufSize, out length, out size, out type, builder);
+            name = builder.ToString();
         }
-        public void GetActiveUniform (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
+
+        /// <summary>
+        /// Return information about an active uniform variable
+        /// </summary>
+        /// <param name="program">Specifies the program object to be queried.</param>
+        /// <param name="index">Specifies the index of the uniform variable to be queried.</param>
+        /// <param name="bufSize">Specifies the maximum number of characters OpenGL is allowed 
+        /// to write in the character buffer indicated by <paramref name="name"/>.</param>
+        /// <param name="length">Returns the number of characters actually written by OpenGL in the string indicated by name 
+        /// (excluding the null terminator) if a value other than NULL is passed.</param>
+        /// <param name="size">Returns the size of the uniform variable.</param>
+        /// <param name="type">Returns the data type of the uniform variable.</param>
+        /// <param name="name">Returns a null terminated string containing the name of the uniform variable.</param>
+        public void GetActiveUniform (uint program, uint index, int bufSize, out int length, out int size, out uint type, out string name)
         {
-            InvokeExtensionFunction<glGetActiveUniform>(program, index, bufSize, length, size, type, name);
+            var builder = new StringBuilder(bufSize);
+            GetDelegateFor<glGetActiveUniform>()(program, index, bufSize, out length, out size, out type, builder);
+            name = builder.ToString();
         }
+
         public void GetAttachedShaders (uint program, int maxCount, int[] count, uint[] obj)
         {
-            InvokeExtensionFunction<glGetAttachedShaders>(program, maxCount, count, obj);
+            GetDelegateFor<glGetAttachedShaders>()(program, maxCount, count, obj);
         }
         public int GetAttribLocation (uint program, string name)
         {
-            return (int)InvokeExtensionFunction<glGetAttribLocation>(program, name);
+            return (int)GetDelegateFor<glGetAttribLocation>()(program, name);
         }
         public void GetProgram (uint program, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramiv>(program, pname, parameters);
+            GetDelegateFor<glGetProgramiv>()(program, pname, parameters);
         }
         public void GetProgramInfoLog(uint program, int bufSize, IntPtr length, StringBuilder infoLog)
         {
-            InvokeExtensionFunction<glGetProgramInfoLog>(program, bufSize, length, infoLog);
+            GetDelegateFor<glGetProgramInfoLog>()(program, bufSize, length, infoLog);
         }
         public void GetShader (uint shader, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetShaderiv>(shader, pname, parameters);
+            GetDelegateFor<glGetShaderiv>()(shader, pname, parameters);
         }
         public void GetShaderInfoLog (uint shader, int bufSize, IntPtr length, StringBuilder infoLog)
         {
-            InvokeExtensionFunction<glGetShaderInfoLog>(shader, bufSize, length, infoLog);
+            GetDelegateFor<glGetShaderInfoLog>()(shader, bufSize, length, infoLog);
 
         }
         public void GetShaderSource(uint shader, int bufSize, IntPtr length, StringBuilder source)
         {
-            InvokeExtensionFunction<glGetShaderSource>(shader, bufSize, length, source);
+            GetDelegateFor<glGetShaderSource>()(shader, bufSize, length, source);
         }
         /// <summary>
         /// Returns an integer that represents the location of a specific uniform variable within a program object. name must be a null terminated string that contains no white space. name must be an active uniform variable name in program that is not a structure, an array of structures, or a subcomponent of a vector or a matrix. This function returns -1 if name does not correspond to an active uniform variable in program, if name starts with the reserved prefix "gl_", or if name is associated with an atomic counter or a named uniform block.
@@ -1246,43 +1258,43 @@ namespace SharpGL
         /// <returns></returns>
         public int GetUniformLocation (uint program, string name)
         {
-            return (int)InvokeExtensionFunction<glGetUniformLocation>(program, name);
+            return (int)GetDelegateFor<glGetUniformLocation>()(program, name);
         }
         public void GetUniform (uint program, int location, float[] parameters)
         {
-            InvokeExtensionFunction<glGetUniformfv>(program, location, parameters);
+            GetDelegateFor<glGetUniformfv>()(program, location, parameters);
         }
         public void GetUniform (uint program, int location, int[] parameters)
         {
-            InvokeExtensionFunction<glGetUniformiv>(program, location, parameters);
+            GetDelegateFor<glGetUniformiv>()(program, location, parameters);
         }
         public void GetVertexAttrib (uint index, uint pname, double[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribdv>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribdv>()(index, pname, parameters);
         }
         public void GetVertexAttrib (uint index, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribfv>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribfv>()(index, pname, parameters);
         }
         public void GetVertexAttrib (uint index, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribiv>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribiv>()(index, pname, parameters);
         }
         public void GetVertexAttribPointer(uint index, uint pname, IntPtr pointer)
         {
-            InvokeExtensionFunction<glGetVertexAttribPointerv>(index, pname, pointer);
+            GetDelegateFor<glGetVertexAttribPointerv>()(index, pname, pointer);
         }
         public bool IsProgram (uint program)
         {
-            return (bool)InvokeExtensionFunction<glIsProgram>(program);
+            return (bool)GetDelegateFor<glIsProgram>()(program);
         }
         public bool IsShader (uint shader)
         {
-            return (bool)InvokeExtensionFunction<glIsShader>(shader);
+            return (bool)GetDelegateFor<glIsShader>()(shader);
         }
         public void LinkProgram (uint program)
         {
-            InvokeExtensionFunction<glLinkProgram>(program);
+            GetDelegateFor<glLinkProgram>()(program);
         }
 
         /// <summary>
@@ -1293,7 +1305,7 @@ namespace SharpGL
         public void ShaderSource (uint shader, string source)
         {
             //  Remember, the function takes an array of strings but concatenates them, so we should NOT split into lines!
-            InvokeExtensionFunction<glShaderSource>(shader, 1, new[] { source }, new[] { source.Length });
+            GetDelegateFor<glShaderSource>()(shader, 1, new[] { source }, new[] { source.Length });
         }
 
         public static IntPtr StringToPtrAnsi(string str)
@@ -1309,235 +1321,235 @@ namespace SharpGL
         }
         public void UseProgram (uint program)
         {
-            InvokeExtensionFunction<glUseProgram>(program);
+            GetDelegateFor<glUseProgram>()(program);
         }
         public void Uniform1 (int location, float v0)
         {
-            InvokeExtensionFunction<glUniform1f>(location, v0);
+            GetDelegateFor<glUniform1f>()(location, v0);
         }
         public void Uniform2 (int location, float v0, float v1)
         {
-            InvokeExtensionFunction<glUniform2f>(location, v0, v1);
+            GetDelegateFor<glUniform2f>()(location, v0, v1);
         }
         public void Uniform3 (int location, float v0, float v1, float v2)
         {
-            InvokeExtensionFunction<glUniform3f>(location, v0, v1, v2);
+            GetDelegateFor<glUniform3f>()(location, v0, v1, v2);
         }
         public void Uniform4 (int location, float v0, float v1, float v2, float v3)
         {
-            InvokeExtensionFunction<glUniform4f>(location, v0, v1, v2, v3);
+            GetDelegateFor<glUniform4f>()(location, v0, v1, v2, v3);
         }
         public void Uniform1 (int location, int v0)
         {
-            InvokeExtensionFunction<glUniform1i>(location, v0);
+            GetDelegateFor<glUniform1i>()(location, v0);
         }
         public void Uniform2 (int location, int v0, int v1)
         {
-            InvokeExtensionFunction<glUniform2i>(location, v0, v1);
+            GetDelegateFor<glUniform2i>()(location, v0, v1);
         }
         public void Uniform3(int location, int v0, int v1, int v2)
         {
-            InvokeExtensionFunction<glUniform3i>(location, v0, v1, v2);
+            GetDelegateFor<glUniform3i>()(location, v0, v1, v2);
         }
         public void Uniform (int location, int v0, int v1, int v2, int v3)
         {
-            InvokeExtensionFunction<glUniform4i>(location, v0, v1, v2, v3);
+            GetDelegateFor<glUniform4i>()(location, v0, v1, v2, v3);
         }
         public void Uniform1 (int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform1fv>(location, count, value);
+            GetDelegateFor<glUniform1fv>()(location, count, value);
         }
         public void Uniform2 (int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform2fv>(location, count, value);
+            GetDelegateFor<glUniform2fv>()(location, count, value);
         }
         public void Uniform3 (int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform3fv>(location, count, value);
+            GetDelegateFor<glUniform3fv>()(location, count, value);
         }
         public void Uniform4 (int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform4fv>(location, count, value);
+            GetDelegateFor<glUniform4fv>()(location, count, value);
         }
         public void Uniform1 (int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform1iv>(location, count, value);
+            GetDelegateFor<glUniform1iv>()(location, count, value);
         }
         public void Uniform2 (int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform2iv>(location, count, value);
+            GetDelegateFor<glUniform2iv>()(location, count, value);
         }
         public void Uniform3 (int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform3iv>(location, count, value);
+            GetDelegateFor<glUniform3iv>()(location, count, value);
         }
         public void Uniform4 (int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform4iv>(location, count, value);
+            GetDelegateFor<glUniform4iv>()(location, count, value);
         }
         public void UniformMatrix2 (int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix2fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix2fv>()(location, count, transpose, value);
         }
         public void UniformMatrix3 (int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix3fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix3fv>()(location, count, transpose, value);
         }
         public void UniformMatrix4 (int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix4fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix4fv>()(location, count, transpose, value);
         }
         public void ValidateProgram (uint program)
         {
-            InvokeExtensionFunction<glValidateProgram>(program);
+            GetDelegateFor<glValidateProgram>()(program);
         }
         public void VertexAttrib1 (uint index, double x)
         {
-            InvokeExtensionFunction<glVertexAttrib1d>(index, x);
+            GetDelegateFor<glVertexAttrib1d>()(index, x);
         }
         public void VertexAttrib1 (uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib1dv>(index, v);
+            GetDelegateFor<glVertexAttrib1dv>()(index, v);
         }
         public void VertexAttrib (uint index, float x)
         {
-            InvokeExtensionFunction<glVertexAttrib1f>(index, x);
+            GetDelegateFor<glVertexAttrib1f>()(index, x);
         }
         public void VertexAttrib1 (uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib1fv>(index, v);
+            GetDelegateFor<glVertexAttrib1fv>()(index, v);
         }
         public void VertexAttrib (uint index, short x)
         {
-            InvokeExtensionFunction<glVertexAttrib1s>(index, x);
+            GetDelegateFor<glVertexAttrib1s>()(index, x);
         }
         public void VertexAttrib1 (uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib1sv>(index, v);
+            GetDelegateFor<glVertexAttrib1sv>()(index, v);
         }
         public void VertexAttrib2 (uint index, double x, double y)
         {
-            InvokeExtensionFunction<glVertexAttrib2d>(index, x, y);
+            GetDelegateFor<glVertexAttrib2d>()(index, x, y);
         }
         public void VertexAttrib2 (uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib2dv>(index, v);
+            GetDelegateFor<glVertexAttrib2dv>()(index, v);
         }
         public void VertexAttrib2 (uint index, float x, float y)
         {
-            InvokeExtensionFunction<glVertexAttrib2f>(index, x, y);
+            GetDelegateFor<glVertexAttrib2f>()(index, x, y);
         }
         public void VertexAttrib2 (uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib2fv>(index, v);
+            GetDelegateFor<glVertexAttrib2fv>()(index, v);
         }
         public void VertexAttrib2 (uint index, short x, short y)
         {
-            InvokeExtensionFunction<glVertexAttrib2s>(index, x, y);
+            GetDelegateFor<glVertexAttrib2s>()(index, x, y);
         }
         public void VertexAttrib2 (uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib2sv>(index, v);
+            GetDelegateFor<glVertexAttrib2sv>()(index, v);
         }
         public void VertexAttrib3 (uint index, double x, double y, double z)
         {
-            InvokeExtensionFunction<glVertexAttrib3d>(index, x, y, z);
+            GetDelegateFor<glVertexAttrib3d>()(index, x, y, z);
         }
         public void VertexAttrib3 (uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib3dv>(index, v);
+            GetDelegateFor<glVertexAttrib3dv>()(index, v);
         }
         public void VertexAttrib3 (uint index, float x, float y, float z)
         {
-            InvokeExtensionFunction<glVertexAttrib3f>(index, x, y, z);
+            GetDelegateFor<glVertexAttrib3f>()(index, x, y, z);
         }
         public void VertexAttrib3 (uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib3fv>(index, v);
+            GetDelegateFor<glVertexAttrib3fv>()(index, v);
         }
         public void VertexAttrib3 (uint index, short x, short y, short z)
         {
-            InvokeExtensionFunction<glVertexAttrib3s>(index, x, y, z);
+            GetDelegateFor<glVertexAttrib3s>()(index, x, y, z);
         }
         public void VertexAttrib3 (uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib3sv>(index, v);
+            GetDelegateFor<glVertexAttrib3sv>()(index, v);
         }
         public void VertexAttrib4N (uint index, sbyte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4Nbv>(index, v);
+            GetDelegateFor<glVertexAttrib4Nbv>()(index, v);
         }
         public void VertexAttrib4N (uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4Niv>(index, v);
+            GetDelegateFor<glVertexAttrib4Niv>()(index, v);
         }
         public void VertexAttrib4N (uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4Nsv>(index, v);
+            GetDelegateFor<glVertexAttrib4Nsv>()(index, v);
         }
         public void VertexAttrib4N (uint index, byte x, byte y, byte z, byte w)
         {
-            InvokeExtensionFunction<glVertexAttrib4Nub>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4Nub>()(index, x, y, z, w);
         }
         public void VertexAttrib4N (uint index, byte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4Nubv>(index, v);
+            GetDelegateFor<glVertexAttrib4Nubv>()(index, v);
         }
         public void VertexAttrib4N (uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4Nuiv>(index, v);
+            GetDelegateFor<glVertexAttrib4Nuiv>()(index, v);
         }
         public void VertexAttrib4N (uint index, ushort[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4Nusv>(index, v);
+            GetDelegateFor<glVertexAttrib4Nusv>()(index, v);
         }
         public void VertexAttrib4 (uint index, sbyte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4bv>();
+            GetDelegateFor<glVertexAttrib4bv>()(index, v);
         }
         public void VertexAttrib4 (uint index, double x, double y, double z, double w)
         {
-            InvokeExtensionFunction<glVertexAttrib4d>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4d>()(index, x, y, z, w);
         }
         public void VertexAttrib4 (uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4dv>(index, v);
+            GetDelegateFor<glVertexAttrib4dv>()(index, v);
         }
         public void VertexAttrib4 (uint index, float x, float y, float z, float w)
         {
-            InvokeExtensionFunction<glVertexAttrib4f>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4f>()(index, x, y, z, w);
         }
         public void VertexAttrib4 (uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4fv>(index, v);
+            GetDelegateFor<glVertexAttrib4fv>()(index, v);
         }
         public void VertexAttrib4 (uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4iv>(index, v);
+            GetDelegateFor<glVertexAttrib4iv>()(index, v);
         }
         public void VertexAttrib4 (uint index, short x, short y, short z, short w)
         {
-            InvokeExtensionFunction<glVertexAttrib4s>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4s>()(index, x, y, z, w);
         }
         public void VertexAttrib4 (uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4sv>(index, v);
+            GetDelegateFor<glVertexAttrib4sv>()(index, v);
         }
         public void VertexAttrib4 (uint index, byte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4ubv>(index, v);
+            GetDelegateFor<glVertexAttrib4ubv>()(index, v);
         }
         public void VertexAttrib4 (uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4uiv>(index, v);
+            GetDelegateFor<glVertexAttrib4uiv>()(index, v);
         }
         public void VertexAttrib4 (uint index, ushort[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4usv>(index, v);
+            GetDelegateFor<glVertexAttrib4usv>()(index, v);
         }
         public void VertexAttribPointer (uint index, int size, uint type, bool normalized, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glVertexAttribPointer>(index, size, type, normalized, stride, pointer);
+            GetDelegateFor<glVertexAttribPointer>()(index, size, type, normalized, stride, pointer);
         }
 
         //  Delegates
@@ -1556,8 +1568,8 @@ namespace SharpGL
         private delegate void glDetachShader (uint program, uint shader);
         private delegate void glDisableVertexAttribArray (uint index);
         private delegate void glEnableVertexAttribArray (uint index);
-        private delegate void glGetActiveAttrib (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name);
-        private delegate void glGetActiveUniform (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name);
+        private delegate void glGetActiveAttrib (uint program, uint index, int bufSize, out int length, out int size, out uint type, StringBuilder name);
+        private delegate void glGetActiveUniform (uint program, uint index, int bufSize, out int length, out int size, out uint type, StringBuilder name);
         private delegate void glGetAttachedShaders (uint program, int maxCount, int[] count, uint[] obj);
         private delegate int glGetAttribLocation (uint program, string name);
         private delegate void glGetProgramiv (uint program, uint pname, int[] parameters);
@@ -1621,13 +1633,13 @@ namespace SharpGL
         private delegate void glVertexAttrib3fv (uint index, float[] v);
         private delegate void glVertexAttrib3s (uint index, short x, short y, short z);
         private delegate void glVertexAttrib3sv (uint index, short[] v);
-        private delegate void glVertexAttrib4Nbv (uint index, byte[] v);
+        private delegate void glVertexAttrib4Nbv (uint index, sbyte[] v);
         private delegate void glVertexAttrib4Niv (uint index, int[] v);
         private delegate void glVertexAttrib4Nsv (uint index, short[] v);
         private delegate void glVertexAttrib4Nub (uint index, byte x, byte y, byte z, byte w);
         private delegate void glVertexAttrib4Nubv (uint index, byte[] v);
         private delegate void glVertexAttrib4Nuiv (uint index, uint[] v);
-        private delegate void glVertexAttrib4Nusv (uint index, short[] v);
+        private delegate void glVertexAttrib4Nusv (uint index, ushort[] v);
         private delegate void glVertexAttrib4bv (uint index, sbyte[] v);
         private delegate void glVertexAttrib4d (uint index, double x, double y, double z, double w);
         private delegate void glVertexAttrib4dv (uint index, double[] v);
@@ -1730,27 +1742,27 @@ namespace SharpGL
         //  Methods
         public void UniformMatrix2x3(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix2x3fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix2x3fv>()(location, count, transpose, value);
         }
         public void UniformMatrix3x2(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix3x2fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix3x2fv>()(location, count, transpose, value);
         }
         public void UniformMatrix2x4(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix2x4fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix2x4fv>()(location, count, transpose, value);
         }
         public void UniformMatrix4x2(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix4x2fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix4x2fv>()(location, count, transpose, value);
         }
         public void UniformMatrix3x4(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix3x4fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix3x4fv>()(location, count, transpose, value);
         }
         public void UniformMatrix4x3(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix4x3fv>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix4x3fv>()(location, count, transpose, value);
         }
 
         //  Delegates
@@ -1786,235 +1798,235 @@ namespace SharpGL
         //  Methods
         public void ColorMask(uint index, bool r, bool g, bool b, bool a)
         {
-            InvokeExtensionFunction<glColorMaski>(index, r, g, b, a);
+            GetDelegateFor<glColorMaski>()(index, r, g, b, a);
         }
         public void GetBoolean(uint target, uint index, bool[] data)
         {
-            InvokeExtensionFunction<glGetBooleani_v>(target, index, data);
+            GetDelegateFor<glGetBooleani_v>()(target, index, data);
         }
         public void GetInteger(uint target, uint index, int[] data)
         {
-            InvokeExtensionFunction<glGetIntegeri_v>(target, index, data);
+            GetDelegateFor<glGetIntegeri_v>()(target, index, data);
         }
         public void Enable(uint target, uint index)
         {
-            InvokeExtensionFunction<glEnablei>(target, index);
+            GetDelegateFor<glEnablei>()(target, index);
         }
         public void Disable(uint target, uint index)
         {
-            InvokeExtensionFunction<glDisablei>(target, index);
+            GetDelegateFor<glDisablei>()(target, index);
         }
         public bool IsEnabled(uint target, uint index)
         {
-            return (bool)InvokeExtensionFunction<glIsEnabledi>(target, index);
+            return (bool)GetDelegateFor<glIsEnabledi>()(target, index);
         }
         public void BeginTransformFeedback(uint primitiveMode)
         {
-            InvokeExtensionFunction<glBeginTransformFeedback>(primitiveMode);
+            GetDelegateFor<glBeginTransformFeedback>()(primitiveMode);
         }
         public void EndTransformFeedback()
         {
-            InvokeExtensionFunction<glEndTransformFeedback>();
+            GetDelegateFor<glEndTransformFeedback>()();
         }
         public void BindBufferRange(uint target, uint index, uint buffer, int offset, int size)
         {
-            InvokeExtensionFunction<glBindBufferRange>(target, index, buffer, offset, size);
+            GetDelegateFor<glBindBufferRange>()(target, index, buffer, offset, size);
         }
         public void BindBufferBase(uint target, uint index, uint buffer)
         {
-            InvokeExtensionFunction<glBindBufferBase>(target, index, buffer);
+            GetDelegateFor<glBindBufferBase>()(target, index, buffer);
         }
         public void TransformFeedbackVaryings(uint program, int count, string[] varyings, uint bufferMode)
         {
-            InvokeExtensionFunction<glTransformFeedbackVaryings>(program, count, varyings, bufferMode);
+            GetDelegateFor<glTransformFeedbackVaryings>()(program, count, varyings, bufferMode);
         }
         public void GetTransformFeedbackVarying(uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
         {
-            InvokeExtensionFunction<glGetTransformFeedbackVarying>(program, index, bufSize, length, size, type, name);
+            GetDelegateFor<glGetTransformFeedbackVarying>()(program, index, bufSize, length, size, type, name);
         }
         public void ClampColor(uint target, uint clamp)
         {
-            InvokeExtensionFunction<glClampColor>(target, clamp);
+            GetDelegateFor<glClampColor>()(target, clamp);
         }
         public void BeginConditionalRender(uint id, uint mode)
         {
-            InvokeExtensionFunction<glBeginConditionalRender>(id, mode);
+            GetDelegateFor<glBeginConditionalRender>()(id, mode);
         }
         public void EndConditionalRender()
         {
-            InvokeExtensionFunction<glEndConditionalRender>();
+            GetDelegateFor<glEndConditionalRender>()();
         }
         public void VertexAttribIPointer(uint index, int size, uint type, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glVertexAttribIPointer>(index, size, type, stride, pointer);
+            GetDelegateFor<glVertexAttribIPointer>()(index, size, type, stride, pointer);
         }
         public void GetVertexAttribI(uint index, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribIiv>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribIiv>()(index, pname, parameters);
         }
         public void GetVertexAttribI(uint index, uint pname, uint[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribIuiv>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribIuiv>()(index, pname, parameters);
         }
         public void VertexAttribI1(uint index, int x)
         {
-            InvokeExtensionFunction<glVertexAttribI1i>(index, x);
+            GetDelegateFor<glVertexAttribI1i>()(index, x);
         }
         public void VertexAttribI2(uint index, int x, int y)
         {
-            InvokeExtensionFunction<glVertexAttribI2i>(index, x, y);
+            GetDelegateFor<glVertexAttribI2i>()(index, x, y);
         }
         public void VertexAttribI3(uint index, int x, int y, int z)
         {
-            InvokeExtensionFunction<glVertexAttribI3i>(index, x, y, z);
+            GetDelegateFor<glVertexAttribI3i>()(index, x, y, z);
         }
         public void VertexAttribI4(uint index, int x, int y, int z, int w)
         {
-            InvokeExtensionFunction<glVertexAttribI4i>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttribI4i>()(index, x, y, z, w);
         }
         public void VertexAttribI1(uint index, uint x)
         {
-            InvokeExtensionFunction<glVertexAttribI1ui>(index, x);
+            GetDelegateFor<glVertexAttribI1ui>()(index, x);
         }
         public void VertexAttribI2(uint index, uint x, uint y)
         {
-            InvokeExtensionFunction<glVertexAttribI2ui>(index, x, y);
+            GetDelegateFor<glVertexAttribI2ui>()(index, x, y);
         }
         public void VertexAttribI3(uint index, uint x, uint y, uint z)
         {
-            InvokeExtensionFunction<glVertexAttribI3ui>(index, x, y, z);
+            GetDelegateFor<glVertexAttribI3ui>()(index, x, y, z);
         }
         public void VertexAttribI4(uint index, uint x, uint y, uint z, uint w)
         {
-            InvokeExtensionFunction<glVertexAttribI4ui>(index, x, y, z);
+            GetDelegateFor<glVertexAttribI4ui>()(index, x, y, z, w);
         }
         public void VertexAttribI1(uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI1iv>(index, v);
+            GetDelegateFor<glVertexAttribI1iv>()(index, v);
         }
         public void VertexAttribI2(uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI2iv>(index, v);
+            GetDelegateFor<glVertexAttribI2iv>()(index, v);
         }
         public void VertexAttribI3(uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI3iv>(index, v);
+            GetDelegateFor<glVertexAttribI3iv>()(index, v);
         }
         public void VertexAttribI4(uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI4iv>(index, v);
+            GetDelegateFor<glVertexAttribI4iv>()(index, v);
         }
         public void VertexAttribI1(uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI1uiv>(index, v);
+            GetDelegateFor<glVertexAttribI1uiv>()(index, v);
         }
         public void VertexAttribI2(uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI2uiv>(index, v);
+            GetDelegateFor<glVertexAttribI2uiv>()(index, v);
         }
         public void VertexAttribI3(uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI3uiv>(index, v);
+            GetDelegateFor<glVertexAttribI3uiv>()(index, v);
         }
         public void VertexAttribI4(uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI4uiv>(index, v);
+            GetDelegateFor<glVertexAttribI4uiv>()(index, v);
         }
         public void VertexAttribI4(uint index, sbyte[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI4bv>(index, v);
+            GetDelegateFor<glVertexAttribI4bv>()(index, v);
         }
         public void VertexAttribI4(uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI4sv>(index, v);
+            GetDelegateFor<glVertexAttribI4sv>()(index, v);
         }
         public void VertexAttribI4(uint index, byte[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI4ubv>(index, v);
+            GetDelegateFor<glVertexAttribI4ubv>()(index, v);
         }
         public void VertexAttribI4(uint index, ushort[] v)
         {
-            InvokeExtensionFunction<glVertexAttribI4usv>(index, v);
+            GetDelegateFor<glVertexAttribI4usv>()(index, v);
         }
         public void GetUniform(uint program, int location, uint[] parameters)
         {
-            InvokeExtensionFunction<glGetUniformuiv>(program, location, parameters);
+            GetDelegateFor<glGetUniformuiv>()(program, location, parameters);
         }
         public void BindFragDataLocation(uint program, uint color, string name)
         {
-            InvokeExtensionFunction<glBindFragDataLocation>(program, color, name);
+            GetDelegateFor<glBindFragDataLocation>()(program, color, name);
         }
         public int GetFragDataLocation(uint program, string name)
         {
-            return (int)InvokeExtensionFunction<glGetFragDataLocation>(program, name);
+            return (int)GetDelegateFor<glGetFragDataLocation>()(program, name);
         }
         public void Uniform1(int location, uint v0)
         {
-            InvokeExtensionFunction<glUniform1ui>(location, v0);
+            GetDelegateFor<glUniform1ui>()(location, v0);
         }
         public void Uniform2(int location, uint v0, uint v1)
         {
-            InvokeExtensionFunction<glUniform2ui>(location, v0, v1);
+            GetDelegateFor<glUniform2ui>()(location, v0, v1);
         }
         public void Uniform3(int location, uint v0, uint v1, uint v2)
         {
-            InvokeExtensionFunction<glUniform3ui>(location, v0, v1, v2);
+            GetDelegateFor<glUniform3ui>()(location, v0, v1, v2);
         }
         public void Uniform4(int location, uint v0, uint v1, uint v2, uint v3)
         {
-            InvokeExtensionFunction<glUniform4ui>(location, v0, v1, v2, v3);
+            GetDelegateFor<glUniform4ui>()(location, v0, v1, v2, v3);
         }
         public void Uniform1(int location, int count, uint[] value)
         {
-            InvokeExtensionFunction<glUniform1uiv>(location, count, value);
+            GetDelegateFor<glUniform1uiv>()(location, count, value);
         }
         public void Uniform2(int location, int count, uint[] value)
         {
-            InvokeExtensionFunction<glUniform2uiv>(location, count, value);
+            GetDelegateFor<glUniform2uiv>()(location, count, value);
         }
         public void Uniform3(int location, int count, uint[] value)
         {
-            InvokeExtensionFunction<glUniform3uiv>(location, count, value);
+            GetDelegateFor<glUniform3uiv>()(location, count, value);
         }
         public void Uniform4(int location, int count, uint[] value)
         {
-            InvokeExtensionFunction<glUniform4uiv>(location, count, value);
+            GetDelegateFor<glUniform4uiv>()(location, count, value);
         }
         public void TexParameterI(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glTexParameterIiv>(target, pname, parameters);
+            GetDelegateFor<glTexParameterIiv>()(target, pname, parameters);
         }
         public void TexParameterI(uint target, uint pname, uint[] parameters)
         {
-            InvokeExtensionFunction<glTexParameterIuiv>(target, pname, parameters);
+            GetDelegateFor<glTexParameterIuiv>()(target, pname, parameters);
         }
         public void GetTexParameterI(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetTexParameterIiv>(target, pname, parameters);
+            GetDelegateFor<glGetTexParameterIiv>()(target, pname, parameters);
         }
         public void GetTexParameterI(uint target, uint pname, uint[] parameters)
         {
-            InvokeExtensionFunction<glGetTexParameterIuiv>(target, pname, parameters);
+            GetDelegateFor<glGetTexParameterIuiv>()(target, pname, parameters);
         }
         public void ClearBuffer(uint buffer, int drawbuffer, int[] value)
         {
-            InvokeExtensionFunction<glClearBufferiv>(buffer, drawbuffer, value);
+            GetDelegateFor<glClearBufferiv>()(buffer, drawbuffer, value);
         }
         public void ClearBuffer(uint buffer, int drawbuffer, uint[] value)
         {
-            InvokeExtensionFunction<glClearBufferuiv>(buffer, drawbuffer, value);
+            GetDelegateFor<glClearBufferuiv>()(buffer, drawbuffer, value);
         }
         public void ClearBuffer(uint buffer, int drawbuffer, float[] value)
         {
-            InvokeExtensionFunction<glClearBufferfv>(buffer, drawbuffer, value);
+            GetDelegateFor<glClearBufferfv>()(buffer, drawbuffer, value);
         }
         public void ClearBuffer(uint buffer, int drawbuffer, float depth, int stencil)
         {
-            InvokeExtensionFunction<glClearBufferfi>(buffer, drawbuffer, depth, stencil);
+            GetDelegateFor<glClearBufferfi>()(buffer, drawbuffer, depth, stencil);
         }
         public string GetString(uint name, uint index)
         {
-            return (string)InvokeExtensionFunction<glGetStringi>(name, index);
+            return (string)GetDelegateFor<glGetStringi>()(name, index);
         }
 
         //  Delegates
@@ -2180,6 +2192,28 @@ namespace SharpGL
         public const uint GL_BUFFER_ACCESS_FLAGS                           = 0x911F;
         public const uint GL_BUFFER_MAP_LENGTH                             = 0x9120;
         public const uint GL_BUFFER_MAP_OFFSET                             = 0x9121;
+        public const uint GL_R8 = 0x8229;
+        public const uint GL_R16 = 0x822A;
+        public const uint GL_RG8 = 0x822B;
+        public const uint GL_RG16 = 0x822C;
+        public const uint GL_R16F = 0x822D;
+        public const uint GL_R32F = 0x822E;
+        public const uint GL_RG16F = 0x822F;
+        public const uint GL_RG32F = 0x8230;
+        public const uint GL_R8I = 0x8231;
+        public const uint GL_R8UI = 0x8232;
+        public const uint GL_R16I = 0x8233;
+        public const uint GL_R16UI = 0x8234;
+        public const uint GL_R32I = 0x8235;
+        public const uint GL_R32UI = 0x8236;
+        public const uint GL_RG8I = 0x8237;
+        public const uint GL_RG8UI = 0x8238;
+        public const uint GL_RG16I = 0x8239;
+        public const uint GL_RG16UI = 0x823A;
+        public const uint GL_RG32I = 0x823B;
+        public const uint GL_RG32UI = 0x823C;
+        public const uint GL_RG = 0x8227;
+        public const uint GL_RG_INTEGER = 0x8228;
      
         #endregion
 
@@ -2188,19 +2222,19 @@ namespace SharpGL
         //  Methods
         public void DrawArraysInstanced(uint mode, int first, int count, int primcount)
         {
-            InvokeExtensionFunction<glDrawArraysInstanced>(mode, first, count, primcount);
+            GetDelegateFor<glDrawArraysInstanced>()(mode, first, count, primcount);
         }
         public void DrawElementsInstanced(uint mode, int count, uint type, IntPtr indices, int primcount)
         {
-            InvokeExtensionFunction<glDrawElementsInstanced>(mode, count, type, indices, primcount);
+            GetDelegateFor<glDrawElementsInstanced>()(mode, count, type, indices, primcount);
         }
         public void TexBuffer(uint target, uint internalformat, uint buffer)
         {
-            InvokeExtensionFunction<glTexBuffer>(target, internalformat, buffer);
+            GetDelegateFor<glTexBuffer>()(target, internalformat, buffer);
         }
         public void PrimitiveRestartIndex(uint index)
         {
-            InvokeExtensionFunction<glPrimitiveRestartIndex>(index);
+            GetDelegateFor<glPrimitiveRestartIndex>()(index);
         }
 
         //  Delegates
@@ -2249,15 +2283,15 @@ namespace SharpGL
         //  Methods
         public void GetInteger64(uint target, uint index, Int64[] data)
         {
-            InvokeExtensionFunction<glGetInteger64i_v>(target, index, data);
+            GetDelegateFor<glGetInteger64i_v>()(target, index, data);
         }
         public void GetBufferParameteri64(uint target, uint pname, Int64[] parameters)
         {
-            InvokeExtensionFunction<glGetBufferParameteri64v>(target, pname, parameters);
+            GetDelegateFor<glGetBufferParameteri64v>()(target, pname, parameters);
         }
         public void FramebufferTexture(uint target, uint attachment, uint texture, int level)
         {
-            InvokeExtensionFunction<glFramebufferTexture>(target, attachment, texture, level);
+            GetDelegateFor<glFramebufferTexture>()(target, attachment, texture, level);
         }
 
         //  Delegates
@@ -2296,7 +2330,7 @@ namespace SharpGL
         //  Methods
         public void VertexAttribDivisor(uint index, uint divisor)
         {
-            InvokeExtensionFunction<glVertexAttribDivisor>(index, divisor);
+            GetDelegateFor<glVertexAttribDivisor>()(index, divisor);
         }
         
         //  Delegates
@@ -2312,23 +2346,23 @@ namespace SharpGL
         //  Methods        
         public void MinSampleShading(float value)
         {
-            InvokeExtensionFunction<glMinSampleShading>(value);
+            GetDelegateFor<glMinSampleShading>()(value);
         }
         public void BlendEquation(uint buf, uint mode)
         {
-            InvokeExtensionFunction<glBlendEquationi>(buf, mode);
+            GetDelegateFor<glBlendEquationi>()(buf, mode);
         }
         public void BlendEquationSeparate(uint buf, uint modeRGB, uint modeAlpha)
         {
-            InvokeExtensionFunction<glBlendEquationSeparatei>(buf, modeRGB, modeAlpha);
+            GetDelegateFor<glBlendEquationSeparatei>()(buf, modeRGB, modeAlpha);
         }
         public void BlendFunc(uint buf, uint src, uint dst)
         {
-            InvokeExtensionFunction<glBlendFunci>(buf, src, dst);
+            GetDelegateFor<glBlendFunci>()(buf, src, dst);
         }
         public void BlendFuncSeparate(uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha)
         {
-            InvokeExtensionFunction<glBlendFuncSeparatei>(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
+            GetDelegateFor<glBlendFuncSeparatei>()(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
         }
 
         //  Delegates        
@@ -2371,7 +2405,7 @@ namespace SharpGL
         public void TexImage3DEXT (uint target, int level, uint internalformat, uint width, 
             uint height, uint depth, int border, uint format, uint type, IntPtr pixels)
         {
-            InvokeExtensionFunction<glTexImage3DEXT>(target, level, internalformat, width, height, depth, border, format, type, pixels);
+            GetDelegateFor<glTexImage3DEXT>()(target, level, internalformat, width, height, depth, border, format, type, pixels);
         }
 
         /// <summary>
@@ -2391,7 +2425,7 @@ namespace SharpGL
         public void TexSubImage3DEXT(uint target, int level, int xoffset, int yoffset, int zoffset,
             uint width, uint height, uint depth, uint format, uint type, IntPtr pixels)
         {
-            InvokeExtensionFunction<glTexSubImage3DEXT>(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+            GetDelegateFor<glTexSubImage3DEXT>()(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
         }
 
         private delegate void glTexImage3DEXT(uint target, int level, uint internalformat, uint width,
@@ -2460,7 +2494,7 @@ namespace SharpGL
         /// <param name="indices">The indices.</param>
         public void DrawRangeElementsEXT(uint mode, uint start, uint end, uint count, uint type, IntPtr indices)
         {
-            InvokeExtensionFunction<glDrawRangeElementsEXT>(mode, start, end, count, type, indices);
+            GetDelegateFor<glDrawRangeElementsEXT>()(mode, start, end, count, type, indices);
         }
 
         private delegate void glDrawRangeElementsEXT(uint mode, uint start, uint end, uint count, uint type, IntPtr indices);
@@ -2475,37 +2509,37 @@ namespace SharpGL
         //  Delegates
         public void ColorTableSGI(uint target, uint internalformat, uint width, uint format, uint type, IntPtr table)
         {
-            InvokeExtensionFunction<glColorTableSGI>(target, internalformat, width, format, type, table);
+            GetDelegateFor<glColorTableSGI>()(target, internalformat, width, format, type, table);
         }
 
         public void ColorTableParameterSGI(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glColorTableParameterfvSGI>(target, pname, parameters);
+            GetDelegateFor<glColorTableParameterfvSGI>()(target, pname, parameters);
         }
 
         public void ColorTableParameterSGI(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glColorTableParameterivSGI>(target, pname, parameters);
+            GetDelegateFor<glColorTableParameterivSGI>()(target, pname, parameters);
         }
 
         public void CopyColorTableSGI(uint target, uint internalformat, int x, int y, uint width)
         {
-            InvokeExtensionFunction<glCopyColorTableSGI>(target, internalformat, x, y, width);
+            GetDelegateFor<glCopyColorTableSGI>()(target, internalformat, x, y, width);
         }
 
         public void GetColorTableSGI(uint target, uint format, uint type, IntPtr table)
         {
-            InvokeExtensionFunction<glGetColorTableSGI>(target, format, type, table);
+            GetDelegateFor<glGetColorTableSGI>()(target, format, type, table);
         }
 
         public void GetColorTableParameterSGI(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetColorTableParameterfvSGI>(target, pname, parameters);
+            GetDelegateFor<glGetColorTableParameterfvSGI>()(target, pname, parameters);
         }
 
         public void GetColorTableParameterSGI(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetColorTableParameterivSGI>(target, pname, parameters);
+            GetDelegateFor<glGetColorTableParameterivSGI>()(target, pname, parameters);
         }
 
         //  Delegates
@@ -2542,67 +2576,67 @@ namespace SharpGL
         //  Methods.
         public void ConvolutionFilter1DEXT(uint target, uint internalformat, int width, uint format, uint type, IntPtr image)
         {
-            InvokeExtensionFunction<glConvolutionFilter1DEXT>(target, internalformat, width, format, type, image);
+            GetDelegateFor<glConvolutionFilter1DEXT>()(target, internalformat, width, format, type, image);
         }
 
         public void ConvolutionFilter2DEXT(uint target, uint internalformat, int width, int height, uint format, uint type, IntPtr image)
         {
-            InvokeExtensionFunction<glConvolutionFilter2DEXT>(target, internalformat, width, height, format, type, image);
+            GetDelegateFor<glConvolutionFilter2DEXT>()(target, internalformat, width, height, format, type, image);
         }
 
         public void ConvolutionParameterEXT(uint target, uint pname, float parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameterfEXT>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameterfEXT>()(target, pname, parameters);
         }
 
         public void ConvolutionParameterEXT(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameterfvEXT>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameterfvEXT>()(target, pname, parameters);
         }
 
         public void ConvolutionParameterEXT(uint target, uint pname, int parameter)
         {
-            InvokeExtensionFunction<glConvolutionParameteriEXT>(target, pname, parameter);
+            GetDelegateFor<glConvolutionParameteriEXT>()(target, pname, parameter);
         }
 
         public void ConvolutionParameterEXT(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glConvolutionParameterivEXT>(target, pname, parameters);
+            GetDelegateFor<glConvolutionParameterivEXT>()(target, pname, parameters);
         }
 
         public void CopyConvolutionFilter1DEXT(uint target, uint internalformat, int x, int y, int width)
         {
-            InvokeExtensionFunction<glCopyConvolutionFilter1DEXT>(target, internalformat, x, y, width);
+            GetDelegateFor<glCopyConvolutionFilter1DEXT>()(target, internalformat, x, y, width);
         }
 
         public void CopyConvolutionFilter2DEXT(uint target, uint internalformat, int x, int y, int width, int height)
         {
-            InvokeExtensionFunction<glCopyConvolutionFilter2DEXT>(target, internalformat, x, y, width, height);
+            GetDelegateFor<glCopyConvolutionFilter2DEXT>()(target, internalformat, x, y, width, height);
         }
 
         public void GetConvolutionFilterEXT(uint target, uint format, uint type, IntPtr image)
         {
-            InvokeExtensionFunction<glGetConvolutionFilterEXT>(target, format, type, image);
+            GetDelegateFor<glGetConvolutionFilterEXT>()(target, format, type, image);
         }
 
         public void GetConvolutionParameterfvEXT(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetConvolutionParameterfvEXT>(target, pname, parameters);
+            GetDelegateFor<glGetConvolutionParameterfvEXT>()(target, pname, parameters);
         }
 
         public void GetConvolutionParameterivEXT(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetConvolutionParameterivEXT>(target, pname, parameters);
+            GetDelegateFor<glGetConvolutionParameterivEXT>()(target, pname, parameters);
         }
 
         public void GetSeparableFilterEXT(uint target, uint format, uint type, IntPtr row, IntPtr column, IntPtr span)
         {
-            InvokeExtensionFunction<glGetSeparableFilterEXT>(target, format, type, row, column, span);
+            GetDelegateFor<glGetSeparableFilterEXT>()(target, format, type, row, column, span);
         }
 
         public void SeparableFilter2DEXT(uint target, uint internalformat, int width, int height, uint format, uint type, IntPtr row, IntPtr column)
         {
-            InvokeExtensionFunction<glSeparableFilter2DEXT>(target, internalformat, width, height, format, type, row, column);
+            GetDelegateFor<glSeparableFilter2DEXT>()(target, internalformat, width, height, format, type, row, column);
         }
 
         //  Delegates
@@ -2665,52 +2699,52 @@ namespace SharpGL
         //  Methods
         public void GetHistogramEXT(uint target, bool reset, uint format, uint type, IntPtr values)
         {
-            InvokeExtensionFunction<glGetHistogramEXT>(target, reset, format, type, values);
+            GetDelegateFor<glGetHistogramEXT>()(target, reset, format, type, values);
         }
 
         public void GetHistogramParameterEXT(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetHistogramParameterfvEXT>(target, pname, parameters);
+            GetDelegateFor<glGetHistogramParameterfvEXT>()(target, pname, parameters);
         }
 
         public void GetHistogramParameterEXT(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetHistogramParameterivEXT>(target, pname, parameters);
+            GetDelegateFor<glGetHistogramParameterivEXT>()(target, pname, parameters);
         }
 
         public void GetMinmaxEXT(uint target, bool reset, uint format, uint type, IntPtr values)
         {
-            InvokeExtensionFunction<glGetMinmaxEXT>(target, reset, format, type, values);
+            GetDelegateFor<glGetMinmaxEXT>()(target, reset, format, type, values);
         }
 
         public void GetMinmaxParameterfvEXT(uint target, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetMinmaxParameterfvEXT>(target, pname, parameters);
+            GetDelegateFor<glGetMinmaxParameterfvEXT>()(target, pname, parameters);
         }
 
         public void GetMinmaxParameterivEXT(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetMinmaxParameterivEXT>(target, pname, parameters);
+            GetDelegateFor<glGetMinmaxParameterivEXT>()(target, pname, parameters);
         }
 
         public void HistogramEXT(uint target, int width, uint internalformat, bool sink)
         {
-            InvokeExtensionFunction<glHistogramEXT>(target, width, internalformat, sink);
+            GetDelegateFor<glHistogramEXT>()(target, width, internalformat, sink);
         }
 
         public void MinmaxEXT(uint target, uint internalformat, bool sink)
         {
-            InvokeExtensionFunction<glMinmaxEXT>(target, internalformat, sink);
+            GetDelegateFor<glMinmaxEXT>()(target, internalformat, sink);
         }
 
         public void ResetHistogramEXT(uint target)
         {
-            InvokeExtensionFunction<glResetHistogramEXT>(target);
+            GetDelegateFor<glResetHistogramEXT>()(target);
         }
 
         public void ResetMinmaxEXT(uint target)
         {
-            InvokeExtensionFunction<glResetMinmaxEXT>(target);
+            GetDelegateFor<glResetMinmaxEXT>()(target);
         }
 
         //  Delegates
@@ -2748,7 +2782,7 @@ namespace SharpGL
         //  Methods
         public void BlendColorEXT(float red, float green, float blue, float alpha)
         {
-            InvokeExtensionFunction<glBlendColorEXT>(red, green, blue, alpha);
+            GetDelegateFor<glBlendColorEXT>()(red, green, blue, alpha);
         }
 
         //  Delegates
@@ -2768,7 +2802,7 @@ namespace SharpGL
         //  Methods
         public void BlendEquationEXT(uint mode)
         {
-            InvokeExtensionFunction<glBlendEquationEXT>(mode);
+            GetDelegateFor<glBlendEquationEXT>()(mode);
         }
 
         //  Delegates
@@ -2790,171 +2824,171 @@ namespace SharpGL
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void ActiveTextureARB(uint texture)
         {
-            InvokeExtensionFunction<glActiveTextureARB>(texture);
+            GetDelegateFor<glActiveTextureARB>()(texture);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void ClientActiveTextureARB(uint texture)
         {
-            InvokeExtensionFunction<glClientActiveTextureARB>(texture);
+            GetDelegateFor<glClientActiveTextureARB>()(texture);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, double s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1dARB>(target, s);
+            GetDelegateFor<glMultiTexCoord1dARB>()(target, s);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1dvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord1dvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, float s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1fARB>(target, s);
+            GetDelegateFor<glMultiTexCoord1fARB>()(target, s);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1fvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord1fvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, int s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1iARB>(target, s);
+            GetDelegateFor<glMultiTexCoord1iARB>()(target, s);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1ivARB>(target, v);
+            GetDelegateFor<glMultiTexCoord1ivARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, short s)
         {
-            InvokeExtensionFunction<glMultiTexCoord1sARB>(target, s);
+            GetDelegateFor<glMultiTexCoord1sARB>()(target, s);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord1ARB(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord1svARB>(target, v);
+            GetDelegateFor<glMultiTexCoord1svARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, double s, double t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2dARB>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2dARB>()(target, s, t);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2dvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord2dvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, float s, float t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2fARB>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2fARB>()(target, s, t);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2fvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord2fvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, int s, int t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2iARB>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2iARB>()(target, s, t);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2ivARB>(target, v);
+            GetDelegateFor<glMultiTexCoord2ivARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, short s, short t)
         {
-            InvokeExtensionFunction<glMultiTexCoord2sARB>(target, s, t);
+            GetDelegateFor<glMultiTexCoord2sARB>()(target, s, t);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord2ARB(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord2svARB>(target, v);
+            GetDelegateFor<glMultiTexCoord2svARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, double s, double t, double r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3dARB>(s, t, r);
+            GetDelegateFor<glMultiTexCoord3dARB>()(target, s, t, r);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3dvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord3dvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, float s, float t, float r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3fARB>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3fARB>()(target, s, t, r);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3fvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord3fvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, int s, int t, int r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3iARB>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3iARB>()(target, s, t, r);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3ivARB>(target, v);
+            GetDelegateFor<glMultiTexCoord3ivARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, short s, short t, short r)
         {
-            InvokeExtensionFunction<glMultiTexCoord3sARB>(target, s, t, r);
+            GetDelegateFor<glMultiTexCoord3sARB>()(target, s, t, r);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord3ARB(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord3svARB>(target, v);
+            GetDelegateFor<glMultiTexCoord3svARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, double s, double t, double r, double q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4dARB>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4dARB>()(target, s, t, r, q);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, double[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4dvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord4dvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, float s, float t, float r, float q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4fARB>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4fARB>()(target, s, t, r, q);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, float[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4fvARB>(target, v);
+            GetDelegateFor<glMultiTexCoord4fvARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, int s, int t, int r, int q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4iARB>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4iARB>()(target, s, t, r, q);
         }
         public void MultiTexCoord4ARB(uint target, int[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4ivARB>(target, v);
+            GetDelegateFor<glMultiTexCoord4ivARB>()(target, v);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, short s, short t, short r, short q)
         {
-            InvokeExtensionFunction<glMultiTexCoord4sARB>(target, s, t, r, q);
+            GetDelegateFor<glMultiTexCoord4sARB>()(target, s, t, r, q);
         }
         [Obsolete("Deprecated from OpenGL version 3.0")]
         public void MultiTexCoord4ARB(uint target, short[] v)
         {
-            InvokeExtensionFunction<glMultiTexCoord4svARB>(target, v);
+            GetDelegateFor<glMultiTexCoord4svARB>()(target, v);
         }
 
         //  Delegates 
@@ -3037,27 +3071,27 @@ namespace SharpGL
         //  Methods
         public void CompressedTexImage3DARB(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexImage3DARB>(target, level, internalformat, width, height, depth, border, imageSize, data);
+            GetDelegateFor<glCompressedTexImage3DARB>()(target, level, internalformat, width, height, depth, border, imageSize, data);
         }
         public void CompressedTexImage2DARB(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexImage2DARB>(target, level, internalformat, width, height, border, imageSize, data);
+            GetDelegateFor<glCompressedTexImage2DARB>()(target, level, internalformat, width, height, border, imageSize, data);
         }
         public void CompressedTexImage1DARB(uint target, int level, uint internalformat, int width, int border, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexImage1DARB>(target, level, internalformat, width, border, imageSize, data);
+            GetDelegateFor<glCompressedTexImage1DARB>()(target, level, internalformat, width, border, imageSize, data);
         }
         public void CompressedTexSubImage3DARB(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexSubImage3DARB>(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
+            GetDelegateFor<glCompressedTexSubImage3DARB>()(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
         }
         public void CompressedTexSubImage2DARB(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexSubImage2DARB>(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+            GetDelegateFor<glCompressedTexSubImage2DARB>()(target, level, xoffset, yoffset, width, height, format, imageSize, data);
         }
         public void CompressedTexSubImage1DARB(uint target, int level, int xoffset, int width, uint format, int imageSize, IntPtr data)
         {
-            InvokeExtensionFunction<glCompressedTexSubImage1DARB>(target, level, xoffset, width, format, imageSize, data);
+            GetDelegateFor<glCompressedTexSubImage1DARB>()(target, level, xoffset, width, format, imageSize, data);
         }
 
         //  Delegates
@@ -3107,7 +3141,7 @@ namespace SharpGL
         //  Methods
         public void SampleCoverageARB(float value, bool invert)
         {
-            InvokeExtensionFunction<glSampleCoverageARB>(value, invert);
+            GetDelegateFor<glSampleCoverageARB>()(value, invert);
         }
 
         //  Delegates
@@ -3180,19 +3214,19 @@ namespace SharpGL
         //  Methods
         public void glLoadTransposeMatrixARB(float[] m)
         {
-            InvokeExtensionFunction<glLoadTransposeMatrixfARB>(m);
+            GetDelegateFor<glLoadTransposeMatrixfARB>()(m);
         }
         public void glLoadTransposeMatrixARB(double[] m)
         {
-            InvokeExtensionFunction<glLoadTransposeMatrixdARB>(m);
+            GetDelegateFor<glLoadTransposeMatrixdARB>()(m);
         }
         public void glMultTransposeMatrixARB(float[] m)
         {
-            InvokeExtensionFunction<glMultTransposeMatrixfARB>(m);
+            GetDelegateFor<glMultTransposeMatrixfARB>()(m);
         }
         public void glMultTransposeMatrixARB(double[] m)
         {
-            InvokeExtensionFunction<glMultTransposeMatrixdARB>(m);
+            GetDelegateFor<glMultTransposeMatrixdARB>()(m);
         }
 
         //  Delegates
@@ -3248,23 +3282,23 @@ namespace SharpGL
         //  Methods
         public void FogCoordEXT(float coord)
         {
-            InvokeExtensionFunction<glFogCoordfEXT>(coord);
+            GetDelegateFor<glFogCoordfEXT>()(coord);
         }
         public void FogCoordEXT(float[] coord)
         {
-            InvokeExtensionFunction<glFogCoordfvEXT>(coord);
+            GetDelegateFor<glFogCoordfvEXT>()(coord);
         }
         public void FogCoordEXT(double coord)
         {
-            InvokeExtensionFunction<glFogCoorddEXT>(coord);
+            GetDelegateFor<glFogCoorddEXT>()(coord);
         }
         public void FogCoordEXT(double[] coord)
         {
-            InvokeExtensionFunction<glFogCoorddvEXT>(coord);
+            GetDelegateFor<glFogCoorddvEXT>()(coord);
         }
         public void FogCoordPointerEXT(uint type, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glFogCoordPointerEXT>(type, stride, pointer);
+            GetDelegateFor<glFogCoordPointerEXT>()(type, stride, pointer);
         }
 
         //  Delegates
@@ -3291,11 +3325,11 @@ namespace SharpGL
         //  Methods
         public void MultiDrawArraysEXT(uint mode, int[] first, int[] count, int primcount)
         {
-            InvokeExtensionFunction<glMultiDrawArraysEXT>(mode, first, count, primcount);
+            GetDelegateFor<glMultiDrawArraysEXT>()(mode, first, count, primcount);
         }
         public void MultiDrawElementsEXT(uint mode, int[] count, uint type, IntPtr indices, int primcount)
         {
-            InvokeExtensionFunction<glMultiDrawElementsEXT>(mode, count, type, indices, primcount);
+            GetDelegateFor<glMultiDrawElementsEXT>()(mode, count, type, indices, primcount);
         }
 
         //  Delegates
@@ -3309,11 +3343,11 @@ namespace SharpGL
         //  Methods
         public void glPointParameterARB(uint pname, float parameter)
         {
-            InvokeExtensionFunction<glPointParameterfARB>(pname, parameter);
+            GetDelegateFor<glPointParameterfARB>()(pname, parameter);
         }
         public void glPointParameterARB(uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glPointParameterfvARB>(pname, parameters);
+            GetDelegateFor<glPointParameterfvARB>()(pname, parameters);
         }
 
         //  Delegates
@@ -3333,71 +3367,71 @@ namespace SharpGL
         //  Methods
         public void SecondaryColor3EXT(sbyte red, sbyte green, sbyte blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3bEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3bEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(sbyte[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3bvEXT>(v);
+            GetDelegateFor<glSecondaryColor3bvEXT>()(v);
         }
         public void SecondaryColor3EXT(double red, double green, double blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3dEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3dEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(double[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3dvEXT>(v);
+            GetDelegateFor<glSecondaryColor3dvEXT>()(v);
         }
         public void SecondaryColor3EXT(float red, float green, float blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3fEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3fEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(float[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3fvEXT>(v);
+            GetDelegateFor<glSecondaryColor3fvEXT>()(v);
         }
         public void SecondaryColor3EXT(int red, int green, int blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3iEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3iEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(int[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3ivEXT>(v);
+            GetDelegateFor<glSecondaryColor3ivEXT>()(v);
         }
         public void SecondaryColor3EXT(short red, short green, short blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3sEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3sEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(short[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3svEXT>(v);
+            GetDelegateFor<glSecondaryColor3svEXT>()(v);
         }
         public void SecondaryColor3EXT(byte red, byte green, byte blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3ubEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3ubEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(byte[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3ubvEXT>(v);
+            GetDelegateFor<glSecondaryColor3ubvEXT>()(v);
         }
         public void SecondaryColor3EXT(uint red, uint green, uint blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3uiEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3uiEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(uint[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3uivEXT>(v);
+            GetDelegateFor<glSecondaryColor3uivEXT>()(v);
         }
         public void SecondaryColor3EXT(ushort red, ushort green, ushort blue)
         {
-            InvokeExtensionFunction<glSecondaryColor3usEXT>(red, green, blue);
+            GetDelegateFor<glSecondaryColor3usEXT>()(red, green, blue);
         }
         public void SecondaryColor3EXT(ushort[] v)
         {
-            InvokeExtensionFunction<glSecondaryColor3usvEXT>(v);
+            GetDelegateFor<glSecondaryColor3usvEXT>()(v);
         }
         public void SecondaryColorPointerEXT(int size, uint type, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glSecondaryColorPointerEXT>(size, type, stride, pointer);
+            GetDelegateFor<glSecondaryColorPointerEXT>()(size, type, stride, pointer);
         }
 
         //  Delegates
@@ -3435,7 +3469,7 @@ namespace SharpGL
         //  Methods
         public void BlendFuncSeparateEXT(uint sfactorRGB, uint dfactorRGB, uint sfactorAlpha, uint dfactorAlpha)
         {
-            InvokeExtensionFunction<glBlendFuncSeparateEXT>(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
+            GetDelegateFor<glBlendFuncSeparateEXT>()(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
         }
 
         //  Delegates
@@ -3484,67 +3518,67 @@ namespace SharpGL
         //  Methods
         public void WindowPos2ARB(double x, double y)
         {
-            InvokeExtensionFunction<glWindowPos2dARB>(x, y);
+            GetDelegateFor<glWindowPos2dARB>()(x, y);
         }
         public void WindowPos2ARB(double[] v)
         {
-            InvokeExtensionFunction<glWindowPos2dvARB>(v);
+            GetDelegateFor<glWindowPos2dvARB>()(v);
         }
         public void WindowPos2ARB(float x, float y)
         {
-            InvokeExtensionFunction<glWindowPos2fARB>(x, y);
+            GetDelegateFor<glWindowPos2fARB>()(x, y);
         }
         public void WindowPos2ARB(float[] v)
         {
-            InvokeExtensionFunction<glWindowPos2fvARB>(v);
+            GetDelegateFor<glWindowPos2fvARB>()(v);
         }
         public void WindowPos2ARB(int x, int y)
         {
-            InvokeExtensionFunction<glWindowPos2iARB>(x, y);
+            GetDelegateFor<glWindowPos2iARB>()(x, y);
         }
         public void WindowPos2ARB(int[] v)
         {
-            InvokeExtensionFunction<glWindowPos2ivARB>(v);
+            GetDelegateFor<glWindowPos2ivARB>()(v);
         }
         public void WindowPos2ARB(short x, short y)
         {
-            InvokeExtensionFunction<glWindowPos2sARB>(x, y);
+            GetDelegateFor<glWindowPos2sARB>()(x, y);
         }
         public void WindowPos2ARB(short[] v)
         {
-            InvokeExtensionFunction<glWindowPos2svARB>(v);
+            GetDelegateFor<glWindowPos2svARB>()(v);
         }
         public void WindowPos3ARB(double x, double y, double z)
         {
-            InvokeExtensionFunction<glWindowPos3dARB>(x, y, z);
+            GetDelegateFor<glWindowPos3dARB>()(x, y, z);
         }
         public void WindowPos3ARB(double[] v)
         {
-            InvokeExtensionFunction<glWindowPos3dvARB>(v);
+            GetDelegateFor<glWindowPos3dvARB>()(v);
         }
         public void WindowPos3ARB(float x, float y, float z)
         {
-            InvokeExtensionFunction<glWindowPos3fARB>(x, y, z);
+            GetDelegateFor<glWindowPos3fARB>()(x, y, z);
         }
         public void WindowPos3ARB(float[] v)
         {
-            InvokeExtensionFunction<glWindowPos3fvARB>(v);
+            GetDelegateFor<glWindowPos3fvARB>()(v);
         }
         public void WindowPos3ARB(int x, int y, int z)
         {
-            InvokeExtensionFunction<glWindowPos3iARB>(x, y, z);
+            GetDelegateFor<glWindowPos3iARB>()(x, y, z);
         }
         public void WindowPos3ARB(int[] v)
         {
-            InvokeExtensionFunction<glWindowPos3ivARB>(v);
+            GetDelegateFor<glWindowPos3ivARB>()(v);
         }
         public void WindowPos3ARB(short x, short y, short z)
         {
-            InvokeExtensionFunction<glWindowPos3sARB>(x, y, z);
+            GetDelegateFor<glWindowPos3sARB>()(x, y, z);
         }
         public void WindowPos3ARB(short[] v)
         {
-            InvokeExtensionFunction<glWindowPos3svARB>(v);
+            GetDelegateFor<glWindowPos3svARB>()(v);
         }
 
         //  Delegates
@@ -3572,47 +3606,47 @@ namespace SharpGL
         //  Methods
         public void BindBufferARB(uint target, uint buffer)
         {
-            InvokeExtensionFunction<glBindBufferARB>(target, buffer);
+            GetDelegateFor<glBindBufferARB>()(target, buffer);
         }
         public void DeleteBuffersARB(int n, uint[] buffers)
         {
-            InvokeExtensionFunction<glDeleteBuffersARB>(n, buffers);
+            GetDelegateFor<glDeleteBuffersARB>()(n, buffers);
         }
         public void GenBuffersARB(int n, uint[] buffers)
         {
-            InvokeExtensionFunction<glGenBuffersARB>(n, buffers);
+            GetDelegateFor<glGenBuffersARB>()(n, buffers);
         }
         public bool IsBufferARB(uint buffer)
         {
-            return (bool)InvokeExtensionFunction<glIsBufferARB>(buffer);
+            return (bool)GetDelegateFor<glIsBufferARB>()(buffer);
         }
         public void BufferDataARB(uint target, uint size, IntPtr data, uint usage)
         {
-            InvokeExtensionFunction<glBufferDataARB>(target, size, data, usage);
+            GetDelegateFor<glBufferDataARB>()(target, size, data, usage);
         }
         public void BufferSubDataARB(uint target, uint offset, uint size, IntPtr data)
         {
-            InvokeExtensionFunction<glBufferSubDataARB>(target, offset, size, data);
+            GetDelegateFor<glBufferSubDataARB>()(target, offset, size, data);
         }
         public void GetBufferSubDataARB(uint target, uint offset, uint size, IntPtr data)
         {
-            InvokeExtensionFunction<glGetBufferSubDataARB>(target, offset, size, data);
+            GetDelegateFor<glGetBufferSubDataARB>()(target, offset, size, data);
         }
         public IntPtr MapBufferARB(uint target, uint access)
         {
-            return (IntPtr)InvokeExtensionFunction<glMapBufferARB>(target, access);
+            return (IntPtr)GetDelegateFor<glMapBufferARB>()(target, access);
         }
         public bool UnmapBufferARB(uint target)
         {
-            return (bool)InvokeExtensionFunction<glUnmapBufferARB>(target);
+            return (bool)GetDelegateFor<glUnmapBufferARB>()(target);
         }
         public void GetBufferParameterARB(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetBufferParameterivARB>(target, pname, parameters);
+            GetDelegateFor<glGetBufferParameterivARB>()(target, pname, parameters);
         }
         public void GetBufferPointerARB(uint target, uint pname, IntPtr parameters)
         {
-            InvokeExtensionFunction<glGetBufferPointervARB>(target, pname, parameters);
+            GetDelegateFor<glGetBufferPointervARB>()(target, pname, parameters);
         }
 
         //  Delegates
@@ -3667,35 +3701,35 @@ namespace SharpGL
         //  Methods
         public void GenQueriesARB(int n, uint[] ids)
         {
-            InvokeExtensionFunction<glGenQueriesARB>(n, ids);
+            GetDelegateFor<glGenQueriesARB>()(n, ids);
         }
         public void DeleteQueriesARB(int n, uint[] ids)
         {
-            InvokeExtensionFunction<glDeleteQueriesARB>(n, ids);
+            GetDelegateFor<glDeleteQueriesARB>()(n, ids);
         }
         public bool IsQueryARB(uint id)
         {
-            return (bool)InvokeExtensionFunction<glIsQueryARB>(id);
+            return (bool)GetDelegateFor<glIsQueryARB>()(id);
         }
         public void BeginQueryARB(uint target, uint id)
         {
-            InvokeExtensionFunction<glBeginQueryARB>(target, id);
+            GetDelegateFor<glBeginQueryARB>()(target, id);
         }
         public void EndQueryARB(uint target)
         {
-            InvokeExtensionFunction<glEndQueryARB>(target);
+            GetDelegateFor<glEndQueryARB>()(target);
         }
         public void GetQueryARB(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetQueryivARB>(target, pname, parameters);
+            GetDelegateFor<glGetQueryivARB>()(target, pname, parameters);
         }
         public void GetQueryObjectARB(uint id, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetQueryObjectivARB>(id, pname, parameters);
+            GetDelegateFor<glGetQueryObjectivARB>()(id, pname, parameters);
         }
         public void GetQueryObjectARB(uint id, uint pname, uint[] parameters)
         {
-            InvokeExtensionFunction<glGetQueryObjectuivARB>(id, pname, parameters);
+            GetDelegateFor<glGetQueryObjectuivARB>()(id, pname, parameters);
         }
 
         //  Delegates
@@ -3723,159 +3757,159 @@ namespace SharpGL
         //  Methods
         public void DeleteObjectARB(uint obj)
         {
-            InvokeExtensionFunction<glDeleteObjectARB>(obj);
+            GetDelegateFor<glDeleteObjectARB>()(obj);
         }
         public uint GetHandleARB(uint pname)
         {
-            return (uint)InvokeExtensionFunction<glGetHandleARB>(pname);
+            return (uint)GetDelegateFor<glGetHandleARB>()(pname);
         }
         public void DetachObjectARB(uint containerObj, uint attachedObj)
         {
-            InvokeExtensionFunction<glDetachObjectARB>(containerObj, attachedObj);
+            GetDelegateFor<glDetachObjectARB>()(containerObj, attachedObj);
         }
         public uint CreateShaderObjectARB(uint shaderType)
         {
-            return (uint)InvokeExtensionFunction<glCreateShaderObjectARB>(shaderType);
+            return (uint)GetDelegateFor<glCreateShaderObjectARB>()(shaderType);
         }
         public void ShaderSourceARB(uint shaderObj, int count, string[] source, ref int length)
         {
-            InvokeExtensionFunction<glShaderSourceARB>(shaderObj, count, source, length);
+            GetDelegateFor<glShaderSourceARB>()(shaderObj, count, source, ref length);
         }
         public void CompileShaderARB(uint shaderObj)
         {
-            InvokeExtensionFunction<glCompileShaderARB>(shaderObj);
+            GetDelegateFor<glCompileShaderARB>()(shaderObj);
         }
         public uint CreateProgramObjectARB()
         {
-            return (uint)InvokeExtensionFunction<glCreateProgramObjectARB>();
+            return (uint)GetDelegateFor<glCreateProgramObjectARB>()();
         }
         public void AttachObjectARB(uint containerObj, uint obj)
         {
-            InvokeExtensionFunction<glAttachObjectARB>(containerObj, obj);
+            GetDelegateFor<glAttachObjectARB>()(containerObj, obj);
         }
         public void LinkProgramARB(uint programObj)
         {
-            InvokeExtensionFunction<glLinkProgramARB>(programObj);
+            GetDelegateFor<glLinkProgramARB>()(programObj);
         }
         public void UseProgramObjectARB(uint programObj)
         {
-            InvokeExtensionFunction<glUseProgramObjectARB>(programObj);
+            GetDelegateFor<glUseProgramObjectARB>()(programObj);
         }
         public void ValidateProgramARB(uint programObj)
         {
-            InvokeExtensionFunction<glValidateProgramARB>(programObj);
+            GetDelegateFor<glValidateProgramARB>()(programObj);
         }
         public void Uniform1ARB(int location, float v0)
         {
-            InvokeExtensionFunction<glUniform1fARB>(location, v0);
+            GetDelegateFor<glUniform1fARB>()(location, v0);
         }
         public void Uniform2ARB(int location, float v0, float v1)
         {
-            InvokeExtensionFunction<glUniform2fARB>(location, v0, v1);
+            GetDelegateFor<glUniform2fARB>()(location, v0, v1);
         }
         public void Uniform3ARB(int location, float v0, float v1, float v2)
         {
-            InvokeExtensionFunction<glUniform3fARB>(location, v0, v1, v2);
+            GetDelegateFor<glUniform3fARB>()(location, v0, v1, v2);
         }
         public void Uniform4ARB(int location, float v0, float v1, float v2, float v3)
         {
-            InvokeExtensionFunction<glUniform4fARB>(location, v0, v1, v2, v3);
+            GetDelegateFor<glUniform4fARB>()(location, v0, v1, v2, v3);
         }
         public void Uniform1ARB(int location, int v0)
         {
-            InvokeExtensionFunction<glUniform1iARB>(location, v0);
+            GetDelegateFor<glUniform1iARB>()(location, v0);
         }
         public void Uniform2ARB(int location, int v0, int v1)
         {
-            InvokeExtensionFunction<glUniform2iARB>(location, v0, v1);
+            GetDelegateFor<glUniform2iARB>()(location, v0, v1);
         }
         public void Uniform3ARB(int location, int v0, int v1, int v2)
         {
-            InvokeExtensionFunction<glUniform3iARB>(location, v0, v1, v2);
+            GetDelegateFor<glUniform3iARB>()(location, v0, v1, v2);
         }
         public void Uniform4ARB(int location, int v0, int v1, int v2, int v3)
         {
-            InvokeExtensionFunction<glUniform4iARB>(location, v0, v1, v2, v3);
+            GetDelegateFor<glUniform4iARB>()(location, v0, v1, v2, v3);
         }
         public void Uniform1ARB(int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform1fvARB>(location, count, value);
+            GetDelegateFor<glUniform1fvARB>()(location, count, value);
         }
         public void Uniform2ARB(int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform2fvARB>(location, count, value);
+            GetDelegateFor<glUniform2fvARB>()(location, count, value);
         }
         public void Uniform3ARB(int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform3fvARB>(location, count, value);
+            GetDelegateFor<glUniform3fvARB>()(location, count, value);
         }
         public void Uniform4ARB(int location, int count, float[] value)
         {
-            InvokeExtensionFunction<glUniform4fvARB>(location, count, value);
+            GetDelegateFor<glUniform4fvARB>()(location, count, value);
         }
         public void Uniform1ARB(int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform1ivARB>(location, count, value);
+            GetDelegateFor<glUniform1ivARB>()(location, count, value);
         }
         public void Uniform2ARB(int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform2ivARB>(location, count, value);
+            GetDelegateFor<glUniform2ivARB>()(location, count, value);
         }
         public void Uniform3ARB(int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform3ivARB>(location, count, value);
+            GetDelegateFor<glUniform3ivARB>()(location, count, value);
         }
         public void Uniform4ARB(int location, int count, int[] value)
         {
-            InvokeExtensionFunction<glUniform4ivARB>(location, count, value);
+            GetDelegateFor<glUniform4ivARB>()(location, count, value);
         }
         public void UniformMatrix2ARB(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix2fvARB>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix2fvARB>()(location, count, transpose, value);
         }
         public void UniformMatrix3ARB(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix3fvARB>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix3fvARB>()(location, count, transpose, value);
         }
         public void UniformMatrix4ARB(int location, int count, bool transpose, float[] value)
         {
-            InvokeExtensionFunction<glUniformMatrix4fvARB>(location, count, transpose, value);
+            GetDelegateFor<glUniformMatrix4fvARB>()(location, count, transpose, value);
         }
         public void GetObjectParameterARB(uint obj, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetObjectParameterfvARB>(obj, pname, parameters);
+            GetDelegateFor<glGetObjectParameterfvARB>()(obj, pname, parameters);
         }
         public void GetObjectParameterARB(uint obj, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetObjectParameterivARB>(obj, pname, parameters);
+            GetDelegateFor<glGetObjectParameterivARB>()(obj, pname, parameters);
         }
         public void GetInfoLogARB(uint obj, int maxLength, ref int length, string infoLog)
         {
-            InvokeExtensionFunction<glGetInfoLogARB>(obj, maxLength, length, infoLog);
+            GetDelegateFor<glGetInfoLogARB>()(obj, maxLength, ref length, infoLog);
         }
         public void GetAttachedObjectsARB(uint containerObj, int maxCount, ref int count, ref uint obj)
         {
-            InvokeExtensionFunction<glGetAttachedObjectsARB>(containerObj, maxCount, count, obj);
+            GetDelegateFor<glGetAttachedObjectsARB>()(containerObj, maxCount, ref count, ref obj);
         }
         public int GetUniformLocationARB(uint programObj, string name)
         {
-            return (int)InvokeExtensionFunction<glGetUniformLocationARB>(programObj, name);
+            return (int)GetDelegateFor<glGetUniformLocationARB>()(programObj, name);
         }
         public void GetActiveUniformARB(uint programObj, uint index, int maxLength, ref int length, ref int size, ref uint type, string name)
         {
-            InvokeExtensionFunction<glGetActiveUniformARB>(programObj, index, maxLength, length, size, type, name);
+            GetDelegateFor<glGetActiveUniformARB>()(programObj, index, maxLength, ref length, ref size, ref type, name);
         }
         public void GetUniformARB(uint programObj, int location, float[] parameters)
         {
-            InvokeExtensionFunction<glGetUniformfvARB>(programObj, location, parameters);
+            GetDelegateFor<glGetUniformfvARB>()(programObj, location, parameters);
         }
         public void GetUniformARB(uint programObj, int location, int[] parameters)
         {
-            InvokeExtensionFunction<glGetUniformivARB>(programObj, location, parameters);
+            GetDelegateFor<glGetUniformivARB>()(programObj, location, parameters);
         }
         public void GetShaderSourceARB(uint obj, int maxLength, ref int length, string source)
         {
-            InvokeExtensionFunction<glGetShaderSourceARB>(obj, maxLength, length, source);
+            GetDelegateFor<glGetShaderSourceARB>()(obj, maxLength, ref length, source);
         }
 
         //  Delegates
@@ -3962,247 +3996,247 @@ namespace SharpGL
         //  Methods
         public void VertexAttrib1ARB(uint index, double x)
         {
-            InvokeExtensionFunction<glVertexAttrib1dARB>(index, x);
+            GetDelegateFor<glVertexAttrib1dARB>()(index, x);
         }
         public void VertexAttrib1ARB(uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib1dvARB>(index, v);
+            GetDelegateFor<glVertexAttrib1dvARB>()(index, v);
         }
         public void VertexAttrib1ARB(uint index, float x)
         {
-            InvokeExtensionFunction<glVertexAttrib1fARB>(index, x);
+            GetDelegateFor<glVertexAttrib1fARB>()(index, x);
         }
         public void VertexAttrib1ARB(uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib1fvARB>(index, v);
+            GetDelegateFor<glVertexAttrib1fvARB>()(index, v);
         }
         public void VertexAttrib1ARB(uint index, short x)
         {
-            InvokeExtensionFunction<glVertexAttrib1sARB>(index, x);
+            GetDelegateFor<glVertexAttrib1sARB>()(index, x);
         }
         public void VertexAttrib1ARB(uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib1svARB>(index, v);
+            GetDelegateFor<glVertexAttrib1svARB>()(index, v);
         }
         public void VertexAttrib2ARB(uint index, double x, double y)
         {
-            InvokeExtensionFunction<glVertexAttrib2dARB>(index, x, y);
+            GetDelegateFor<glVertexAttrib2dARB>()(index, x, y);
         }
         public void VertexAttrib2ARB(uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib2dvARB>(index, v);
+            GetDelegateFor<glVertexAttrib2dvARB>()(index, v);
         }
         public void VertexAttrib2ARB(uint index, float x, float y)
         {
-            InvokeExtensionFunction<glVertexAttrib2fARB>(index, x, y);
+            GetDelegateFor<glVertexAttrib2fARB>()(index, x, y);
         }
         public void VertexAttrib2ARB(uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib2fvARB>(index, v);
+            GetDelegateFor<glVertexAttrib2fvARB>()(index, v);
         }
         public void VertexAttrib2ARB(uint index, short x, short y)
         {
-            InvokeExtensionFunction<glVertexAttrib2sARB>(index, x, y);
+            GetDelegateFor<glVertexAttrib2sARB>()(index, x, y);
         }
         public void VertexAttrib2ARB(uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib2svARB>(index, v);
+            GetDelegateFor<glVertexAttrib2svARB>()(index, v);
         }
         public void VertexAttrib3ARB(uint index, double x, double y, double z)
         {
-            InvokeExtensionFunction<glVertexAttrib3dARB>(index, x, y, z);
+            GetDelegateFor<glVertexAttrib3dARB>()(index, x, y, z);
         }
         public void VertexAttrib3ARB(uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib3dvARB>(index, v);
+            GetDelegateFor<glVertexAttrib3dvARB>()(index, v);
         }
         public void VertexAttrib3ARB(uint index, float x, float y, float z)
         {
-            InvokeExtensionFunction<glVertexAttrib3fARB>(index, x, y, z);
+            GetDelegateFor<glVertexAttrib3fARB>()(index, x, y, z);
         }
         public void VertexAttrib3ARB(uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib3fvARB>(index, v);
+            GetDelegateFor<glVertexAttrib3fvARB>()(index, v);
         }
         public void VertexAttrib3ARB(uint index, short x, short y, short z)
         {
-            InvokeExtensionFunction<glVertexAttrib3sARB>(index, x, y, z);
+            GetDelegateFor<glVertexAttrib3sARB>()(index, x, y, z);
         }
         public void VertexAttrib3ARB(uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib3svARB>(index, v);
+            GetDelegateFor<glVertexAttrib3svARB>()(index, v);
         }
         public void VertexAttrib4NARB(uint index, sbyte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4NbvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4NbvARB>()(index, v);
         }
         public void VertexAttrib4NARB(uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4NivARB>(index, v);
+            GetDelegateFor<glVertexAttrib4NivARB>()(index, v);
         }
         public void VertexAttrib4NARB(uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4NsvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4NsvARB>()(index, v);
         }
         public void VertexAttrib4NARB(uint index, byte x, byte y, byte z, byte w)
         {
-            InvokeExtensionFunction<glVertexAttrib4NubARB>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4NubARB>()(index, x, y, z, w);
         }
         public void VertexAttrib4NARB(uint index, byte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4NubvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4NubvARB>()(index, v);
         }
         public void VertexAttrib4NARB(uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4NuivARB>(index, v);
+            GetDelegateFor<glVertexAttrib4NuivARB>()(index, v);
         }
         public void VertexAttrib4NARB(uint index, ushort[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4NusvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4NusvARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, sbyte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4bvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4bvARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, double x, double y, double z, double w)
         {
-            InvokeExtensionFunction<glVertexAttrib4dARB>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4dARB>()(index, x, y, z, w);
         }
         public void VertexAttrib4ARB(uint index, double[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4dvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4dvARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, float x, float y, float z, float w)
         {
-            InvokeExtensionFunction<glVertexAttrib4fARB>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4fARB>()(index, x, y, z, w);
         }
         public void VertexAttrib4ARB(uint index, float[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4fvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4fvARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, int[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4ivARB>(index, v);
+            GetDelegateFor<glVertexAttrib4ivARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, short x, short y, short z, short w)
         {
-            InvokeExtensionFunction<glVertexAttrib4sARB>(index, x, y, z, w);
+            GetDelegateFor<glVertexAttrib4sARB>()(index, x, y, z, w);
         }
         public void VertexAttrib4ARB(uint index, short[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4svARB>(index, v);
+            GetDelegateFor<glVertexAttrib4svARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, byte[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4ubvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4ubvARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, uint[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4uivARB>(index, v);
+            GetDelegateFor<glVertexAttrib4uivARB>()(index, v);
         }
         public void VertexAttrib4ARB(uint index, ushort[] v)
         {
-            InvokeExtensionFunction<glVertexAttrib4usvARB>(index, v);
+            GetDelegateFor<glVertexAttrib4usvARB>()(index, v);
         }
         public void VertexAttribPointerARB(uint index, int size, uint type, bool normalized, int stride, IntPtr pointer)
         {
-            InvokeExtensionFunction<glVertexAttribPointerARB>(index, size, type, normalized, stride, pointer);
+            GetDelegateFor<glVertexAttribPointerARB>()(index, size, type, normalized, stride, pointer);
         }
         public void EnableVertexAttribArrayARB(uint index)
         {
-            InvokeExtensionFunction<glEnableVertexAttribArrayARB>(index);
+            GetDelegateFor<glEnableVertexAttribArrayARB>()(index);
         }
         public void DisableVertexAttribArrayARB(uint index)
         {
-            InvokeExtensionFunction<glDisableVertexAttribArrayARB>(index);
+            GetDelegateFor<glDisableVertexAttribArrayARB>()(index);
         }
         public void ProgramStringARB(uint target, uint format, int len, IntPtr str)
         {
-            InvokeExtensionFunction<glProgramStringARB>(target, format, len, str);
+            GetDelegateFor<glProgramStringARB>()(target, format, len, str);
         }
         public void BindProgramARB(uint target, uint program)
         {
-            InvokeExtensionFunction<glBindProgramARB>(target, program);
+            GetDelegateFor<glBindProgramARB>()(target, program);
         }
         public void DeleteProgramsARB(int n, uint[] programs)
         {
-            InvokeExtensionFunction<glDeleteProgramsARB>(n, programs);
+            GetDelegateFor<glDeleteProgramsARB>()(n, programs);
         }
         public void GenProgramsARB(int n, uint[] programs)
         {
-            InvokeExtensionFunction<glGenProgramsARB>(n, programs);
+            GetDelegateFor<glGenProgramsARB>()(n, programs);
         }
         public void ProgramEnvParameter4ARB(uint target, uint index, double x, double y, double z, double w)
         {
-            InvokeExtensionFunction<glProgramEnvParameter4dARB>(target, index, x, y, z, w);
+            GetDelegateFor<glProgramEnvParameter4dARB>()(target, index, x, y, z, w);
         }
         public void ProgramEnvParameter4ARB(uint target, uint index, double[] parameters)
         {
-            InvokeExtensionFunction<glProgramEnvParameter4dvARB>(target, index, parameters);
+            GetDelegateFor<glProgramEnvParameter4dvARB>()(target, index, parameters);
         }
         public void ProgramEnvParameter4ARB(uint target, uint index, float x, float y, float z, float w)
         {
-            InvokeExtensionFunction<glProgramEnvParameter4fARB>(target, index, x, y, z, w);
+            GetDelegateFor<glProgramEnvParameter4fARB>()(target, index, x, y, z, w);
         }
         public void ProgramEnvParameter4ARB(uint target, uint index, float[] parameters)
         {
-            InvokeExtensionFunction<glProgramEnvParameter4fvARB>(target, index, parameters);
+            GetDelegateFor<glProgramEnvParameter4fvARB>()(target, index, parameters);
         }
         public void ProgramLocalParameter4ARB(uint target, uint index, double x, double y, double z, double w)
         {
-            InvokeExtensionFunction<glProgramLocalParameter4dARB>(target, index, x, y, z, w);
+            GetDelegateFor<glProgramLocalParameter4dARB>()(target, index, x, y, z, w);
         }
         public void ProgramLocalParameter4ARB(uint target, uint index, double[] parameters)
         {
-            InvokeExtensionFunction<glProgramLocalParameter4dvARB>(target, index, parameters);
+            GetDelegateFor<glProgramLocalParameter4dvARB>()(target, index, parameters);
         }
         public void ProgramLocalParameter4ARB(uint target, uint index, float x, float y, float z, float w)
         {
-            InvokeExtensionFunction<glProgramLocalParameter4fARB>(target, index, x, y, z, w);
+            GetDelegateFor<glProgramLocalParameter4fARB>()(target, index, x, y, z, w);
         }
         public void ProgramLocalParameter4ARB(uint target, uint index, float[] parameters)
         {
-            InvokeExtensionFunction<glProgramLocalParameter4fvARB>(target, index, parameters);
+            GetDelegateFor<glProgramLocalParameter4fvARB>()(target, index, parameters);
         }
         public void GetProgramEnvParameterdARB(uint target, uint index, double[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramEnvParameterdvARB>(target, index, parameters);
+            GetDelegateFor<glGetProgramEnvParameterdvARB>()(target, index, parameters);
         }
         public void GetProgramEnvParameterfARB(uint target, uint index, float[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramEnvParameterfvARB>(target, index, parameters);
+            GetDelegateFor<glGetProgramEnvParameterfvARB>()(target, index, parameters);
         }
         public void GetProgramLocalParameterARB(uint target, uint index, double[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramLocalParameterdvARB>(target, index, parameters);
+            GetDelegateFor<glGetProgramLocalParameterdvARB>()(target, index, parameters);
         }
         public void GetProgramLocalParameterARB(uint target, uint index, float[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramLocalParameterfvARB>(target, index, parameters);
+            GetDelegateFor<glGetProgramLocalParameterfvARB>()(target, index, parameters);
         }
         public void GetProgramARB(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetProgramivARB>(target, pname, parameters);
+            GetDelegateFor<glGetProgramivARB>()(target, pname, parameters);
         }
         public void GetProgramStringARB(uint target, uint pname, IntPtr str)
         {
-            InvokeExtensionFunction<glGetProgramStringARB>(target, pname, str);
+            GetDelegateFor<glGetProgramStringARB>()(target, pname, str);
         }
         public void GetVertexAttribARB(uint index, uint pname, double[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribdvARB>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribdvARB>()(index, pname, parameters);
         }
         public void GetVertexAttribARB(uint index, uint pname, float[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribfvARB>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribfvARB>()(index, pname, parameters);
         }
         public void GetVertexAttribARB(uint index, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetVertexAttribivARB>(index, pname, parameters);
+            GetDelegateFor<glGetVertexAttribivARB>()(index, pname, parameters);
         }
         public void GetVertexAttribPointerARB(uint index, uint pname, IntPtr pointer)
         {
-            InvokeExtensionFunction<glGetVertexAttribPointervARB>(index, pname, pointer);
+            GetDelegateFor<glGetVertexAttribPointervARB>()(index, pname, pointer);
         }
 
         //  Delegates
@@ -4356,15 +4390,15 @@ namespace SharpGL
         //  Methods
         public void BindAttribLocationARB(uint programObj, uint index, string name)
         {
-            InvokeExtensionFunction<glBindAttribLocationARB>(programObj, index, name);
+            GetDelegateFor<glBindAttribLocationARB>()(programObj, index, name);
         }
         public void GetActiveAttribARB(uint programObj, uint index, int maxLength, int[] length, int[] size, uint[] type, string name)
         {
-            InvokeExtensionFunction<glGetActiveAttribARB>(programObj, index, maxLength, length, size, type, name);
+            GetDelegateFor<glGetActiveAttribARB>()(programObj, index, maxLength, length, size, type, name);
         }
         public uint GetAttribLocationARB(uint programObj, string name)
         {
-            return (uint)InvokeExtensionFunction<glGetAttribLocationARB>(programObj, name);
+            return (uint)GetDelegateFor<glGetAttribLocationARB>()(programObj, name);
         }
 
         //  Delegates
@@ -4396,7 +4430,7 @@ namespace SharpGL
         //  Methods
         public void DrawBuffersARB(int n, uint[] bufs)
         {
-            InvokeExtensionFunction<glDrawBuffersARB>(n, bufs);
+            GetDelegateFor<glDrawBuffersARB>()(n, bufs);
         }
 
         //  Delegates
@@ -4478,7 +4512,8 @@ namespace SharpGL
         //  Methods
         public void BlendEquationSeparateEXT(uint modeRGB, uint modeAlpha)
         {
-            InvokeExtensionFunction<glBlendEquationEXT>(modeRGB, modeAlpha);
+            // GetDelegateFor<glBlendEquationEXT>()(modeRGB, modeAlpha);
+            GetDelegateFor<glBlendEquationEXT>()(modeRGB);
         }
 
         //  Delegates
@@ -4495,7 +4530,7 @@ namespace SharpGL
         //  Methods
         public void ActiveStencilFaceEXT(uint face)
         {
-            InvokeExtensionFunction<glActiveStencilFaceEXT>(face);
+            GetDelegateFor<glActiveStencilFaceEXT>()(face);
         }
 
         //  Delegates
@@ -4542,87 +4577,87 @@ namespace SharpGL
         //  Methods
         public bool IsRenderbufferEXT(uint renderbuffer)
         {
-            return (bool)InvokeExtensionFunction<glIsRenderbufferEXT>(renderbuffer);
+            return (bool)GetDelegateFor<glIsRenderbufferEXT>()(renderbuffer);
         }
 
         public void BindRenderbufferEXT(uint target, uint renderbuffer)
         {
-            InvokeExtensionFunction<glBindRenderbufferEXT>(target, renderbuffer);
+            GetDelegateFor<glBindRenderbufferEXT>()(target, renderbuffer);
         }
 
         public void DeleteRenderbuffersEXT(uint n, uint[] renderbuffers)
         {
-            InvokeExtensionFunction<glDeleteRenderbuffersEXT>(n, renderbuffers);
+            GetDelegateFor<glDeleteRenderbuffersEXT>()(n, renderbuffers);
         }
 
         public void GenRenderbuffersEXT(uint n, uint[] renderbuffers)
         {
-            InvokeExtensionFunction<glGenRenderbuffersEXT>(n, renderbuffers);
+            GetDelegateFor<glGenRenderbuffersEXT>()(n, renderbuffers);
         }
 
         public void RenderbufferStorageEXT(uint target, uint internalformat, int width, int height)
         {
-            InvokeExtensionFunction<glRenderbufferStorageEXT>(target, internalformat, width, height);
+            GetDelegateFor<glRenderbufferStorageEXT>()(target, internalformat, width, height);
         }
 
         public void GetRenderbufferParameterivEXT(uint target, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetRenderbufferParameterivEXT>(target, pname, parameters);
+            GetDelegateFor<glGetRenderbufferParameterivEXT>()(target, pname, parameters);
         }
 
         public bool IsFramebufferEXT(uint framebuffer)
         {
-            return (bool)InvokeExtensionFunction<glIsFramebufferEXT>(framebuffer);
+            return (bool)GetDelegateFor<glIsFramebufferEXT>()(framebuffer);
         }
 
         public void BindFramebufferEXT(uint target, uint framebuffer)
         {
-            InvokeExtensionFunction<glBindFramebufferEXT>(target, framebuffer);
+            GetDelegateFor<glBindFramebufferEXT>()(target, framebuffer);
         }
 
         public void DeleteFramebuffersEXT(uint n, uint[] framebuffers)
         {
-            InvokeExtensionFunction<glDeleteFramebuffersEXT>(n, framebuffers);
+            GetDelegateFor<glDeleteFramebuffersEXT>()(n, framebuffers);
         }
 
         public void GenFramebuffersEXT(uint n, uint[] framebuffers)
         {
-            InvokeExtensionFunction<glGenFramebuffersEXT>(n, framebuffers);
+            GetDelegateFor<glGenFramebuffersEXT>()(n, framebuffers);
         }
 
         public uint CheckFramebufferStatusEXT(uint target)
         {
-            return (uint)InvokeExtensionFunction<glCheckFramebufferStatusEXT>(target);
+            return (uint)GetDelegateFor<glCheckFramebufferStatusEXT>()(target);
         }
 
         public void FramebufferTexture1DEXT(uint target, uint attachment, uint textarget, uint texture, int level)
         {
-            InvokeExtensionFunction<glFramebufferTexture1DEXT>(target, attachment, textarget, texture, level);
+            GetDelegateFor<glFramebufferTexture1DEXT>()(target, attachment, textarget, texture, level);
         }
 
         public void FramebufferTexture2DEXT(uint target, uint attachment, uint textarget, uint texture, int level)
         {
-            InvokeExtensionFunction<glFramebufferTexture2DEXT>(target, attachment, textarget, texture, level);
+            GetDelegateFor<glFramebufferTexture2DEXT>()(target, attachment, textarget, texture, level);
         }
 
         public void FramebufferTexture3DEXT(uint target, uint attachment, uint textarget, uint texture, int level, int zoffset)
         {
-            InvokeExtensionFunction<glFramebufferTexture3DEXT>(target, attachment, textarget, texture, level);
+            GetDelegateFor<glFramebufferTexture3DEXT>()(target, attachment, textarget, texture, level, zoffset);
         }
 
         public void FramebufferRenderbufferEXT(uint target, uint attachment, uint renderbuffertarget, uint renderbuffer)
         {
-            InvokeExtensionFunction<glFramebufferRenderbufferEXT>(target, attachment, renderbuffertarget, renderbuffer);
+            GetDelegateFor<glFramebufferRenderbufferEXT>()(target, attachment, renderbuffertarget, renderbuffer);
         }
 
         public void GetFramebufferAttachmentParameterivEXT(uint target, uint attachment, uint pname, int[] parameters)
         {
-            InvokeExtensionFunction<glGetFramebufferAttachmentParameterivEXT>(target, attachment, pname, parameters);
+            GetDelegateFor<glGetFramebufferAttachmentParameterivEXT>()(target, attachment, pname, parameters);
         }
 
         public void GenerateMipmapEXT(uint target)
         {
-            InvokeExtensionFunction<glGenerateMipmapEXT>(target);
+            GetDelegateFor<glGenerateMipmapEXT>()(target);
         }
 
         //  Delegates
@@ -4704,7 +4739,7 @@ namespace SharpGL
         //  Methods
         public void RenderbufferStorageMultisampleEXT(uint target, int samples, uint internalformat, int width, int height)
         {
-            InvokeExtensionFunction<glRenderbufferStorageMultisampleEXT>(target, samples, internalformat, width, height);
+            GetDelegateFor<glRenderbufferStorageMultisampleEXT>()(target, samples, internalformat, width, height);
         }
 
         //  Delegates
@@ -4722,11 +4757,11 @@ namespace SharpGL
         //  Methods
         public void DrawArraysInstancedEXT(uint mode, int start, int count, int primcount)
         {
-            InvokeExtensionFunction<glDrawArraysInstancedEXT>(mode, start, count, primcount);
+            GetDelegateFor<glDrawArraysInstancedEXT>()(mode, start, count, primcount);
         }
         public void DrawElementsInstancedEXT(uint mode, int count, uint type, IntPtr indices, int primcount)
         {
-            InvokeExtensionFunction<glDrawElementsInstancedEXT>(mode, count, type, indices, primcount);
+            GetDelegateFor<glDrawElementsInstancedEXT>()(mode, count, type, indices, primcount);
         }
 
         //  Delegates
@@ -4740,19 +4775,19 @@ namespace SharpGL
         //  Methods
         public void BindVertexArray(uint array)
         {
-            InvokeExtensionFunction<glBindVertexArray>(array);
+            GetDelegateFor<glBindVertexArray>()(array);
         }
         public void DeleteVertexArrays(int n, uint[] arrays)
         {
-            InvokeExtensionFunction<glDeleteVertexArrays>(n, arrays);
+            GetDelegateFor<glDeleteVertexArrays>()(n, arrays);
         }
         public void GenVertexArrays(int n, uint[] arrays)
         {
-            InvokeExtensionFunction<glGenVertexArrays>(n, arrays);
+            GetDelegateFor<glGenVertexArrays>()(n, arrays);
         }
         public bool IsVertexArray(uint array)
         {
-            return (bool)InvokeExtensionFunction<glIsVertexArray>(array);
+            return (bool)GetDelegateFor<glIsVertexArray>()(array);
         }
 
         //  Delegates
@@ -4779,31 +4814,31 @@ namespace SharpGL
         //  Methods
         public void BeginTransformFeedbackEXT(uint primitiveMode)
         {
-            InvokeExtensionFunction<glBeginTransformFeedbackEXT>(primitiveMode);
+            GetDelegateFor<glBeginTransformFeedbackEXT>()(primitiveMode);
         }
         public void EndTransformFeedbackEXT()
         {
-            InvokeExtensionFunction<glEndTransformFeedbackEXT>();
+            GetDelegateFor<glEndTransformFeedbackEXT>()();
         }
         public void BindBufferRangeEXT(uint target, uint index, uint buffer, int offset, int size)
         {
-            InvokeExtensionFunction<glBindBufferRangeEXT>(target, index, buffer, offset, size);
+            GetDelegateFor<glBindBufferRangeEXT>()(target, index, buffer, offset, size);
         }
         public void BindBufferOffsetEXT(uint target, uint index, uint buffer, int offset)
         {
-            InvokeExtensionFunction<glBindBufferOffsetEXT>(target, index, buffer, offset);
+            GetDelegateFor<glBindBufferOffsetEXT>()(target, index, buffer, offset);
         }
         public void BindBufferBaseEXT(uint target, uint index, uint buffer)
         {
-            InvokeExtensionFunction<glBindBufferBaseEXT>(target, index, buffer);
+            GetDelegateFor<glBindBufferBaseEXT>()(target, index, buffer);
         }
         public void TransformFeedbackVaryingsEXT(uint program, int count, string[] varyings, uint bufferMode)
         {
-            InvokeExtensionFunction<glTransformFeedbackVaryingsEXT>(program, count, varyings, bufferMode);
+            GetDelegateFor<glTransformFeedbackVaryingsEXT>()(program, count, varyings, bufferMode);
         }
         public void GetTransformFeedbackVaryingEXT(uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
         {
-            InvokeExtensionFunction<glGetTransformFeedbackVaryingEXT>(program, index, bufSize, length, size, type, name);
+            GetDelegateFor<glGetTransformFeedbackVaryingEXT>()(program, index, bufSize, length, size, type, name);
         }
 
         //  Delegates
@@ -4841,7 +4876,7 @@ namespace SharpGL
         /// </summary>
         public string GetExtensionsStringARB()
         {
-            return (string)InvokeExtensionFunction<wglGetExtensionsStringARB>(RenderContextProvider.DeviceContextHandle);
+            return (string)GetDelegateFor<wglGetExtensionsStringARB>()(RenderContextProvider.DeviceContextHandle);
         }
 
         //  Delegates
@@ -4871,7 +4906,7 @@ namespace SharpGL
         /// </param>
         public IntPtr CreateContextAttribsARB(IntPtr hShareContext, int[] attribList)
         {
-            return (IntPtr)InvokeExtensionFunction<wglCreateContextAttribsARB>(RenderContextProvider.DeviceContextHandle, hShareContext, attribList);
+            return (IntPtr)GetDelegateFor<wglCreateContextAttribsARB>()(RenderContextProvider.DeviceContextHandle, hShareContext, attribList);
         }
 
         //  Delegates
@@ -4889,6 +4924,917 @@ namespace SharpGL
         public const int WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB = 0x00000002;
         public const int ERROR_INVALID_VERSION_ARB = 0x2095;
         public const int ERROR_INVALID_PROFILE_ARB                = 0x2096;
+
+        #endregion
+
+        #region GL_ARB_explicit_uniform_location
+
+        //  Constants
+
+        /// <summary>
+        /// The number of available pre-assigned uniform locations to that can default be 
+        /// allocated in the default uniform block.
+        /// </summary>
+        public const int GL_MAX_UNIFORM_LOCATIONS = 0x826E;
+
+        #endregion
+
+        #region GL_ARB_clear_buffer_object
+
+        /// <summary>
+        /// Fill a buffer object's data store with a fixed value
+        /// </summary>
+        /// <param name="target">Specifies the target buffer object. The symbolic constant must be GL_ARRAY_BUFFER​, GL_ATOMIC_COUNTER_BUFFER​, GL_COPY_READ_BUFFER​, GL_COPY_WRITE_BUFFER​, GL_DRAW_INDIRECT_BUFFER​, GL_DISPATCH_INDIRECT_BUFFER​, GL_ELEMENT_ARRAY_BUFFER​, GL_PIXEL_PACK_BUFFER​, GL_PIXEL_UNPACK_BUFFER​, GL_QUERY_BUFFER​, GL_SHADER_STORAGE_BUFFER​, GL_TEXTURE_BUFFER​, GL_TRANSFORM_FEEDBACK_BUFFER​, or GL_UNIFORM_BUFFER​.</param>
+        /// <param name="internalformat">The sized internal format with which the data will be stored in the buffer object.</param>
+        /// <param name="format">Specifies the format of the pixel data. For transfers of depth, stencil, or depth/stencil data, you must use GL_DEPTH_COMPONENT​, GL_STENCIL_INDEX​, or GL_DEPTH_STENCIL​, where appropriate. For transfers of normalized integer or floating-point color image data, you must use one of the following: GL_RED​, GL_GREEN​, GL_BLUE​, GL_RG​, GL_RGB​, GL_BGR​, GL_RGBA​, and GL_BGRA​. For transfers of non-normalized integer data, you must use one of the following: GL_RED_INTEGER​, GL_GREEN_INTEGER​, GL_BLUE_INTEGER​, GL_RG_INTEGER​, GL_RGB_INTEGER​, GL_BGR_INTEGER​, GL_RGBA_INTEGER​, and GL_BGRA_INTEGER​.</param>
+        /// <param name="type">Specifies the data type of the pixel data. The following symbolic values are accepted: GL_UNSIGNED_BYTE​, GL_BYTE​, GL_UNSIGNED_SHORT​, GL_SHORT​, GL_UNSIGNED_INT​, GL_INT​, GL_FLOAT​, GL_UNSIGNED_BYTE_3_3_2​, GL_UNSIGNED_BYTE_2_3_3_REV​, GL_UNSIGNED_SHORT_5_6_5​, GL_UNSIGNED_SHORT_5_6_5_REV​, GL_UNSIGNED_SHORT_4_4_4_4​, GL_UNSIGNED_SHORT_4_4_4_4_REV​, GL_UNSIGNED_SHORT_5_5_5_1​, GL_UNSIGNED_SHORT_1_5_5_5_REV​, GL_UNSIGNED_INT_8_8_8_8​, GL_UNSIGNED_INT_8_8_8_8_REV​, GL_UNSIGNED_INT_10_10_10_2​, and GL_UNSIGNED_INT_2_10_10_10_REV​.</param>
+        /// <param name="data">Specifies a pointer to a single pixel of data to upload. This parameter may not be NULL.</param>
+        public void ClearBufferData(uint target, uint internalformat, uint format, uint type, IntPtr data)
+        {
+            GetDelegateFor<glClearBufferData>()(target, internalformat, format, type, data);
+        }
+
+        /// <summary>
+        /// Fill all or part of buffer object's data store with a fixed value
+        /// </summary>
+        /// <param name="target">Specifies the target buffer object. The symbolic constant must be GL_ARRAY_BUFFER​, GL_ATOMIC_COUNTER_BUFFER​, GL_COPY_READ_BUFFER​, GL_COPY_WRITE_BUFFER​, GL_DRAW_INDIRECT_BUFFER​, GL_DISPATCH_INDIRECT_BUFFER​, GL_ELEMENT_ARRAY_BUFFER​, GL_PIXEL_PACK_BUFFER​, GL_PIXEL_UNPACK_BUFFER​, GL_QUERY_BUFFER​, GL_SHADER_STORAGE_BUFFER​, GL_TEXTURE_BUFFER​, GL_TRANSFORM_FEEDBACK_BUFFER​, or GL_UNIFORM_BUFFER​.</param>
+        /// <param name="internalformat">The sized internal format with which the data will be stored in the buffer object.</param>
+        /// <param name="offset">The offset, in basic machine units into the buffer object's data store at which to start filling.</param>
+        /// <param name="size">The size, in basic machine units of the range of the data store to fill.</param>
+        /// <param name="format">Specifies the format of the pixel data. For transfers of depth, stencil, or depth/stencil data, you must use GL_DEPTH_COMPONENT​, GL_STENCIL_INDEX​, or GL_DEPTH_STENCIL​, where appropriate. For transfers of normalized integer or floating-point color image data, you must use one of the following: GL_RED​, GL_GREEN​, GL_BLUE​, GL_RG​, GL_RGB​, GL_BGR​, GL_RGBA​, and GL_BGRA​. For transfers of non-normalized integer data, you must use one of the following: GL_RED_INTEGER​, GL_GREEN_INTEGER​, GL_BLUE_INTEGER​, GL_RG_INTEGER​, GL_RGB_INTEGER​, GL_BGR_INTEGER​, GL_RGBA_INTEGER​, and GL_BGRA_INTEGER​.</param>
+        /// <param name="type">Specifies the data type of the pixel data. The following symbolic values are accepted: GL_UNSIGNED_BYTE​, GL_BYTE​, GL_UNSIGNED_SHORT​, GL_SHORT​, GL_UNSIGNED_INT​, GL_INT​, GL_FLOAT​, GL_UNSIGNED_BYTE_3_3_2​, GL_UNSIGNED_BYTE_2_3_3_REV​, GL_UNSIGNED_SHORT_5_6_5​, GL_UNSIGNED_SHORT_5_6_5_REV​, GL_UNSIGNED_SHORT_4_4_4_4​, GL_UNSIGNED_SHORT_4_4_4_4_REV​, GL_UNSIGNED_SHORT_5_5_5_1​, GL_UNSIGNED_SHORT_1_5_5_5_REV​, GL_UNSIGNED_INT_8_8_8_8​, GL_UNSIGNED_INT_8_8_8_8_REV​, GL_UNSIGNED_INT_10_10_10_2​, and GL_UNSIGNED_INT_2_10_10_10_REV​.</param>
+        /// <param name="data">Specifies a pointer to a single pixel of data to upload. This parameter may not be NULL.</param>
+        public void ClearBufferSubData(uint target, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data)
+        {
+            GetDelegateFor<glClearBufferSubData>()(target, internalformat, offset, size, format, type, data);
+        }
+
+        public void ClearNamedBufferDataEXT(uint buffer, uint internalformat, uint format, uint type, IntPtr data)
+        {
+            GetDelegateFor<glClearNamedBufferDataEXT>()(buffer, internalformat, format, type, data);
+        }
+        public void ClearNamedBufferSubDataEXT(uint buffer, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data)
+        {
+            GetDelegateFor<glClearNamedBufferSubDataEXT>()(buffer, internalformat, offset, size, format, type, data);
+        }
+        
+        //  Delegates
+        private delegate void glClearBufferData(uint target, uint internalformat, uint format, uint type, IntPtr data);
+        private delegate void glClearBufferSubData(uint target, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data);
+        private delegate void glClearNamedBufferDataEXT(uint buffer, uint internalformat, uint format, uint type, IntPtr data);
+        private delegate void glClearNamedBufferSubDataEXT(uint buffer, uint internalformat, IntPtr offset, uint size, uint format, uint type, IntPtr data);
+
+        #endregion
+
+        #region GL_ARB_compute_shader
+
+        /// <summary>
+        /// Launch one or more compute work groups
+        /// </summary>
+        /// <param name="num_groups_x">The number of work groups to be launched in the X dimension.</param>
+        /// <param name="num_groups_y">The number of work groups to be launched in the Y dimension.</param>
+        /// <param name="num_groups_z">The number of work groups to be launched in the Z dimension.</param>
+        public void DispatchCompute(uint num_groups_x, uint num_groups_y, uint num_groups_z)
+        {
+            GetDelegateFor<glDispatchCompute>()(num_groups_x, num_groups_y, num_groups_z);
+        }
+
+        /// <summary>
+        /// Launch one or more compute work groups using parameters stored in a buffer
+        /// </summary>
+        /// <param name="indirect">The offset into the buffer object currently bound to the GL_DISPATCH_INDIRECT_BUFFER​ buffer target at which the dispatch parameters are stored.</param>
+        public void DispatchComputeIndirect(IntPtr indirect)
+        {
+            GetDelegateFor<glDispatchComputeIndirect>()(indirect);
+        }
+
+        //  Delegates
+        private delegate void glDispatchCompute(uint num_groups_x, uint num_groups_y, uint num_groups_z);
+        private delegate void glDispatchComputeIndirect(IntPtr indirect);
+
+        // Constants
+        public const uint GL_COMPUTE_SHADER = 0x91B9;
+        public const uint GL_MAX_COMPUTE_UNIFORM_BLOCKS = 0x91BB;
+        public const uint GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS = 0x91BC;
+        public const uint GL_MAX_COMPUTE_IMAGE_UNIFORMS = 0x91BD;
+        public const uint GL_MAX_COMPUTE_SHARED_MEMORY_SIZE = 0x8262;
+        public const uint GL_MAX_COMPUTE_UNIFORM_COMPONENTS = 0x8263;
+        public const uint GL_MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS = 0x8264;
+        public const uint GL_MAX_COMPUTE_ATOMIC_COUNTERS = 0x8265;
+        public const uint GL_MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS = 0x8266;
+        public const uint GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS = 0x90EB;
+        public const uint GL_MAX_COMPUTE_WORK_GROUP_COUNT = 0x91BE;
+        public const uint GL_MAX_COMPUTE_WORK_GROUP_SIZE = 0x91BF;
+        public const uint GL_COMPUTE_WORK_GROUP_SIZE = 0x8267;
+        public const uint GL_UNIFORM_BLOCK_REFERENCED_BY_COMPUTE_SHADER = 0x90EC;
+        public const uint GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER = 0x90ED;
+        public const uint GL_DISPATCH_INDIRECT_BUFFER = 0x90EE;
+        public const uint GL_DISPATCH_INDIRECT_BUFFER_BINDING = 0x90EF;
+        public const uint GL_COMPUTE_SHADER_BIT = 0x00000020;
+
+        #endregion
+
+        #region GL_ARB_copy_image
+
+        /// <summary>
+        /// Perform a raw data copy between two images
+        /// </summary>
+        /// <param name="srcName">The name of a texture or renderbuffer object from which to copy.</param>
+        /// <param name="srcTarget">The target representing the namespace of the source name srcName​.</param>
+        /// <param name="srcLevel">The mipmap level to read from the source.</param>
+        /// <param name="srcX">The X coordinate of the left edge of the souce region to copy.</param>
+        /// <param name="srcY">The Y coordinate of the top edge of the souce region to copy.</param>
+        /// <param name="srcZ">The Z coordinate of the near edge of the souce region to copy.</param>
+        /// <param name="dstName">The name of a texture or renderbuffer object to which to copy.</param>
+        /// <param name="dstTarget">The target representing the namespace of the destination name dstName​.</param>
+        /// <param name="dstLevel">The desination mipmap level.</param>
+        /// <param name="dstX">The X coordinate of the left edge of the destination region.</param>
+        /// <param name="dstY">The Y coordinate of the top edge of the destination region.</param>
+        /// <param name="dstZ">The Z coordinate of the near edge of the destination region.</param>
+        /// <param name="srcWidth">The width of the region to be copied.</param>
+        /// <param name="srcHeight">The height of the region to be copied.</param>
+        /// <param name="srcDepth">The depth of the region to be copied.</param>
+        public void CopyImageSubData(uint srcName, uint srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName,
+            uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, uint srcWidth, uint srcHeight, uint srcDepth)
+        {
+            GetDelegateFor<glCopyImageSubData>()(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, 
+            dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth);
+        }
+
+        //  Delegates
+        private delegate void glCopyImageSubData(uint srcName, uint srcTarget, int srcLevel, int srcX, int srcY, int srcZ, uint dstName, 
+            uint dstTarget, int dstLevel, int dstX, int dstY, int dstZ, uint srcWidth, uint srcHeight, uint srcDepth);
+
+        #endregion
+
+        #region GL_ARB_ES3_compatibility
+        
+        public const uint GL_COMPRESSED_RGB8_ETC2                          = 0x9274;
+        public const uint GL_COMPRESSED_SRGB8_ETC2                         = 0x9275;
+        public const uint GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2      = 0x9276;
+        public const uint GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2     = 0x9277;
+        public const uint GL_COMPRESSED_RGBA8_ETC2_EAC                     = 0x9278;
+        public const uint GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC              = 0x9279;
+        public const uint GL_COMPRESSED_R11_EAC                            = 0x9270;
+        public const uint GL_COMPRESSED_SIGNED_R11_EAC                     = 0x9271;
+        public const uint GL_COMPRESSED_RG11_EAC                           = 0x9272;
+        public const uint GL_COMPRESSED_SIGNED_RG11_EAC                    = 0x9273;
+        public const uint GL_PRIMITIVE_RESTART_FIXED_INDEX                 = 0x8D69;
+        public const uint GL_ANY_SAMPLES_PASSED_CONSERVATIVE               = 0x8D6A;
+        public const uint GL_MAX_ELEMENT_INDEX                             = 0x8D6B;
+        public const uint GL_TEXTURE_IMMUTABLE_LEVELS                      = 0x82DF;
+
+        #endregion
+
+        #region GL_ARB_framebuffer_no_attachments
+
+        //  Methods
+
+        /// <summary>
+        /// Set a named parameter of a framebuffer.
+        /// </summary>
+        /// <param name="target">The target of the operation, which must be GL_READ_FRAMEBUFFER​, GL_DRAW_FRAMEBUFFER​ or GL_FRAMEBUFFER​.</param>
+        /// <param name="pname">A token indicating the parameter to be modified.</param>
+        /// <param name="param">The new value for the parameter named pname​.</param>
+        public void FramebufferParameter(uint target, uint pname, int param)
+        {
+            GetDelegateFor<glFramebufferParameteri>()(target, pname, param);
+        }
+
+        /// <summary>
+        /// Retrieve a named parameter from a framebuffer
+        /// </summary>
+        /// <param name="target">The target of the operation, which must be GL_READ_FRAMEBUFFER​, GL_DRAW_FRAMEBUFFER​ or GL_FRAMEBUFFER​.</param>
+        /// <param name="pname">A token indicating the parameter to be retrieved.</param>
+        /// <param name="parameters">The address of a variable to receive the value of the parameter named pname​.</param>
+        public void GetFramebufferParameter(uint target, uint pname, int[] parameters)
+        {
+            GetDelegateFor<glGetFramebufferParameteriv>()(target, pname, parameters);
+        }
+
+        public void NamedFramebufferParameterEXT(uint framebuffer, uint pname, int param)
+        {
+            GetDelegateFor<glNamedFramebufferParameteriEXT>()(framebuffer, pname, param);
+        }
+
+        public void GetNamedFramebufferParameterEXT(uint framebuffer, uint pname, int[] parameters)
+        {
+            GetDelegateFor<glGetNamedFramebufferParameterivEXT>()(framebuffer, pname, parameters);
+        }
+
+        //  Delegates
+        private delegate void glFramebufferParameteri(uint target, uint pname, int param);
+        private delegate void glGetFramebufferParameteriv(uint target, uint pname, int[] parameters);
+        private delegate void glNamedFramebufferParameteriEXT(uint framebuffer, uint pname, int param);
+        private delegate void glGetNamedFramebufferParameterivEXT(uint framebuffer, uint pname, int[] parameters);
+        
+        #endregion
+
+        #region GL_ARB_internalformat_query2
+
+        /// <summary>
+        /// Retrieve information about implementation-dependent support for internal formats
+        /// </summary>
+        /// <param name="target">Indicates the usage of the internal format. target​ must be GL_TEXTURE_1D​, GL_TEXTURE_1D_ARRAY​, GL_TEXTURE_2D​, GL_TEXTURE_2D_ARRAY​, GL_TEXTURE_3D​, GL_TEXTURE_CUBE_MAP​, GL_TEXTURE_CUBE_MAP_ARRAY​, GL_TEXTURE_RECTANGLE​, GL_TEXTURE_BUFFER​, GL_RENDERBUFFER​, GL_TEXTURE_2D_MULTISAMPLE​ or GL_TEXTURE_2D_MULTISAMPLE_ARRAY​.</param>
+        /// <param name="internalformat">Specifies the internal format about which to retrieve information.</param>
+        /// <param name="pname">Specifies the type of information to query.</param>
+        /// <param name="bufSize">Specifies the maximum number of basic machine units that may be written to params​ by the function.</param>
+        /// <param name="parameters">Specifies the address of a variable into which to write the retrieved information.</param>
+        public void GetInternalformat(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters)
+        {
+            GetDelegateFor<glGetInternalformativ>()(target, internalformat, pname, bufSize, parameters);
+        }
+
+        /// <summary>
+        /// Retrieve information about implementation-dependent support for internal formats
+        /// </summary>
+        /// <param name="target">Indicates the usage of the internal format. target​ must be GL_TEXTURE_1D​, GL_TEXTURE_1D_ARRAY​, GL_TEXTURE_2D​, GL_TEXTURE_2D_ARRAY​, GL_TEXTURE_3D​, GL_TEXTURE_CUBE_MAP​, GL_TEXTURE_CUBE_MAP_ARRAY​, GL_TEXTURE_RECTANGLE​, GL_TEXTURE_BUFFER​, GL_RENDERBUFFER​, GL_TEXTURE_2D_MULTISAMPLE​ or GL_TEXTURE_2D_MULTISAMPLE_ARRAY​.</param>
+        /// <param name="internalformat">Specifies the internal format about which to retrieve information.</param>
+        /// <param name="pname">Specifies the type of information to query.</param>
+        /// <param name="bufSize">Specifies the maximum number of basic machine units that may be written to params​ by the function.</param>
+        /// <param name="parameters">Specifies the address of a variable into which to write the retrieved information.</param>
+        public void GetInternalformat(uint target, uint internalformat, uint pname, uint bufSize, Int64[] parameters)
+        {
+            GetDelegateFor<glGetInternalformati64v>()(target, internalformat, pname, bufSize, parameters);
+        }
+
+        //  Delegates
+        private delegate void glGetInternalformativ(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters);
+        private delegate void glGetInternalformati64v(uint target, uint internalformat, uint pname, uint bufSize, Int64[] parameters);
+
+        //  Constants
+        public const uint GL_RENDERBUFFER                                  =   0x8D41;
+        public const uint GL_TEXTURE_2D_MULTISAMPLE                        =   0x9100;
+        public const uint GL_TEXTURE_2D_MULTISAMPLE_ARRAY                  =   0x9102;
+        public const uint GL_NUM_SAMPLE_COUNTS                              =  0x9380;
+        public const uint GL_INTERNALFORMAT_SUPPORTED                       =  0x826F;
+        public const uint GL_INTERNALFORMAT_PREFERRED                       =  0x8270;
+        public const uint GL_INTERNALFORMAT_RED_SIZE                        =  0x8271;
+        public const uint GL_INTERNALFORMAT_GREEN_SIZE                      =  0x8272;
+        public const uint GL_INTERNALFORMAT_BLUE_SIZE                       =  0x8273;
+        public const uint GL_INTERNALFORMAT_ALPHA_SIZE                      =  0x8274;
+        public const uint GL_INTERNALFORMAT_DEPTH_SIZE                      =  0x8275;
+        public const uint GL_INTERNALFORMAT_STENCIL_SIZE                    =  0x8276;
+        public const uint GL_INTERNALFORMAT_SHARED_SIZE                     =  0x8277;
+        public const uint GL_INTERNALFORMAT_RED_TYPE                        =  0x8278;
+        public const uint GL_INTERNALFORMAT_GREEN_TYPE                      =  0x8279;
+        public const uint GL_INTERNALFORMAT_BLUE_TYPE                       =  0x827A;
+        public const uint GL_INTERNALFORMAT_ALPHA_TYPE                      =  0x827B;
+        public const uint GL_INTERNALFORMAT_DEPTH_TYPE                      =  0x827C;
+        public const uint GL_INTERNALFORMAT_STENCIL_TYPE                    =  0x827D;
+        public const uint GL_MAX_WIDTH                                      =  0x827E;
+        public const uint GL_MAX_HEIGHT                                     =  0x827F;
+        public const uint GL_MAX_DEPTH                                      =  0x8280;
+        public const uint GL_MAX_LAYERS                                     =  0x8281;
+        public const uint GL_MAX_COMBINED_DIMENSIONS                        =  0x8282;
+        public const uint GL_COLOR_COMPONENTS                               =  0x8283;
+        public const uint GL_DEPTH_COMPONENTS                               =  0x8284;
+        public const uint GL_STENCIL_COMPONENTS                             =  0x8285;
+        public const uint GL_COLOR_RENDERABLE                               =  0x8286;
+        public const uint GL_DEPTH_RENDERABLE                               =  0x8287;
+        public const uint GL_STENCIL_RENDERABLE                             =  0x8288;
+        public const uint GL_FRAMEBUFFER_RENDERABLE                         =  0x8289;
+        public const uint GL_FRAMEBUFFER_RENDERABLE_LAYERED                 =  0x828A;
+        public const uint GL_FRAMEBUFFER_BLEND                              =  0x828B;
+        public const uint GL_READ_PIXELS                                    =  0x828C;
+        public const uint GL_READ_PIXELS_FORMAT                             =  0x828D;
+        public const uint GL_READ_PIXELS_TYPE                               =  0x828E;
+        public const uint GL_TEXTURE_IMAGE_FORMAT                           =  0x828F;
+        public const uint GL_TEXTURE_IMAGE_TYPE                             =  0x8290;
+        public const uint GL_GET_TEXTURE_IMAGE_FORMAT                       =  0x8291;
+        public const uint GL_GET_TEXTURE_IMAGE_TYPE                         =  0x8292;
+        public const uint GL_MIPMAP                                         =  0x8293;
+        public const uint GL_MANUAL_GENERATE_MIPMAP                         =  0x8294;
+        public const uint GL_AUTO_GENERATE_MIPMAP                           =  0x8295;
+        public const uint GL_COLOR_ENCODING                                 =  0x8296;
+        public const uint GL_SRGB_READ                                      =  0x8297;
+        public const uint GL_SRGB_WRITE                                     =  0x8298;
+        public const uint GL_SRGB_DECODE_ARB                                =  0x8299;
+        public const uint GL_FILTER                                         =  0x829A;
+        public const uint GL_VERTEX_TEXTURE                                 =  0x829B;
+        public const uint GL_TESS_CONTROL_TEXTURE                           =  0x829C;
+        public const uint GL_TESS_EVALUATION_TEXTURE                        =  0x829D;
+        public const uint GL_GEOMETRY_TEXTURE                               =  0x829E;
+        public const uint GL_FRAGMENT_TEXTURE                               =  0x829F;
+        public const uint GL_COMPUTE_TEXTURE                                =  0x82A0;
+        public const uint GL_TEXTURE_SHADOW                                 =  0x82A1;
+        public const uint GL_TEXTURE_GATHER                                 =  0x82A2;
+        public const uint GL_TEXTURE_GATHER_SHADOW                          =  0x82A3;
+        public const uint GL_SHADER_IMAGE_LOAD                              =  0x82A4;
+        public const uint GL_SHADER_IMAGE_STORE                             =  0x82A5;
+        public const uint GL_SHADER_IMAGE_ATOMIC                            =  0x82A6;
+        public const uint GL_IMAGE_TEXEL_SIZE                               =  0x82A7;
+        public const uint GL_IMAGE_COMPATIBILITY_CLASS                      =  0x82A8;
+        public const uint GL_IMAGE_PIXEL_FORMAT                             =  0x82A9;
+        public const uint GL_IMAGE_PIXEL_TYPE                               =  0x82AA;
+        public const uint GL_IMAGE_FORMAT_COMPATIBILITY_TYPE                =  0x90C7;
+        public const uint GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST            =  0x82AC;
+        public const uint GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST          =  0x82AD;
+        public const uint GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE           =  0x82AE;
+        public const uint GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_WRITE         =  0x82AF;
+        public const uint GL_TEXTURE_COMPRESSED_BLOCK_WIDTH                 =  0x82B1;
+        public const uint GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT                =  0x82B2;
+        public const uint GL_TEXTURE_COMPRESSED_BLOCK_SIZE                  =  0x82B3;
+        public const uint GL_CLEAR_BUFFER                                   =  0x82B4;
+        public const uint GL_TEXTURE_VIEW                                   =  0x82B5;
+        public const uint GL_VIEW_COMPATIBILITY_CLASS                       =  0x82B6;
+        public const uint GL_FULL_SUPPORT                                   =  0x82B7;
+        public const uint GL_CAVEAT_SUPPORT                                 =  0x82B8;
+        public const uint GL_IMAGE_CLASS_4_X_32                             =  0x82B9;
+        public const uint GL_IMAGE_CLASS_2_X_32                             =  0x82BA;
+        public const uint GL_IMAGE_CLASS_1_X_32                             =  0x82BB;
+        public const uint GL_IMAGE_CLASS_4_X_16                             =  0x82BC;
+        public const uint GL_IMAGE_CLASS_2_X_16                             =  0x82BD;
+        public const uint GL_IMAGE_CLASS_1_X_16                             =  0x82BE;
+        public const uint GL_IMAGE_CLASS_4_X_8                              =  0x82BF;
+        public const uint GL_IMAGE_CLASS_2_X_8                              =  0x82C0;
+        public const uint GL_IMAGE_CLASS_1_X_8                              =  0x82C1;
+        public const uint GL_IMAGE_CLASS_11_11_10                           =  0x82C2;
+        public const uint GL_IMAGE_CLASS_10_10_10_2                         =  0x82C3;
+        public const uint GL_VIEW_CLASS_128_BITS                            =  0x82C4;
+        public const uint GL_VIEW_CLASS_96_BITS                             =  0x82C5;
+        public const uint GL_VIEW_CLASS_64_BITS                             =  0x82C6;
+        public const uint GL_VIEW_CLASS_48_BITS                             =  0x82C7;
+        public const uint GL_VIEW_CLASS_32_BITS                             =  0x82C8;
+        public const uint GL_VIEW_CLASS_24_BITS                             =  0x82C9;
+        public const uint GL_VIEW_CLASS_16_BITS                             =  0x82CA;
+        public const uint GL_VIEW_CLASS_8_BITS                              =  0x82CB;
+        public const uint GL_VIEW_CLASS_S3TC_DXT1_RGB                       =  0x82CC;
+        public const uint GL_VIEW_CLASS_S3TC_DXT1_RGBA                      =  0x82CD;
+        public const uint GL_VIEW_CLASS_S3TC_DXT3_RGBA                      =  0x82CE;
+        public const uint GL_VIEW_CLASS_S3TC_DXT5_RGBA                      =  0x82CF;
+        public const uint GL_VIEW_CLASS_RGTC1_RED                           =  0x82D0;
+        public const uint GL_VIEW_CLASS_RGTC2_RG                            =  0x82D1;
+        public const uint GL_VIEW_CLASS_BPTC_UNORM                          =  0x82D2;
+        public const uint GL_VIEW_CLASS_BPTC_FLOAT                          =  0x82D3;
+        
+        #endregion
+
+        #region GL_ARB_invalidate_subdata
+
+        /// <summary>
+        /// Invalidate a region of a texture image
+        /// </summary>
+        /// <param name="texture">The name of a texture object a subregion of which to invalidate.</param>
+        /// <param name="level">The level of detail of the texture object within which the region resides.</param>
+        /// <param name="xoffset">The X offset of the region to be invalidated.</param>
+        /// <param name="yoffset">The Y offset of the region to be invalidated.</param>
+        /// <param name="zoffset">The Z offset of the region to be invalidated.</param>
+        /// <param name="width">The width of the region to be invalidated.</param>
+        /// <param name="height">The height of the region to be invalidated.</param>
+        /// <param name="depth">The depth of the region to be invalidated.</param>
+        public void InvalidateTexSubImage(uint texture, int level, int xoffset, int yoffset, int zoffset,
+            uint width, uint height, uint depth)
+        {
+            GetDelegateFor<glInvalidateTexSubImage>()(texture, level, xoffset, yoffset, zoffset, width, height, depth);
+        }
+
+        /// <summary>
+        /// Invalidate the entirety a texture image
+        /// </summary>
+        /// <param name="texture">The name of a texture object to invalidate.</param>
+        /// <param name="level">The level of detail of the texture object to invalidate.</param>
+        public void InvalidateTexImage(uint texture, int level)
+        {
+            GetDelegateFor<glInvalidateTexImage>()(texture, level);
+        }
+
+        /// <summary>
+        /// Invalidate a region of a buffer object's data store
+        /// </summary>
+        /// <param name="buffer">The name of a buffer object, a subrange of whose data store to invalidate.</param>
+        /// <param name="offset">The offset within the buffer's data store of the start of the range to be invalidated.</param>
+        /// <param name="length">The length of the range within the buffer's data store to be invalidated.</param>
+        public void InvalidateBufferSubData(uint buffer, IntPtr offset, IntPtr length)
+        {
+            GetDelegateFor<glInvalidateBufferSubData>()(buffer, offset, length);
+        }
+
+        /// <summary>
+        /// Invalidate the content of a buffer object's data store
+        /// </summary>
+        /// <param name="buffer">The name of a buffer object whose data store to invalidate.</param>
+        public void InvalidateBufferData(uint buffer)
+        {
+            GetDelegateFor<glInvalidateBufferData>()(buffer);
+        }
+
+        /// <summary>
+        /// Invalidate the content some or all of a framebuffer object's attachments
+        /// </summary>
+        /// <param name="target">The target to which the framebuffer is attached. target​ must be GL_FRAMEBUFFER​, GL_DRAW_FRAMEBUFFER​, or GL_READ_FRAMEBUFFER​.</param>
+        /// <param name="numAttachments">The number of entries in the attachments​ array.</param>
+        /// <param name="attachments">The address of an array identifying the attachments to be invalidated.</param>
+        public void InvalidateFramebuffer(uint target, uint numAttachments, uint[] attachments)
+        {
+            GetDelegateFor<glInvalidateFramebuffer>()(target, numAttachments, attachments);
+        }
+
+        /// <summary>
+        /// Invalidate the content of a region of some or all of a framebuffer object's attachments
+        /// </summary>
+        /// <param name="target">The target to which the framebuffer is attached. target​ must be GL_FRAMEBUFFER​, GL_DRAW_FRAMEBUFFER​, or GL_READ_FRAMEBUFFER​.</param>
+        /// <param name="numAttachments">The number of entries in the attachments​ array.</param>
+        /// <param name="attachments">The address of an array identifying the attachments to be invalidated.</param>
+        /// <param name="x">The X offset of the region to be invalidated.</param>
+        /// <param name="y">The Y offset of the region to be invalidated.</param>
+        /// <param name="width">The width of the region to be invalidated.</param>
+        /// <param name="height">The height of the region to be invalidated.</param>
+        public void InvalidateSubFramebuffer(uint target, uint numAttachments, uint[] attachments,
+            int x, int y, uint width, uint height)
+        {
+            GetDelegateFor<glInvalidateSubFramebuffer>()(target, numAttachments, attachments, x, y, width, height);
+        }
+
+        //  Delegates
+        private delegate void glInvalidateTexSubImage(uint texture, int level, int xoffset, 
+            int yoffset, int zoffset, uint width, uint height, uint depth);
+        private delegate void glInvalidateTexImage(uint texture, int level);
+        private delegate void glInvalidateBufferSubData(uint buffer, IntPtr offset, IntPtr length);
+        private delegate void glInvalidateBufferData(uint buffer);
+        private delegate void glInvalidateFramebuffer(uint target, uint numAttachments, uint[] attachments);
+        private delegate void glInvalidateSubFramebuffer(uint target, uint numAttachments, uint[] attachments,
+            int x, int y, uint width, uint height);
+
+        #endregion
+
+        #region ARB_multi_draw_indirect
+
+        /// <summary>
+        /// Render multiple sets of primitives from array data, taking parameters from memory
+        /// </summary>
+        /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants GL_POINTS​, GL_LINE_STRIP​, GL_LINE_LOOP​, GL_LINES​, GL_LINE_STRIP_ADJACENCY​, GL_LINES_ADJACENCY​, GL_TRIANGLE_STRIP​, GL_TRIANGLE_FAN​, GL_TRIANGLES​, GL_TRIANGLE_STRIP_ADJACENCY​, GL_TRIANGLES_ADJACENCY​, and GL_PATCHES​ are accepted.</param>
+        /// <param name="indirect">Specifies the address of an array of structures containing the draw parameters.</param>
+        /// <param name="primcount">Specifies the the number of elements in the array of draw parameter structures.</param>
+        /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
+        public void MultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride)
+        {
+            GetDelegateFor<glMultiDrawArraysIndirect>()(mode, indirect, primcount, stride);
+        }
+
+        /// <summary>
+        /// Render indexed primitives from array data, taking parameters from memory
+        /// </summary>
+        /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants GL_POINTS​, GL_LINE_STRIP​, GL_LINE_LOOP​, GL_LINES​, GL_LINE_STRIP_ADJACENCY​, GL_LINES_ADJACENCY​, GL_TRIANGLE_STRIP​, GL_TRIANGLE_FAN​, GL_TRIANGLES​, GL_TRIANGLE_STRIP_ADJACENCY​, GL_TRIANGLES_ADJACENCY​, and GL_PATCHES​ are accepted.</param>
+        /// <param name="type">Specifies the type of data in the buffer bound to the GL_ELEMENT_ARRAY_BUFFER​ binding.</param>
+        /// <param name="indirect">Specifies a byte offset (cast to a pointer type) into the buffer bound to GL_DRAW_INDIRECT_BUFFER​, which designates the starting point of the structure containing the draw parameters.</param>
+        /// <param name="primcount">Specifies the number of elements in the array addressed by indirect​.</param>
+        /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
+        public void MultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride)
+        {
+            GetDelegateFor<glMultiDrawElementsIndirect>()(mode, type, indirect, primcount, stride);
+        }
+
+        private delegate void glMultiDrawArraysIndirect(uint mode, IntPtr indirect, uint primcount, uint stride);
+        private delegate void glMultiDrawElementsIndirect(uint mode, uint type, IntPtr indirect, uint primcount, uint stride);
+
+        #endregion
+
+        #region GL_ARB_program_interface_query
+
+        /// <summary>
+        /// Query a property of an interface in a program
+        /// </summary>
+        /// <param name="program">The name of a program object whose interface to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ to query.</param>
+        /// <param name="pname">The name of the parameter within programInterface​ to query.</param>
+        /// <param name="parameters">The address of a variable to retrieve the value of pname​ for the program interface..</param>
+        public void GetProgramInterface(uint program, uint programInterface, uint pname, int[] parameters)
+        {
+            GetDelegateFor<glGetProgramInterfaceiv>()(program, programInterface, pname, parameters);
+        }
+
+        /// <summary>
+        /// Query the index of a named resource within a program
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="name">The name of the resource to query the index of.</param>
+        public void GetProgramResourceIndex(uint program, uint programInterface, string name)
+        {
+            GetDelegateFor<glGetProgramResourceIndex>()(program, programInterface, name);
+        }
+
+        /// <summary>
+        /// Query the name of an indexed resource within a program
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the indexed resource.</param>
+        /// <param name="index">The index of the resource within programInterface​ of program​.</param>
+        /// <param name="bufSize">The size of the character array whose address is given by name​.</param>
+        /// <param name="length">The address of a variable which will receive the length of the resource name.</param>
+        /// <param name="name">The address of a character array into which will be written the name of the resource.</param>
+        public void GetProgramResourceName(uint program, uint programInterface, uint index, uint bufSize, out uint length, out string name)
+        {
+            var lengthParameter = new uint[1];
+            var nameParameter = new string[1];
+            GetDelegateFor<glGetProgramResourceName>()(program, programInterface, index, bufSize, lengthParameter, nameParameter);
+            length = lengthParameter[0];
+            name = nameParameter[0];
+        }
+
+        /// <summary>
+        /// Retrieve values for multiple properties of a single active resource within a program object
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="index">The index within the programInterface​ to query information about.</param>
+        /// <param name="propCount">The number of properties being queried.</param>
+        /// <param name="props">An array of properties of length propCount​ to query.</param>
+        /// <param name="bufSize">The number of GLint values in the params​ array.</param>
+        /// <param name="length">If not NULL, then this value will be filled in with the number of actual parameters written to params​.</param>
+        /// <param name="parameters">The output array of parameters to write.</param>
+        public void GetProgramResource(uint program, uint programInterface, uint index, uint propCount, uint[] props, uint bufSize, out uint length, out int[] parameters)
+        {
+            var lengthParameter = new uint[1];
+            var parametersParameter = new int[bufSize];
+
+            GetDelegateFor<glGetProgramResourceiv>()(program, programInterface, index, propCount, props, bufSize, lengthParameter, parametersParameter);
+            length = lengthParameter[0];
+            parameters = parametersParameter;
+        }
+
+        /// <summary>
+        /// Query the location of a named resource within a program.
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="name">The name of the resource to query the location of.</param>
+        public void GetProgramResourceLocation(uint program, uint programInterface, string name)
+        {
+            GetDelegateFor<glGetProgramResourceLocation>()(program, programInterface, name);
+        }
+
+        /// <summary>
+        /// Query the fragment color index of a named variable within a program.
+        /// </summary>
+        /// <param name="program">The name of a program object whose resources to query.</param>
+        /// <param name="programInterface">A token identifying the interface within program​ containing the resource named name​.</param>
+        /// <param name="name">The name of the resource to query the location of.</param>
+        public void GetProgramResourceLocationIndex(uint program, uint programInterface, string name)
+        {
+            GetDelegateFor<glGetProgramResourceLocationIndex>()(program, programInterface, name);
+        }
+
+        private delegate void glGetProgramInterfaceiv(uint program, uint programInterface, uint pname, int[] parameters);
+        private delegate uint glGetProgramResourceIndex(uint program, uint programInterface, string name);
+        private delegate void glGetProgramResourceName(uint program, uint programInterface, uint index, uint bufSize, uint[] length, string[] name);
+        private delegate void glGetProgramResourceiv(uint program, uint programInterface, uint index, uint propCount, uint[] props, uint bufSize, uint[] length, int[] parameters);
+        private delegate int glGetProgramResourceLocation(uint program, uint programInterface, string name);
+        private delegate int glGetProgramResourceLocationIndex(uint program, uint programInterface, string name);
+
+        #endregion
+
+        #region GL_ARB_shader_storage_buffer_object
+
+        /// <summary>
+        /// Change an active shader storage block binding.
+        /// </summary>
+        /// <param name="program">The name of the program containing the block whose binding to change.</param>
+        /// <param name="storageBlockIndex">The index storage block within the program.</param>
+        /// <param name="storageBlockBinding">The index storage block binding to associate with the specified storage block.</param>
+        public void ShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding)
+        {
+            GetDelegateFor<glShaderStorageBlockBinding>()(program, storageBlockIndex, storageBlockBinding);
+        }
+
+        private delegate void glShaderStorageBlockBinding(uint program, uint storageBlockIndex, uint storageBlockBinding);
+
+        //  Constants
+        public const uint GL_SHADER_STORAGE_BUFFER                         = 0x90D2;
+        public const uint GL_SHADER_STORAGE_BUFFER_BINDING                 = 0x90D3;
+        public const uint GL_SHADER_STORAGE_BUFFER_START                   = 0x90D4;
+        public const uint GL_SHADER_STORAGE_BUFFER_SIZE                    = 0x90D5;
+        public const uint GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS              = 0x90D6;
+        public const uint GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS            = 0x90D7;
+        public const uint GL_MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS        = 0x90D8;
+        public const uint GL_MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS     = 0x90D9;
+        public const uint GL_MAX_FRAGMENT_SHADER_STORAGE_BLOCKS            = 0x90DA;
+        public const uint GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS             = 0x90DB;
+        public const uint GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS            = 0x90DC;
+        public const uint GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS            = 0x90DD;
+        public const uint GL_MAX_SHADER_STORAGE_BLOCK_SIZE                 = 0x90DE;
+        public const uint GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT        = 0x90DF;
+        public const uint GL_SHADER_STORAGE_BARRIER_BIT                    = 0x2000;       
+        public const uint GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES          = 0x8F39;
+
+        #endregion
+
+        #region GL_ARB_stencil_texturing
+
+        //  Constants
+        public const uint GL_DEPTH_STENCIL_TEXTURE_MODE = 0x90EA;
+
+        #endregion
+
+        #region GL_ARB_texture_buffer_range
+
+        /// <summary>
+        /// Bind a range of a buffer's data store to a buffer texture
+        /// </summary>
+        /// <param name="target">Specifies the target of the operation and must be GL_TEXTURE_BUFFER​.</param>
+        /// <param name="internalformat">Specifies the internal format of the data in the store belonging to buffer​.</param>
+        /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
+        /// <param name="offset">Specifies the offset of the start of the range of the buffer's data store to attach.</param>
+        /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
+        public void TexBufferRange(uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size)
+        {
+            GetDelegateFor<glTexBufferRange>()(target, internalformat, buffer, offset, size);
+        }
+
+        /// <summary>
+        /// Bind a range of a buffer's data store to a buffer texture
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="target">Specifies the target of the operation and must be GL_TEXTURE_BUFFER​.</param>
+        /// <param name="internalformat">Specifies the internal format of the data in the store belonging to buffer​.</param>
+        /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
+        /// <param name="offset">Specifies the offset of the start of the range of the buffer's data store to attach.</param>
+        /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
+        public void TextureBufferRangeEXT(uint texture, uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size)
+        {
+            GetDelegateFor<glTextureBufferRangeEXT>()(texture, target, internalformat, buffer, offset, size);
+        }
+
+        private delegate void glTexBufferRange(uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size);
+        private delegate void glTextureBufferRangeEXT(uint texture, uint target, uint internalformat, uint buffer, IntPtr offset, IntPtr size);
+
+        #endregion
+
+        #region GL_ARB_texture_storage_multisample
+
+        /// <summary>
+        /// Specify storage for a two-dimensional multisample texture.
+        /// </summary>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_2D_MULTISAMPLE​ or GL_PROXY_TEXTURE_2D_MULTISAMPLE​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+        public void TexStorage2DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations)
+        {
+            GetDelegateFor<glTexStorage2DMultisample>()(target, samples, internalformat, width, height, fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Specify storage for a three-dimensional multisample array texture
+        /// </summary>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_3D_MULTISAMPLE_ARRAY​ or GL_PROXY_TEXTURE_3D_MULTISAMPLE_ARRAY​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="depth">Specifies the depth of the texture, in layers.</param>
+        /// <param name="fixedsamplelocations">Specifies the depth of the texture, in layers.</param>
+        public void TexStorage3DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations)
+        {
+            GetDelegateFor<glTexStorage3DMultisample>()(target, samples, internalformat, width, height, depth, fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Specify storage for a two-dimensional multisample texture.
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_2D_MULTISAMPLE​ or GL_PROXY_TEXTURE_2D_MULTISAMPLE​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+        public void TexStorage2DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations)
+        {
+            GetDelegateFor<glTexStorage2DMultisampleEXT>()(texture, target, samples, internalformat, width, height, fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Specify storage for a three-dimensional multisample array texture
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="target">Specify the target of the operation. target​ must be GL_TEXTURE_3D_MULTISAMPLE_ARRAY​ or GL_PROXY_TEXTURE_3D_MULTISAMPLE_ARRAY​.</param>
+        /// <param name="samples">Specify the number of samples in the texture.</param>
+        /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
+        /// <param name="width">Specifies the width of the texture, in texels.</param>
+        /// <param name="height">Specifies the height of the texture, in texels.</param>
+        /// <param name="depth">Specifies the depth of the texture, in layers.</param>
+        /// <param name="fixedsamplelocations">Specifies the depth of the texture, in layers.</param>
+        public void TexStorage3DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations)
+        {
+            GetDelegateFor<glTexStorage3DMultisampleEXT>()(texture, target, samples, internalformat, width, height, depth, fixedsamplelocations);
+        }
+
+        //  Delegates
+        private delegate void glTexStorage2DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations);
+        private delegate void glTexStorage3DMultisample(uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations);
+        private delegate void glTexStorage2DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, bool fixedsamplelocations);
+        private delegate void glTexStorage3DMultisampleEXT(uint texture, uint target, uint samples, uint internalformat, uint width, uint height, uint depth, bool fixedsamplelocations);
+
+        #endregion
+
+        #region GL_ARB_texture_view
+
+        /// <summary>
+        /// Initialize a texture as a data alias of another texture's data store.
+        /// </summary>
+        /// <param name="texture">Specifies the texture object to be initialized as a view.</param>
+        /// <param name="target">Specifies the target to be used for the newly initialized texture.</param>
+        /// <param name="origtexture">Specifies the name of a texture object of which to make a view.</param>
+        /// <param name="internalformat">Specifies the internal format for the newly created view.</param>
+        /// <param name="minlevel">Specifies lowest level of detail of the view.</param>
+        /// <param name="numlevels">Specifies the number of levels of detail to include in the view.</param>
+        /// <param name="minlayer">Specifies the index of the first layer to include in the view.</param>
+        /// <param name="numlayers">Specifies the number of layers to include in the view.</param>
+        public void TextureView(uint texture, uint target, uint origtexture, uint internalformat, uint minlevel, uint numlevels, uint minlayer, uint numlayers)
+        {
+            GetDelegateFor<glTextureView>()(texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers);
+        }
+
+        //  Delegates
+        private delegate void glTextureView(uint texture, uint target, uint origtexture, uint internalformat, uint minlevel, uint numlevels, uint minlayer, uint numlayers);
+
+        //  Constants
+        public const uint GL_TEXTURE_VIEW_MIN_LEVEL = 0x82DB;
+        public const uint GL_TEXTURE_VIEW_NUM_LEVELS = 0x82DC;
+        public const uint GL_TEXTURE_VIEW_MIN_LAYER = 0x82DD;
+        public const uint GL_TEXTURE_VIEW_NUM_LAYERS = 0x82DE;
+
+        #endregion
+
+        #region GL_ARB_vertex_attrib_binding
+
+        /// <summary>
+        /// Bind a buffer to a vertex buffer bind point.
+        /// </summary>
+        /// <param name="bindingindex">The index of the vertex buffer binding point to which to bind the buffer.</param>
+        /// <param name="buffer">The name of an existing buffer to bind to the vertex buffer binding point.</param>
+        /// <param name="offset">The offset of the first element of the buffer.</param>
+        /// <param name="stride">The distance between elements within the buffer.</param>
+        public void BindVertexBuffer(uint bindingindex, uint buffer, IntPtr offset, uint stride)
+        {
+            GetDelegateFor<glBindVertexBuffer>()(bindingindex, buffer, offset, stride);
+        }
+        
+        /// <summary>
+        /// Specify the organization of vertex arrays.
+        /// </summary>
+        /// <param name="attribindex">The generic vertex attribute array being described.</param>
+        /// <param name="size">The number of values per vertex that are stored in the array.</param>
+        /// <param name="type">The type of the data stored in the array.</param>
+        /// <param name="normalized">GL_TRUE​ if the parameter represents a normalized integer (type​ must be an integer type). GL_FALSE​ otherwise.</param>
+        /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
+        public void VertexAttribFormat(uint attribindex, int size, uint type, bool normalized, uint relativeoffset)
+        {
+            GetDelegateFor<glVertexAttribFormat>()(attribindex, size, type, normalized, relativeoffset);
+        }
+
+        /// <summary>
+        /// Specify the organization of vertex arrays.
+        /// </summary>
+        /// <param name="attribindex">The generic vertex attribute array being described.</param>
+        /// <param name="size">The number of values per vertex that are stored in the array.</param>
+        /// <param name="type">The type of the data stored in the array.</param>
+        /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
+        public void VertexAttribIFormat(uint attribindex, int size, uint type, uint relativeoffset)
+        {
+            GetDelegateFor<glVertexAttribIFormat>()(attribindex, size, type, relativeoffset);
+        }
+
+        /// <summary>
+        /// Specify the organization of vertex arrays.
+        /// </summary>
+        /// <param name="attribindex">The generic vertex attribute array being described.</param>
+        /// <param name="size">The number of values per vertex that are stored in the array.</param>
+        /// <param name="type">The type of the data stored in the array.</param>
+        /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
+        public void VertexAttribLFormat(uint attribindex, int size, uint type, uint relativeoffset)
+        {
+            GetDelegateFor<glVertexAttribLFormat>()(attribindex, size, type, relativeoffset);
+        }
+        
+        /// <summary>
+        /// Associate a vertex attribute and a vertex buffer binding.
+        /// </summary>
+        /// <param name="attribindex">The index of the attribute to associate with a vertex buffer binding.</param>
+        /// <param name="bindingindex">The index of the vertex buffer binding with which to associate the generic vertex attribute.</param>
+        public void VertexAttribBinding(uint attribindex, uint bindingindex)
+        {
+            GetDelegateFor<glVertexAttribBinding>()(attribindex, bindingindex);
+        }
+        
+        /// <summary>
+        /// Modify the rate at which generic vertex attributes advance.
+        /// </summary>
+        /// <param name="bindingindex">The index of the binding whose divisor to modify.</param>
+        /// <param name="divisor">The new value for the instance step rate to apply.</param>
+        public void VertexBindingDivisor(uint bindingindex, uint divisor)
+        {
+            GetDelegateFor<glVertexBindingDivisor>()(bindingindex, divisor);
+        }
+
+        /// <summary>
+        /// Bind a buffer to a vertex buffer bind point.
+        /// Available only when When EXT_direct_state_access is present.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="bindingindex">The index of the vertex buffer binding point to which to bind the buffer.</param>
+        /// <param name="buffer">The name of an existing buffer to bind to the vertex buffer binding point.</param>
+        /// <param name="offset">The offset of the first element of the buffer.</param>
+        /// <param name="stride">The distance between elements within the buffer.</param>
+        public void VertexArrayBindVertexBufferEXT(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, uint stride)
+        {
+            GetDelegateFor<glVertexArrayBindVertexBufferEXT>()(vaobj, bindingindex, buffer, offset, stride);
+        }
+
+        /// <summary>
+        /// Specify the organization of vertex arrays.
+        /// Available only when When EXT_direct_state_access is present.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="attribindex">The generic vertex attribute array being described.</param>
+        /// <param name="size">The number of values per vertex that are stored in the array.</param>
+        /// <param name="type">The type of the data stored in the array.</param>
+        /// <param name="normalized">GL_TRUE​ if the parameter represents a normalized integer (type​ must be an integer type). GL_FALSE​ otherwise.</param>
+        /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
+        public void VertexArrayVertexAttribFormatEXT(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativeoffset)
+        {
+            GetDelegateFor<glVertexArrayVertexAttribFormatEXT>()(vaobj, attribindex, size, type, normalized, relativeoffset);
+        }
+
+        /// <summary>
+        /// Specify the organization of vertex arrays.
+        /// Available only when When EXT_direct_state_access is present.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="attribindex">The generic vertex attribute array being described.</param>
+        /// <param name="size">The number of values per vertex that are stored in the array.</param>
+        /// <param name="type">The type of the data stored in the array.</param>
+        /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
+        public void VertexArrayVertexAttribIFormatEXT(uint vaobj, uint attribindex, int size, uint type, uint relativeoffset)
+        {
+            GetDelegateFor<glVertexArrayVertexAttribIFormatEXT>()(vaobj, attribindex, size, type, relativeoffset);
+        }
+
+        /// <summary>
+        /// Specify the organization of vertex arrays.
+        /// Available only when When EXT_direct_state_access is present.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="attribindex">The generic vertex attribute array being described.</param>
+        /// <param name="size">The number of values per vertex that are stored in the array.</param>
+        /// <param name="type">The type of the data stored in the array.</param>
+        /// <param name="relativeoffset">The offset, measured in basic machine units of the first element relative to the start of the vertex buffer binding this attribute fetches from.</param>
+        public void VertexArrayVertexAttribLFormatEXT(uint vaobj, uint attribindex, int size, uint type, uint relativeoffset)
+        {
+            GetDelegateFor<glVertexArrayVertexAttribLFormatEXT>()(vaobj, attribindex, size, type, relativeoffset);
+        }
+
+        /// <summary>
+        /// Associate a vertex attribute and a vertex buffer binding.
+        /// Available only when When EXT_direct_state_access is present.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="attribindex">The index of the attribute to associate with a vertex buffer binding.</param>
+        /// <param name="bindingindex">The index of the vertex buffer binding with which to associate the generic vertex attribute.</param>
+        public void VertexArrayVertexAttribBindingEXT(uint vaobj, uint attribindex, uint bindingindex)
+        {
+            GetDelegateFor<glVertexArrayVertexAttribBindingEXT>()(vaobj, attribindex, bindingindex);
+        }
+
+        /// <summary>
+        /// Modify the rate at which generic vertex attributes advance.
+        /// Available only when When EXT_direct_state_access is present.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="bindingindex">The index of the binding whose divisor to modify.</param>
+        /// <param name="divisor">The new value for the instance step rate to apply.</param>
+        public void VertexArrayVertexBindingDivisorEXT(uint vaobj, uint bindingindex, uint divisor)
+        {
+            GetDelegateFor<glVertexArrayVertexBindingDivisorEXT>()(vaobj, bindingindex, divisor);
+        }
+
+        //  Delegates
+        private delegate void glBindVertexBuffer(uint bindingindex, uint buffer, IntPtr offset, uint stride);
+        private delegate void glVertexAttribFormat(uint attribindex, int size, uint type, bool normalized, uint relativeoffset);
+        private delegate void glVertexAttribIFormat(uint attribindex, int size, uint type, uint relativeoffset);
+        private delegate void glVertexAttribLFormat(uint attribindex, int size, uint type, uint relativeoffset);
+        private delegate void glVertexAttribBinding(uint attribindex, uint bindingindex);
+        private delegate void glVertexBindingDivisor(uint bindingindex, uint divisor);
+        private delegate void glVertexArrayBindVertexBufferEXT(uint vaobj, uint bindingindex, uint buffer, IntPtr offset, uint stride);
+        private delegate void glVertexArrayVertexAttribFormatEXT(uint vaobj, uint attribindex, int size, uint type, bool normalized, uint relativeoffset);
+        private delegate void glVertexArrayVertexAttribIFormatEXT(uint vaobj, uint attribindex, int size, uint type, uint relativeoffset);
+        private delegate void glVertexArrayVertexAttribLFormatEXT(uint vaobj, uint attribindex, int size, uint type, uint relativeoffset);
+        private delegate void glVertexArrayVertexAttribBindingEXT(uint vaobj, uint attribindex, uint bindingindex);
+        private delegate void glVertexArrayVertexBindingDivisorEXT(uint vaobj, uint bindingindex, uint divisor);
+
+        //  Constants
+        public const uint GL_VERTEX_ATTRIB_BINDING                          = 0x82D4;  
+        public const uint GL_VERTEX_ATTRIB_RELATIVE_OFFSET                  = 0x82D5;  
+        public const uint GL_VERTEX_BINDING_DIVISOR                         = 0x82D6;  
+        public const uint GL_VERTEX_BINDING_OFFSET                          = 0x82D7;  
+        public const uint GL_VERTEX_BINDING_STRIDE                          = 0x82D8;  
+        public const uint GL_VERTEX_BINDING_BUFFER                          = 0x8F4F;
+        public const uint GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET              = 0x82D9;  
+        public const uint GL_MAX_VERTEX_ATTRIB_BINDINGS                     = 0x82DA;  
 
         #endregion
     }

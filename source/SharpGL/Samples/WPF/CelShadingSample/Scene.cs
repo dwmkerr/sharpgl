@@ -12,6 +12,10 @@ namespace CelShadingSample
     /// </summary>
     public class Scene
     {
+        /// <summary>
+        /// Initialises the Scene.
+        /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
         public void Initialise(OpenGL gl)
         {
             //  We're going to specify the attribute locations for the position and normal, 
@@ -43,14 +47,22 @@ namespace CelShadingSample
         /// <summary>
         /// Creates the projection matrix for the given screen size.
         /// </summary>
+        /// <param name="gl">The OpenGL instance.</param>
         /// <param name="screenWidth">Width of the screen.</param>
         /// <param name="screenHeight">Height of the screen.</param>
-        public void CreateProjectionMatrix(float screenWidth, float screenHeight)
+        public void CreateProjectionMatrix(OpenGL gl, float screenWidth, float screenHeight)
         {
             //  Create the projection matrix for our screen size.
             const float S = 0.46f;
             float H = S * screenHeight / screenWidth;
             projectionMatrix = glm.pfrustum(-S, S, -H, H, 1, 100);
+
+            //  When we do immediate mode drawing, OpenGL needs to know what our projection matrix
+            //  is, so set it now.
+            gl.MatrixMode(OpenGL.GL_PROJECTION);
+            gl.LoadIdentity();
+            gl.MultMatrix(projectionMatrix.to_array());
+            gl.MatrixMode(OpenGL.GL_MODELVIEW);
         }
 
         /// <summary>
@@ -129,14 +141,6 @@ namespace CelShadingSample
 
             //  Unbind the shader.
             shader.Unbind(gl);
-        }
-
-        /// <summary>
-        /// Gets the projection matrix.
-        /// </summary>
-        public mat4 ProjectionMatrix
-        {
-            get { return projectionMatrix; }
         }
         
         //  The shaders we use.

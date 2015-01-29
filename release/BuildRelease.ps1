@@ -7,7 +7,6 @@ if ((Test-Path $msbuild) -eq $false) {
 
 # Load useful functions.
 . .\Resources\PowershellFunctions.ps1
-. .\Resources\VsixTools.ps1
 
 # Keep track of the 'release' folder location - it's the root of everything else.
 # We can also build paths to the key locations we'll use.
@@ -15,7 +14,7 @@ $scriptParentPath = Split-Path -parent $MyInvocation.MyCommand.Definition
 $folderReleaseRoot = $scriptParentPath
 $folderSourceRoot = Split-Path -parent $folderReleaseRoot
 $folderSharpGLRoot = Join-Path $folderSourceRoot "source\SharpGL"
-$folderNuspecRoot = Join-Path $folderSourceRoot "build\nuspec"
+$folderNuspecRoot = Join-Path $folderSourceRoot "release\Specs"
 
 # Part 1 - Build the core libraries.
 Write-Host "Preparing to build the core libraries..."
@@ -52,9 +51,15 @@ EnsureEmptyFolderExists($folderReleaseSamples)
 $releaseFolders = gci (Join-Path $folderSharpGLRoot "Samples") -Recurse -Directory -filter "Release" | select FullName
 $releaseFolders | ForEach {
     $releaseFolder = $_.FullName
-    $sampleName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
-    Write-Host "Built Sample: $sampleName"
-    CopyItems (Join-Path $releaseFolder "*.*") (Join-Path $folderReleaseSamples "$sampleName")
+    if ((GetParentFolderName $releaseFolder) -eq "bin") {
+        $sampleName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
+        Write-Host "Built Sample: $sampleName"
+
+        # Make sure the destination directory exists, copy the files over.
+        $destinationFolder = (Join-Path $folderReleaseSamples "$sampleName")
+        EnsureFolderExists $destinationFolder    
+        Get-ChildItem $releaseFolder -Recurse -Exclude '*.pdb*', '*.xml*' | Copy-Item -Destination $destinationFolder
+    }
 }
 Write-Host "Built samples."
 
@@ -69,81 +74,27 @@ EnsureEmptyFolderExists($folderReleaseTools)
 $releaseFolders = gci (Join-Path $folderSharpGLRoot "Tools") -Recurse -Directory -filter "Release" | select FullName
 $releaseFolders | ForEach {
     $releaseFolder = $_.FullName
-    $toolName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
-    Write-Host "Built Tool: $toolName"
-    CopyItems (Join-Path $releaseFolder "*.*") (Join-Path $folderReleaseTools "$toolName")
+    if ((GetParentFolderName $releaseFolder) -eq "bin") {
+        $toolName = (Get-Item (Split-Path -parent (Split-Path -parent $releaseFolder))).Name
+        Write-Host "Built Tool: $toolName"
+
+        # Make sure the destination directory exists, copy the files over.
+        $destinationFolder = (Join-Path $folderReleaseTools "$toolName")
+        EnsureFolderExists $destinationFolder    
+        Get-ChildItem $releaseFolder -Recurse -Exclude '*.pdb*' | Copy-Item -Destination $destinationFolder
+    }
 }
 Write-Host "Built tools."
 
-# Part 8 - Move the core libraries to the dependencies folders of the extensions, then build the extensions.
-Write-Host "Preparing to build the extensions..."
-$folderExtensionsRoot = Join-Path $folderSourceRoot "source\Extensions"
-$dllSharpGL = Join-Path $folderReleaseCore "SharpGL\SharpGL.dll"
-$dllSharpGLSceneGraph = Join-Path $folderReleaseCore "SharpGL.SceneGraph\SharpGL.SceneGraph.dll"
-$dllSharpGLWPF = Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.dll"
-$dllSharpGLWinForms = Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.dll"
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WinformsTemplate\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WinformsTemplate\Dependencies")
-Copy-Item $dllSharpGLWinForms -Destination (Join-Path $folderExtensionsRoot "WinformsTemplate\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLWinForms -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject.2010\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject\Dependencies")
-Copy-Item $dllSharpGLWinForms -Destination (Join-Path $folderExtensionsRoot "WinformsTemplateProject\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WpfTemplate\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WpfTemplate\Dependencies")
-Copy-Item $dllSharpGLWPF -Destination (Join-Path $folderExtensionsRoot "WpfTemplate\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject.2010\Dependencies")
-Copy-Item $dllSharpGLWPF -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject.2010\Dependencies")
-
-Copy-Item $dllSharpGL -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject\Dependencies")
-Copy-Item $dllSharpGLSceneGraph -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject\Dependencies")
-Copy-Item $dllSharpGLWPF -Destination (Join-Path $folderExtensionsRoot "WpfTemplateProject\Dependencies")
-
-$solutionExtensions2010 = Join-Path $folderExtensionsRoot "Extensions.2010.sln"
-. $msbuild $solutionExtensions2010 /p:Configuration=Release /verbosity:quiet
-$solutionExtensions = Join-Path $folderExtensionsRoot "Extensions.sln"
-. $msbuild $solutionExtensions /p:Configuration=Release /verbosity:quiet
-
-# Part 9 - Copy the extensions to the release.
-$folderReleaseExtensions = Join-Path $folderRelease "Extensions"
-EnsureEmptyFolderExists($folderReleaseExtensions)
-CopyItems (Join-Path $folderExtensionsRoot "SharpGL.2010\bin\Release\SharpGL.2010.vsix") $folderReleaseExtensions
-CopyItems (Join-Path $folderExtensionsRoot "SharpGL\bin\Release\SharpGL.vsix") $folderReleaseExtensions
-Write-Host "Built extensions, updating VSIX files for the Visual Studio Gallery..."
-
-# Now use vsix tools to tweak the extensions.
-Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") -Version $releaseVersion
-Vsix-SetVersion -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") -Version $releaseVersion
-Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.2010.vsix") 
-Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $folderReleaseExtensions "SharpGL.vsix") 
-
-# Part 10 - Build the Nuget Packages
+# Part 8 - Build the Nuget Packages
 Write-Host "Preparing to build the Nuget Packages..."
 $folderReleasePackages = Join-Path $folderRelease "Packages"
 EnsureEmptyFolderExists($folderReleasePackages)
 $nuget = Join-Path $scriptParentPath "Resources\nuget.exe"
 
-CopyItems (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") (Join-Path $folderNuspecRoot "SharpGLCore\lib\net40")
-$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLCore\SharpGLCore.nuspec")
-. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
-
-CopyItems (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") (Join-Path $folderNuspecRoot "SharpGLforWinForms\lib\net40")
-$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLforWinForms\SharpGLforWinForms.nuspec")
-SetNuspecDependencyVersion $nuspecPath "SharpGLCore" $releaseVersion
-. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
-
-CopyItems (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") (Join-Path $folderNuspecRoot "SharpGLforWPF\lib\net40")
-$nuspecPath = (Join-Path $folderNuspecRoot "SharpGLforWPF\SharpGLforWPF.nuspec")
-SetNuspecDependencyVersion $nuspecPath "SharpGLCore" $releaseVersion
-. $nuget pack $nuspecPath -Version $releaseVersion -OutputDirectory $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.nuspec") $releaseVersion @{} (Join-Path $folderReleaseCore "SharpGL.SceneGraph\*.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.WinForms.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WinForms\SharpGL.WinForms.*") $folderReleasePackages
+CreateNugetPackage $nuget (Join-Path $folderNuspecRoot "SharpGL.WPF.nuspec") $releaseVersion @{"SharpGL"=$releaseVersion} (Join-Path $folderReleaseCore "SharpGL.WPF\SharpGL.WPF.*") $folderReleasePackages
 
 # We're done!
 Write-Host "Successfully built version: $releaseVersion"
