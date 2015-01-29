@@ -30,15 +30,9 @@ build/nuspec/SharpGLforWinForms/lib/
 build/nuspec/SharpGLforWPF/lib/
 release/2.*
 source/SharpGL/packages/
-source/Extensions/WinformsTemplate/Dependencies/
-source/Extensions/WinformsTemplateProject.2010/Dependencies/
-source/Extensions/WinformsTemplateProject/Dependencies/
-source/Extensions/WpfTemplate/Dependencies/
-source/Extensions/WpfTemplateProject.2010/Dependencies/
-source/Extensions/WpfTemplateProject/Dependencies/
-source/Extensions/WinformsTemplate/Dependencies/
-source/Extensions/WinformsTemplateProject.2010/Dependencies/
-source/Extensions/WinformsTemplateProject/Dependencies/
-source/Extensions/WpfTemplate/Dependencies/
-source/Extensions/WpfTemplateProject.2010/Dependencies/
-source/Extensions/WpfTemplateProject/Dependencies/
+
+# Ignores for the extensions.
+extensions/build/SharpGL.2010.vsix
+extensions/build/SharpGL.vsix
+extensions/Seeds/packages
+*.GhostDoc.xml
