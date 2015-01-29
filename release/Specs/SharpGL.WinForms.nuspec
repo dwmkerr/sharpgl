@@ -6,13 +6,13 @@
     <title>SharpGL for WinForms</title>
     <authors>Dave Kerr</authors>
     <owners />
-    <projectUrl>http://sharpgl.codeplex.com</projectUrl>
+    <projectUrl>https://github.com/dwmkerr/sharpgl</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WinForms controls.</description>
     <summary>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WinForms controls.</summary>
-    <copyright>Copyright © Dave Kerr 2013</copyright>
+    <copyright>Copyright © Dave Kerr 2015</copyright>
     <dependencies>
-      <dependency id="SharpGL" version="2.3.0.1" />
+      <dependency id="SharpGL" version="2.4.0.0" />
     </dependencies>
   </metadata>
 </package>

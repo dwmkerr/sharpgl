@@ -33,26 +33,26 @@ namespace SharpGL.SceneGraph.Effects
         {
             //  Create a combined mask.
             AttributeMask attributeFlags = AttributeMask.None;
-            attributeFlags &= accumBufferAttributes.AreAnyAttributesSet() ? accumBufferAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= colorBufferAttributes.AreAnyAttributesSet() ? colorBufferAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= currentAttributes.AreAnyAttributesSet() ? currentAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= depthBufferAttributes.AreAnyAttributesSet() ? depthBufferAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= enableAttributes.AreAnyAttributesSet() ? enableAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= fogAttributes.AreAnyAttributesSet() ? fogAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= lightingAttributes.AreAnyAttributesSet() ? lightingAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= lineAttributes.AreAnyAttributesSet() ? lineAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= pointAttributes.AreAnyAttributesSet() ? pointAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= polygonAttributes.AreAnyAttributesSet() ? polygonAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= evalAttributes.AreAnyAttributesSet() ? evalAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= hintAttributes.AreAnyAttributesSet() ? hintAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= listAttributes.AreAnyAttributesSet() ? listAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= pixelModeAttributes.AreAnyAttributesSet() ? pixelModeAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= polygonStippleAttributes.AreAnyAttributesSet() ? polygonStippleAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= scissorAttributes.AreAnyAttributesSet() ? scissorAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= stencilBufferAttributes.AreAnyAttributesSet() ? stencilBufferAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= textureAttributes.AreAnyAttributesSet() ? textureAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= transformAttributes.AreAnyAttributesSet() ? transformAttributes.AttributeFlags : AttributeMask.None;
-            attributeFlags &= viewportAttributes.AreAnyAttributesSet() ? viewportAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= accumBufferAttributes.AreAnyAttributesSet() ? accumBufferAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= colorBufferAttributes.AreAnyAttributesSet() ? colorBufferAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= currentAttributes.AreAnyAttributesSet() ? currentAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= depthBufferAttributes.AreAnyAttributesSet() ? depthBufferAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= enableAttributes.AreAnyAttributesSet() ? enableAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= fogAttributes.AreAnyAttributesSet() ? fogAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= lightingAttributes.AreAnyAttributesSet() ? lightingAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= lineAttributes.AreAnyAttributesSet() ? lineAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= pointAttributes.AreAnyAttributesSet() ? pointAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= polygonAttributes.AreAnyAttributesSet() ? polygonAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= evalAttributes.AreAnyAttributesSet() ? evalAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= hintAttributes.AreAnyAttributesSet() ? hintAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= listAttributes.AreAnyAttributesSet() ? listAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= pixelModeAttributes.AreAnyAttributesSet() ? pixelModeAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= polygonStippleAttributes.AreAnyAttributesSet() ? polygonStippleAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= scissorAttributes.AreAnyAttributesSet() ? scissorAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= stencilBufferAttributes.AreAnyAttributesSet() ? stencilBufferAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= textureAttributes.AreAnyAttributesSet() ? textureAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= transformAttributes.AreAnyAttributesSet() ? transformAttributes.AttributeFlags : AttributeMask.None;
+            attributeFlags |= viewportAttributes.AreAnyAttributesSet() ? viewportAttributes.AttributeFlags : AttributeMask.None;
 
             //  Push the attribute stack.
             gl.PushAttrib((uint)attributeFlags);
