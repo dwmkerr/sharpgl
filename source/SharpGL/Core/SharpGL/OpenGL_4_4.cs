@@ -11,10 +11,8 @@ namespace SharpGL
         #region ARB_buffer_storage
 
         private delegate void glBufferStorage(uint target, int size, IntPtr data, uint flags);
-        private delegate void glNamedBufferStorageEXT(uint buffer, int size, IntPtr data, uint flags);
+        private delegate void glNamedBufferStorage(uint buffer, int size, IntPtr data, uint flags);
 
-        public const uint GL_MAP_READ_BIT = 0x0001;
-        public const uint GL_MAP_WRITE_BIT = 0x0002;
         public const uint GL_MAP_PERSISTENT_BIT = 0x0040;
         public const uint GL_MAP_COHERENT_BIT = 0x0080;
         public const uint GL_DYNAMIC_STORAGE_BIT = 0x0100;
@@ -42,9 +40,9 @@ namespace SharpGL
         /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
         /// <param name="data">Specifies a pointer to data that will be copied into the data store for initialization, or NULL​ if no data is to be copied.</param>
         /// <param name="flags">Specifies the intended usage of the buffer's data store. Must be a bitwise combination of the following flags. GL_DYNAMIC_STORAGE_BIT​, GL_MAP_READ_BIT​GL_MAP_WRITE_BIT​, GL_MAP_PERSISTENT_BIT​, GL_MAP_COHERENT_BIT​, and GL_CLIENT_STORAGE_BIT​.</param>
-        public void NamedBufferStorageEXT(uint buffer, int size, IntPtr data, uint flags)
+        public void NamedBufferStorage(uint buffer, int size, IntPtr data, uint flags)
         {
-            GetDelegateFor<glNamedBufferStorageEXT>()(buffer, size, data, flags);
+            GetDelegateFor<glNamedBufferStorage>()(buffer, size, data, flags);
         }
 
         #endregion
@@ -200,7 +198,7 @@ namespace SharpGL
 
         #region ARB_texture_stencil8
 
-        public const uint GL_STENCIL_INDEX8 = 0x8D48;
+        //  No new constants/functions.
 
         #endregion
     }

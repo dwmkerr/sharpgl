@@ -428,7 +428,6 @@ namespace SharpGL
         private delegate void glGetInternalformati64v(uint target, uint internalformat, uint pname, uint bufSize, Int64[] parameters);
 
         //  Constants
-        public const uint GL_RENDERBUFFER = 0x8D41;
         public const uint GL_TEXTURE_2D_MULTISAMPLE = 0x9100;
         public const uint GL_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9102;
         public const uint GL_NUM_SAMPLE_COUNTS = 0x9380;
