@@ -1050,13 +1050,27 @@ namespace SharpGL
         {
             return (bool)GetDelegateFor<glUnmapBuffer>()(target);
         }
-        public void GetBufferParameter(uint target, uint pname, int[] parameters)
+
+        /// <summary>
+        /// Return parameters of a buffer object.
+        /// </summary>
+        /// <param name="target">Specifies the target buffer object. The symbolic constant must be GL_ARRAY_BUFFER or GL_ELEMENT_ARRAY_BUFFER.</param>
+        /// <param name="pname">Specifies the symbolic name of a buffer object parameter. Accepted values are GL_BUFFER_SIZE or GL_BUFFER_USAGE.</param>
+        /// <param name="param">Returns the requested parameter.</param>
+        public void GetBufferParameter(uint target, uint pname, out int param)
         {
-            GetDelegateFor<glGetBufferParameteriv>()(target, pname, parameters);
+            GetDelegateFor<glGetBufferParameteriv>()(target, pname, out param);
         }
-        public void GetBufferPointer(uint target, uint pname, IntPtr[] parameters)
+
+        /// <summary>
+        /// Return the pointer to a mapped buffer object's data store.
+        /// </summary>
+        /// <param name="target">Specifies the target to which the buffer object is bound for glGetBufferPointerv, which must be one of the buffer binding targets in the following table:</param>
+        /// <param name="pname">Specifies the name of the pointer to be returned. Must be GL_BUFFER_MAP_POINTER.</param>
+        /// <param name="parameters">Returns the pointer value specified by pname.</param>
+        public void GetBufferPointer(uint target, uint pname, out IntPtr parameters)
         {
-            GetDelegateFor<glGetBufferPointerv>()(target, pname, parameters);
+            GetDelegateFor<glGetBufferPointerv>()(target, pname, out parameters);
         }
         
         //  Delegates
@@ -1077,8 +1091,8 @@ namespace SharpGL
         private delegate void glGetBufferSubData (uint target, int offset, int size, IntPtr data);
         private delegate IntPtr glMapBuffer (uint target, uint access);
         private delegate bool glUnmapBuffer (uint target);
-        private delegate void glGetBufferParameteriv (uint target, uint pname, int[] parameters);
-        private delegate void glGetBufferPointerv (uint target, uint pname, IntPtr[] parameters);
+        private delegate void glGetBufferParameteriv(uint target, uint pname, out int data);
+        private delegate void glGetBufferPointerv (uint target, uint pname, out IntPtr parameters);
 
         //  Constants
         public const uint GL_BUFFER_SIZE                             = 0x8764;

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
 using System.Text;
-using System.Runtime.InteropServices;
 
 namespace SharpGL
 {
@@ -626,7 +622,6 @@ namespace SharpGL
             int x, int y, uint width, uint height);
 
         #endregion
-
 
         #region ARB_multi_draw_indirect
 

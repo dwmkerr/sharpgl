@@ -1,6 +1,8 @@
 ### Version 2.5
 
 * Added support and documentation for all OpenGL 4.3 features.
+* Added support and documentation for all OpenGL 4.4 features.
+* Added support and documentation for all OpenGL 4.5 features.
 
 ### Version 2.4
 
