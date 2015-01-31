@@ -6,10 +6,10 @@
         <title>SharpGL</title>
         <authors>Dave Kerr</authors>
         <owners />
-        <projectUrl>http://sharpgl.codeplex.com</projectUrl>
+        <projectUrl>https://github.com/dwmkerr/sharpgl</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>SharpGL Core is the core library for SharpGL. It provides wrappers for all OpenGL functions and also includes the Scene Graph classes. Installed as part of SharpGL for WinForms or SharpGL for WPF.</description>
-        <summary>SharpGL Core is the core library for SharpGL. It provides wrappers for all OpenGL functions and also includes the Scene Graph classes. Installed as part of SharpGL for WinForms or SharpGL for WPF.</summary>
-        <copyright>Copyright © Dave Kerr 2013</copyright>
+        <description>SharpGL is the core library for SharpGL. It provides wrappers for all OpenGL functions and also includes the Scene Graph classes. Installed as part of SharpGL for WinForms or SharpGL for WPF.</description>
+        <summary> is the core library for SharpGL. It provides wrappers for all OpenGL functions and also includes the Scene Graph classes. Installed as part of SharpGL for WinForms or SharpGL for WPF.</summary>
+        <copyright>Copyright © Dave Kerr 2015</copyright>
     </metadata>
 </package>
