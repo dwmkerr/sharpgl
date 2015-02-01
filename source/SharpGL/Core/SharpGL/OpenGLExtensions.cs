@@ -1818,10 +1818,6 @@ namespace SharpGL
         {
             GetDelegateFor<glGetBooleani_v>()(target, index, data);
         }
-        public void GetInteger(uint target, uint index, int[] data)
-        {
-            GetDelegateFor<glGetIntegeri_v>()(target, index, data);
-        }
         public void Enable(uint target, uint index)
         {
             GetDelegateFor<glEnablei>()(target, index);
@@ -1833,10 +1829,6 @@ namespace SharpGL
         public bool IsEnabled(uint target, uint index)
         {
             return (bool)GetDelegateFor<glIsEnabledi>()(target, index);
-        }
-        public void BindBufferBase(uint target, uint index, uint buffer)
-        {
-            GetDelegateFor<glBindBufferBase>()(target, index, buffer);
         }
         public void VertexAttribIPointer(uint index, int size, uint type, int stride, IntPtr pointer)
         {
@@ -1999,11 +1991,9 @@ namespace SharpGL
         //  Delegates
         private delegate void glColorMaski (uint index, bool r, bool g, bool b, bool a);
         private delegate void glGetBooleani_v (uint target, uint index, bool[] data);
-        private delegate void glGetIntegeri_v (uint target, uint index, int[] data);
         private delegate void glEnablei (uint target, uint index);
         private delegate void glDisablei (uint target, uint index);
         private delegate bool glIsEnabledi (uint target, uint index);
-        private delegate void glBindBufferBase (uint target, uint index, uint buffer);
         private delegate void glVertexAttribIPointer (uint index, int size, uint type, int stride, IntPtr pointer);
         private delegate void glGetVertexAttribIiv (uint index, uint pname, int[] parameters);
         private delegate void glGetVertexAttribIuiv (uint index, uint pname, uint[] parameters);
@@ -2118,47 +2108,13 @@ namespace SharpGL
 
         #region OpenGL 3.1
 
-        //  Methods
-        public void DrawArraysInstanced(uint mode, int first, int count, int primcount)
-        {
-            GetDelegateFor<glDrawArraysInstanced>()(mode, first, count, primcount);
-        }
-        public void DrawElementsInstanced(uint mode, int count, uint type, IntPtr indices, int primcount)
-        {
-            GetDelegateFor<glDrawElementsInstanced>()(mode, count, type, indices, primcount);
-        }
-        public void TexBuffer(uint target, uint internalformat, uint buffer)
-        {
-            GetDelegateFor<glTexBuffer>()(target, internalformat, buffer);
-        }
-        public void PrimitiveRestartIndex(uint index)
-        {
-            GetDelegateFor<glPrimitiveRestartIndex>()(index);
-        }
-
-        //  Delegates
-        private delegate void glDrawArraysInstanced (uint mode, int first, int count, int primcount);
-        private delegate void glDrawElementsInstanced (uint mode, int count, uint type, IntPtr indices, int primcount);
-        private delegate void glTexBuffer (uint target, uint internalformat, uint buffer);
-        private delegate void glPrimitiveRestartIndex (uint index);
 
         //  Constants
-        public const uint GL_SAMPLER_2D_RECT                       = 0x8B63;
-        public const uint GL_SAMPLER_2D_RECT_SHADOW                = 0x8B64;
         public const uint GL_SAMPLER_BUFFER                        = 0x8DC2;
         public const uint GL_INT_SAMPLER_2D_RECT                   = 0x8DCD;
         public const uint GL_INT_SAMPLER_BUFFER                    = 0x8DD0;
         public const uint GL_UNSIGNED_INT_SAMPLER_2D_RECT          = 0x8DD5;
         public const uint GL_UNSIGNED_INT_SAMPLER_BUFFER           = 0x8DD8;
-        public const uint GL_TEXTURE_BUFFER                        = 0x8C2A;
-        public const uint GL_MAX_TEXTURE_BUFFER_SIZE               = 0x8C2B;
-        public const uint GL_TEXTURE_BINDING_BUFFER                = 0x8C2C;
-        public const uint GL_TEXTURE_BUFFER_DATA_STORE_BINDING     = 0x8C2D;
-        public const uint GL_TEXTURE_BUFFER_FORMAT                 = 0x8C2E;
-        public const uint GL_TEXTURE_RECTANGLE                     = 0x84F5;
-        public const uint GL_TEXTURE_BINDING_RECTANGLE             = 0x84F6;
-        public const uint GL_PROXY_TEXTURE_RECTANGLE               = 0x84F7;
-        public const uint GL_MAX_RECTANGLE_TEXTURE_SIZE            = 0x84F8;
         public const uint GL_RED_SNORM                             = 0x8F90;
         public const uint GL_RG_SNORM                              = 0x8F91;
         public const uint GL_RGB_SNORM                             = 0x8F92;
@@ -2172,8 +2128,6 @@ namespace SharpGL
         public const uint GL_RGB16_SNORM                           = 0x8F9A;
         public const uint GL_RGBA16_SNORM                          = 0x8F9B;
         public const uint GL_SIGNED_NORMALIZED                     = 0x8F9C;
-        public const uint GL_PRIMITIVE_RESTART                     = 0x8F9D;
-        public const uint GL_PRIMITIVE_RESTART_INDEX               = 0x8F9E;
         
         #endregion
 
@@ -4442,24 +4396,6 @@ namespace SharpGL
         public const uint GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT = 0x8C4D;
         public const uint GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT = 0x8C4E;
         public const uint GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT = 0x8C4F;
-
-        #endregion
-        
-        #region GL_EXT_draw_instanced
-
-        //  Methods
-        public void DrawArraysInstancedEXT(uint mode, int start, int count, int primcount)
-        {
-            GetDelegateFor<glDrawArraysInstancedEXT>()(mode, start, count, primcount);
-        }
-        public void DrawElementsInstancedEXT(uint mode, int count, uint type, IntPtr indices, int primcount)
-        {
-            GetDelegateFor<glDrawElementsInstancedEXT>()(mode, count, type, indices, primcount);
-        }
-
-        //  Delegates
-        private delegate void glDrawArraysInstancedEXT(uint mode, int start, int count, int primcount);
-        private delegate void glDrawElementsInstancedEXT(uint mode, int count, uint type, IntPtr indices, int primcount);
 
         #endregion
 

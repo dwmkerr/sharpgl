@@ -713,7 +713,6 @@ namespace SharpGL
 
         #region EXT_transform_feedback
 
-        private delegate void glBindBufferRange(uint target, uint index, uint buffer, int offset, int size);
         private delegate void glBeginTransformFeedback(uint primitiveMode);
         private delegate void glEndTransformFeedback();
         private delegate void glTransformFeedbackVaryings(uint program, int count, string[] varyings, uint bufferMode);
@@ -743,19 +742,6 @@ namespace SharpGL
         public const uint GL_TRANSFORM_FEEDBACK_VARYINGS                    = 0x8C83;
         public const uint GL_TRANSFORM_FEEDBACK_BUFFER_MODE                 = 0x8C7F;
         public const uint GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH = 0x8C76;
-
-        /// <summary>
-        /// Bind a range within a buffer object to an indexed buffer target.
-        /// </summary>
-        /// <param name="target">Specify the target of the bind operation. target must be either GL_TRANSFORM_FEEDBACK_BUFFER or GL_UNIFORM_BUFFER.</param>
-        /// <param name="index">Specify the index of the binding point within the array specified by target.</param>
-        /// <param name="buffer">The name of a buffer object to bind to the specified binding point.</param>
-        /// <param name="offset">The starting offset in basic machine units into the buffer object buffer.</param>
-        /// <param name="size">The amount of data in machine units that can be read from the buffet object while used as an indexed target.</param>
-        public void BindBufferRange(uint target, uint index, uint buffer, int offset, int size)
-        {
-            GetDelegateFor<glBindBufferRange>()(target, index, buffer, offset, size);
-        }
 
         /// <summary>
         /// Start transform feedback operation.
