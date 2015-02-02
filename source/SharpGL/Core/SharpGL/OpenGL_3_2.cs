@@ -122,8 +122,172 @@ namespace SharpGL
         #endregion
 
         #region ARB_texture_multisample
+        
+        private delegate void glTexImage2DMultisample(uint target, int samples, uint internalformat, int width, int height, bool fixedsamplelocations);
+        private delegate void glTexImage3DMultisample(uint target, int samples, uint internalformat, int width, int height, int depth, bool fixedsamplelocations);
+        private delegate void glGetMultisamplefv(uint pname, uint index, float[] val);
+        private delegate void glSampleMaski(uint index, uint mask);
 
-        //  TODO
+
+        /// <summary>
+        /// Establish the data storage, format, dimensions, and number of samples of a multisample texture's image.
+        /// </summary>
+        /// <param name="target">Specifies the target of the operation. target must be GL_TEXTURE_2D_MULTISAMPLE or GL_PROXY_TEXTURE_2D_MULTISAMPLE.</param>
+        /// <param name="samples">The number of samples in the multisample texture's image.</param>
+        /// <param name="internalformat">The internal format to be used to store the multisample texture's image. internalformat must specify a color-renderable, depth-renderable, or stencil-renderable format.</param>
+        /// <param name="width">The width of the multisample texture's image, in texels.</param>
+        /// <param name="height">The height of the multisample texture's image, in texels.</param>
+        /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+        public void TexImage2DMultisample(uint target, int samples, uint internalformat, int width, int height,
+                                          bool fixedsamplelocations)
+        {
+            GetDelegateFor<glTexImage2DMultisample>()(target, samples, internalformat, width, height,
+                                                      fixedsamplelocations);
+        }
+
+
+        /// <summary>
+        /// Establish the data storage, format, dimensions, and number of samples of a multisample texture's image.
+        /// </summary>
+        /// <param name="target">Specifies the target of the operation. target must be GL_TEXTURE_2D_MULTISAMPLE_ARRAY or GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY.</param>
+        /// <param name="samples">The number of samples in the multisample texture's image.</param>
+        /// <param name="internalformat">The internal format to be used to store the multisample texture's image. internalformat must specify a color-renderable, depth-renderable, or stencil-renderable format.</param>
+        /// <param name="width">The width of the multisample texture's image, in texels.</param>
+        /// <param name="height">The height of the multisample texture's image, in texels.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
+        public void TexImage3DMultisample(uint target, int samples, uint internalformat, int width, int height, int depth,
+                                          bool fixedsamplelocations)
+        {
+            GetDelegateFor<glTexImage3DMultisample>()(target, samples, internalformat, width, height, depth, 
+                                                      fixedsamplelocations);
+        }
+
+        /// <summary>
+        /// Retrieve the location of a sample.
+        /// </summary>
+        /// <param name="pname">Specifies the sample parameter name. pname must be GL_SAMPLE_POSITION.</param>
+        /// <param name="index">Specifies the index of the sample whose position to query.</param>
+        /// <param name="val">Specifies the address of an array to receive the position of the sample.</param>
+        public void GetMultisample(uint pname, uint index, float[] val)
+        {
+            GetDelegateFor<glGetMultisamplefv>()(pname, index, val);
+        }
+
+        /// <summary>
+        /// Set the value of a sub-word of the sample mask.
+        /// </summary>
+        /// <param name="index">Specifies which 32-bit sub-word of the sample mask to update.</param>
+        /// <param name="mask">Specifies the new value of the mask sub-word.</param>
+        public void SampleMask(uint index, uint mask)
+        {
+            GetDelegateFor<glSampleMaski>()(index, mask);
+        }
+
+        #endregion
+
+        #region ARB_depth_clamp
+
+        public const uint GL_DEPTH_CLAMP = 0x864F;
+
+        #endregion
+
+        #region ARB_sync
+
+        private delegate IntPtr glFenceSync(uint condition, uint flags);
+
+        private delegate bool glIsSync(IntPtr sync);
+
+        private delegate void glDeleteSync(IntPtr sync);
+
+        private delegate uint glClientWaitSync(IntPtr sync, uint flags, UInt64 timeout);
+
+        private delegate void glWaitSync(IntPtr sync, uint flags, UInt64 timeout);
+
+        private delegate void glGetInteger64v(uint pname, Int64[] @params);
+
+        private delegate void glGetSynciv(IntPtr sync, uint pname, int bufSize, out int length,
+                                        int[] values);
+
+        /// <summary>
+        /// Create a new sync object and insert it into the GL command stream.
+        /// </summary>
+        /// <param name="condition">Specifies the condition that must be met to set the sync object's state to signaled. condition must be GL_SYNC_GPU_COMMANDS_COMPLETE.</param>
+        /// <param name="flags">Specifies a bitwise combination of flags controlling the behavior of the sync object. No flags are presently defined for this operation and flags must be zero.</param>
+        /// <returns>The sync object.</returns>
+        public IntPtr FenceSync(uint condition, uint flags)
+        {
+            return GetDelegateFor<glFenceSync>()(condition, flags); 
+        }
+
+        /// <summary>
+        /// Determine if a name corresponds to a sync object.
+        /// </summary>
+        /// <param name="sync">Specifies a value that may be the name of a sync object.</param>
+        /// <returns>glIsSync returns GL_TRUE if sync is currently the name of a sync object. If sync is not the name of a sync object, or if an error occurs, glIsSync returns GL_FALSE. Note that zero is not the name of a sync object.</returns>
+        public bool IsSync(IntPtr sync)
+        {
+            return GetDelegateFor<glIsSync>()(sync);
+        }
+
+        /// <summary>
+        /// Delete a sync object.
+        /// </summary>
+        /// <param name="sync">The sync object to be deleted.</param>
+        public void DeleteSync(IntPtr sync)
+        {
+            GetDelegateFor<glDeleteSync>()(sync);
+        }
+
+        /// <summary>
+        /// Block and wait for a sync object to become signaled.
+        /// </summary>
+        /// <param name="sync">The sync object whose status to wait on.</param>
+        /// <param name="flags">A bitfield controlling the command flushing behavior. flags may be GL_SYNC_FLUSH_COMMANDS_BIT.</param>
+        /// <param name="timeout">The timeout, specified in nanoseconds, for which the implementation should wait for sync to become signaled.</param>
+        /// <returns>The return value is one of four status values:
+        /// GL_ALREADY_SIGNALED indicates that sync was signaled at the time that glClientWaitSync was called.
+        /// GL_TIMEOUT_EXPIRED indicates that at least timeout nanoseconds passed and sync did not become signaled.
+        /// GL_CONDITION_SATISFIED indicates that sync was signaled before the timeout expired.
+        /// GL_WAIT_FAILED indicates that an error occurred. Additionally, an OpenGL error will be generated.</returns>
+        public uint ClientWaitSync(IntPtr sync, uint flags, UInt64 timeout)
+        {
+            return GetDelegateFor<glClientWaitSync>()(sync, flags, timeout);
+        }
+
+        /// <summary>
+        /// Instruct the GL server to block until the specified sync object becomes signaled.
+        /// </summary>
+        /// <param name="sync">Specifies the sync object whose status to wait on.</param>
+        /// <param name="flags">A bitfield controlling the command flushing behavior. flags may be zero.</param>
+        /// <param name="timeout">Specifies the timeout that the server should wait before continuing. timeout must be GL_TIMEOUT_IGNORED.</param>
+        public void WaitSync(IntPtr sync, uint flags, UInt64 timeout)
+        {
+            GetDelegateFor<glWaitSync>()(sync, flags, timeout);
+        }
+
+        /// <summary>
+        /// Return the value or values of a selected parameter.
+        /// </summary>
+        /// <param name="pname">Specifies the parameter value to be returned for non-indexed versions of glGet. The symbolic constants in the list below are accepted.</param>
+        /// <param name="params">Returns the value or values of the specified parameter.</param>
+        public void GetInteger(uint pname, Int64[] @params)
+        {
+            GetDelegateFor<glGetInteger64v>()(pname, @params);
+        }
+
+        /// <summary>
+        /// Query the properties of a sync object.
+        /// </summary>
+        /// <param name="sync">Specifies the sync object whose properties to query.</param>
+        /// <param name="pname">Specifies the parameter whose value to retrieve from the sync object specified in sync.</param>
+        /// <param name="bufSize">Specifies the size of the buffer whose address is given in values.</param>
+        /// <param name="length">Specifies the address of an variable to receive the number of integers placed in values.</param>
+        /// <param name="values">Specifies the address of an array to receive the values of the queried parameter.</param>
+        public void GetSync(IntPtr sync, uint pname, int bufSize, out int length, int[] values)
+        {
+            GetDelegateFor<glGetSynciv>()(sync, pname, bufSize, out length, values);
+        }
 
         #endregion
     }
