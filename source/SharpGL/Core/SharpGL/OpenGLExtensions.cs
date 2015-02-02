@@ -62,6 +62,13 @@ namespace SharpGL
 
         #region OpenGL 1.2
 
+        #region GL_EXT_bgra
+
+        public const uint GL_BGR = 0x80E0;
+        public const uint GL_BGRA = 0x80E1;
+
+        #endregion
+
         //  Methods
         public void BlendColor(float red, float green, float blue, float alpha)
         {
@@ -314,7 +321,6 @@ namespace SharpGL
         public const uint GL_UNSIGNED_INT_8_8_8_8_REV        = 0x8367;
         public const uint GL_UNSIGNED_INT_2_10_10_10_REV     = 0x8368;
         public const uint GL_BGR                             = 0x80E0;
-        public const uint GL_BGRA                            = 0x80E1;
         public const uint GL_MAX_ELEMENTS_VERTICES           = 0x80E8;
         public const uint GL_MAX_ELEMENTS_INDICES            = 0x80E9;
         public const uint GL_CLAMP_TO_EDGE                   = 0x812F;
@@ -2288,12 +2294,6 @@ namespace SharpGL
 
         #endregion
 
-        #region GL_EXT_bgra
-
-        public const uint GL_BGR_EXT = 0x80E0;
-        public const uint GL_BGRA_EXT = 0x80E1;
-
-        #endregion
 
         #region GL_EXT_packed_pixels
 

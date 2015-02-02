@@ -221,7 +221,6 @@ namespace SharpGL
 
         #region ARB_texture_buffer_object
 
-
         private delegate void glTexBuffer(uint target, uint internalformat, uint buffer);
 
         public const uint GL_TEXTURE_BUFFER = 0x8C2A;
