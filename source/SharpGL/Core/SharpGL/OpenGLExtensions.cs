@@ -2148,28 +2148,14 @@ namespace SharpGL
         {
             GetDelegateFor<glGetBufferParameteri64v>()(target, pname, parameters);
         }
-        public void FramebufferTexture(uint target, uint attachment, uint texture, int level)
-        {
-            GetDelegateFor<glFramebufferTexture>()(target, attachment, texture, level);
-        }
 
         //  Delegates
         private delegate void glGetInteger64i_v (uint target, uint index, Int64[] data);
         private delegate void glGetBufferParameteri64v (uint target, uint pname, Int64[] parameters);
-        private delegate void glFramebufferTexture (uint target, uint attachment, uint texture, int level);
 
         //  Constants
         public const uint GL_CONTEXT_CORE_PROFILE_BIT                  = 0x00000001;
         public const uint GL_CONTEXT_COMPATIBILITY_PROFILE_BIT         = 0x00000002;
-        public const uint GL_LINES_ADJACENCY                           = 0x000A;
-        public const uint GL_LINE_STRIP_ADJACENCY                      = 0x000B;
-        public const uint GL_TRIANGLES_ADJACENCY                       = 0x000C;
-        public const uint GL_TRIANGLE_STRIP_ADJACENCY                  = 0x000D;
-        public const uint GL_PROGRAM_POINT_SIZE                        = 0x8642;
-        public const uint GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS          = 0x8C29;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_LAYERED            = 0x8DA7;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS      = 0x8DA8;
-        public const uint GL_GEOMETRY_SHADER                           = 0x8DD9;
         public const uint GL_GEOMETRY_VERTICES_OUT                     = 0x8916;
         public const uint GL_GEOMETRY_INPUT_TYPE                       = 0x8917;
         public const uint GL_GEOMETRY_OUTPUT_TYPE                      = 0x8918;
@@ -3601,7 +3587,6 @@ namespace SharpGL
         public const uint GL_QUERY_RESULT_ARB = 0x8866;
         public const uint GL_QUERY_RESULT_AVAILABLE_ARB = 0x8867;
         public const uint GL_SAMPLES_PASSED_ARB = 0x8914;
-        public const uint GL_ANY_SAMPLES_PASSED = 0x8C2F;
 
         #endregion
 

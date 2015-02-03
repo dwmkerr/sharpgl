@@ -290,6 +290,67 @@ namespace SharpGL
         }
 
         #endregion
+
+        #region ARB_geometry_shader4
+
+        //  TODO: As detailed online, ARB_geometry_shader4 has been heavily modified.
+        //  I think we need to revisit all of this.
+
+        //  NOTE: Contrary to the spec of ARB_geometry_shader4, glProgramParameteri enters the core at v4.1
+        //  NOTE: Contrary to the spec of ARB_geometry_shader4, glFramebufferTextureFace is not used.
+
+        //private delegate void glProgramParameteri(uint program, uint pname, int value);
+        private delegate void glFramebufferTexture(uint target, uint attachment, uint texture, int level);
+        private delegate void glFramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer);
+        //private delegate void glFramebufferTextureFace(uint target, uint attachment, uint texture, int level, uint face);
+
+        public const uint GL_GEOMETRY_SHADER = 0x8DD9;
+
+        //  Note: part of the problem see http://sourceforge.net/p/glew/bugs/210/
+        public const uint GL_GEOMETRY_VERTICES_OUT_ARB = 0x8DDA;
+        public const uint GL_GEOMETRY_INPUT_TYPE_ARB = 0x8DDB;
+        public const uint GL_GEOMETRY_OUTPUT_TYPE_ARB = 0x8DDC;
+
+        public const uint GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS = 0x8C29;
+        public const uint GL_MAX_GEOMETRY_VARYING_COMPONENTS = 0x8DDD;
+        public const uint GL_MAX_VERTEX_VARYING_COMPONENTS = 0x8DDE;
+        
+        //MAX_VARYING_COMPONENTS
+        //MAX_GEOMETRY_UNIFORM_COMPONENTS_ARB              0x8DDF
+        //MAX_GEOMETRY_OUTPUT_VERTICES_ARB                 0x8DE0
+        //MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS_ARB         0x8DE1
+
+        public const uint GL_LINES_ADJACENCY_ARB = 0xA;
+        public const uint GL_LINE_STRIP_ADJACENCY_ARB = 0xB;
+        public const uint GL_TRIANGLES_ADJACENCY_ARB = 0xC;
+        public const uint GL_TRIANGLE_STRIP_ADJACENCY_ARB = 0xD;
+
+        public const uint GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS = 0x8DA8;
+        public const uint GL_FRAMEBUFFER_INCOMPLETE_LAYER_COUNT = 0x8DA9;
+
+        public const uint GL_FRAMEBUFFER_ATTACHMENT_LAYERED = 0x8DA7;
+        //public const uint GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER = 0x8CD4;
+
+        public const uint GL_PROGRAM_POINT_SIZE = 0x8642;
+
+        //public void ProgramParameter(uint program, uint pname, int value)
+        //{
+        //    GetDelegateFor<glProgramParameteri>()(program, pname, value);
+        //}
+
+        /// <summary>
+        /// Attach a level of a texture object as a logical buffer to the currently bound framebuffer object.
+        /// </summary>
+        /// <param name="target">Specifies the framebuffer target. target must be GL_DRAW_FRAMEBUFFER, GL_READ_FRAMEBUFFER, or GL_FRAMEBUFFER. GL_FRAMEBUFFER is equivalent to GL_DRAW_FRAMEBUFFER.</param>
+        /// <param name="attachment">Specifies the attachment point of the framebuffer. attachment must be GL_COLOR_ATTACHMENTi, GL_DEPTH_ATTACHMENT, GL_STENCIL_ATTACHMENT or GL_DEPTH_STENCIL_ATTACHMENT.</param>
+        /// <param name="texture">Specifies the texture object to attach to the framebuffer attachment point named by attachment.</param>
+        /// <param name="level">Specifies the mipmap level of texture to attach.</param>
+        public void FramebufferTexture(uint target, uint attachment, uint texture, int level)
+        {
+            GetDelegateFor<glFramebufferTexture>()(target, attachment, texture, level);
+        }
+        
+        #endregion
     }
 
 // ReSharper restore InconsistentNaming

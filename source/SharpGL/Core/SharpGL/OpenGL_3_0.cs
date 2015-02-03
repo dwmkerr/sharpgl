@@ -43,9 +43,6 @@ namespace SharpGL
         private delegate void glFramebufferTexture3D(
             uint target, uint attachment, uint textarget, uint texture, int level, int layer);
 
-        private delegate void glFramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer
-            );
-
         private delegate void glFramebufferRenderbuffer(
             uint target, uint attachment, uint renderbuffertarget, uint renderbuffer);
 
@@ -310,6 +307,12 @@ namespace SharpGL
             GetDelegateFor<glFramebufferTexture3D>()(target, attachment, textarget, texture, level, layer);
         }
 
+        //  TODO: I have commented out glFramebufferTextureLayer as the documentation states it's actually
+        //  only in 3.2. That agress with the ARB_geometry_shader4 spec but not the ARB_framebuffer spec....
+
+        //private delegate void glFramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer
+        //    );
+
         /// <summary>
         /// Attach a single layer of a texture object as a logical buffer of a framebuffer object
         /// </summary>
@@ -318,10 +321,10 @@ namespace SharpGL
         /// <param name="texture">Specifies the name of an existing texture object to attach.</param>
         /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
         /// <param name="layer">Specifies the layer of the texture object to attach.</param>
-        public void FramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer)
-        {
-            GetDelegateFor<glFramebufferTextureLayer>()(target, attachment, texture, level, layer);
-        }
+        //public void FramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer)
+        //{
+        //    GetDelegateFor<glFramebufferTextureLayer>()(target, attachment, texture, level, layer);
+        //}
 
         /// <summary>
         /// Attach a renderbuffer object to a framebuffer object.
