@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="SharpGL._2015..71f21c40-0a6e-4328-87f2-ba6e8113c326" Version="2.4" Language="en-US" Publisher="Dave Kerr &amp; Robin Sedlaczek" />
+    <DisplayName>SharpGL Extensions for Visual Studio 2015</DisplayName>
+    <Description xml:space="preserve">SharpGL Extensions for Visual Studio 2015. Contains project templates for C# and VB.NET for various types of applications based on SharpGL.</Description>
+    <MoreInfo>https://github.com/dwmkerr/sharpgl</MoreInfo>
+    <License>SharpGLLicense.txt</License>
+    <ReleaseNotes>https://github.com/dwmkerr/sharpgl/releases</ReleaseNotes>
+    <Icon>SharpGL.ico</Icon>
+    <PreviewImage>SharpGL.JPG</PreviewImage>
+    <Tags>SharpGL OpenGL 3D Graphics Rendering Game Games Gaming Raytracing Raytracer Modelling</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0]" />
+    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Premium" />
+    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Ultimate" />
+    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.VSWinExpress" />
+    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.VSWinDesktopExpress" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.0,)" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates" d:TargetPath="ProjectTemplates\SharpGL WinForms Application.zip" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates" d:TargetPath="ProjectTemplates\SharpGL WPF Application.zip" />
+  </Assets>
+</PackageManifest>

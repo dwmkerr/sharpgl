@@ -43,17 +43,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SharpGL, Version=2.3.0.1, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpGLCore.2.3.0.1\lib\net40\SharpGL.dll</HintPath>
+    <Reference Include="SharpGL">
+      <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.dll</HintPath>
     </Reference>
-    <Reference Include="SharpGL.SceneGraph, Version=2.3.0.1, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpGLCore.2.3.0.1\lib\net40\SharpGL.SceneGraph.dll</HintPath>
+    <Reference Include="SharpGL.SceneGraph">
+      <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.SceneGraph.dll</HintPath>
     </Reference>
-    <Reference Include="SharpGL.WinForms, Version=2.3.0.1, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpGLforWinForms.2.3.0.1\lib\net40\SharpGL.WinForms.dll</HintPath>
+    <Reference Include="SharpGL.WinForms">
+      <HintPath>..\packages\SharpGL.WinForms.2.4.0.0\lib\net40\SharpGL.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -89,7 +86,9 @@
       <DependentUpon>SharpGLForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -100,7 +99,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
