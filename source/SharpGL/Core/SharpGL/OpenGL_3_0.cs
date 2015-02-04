@@ -43,9 +43,6 @@ namespace SharpGL
         private delegate void glFramebufferTexture3D(
             uint target, uint attachment, uint textarget, uint texture, int level, int layer);
 
-        private delegate void glFramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer
-            );
-
         private delegate void glFramebufferRenderbuffer(
             uint target, uint attachment, uint renderbuffertarget, uint renderbuffer);
 
@@ -310,6 +307,12 @@ namespace SharpGL
             GetDelegateFor<glFramebufferTexture3D>()(target, attachment, textarget, texture, level, layer);
         }
 
+        //  TODO: I have commented out glFramebufferTextureLayer as the documentation states it's actually
+        //  only in 3.2. That agress with the ARB_geometry_shader4 spec but not the ARB_framebuffer spec....
+
+        //private delegate void glFramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer
+        //    );
+
         /// <summary>
         /// Attach a single layer of a texture object as a logical buffer of a framebuffer object
         /// </summary>
@@ -318,10 +321,10 @@ namespace SharpGL
         /// <param name="texture">Specifies the name of an existing texture object to attach.</param>
         /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
         /// <param name="layer">Specifies the layer of the texture object to attach.</param>
-        public void FramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer)
-        {
-            GetDelegateFor<glFramebufferTextureLayer>()(target, attachment, texture, level, layer);
-        }
+        //public void FramebufferTextureLayer(uint target, uint attachment, uint texture, int level, int layer)
+        //{
+        //    GetDelegateFor<glFramebufferTextureLayer>()(target, attachment, texture, level, layer);
+        //}
 
         /// <summary>
         /// Attach a renderbuffer object to a framebuffer object.
@@ -713,7 +716,6 @@ namespace SharpGL
 
         #region EXT_transform_feedback
 
-        private delegate void glBindBufferRange(uint target, uint index, uint buffer, int offset, int size);
         private delegate void glBeginTransformFeedback(uint primitiveMode);
         private delegate void glEndTransformFeedback();
         private delegate void glTransformFeedbackVaryings(uint program, int count, string[] varyings, uint bufferMode);
@@ -743,19 +745,6 @@ namespace SharpGL
         public const uint GL_TRANSFORM_FEEDBACK_VARYINGS                    = 0x8C83;
         public const uint GL_TRANSFORM_FEEDBACK_BUFFER_MODE                 = 0x8C7F;
         public const uint GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH = 0x8C76;
-
-        /// <summary>
-        /// Bind a range within a buffer object to an indexed buffer target.
-        /// </summary>
-        /// <param name="target">Specify the target of the bind operation. target must be either GL_TRANSFORM_FEEDBACK_BUFFER or GL_UNIFORM_BUFFER.</param>
-        /// <param name="index">Specify the index of the binding point within the array specified by target.</param>
-        /// <param name="buffer">The name of a buffer object to bind to the specified binding point.</param>
-        /// <param name="offset">The starting offset in basic machine units into the buffer object buffer.</param>
-        /// <param name="size">The amount of data in machine units that can be read from the buffet object while used as an indexed target.</param>
-        public void BindBufferRange(uint target, uint index, uint buffer, int offset, int size)
-        {
-            GetDelegateFor<glBindBufferRange>()(target, index, buffer, offset, size);
-        }
 
         /// <summary>
         /// Start transform feedback operation.
