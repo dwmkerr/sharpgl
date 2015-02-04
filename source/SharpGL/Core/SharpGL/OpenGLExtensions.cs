@@ -320,7 +320,6 @@ namespace SharpGL
         public const uint GL_UNSIGNED_SHORT_1_5_5_5_REV      = 0x8366;
         public const uint GL_UNSIGNED_INT_8_8_8_8_REV        = 0x8367;
         public const uint GL_UNSIGNED_INT_2_10_10_10_REV     = 0x8368;
-        public const uint GL_BGR                             = 0x80E0;
         public const uint GL_MAX_ELEMENTS_VERTICES           = 0x80E8;
         public const uint GL_MAX_ELEMENTS_INDICES            = 0x80E9;
         public const uint GL_CLAMP_TO_EDGE                   = 0x812F;
