@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace SharpGL
 {
@@ -282,6 +281,95 @@ namespace SharpGL
         {
             GetDelegateFor<glGetQueryObjectui64v>()(id, pname, @params);
         }
+
+        #endregion
+
+        #region ARB_instanced_arrays
+        
+        private delegate void glVertexAttribDivisor(uint index, uint divisor);
+
+        //  When EXT_direct_state_access is present:
+        private delegate void glVertexArrayVertexAttribDivisorEXT(uint vaobj, uint index, uint divisor);
+
+        public const uint GL_VERTEX_ATTRIB_ARRAY_DIVISOR = 0x88FE;
+
+        /// <summary>
+        /// Modify the rate at which generic vertex attributes advance during instanced rendering.
+        /// </summary>
+        /// <param name="index">Specify the index of the generic vertex attribute.</param>
+        /// <param name="divisor">Specify the number of instances that will pass between updates of the generic attribute at slot index.</param>
+        public void VertexAttribDivisorARB(uint index, uint divisor)
+        {
+            GetDelegateFor<glVertexAttribDivisor>()(index, divisor);
+        }
+
+        /// <summary>
+        /// Modify the rate at which generic vertex attributes advance during instanced rendering.
+        /// </summary>
+        /// <param name="vaobj">The vertex array object.</param>
+        /// <param name="index">Specify the index of the generic vertex attribute.</param>
+        /// <param name="divisor">Specify the number of instances that will pass between updates of the generic attribute at slot index.</param>
+        public void VertexArrayVertexAttribDivisorEXT(uint vaobj, uint index, uint divisor)
+        {
+            GetDelegateFor<glVertexArrayVertexAttribDivisorEXT>()(vaobj, index, divisor);
+        }
+
+        #endregion
+
+        #region ARB_vertex_type_2_10_10_10_rev
+
+        public const uint GL_UNSIGNED_INT_2_10_10_10 = 0x8368;
+        public const uint GL_INT_2_10_10_10 = 0x8D9F;
+
+        /* As far as I can tell, these functions never made it into the core.
+         * 
+         * void VertexP2ui(enum type, uint value);
+    void VertexP3ui(enum type, uint value);
+    void VertexP4ui(enum type, uint value);
+    void VertexP2uiv(enum type, const uint *value);
+    void VertexP3uiv(enum type, const uint *value);
+    void VertexP4uiv(enum type, const uint *value);
+    void TexCoordP1ui(enum type, uint coords);
+    void TexCoordP2ui(enum type, uint coords);
+    void TexCoordP3ui(enum type, uint coords);
+    void TexCoordP4ui(enum type, uint coords);
+    void TexCoordP1uiv(enum type, const uint *coords);
+    void TexCoordP2uiv(enum type, const uint *coords);
+    void TexCoordP3uiv(enum type, const uint *coords);
+    void TexCoordP4uiv(enum type, const uint *coords);
+    void MultiTexCoordP1ui(enum texture, enum type, uint coords);
+    void MultiTexCoordP2ui(enum texture, enum type, uint coords);
+    void MultiTexCoordP3ui(enum texture, enum type, uint coords);
+    void MultiTexCoordP4ui(enum texture, enum type, uint coords);
+    void MultiTexCoordP1uiv(enum texture, enum type, const uint *coords);
+    void MultiTexCoordP2uiv(enum texture, enum type, const uint *coords);
+    void MultiTexCoordP3uiv(enum texture, enum type, const uint *coords);
+    void MultiTexCoordP4uiv(enum texture, enum type, const uint *coords);
+    void NormalP3ui(enum type, uint coords);
+    void NormalP3uiv(enum type, const uint *coords);
+    void ColorP3ui(enum type, uint color);
+    void ColorP4ui(enum type, uint color);
+    void ColorP3uiv(enum type, const uint *color);
+    void ColorP4uiv(enum type, const uint *color);
+    void SecondaryColorP3ui(enum type, uint color);
+    void SecondaryColorP3uiv(enum type, const uint *color);
+    void VertexAttribP1ui(uint index, enum type, boolean normalized,
+                          uint value);
+    void VertexAttribP2ui(uint index, enum type, boolean normalized,
+                          uint value);
+    void VertexAttribP3ui(uint index, enum type, boolean normalized,
+                          uint value);
+    void VertexAttribP4ui(uint index, enum type, boolean normalized,
+                          uint value);
+    void VertexAttribP1uiv(uint index, enum type, boolean normalized,
+                          const uint *value);
+    void VertexAttribP2uiv(uint index, enum type, boolean normalized,
+                          const uint *value);
+    void VertexAttribP3uiv(uint index, enum type, boolean normalized,
+                          const uint *value);
+    void VertexAttribP4uiv(uint index, enum type, boolean normalized,
+                          const uint *value);
+         * */
 
         #endregion
     }
