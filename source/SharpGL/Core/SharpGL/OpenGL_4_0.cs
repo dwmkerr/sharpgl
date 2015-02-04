@@ -850,7 +850,7 @@ namespace SharpGL
 
         #endregion
 
-        #region
+        #region ARB_transform_feedback3
         
         private delegate void glDrawTransformFeedbackStream(uint mode, uint id, uint stream);
         private delegate void glBeginQueryIndexed(uint target, uint index, uint id);
@@ -908,8 +908,8 @@ namespace SharpGL
 
         #endregion
 
-        #region 
-        
+        #region ARB_draw_buffers_blend
+
         private delegate void glBlendEquationi(uint buf, uint mode);
         private delegate void glBlendEquationSeparatei(uint buf, uint modeRGB, uint modeAlpha);
         private delegate void glBlendFunci(uint buf, uint src, uint dst);
