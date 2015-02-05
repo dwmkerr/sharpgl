@@ -318,8 +318,8 @@ namespace SharpGL
 
         #region ARB_vertex_type_2_10_10_10_rev
 
-        public const uint GL_UNSIGNED_INT_2_10_10_10 = 0x8368;
-        public const uint GL_INT_2_10_10_10 = 0x8D9F;
+        public const uint GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+        public const uint GL_INT_2_10_10_10_REV = 0x8D9F;
 
         /* As far as I can tell, these functions never made it into the core.
          * 
