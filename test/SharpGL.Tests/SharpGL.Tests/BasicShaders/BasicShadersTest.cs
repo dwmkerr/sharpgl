@@ -9,6 +9,7 @@ using NUnit.Framework;
 using SharpGL.Enumerations;
 using SharpGL.RenderContextProviders;
 using SharpGL.Shaders;
+using SharpGL.Tests.Contexts;
 using SharpGL.Tests.Helpers;
 using SharpGL.Version;
 using SharpGL.VertexBuffers;
@@ -29,13 +30,21 @@ namespace SharpGL.Tests.BasicShaders
         [Test]
         public void CanPerformBasicRendering()
         {
-            //  TODO: Demand 3.0 minimum (to give us access to GLSL 1.3).
-
-            //  Create an OpenGL instance.
+            //  Create an OpenGL instance, use the experimental offscreen context.
             var gl = new OpenGL();
+            
+            //var context = new OffscreenContext();
+            //try
+            //{
+            //    context.Create(OpenGLVersion.OpenGL3_0, gl, 800, 600, 32);
+            //}
+            //catch (OpenGLVersionException versionException)
+            //{
+            //    Assert.Inconclusive(versionException.Message);
+            //}
 
-            //  Create an FBO render context provider.
-            gl.Create(OpenGLVersion.OpenGL3_0, RenderContextType.FBO, Width, Height, 32, null);
+            gl.Create(OpenGLVersion.OpenGL3_0, RenderContextType.FBO, 800, 600, 32, null);
+
             gl.Viewport(0, 0, Width, Height);
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during render context setup.");
 
@@ -133,11 +142,13 @@ namespace SharpGL.Tests.BasicShaders
 
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during rendering of geometry.");
 
-            var fbo = ((FBORenderContextProvider) gl.RenderContextProvider);
-            fbo.ReadBuffer();
+            ((FBORenderContextProvider)gl.RenderContextProvider).ReadBuffer();
+            //context.ReadBuffer(gl);
+
+            var dibSection = ((FBORenderContextProvider) gl.RenderContextProvider).InternalDIBSection;
 
             //  Get the rendered scene as an image.
-            using (var renderedScene = CreateComparibleBitmap(fbo.InternalDIBSection.HBitmap))
+            using (var renderedScene = CreateComparibleBitmap(dibSection.HBitmap))
             {
                 if (ImageCompare.Compare(renderedScene, LoadReferenceBitmap()) == false)
                 {
@@ -149,6 +160,8 @@ namespace SharpGL.Tests.BasicShaders
                     Assert.Fail("The rendered scene does not match the reference image. The rendered scene has been saved to: '{0}'.", path);
                 }
             }
+
+            //context.Destroy(gl);
         }
     }
 }

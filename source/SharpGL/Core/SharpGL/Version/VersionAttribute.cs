@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SharpGL.Version
 {
@@ -23,6 +24,14 @@ namespace SharpGL.Version
         {
             this.major = major;
             this.minor = minor;
+        }
+
+        public static VersionAttribute FromVersionString(string version)
+        {
+            var matches = Regex.Matches(version, @"(\d+)\.(\d+)");
+            var major = Int32.Parse(matches[0].Groups[1].ToString());
+            var minor = Int32.Parse(matches[0].Groups[2].ToString());
+            return new VersionAttribute(major, minor);
         }
 
         /// <summary>

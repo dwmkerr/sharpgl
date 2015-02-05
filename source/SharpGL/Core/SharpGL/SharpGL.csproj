@@ -60,6 +60,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="OpenGL\OpenGLAPIAttribute.cs" />
     <Compile Include="OpenGL_4_2.cs" />
     <Compile Include="OpenGL_4_1.cs" />
     <Compile Include="OpenGL_4_0.cs" />

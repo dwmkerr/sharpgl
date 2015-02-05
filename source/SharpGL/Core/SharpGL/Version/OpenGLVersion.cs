@@ -6,6 +6,11 @@
     public enum OpenGLVersion
     {
         /// <summary>
+        /// An undefined version.
+        /// </summary>
+        Undefined,
+
+        /// <summary>
         /// Version 1.1
         /// </summary>
         [Version(1, 1)] OpenGL1_1,
@@ -83,6 +88,11 @@
         /// <summary>
         /// OpenGL 4.4
         /// </summary>
-        [Version(4, 4)] OpenGL4_4
+        [Version(4, 4)] OpenGL4_4,
+
+        /// <summary>
+        /// OpenGL 4.5
+        /// </summary>
+        [Version(4, 5)] OpenGL4_5
     }
 }

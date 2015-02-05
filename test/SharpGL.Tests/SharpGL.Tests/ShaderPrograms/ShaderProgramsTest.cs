@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CelShadingSample;
 using GlmNet;
 using NUnit.Framework;
 using SharpGL.Enumerations;
+using SharpGL.RenderContextProviders;
 using SharpGL.Shaders;
+using SharpGL.Tests.Contexts;
 using SharpGL.Version;
 
 namespace SharpGL.Tests.ShaderPrograms
@@ -17,13 +20,20 @@ namespace SharpGL.Tests.ShaderPrograms
         [Test]
         public void CanPerformBasicRendering()
         {
-            //  TODO: Demand 3.0 minimum (to give us access to GLSL 1.3).
-
-            //  Create an OpenGL instance.
+            //  Create an OpenGL instance, use the experimental offscreen context.
             var gl = new OpenGL();
-
+            var context = new OffscreenContext();
+            
+            try
+            {
+                context.Create(OpenGLVersion.OpenGL3_0,  gl, 800, 600, 32);
+            }
+            catch (OpenGLVersionException versionException)
+            {
+                Assert.Inconclusive(versionException.Message);
+            }
+            
             //  Create an FBO render context provider.
-            gl.Create(OpenGLVersion.OpenGL3_0, RenderContextType.FBO, 800, 600, 32, null);
             gl.Viewport(0, 0, 800, 800);
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during render context setup.");
 
@@ -40,8 +50,8 @@ namespace SharpGL.Tests.ShaderPrograms
             //  Create a Shader Program.
             var program = new ShaderProgram();
             program.Create(gl,
-                ManifestResourceLoader.LoadTextFile(@"ShaderPrograms.PerPixel.vert"),
-                ManifestResourceLoader.LoadTextFile(@"ShaderPrograms.PerPixel.frag"), attributeLocations);
+                           ManifestResourceLoader.LoadTextFile(@"ShaderPrograms.PerPixel.vert"),
+                           ManifestResourceLoader.LoadTextFile(@"ShaderPrograms.PerPixel.frag"), attributeLocations);
 
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during shader compilation.");
 
@@ -60,17 +70,20 @@ namespace SharpGL.Tests.ShaderPrograms
                 int length, size;
                 uint type;
                 string name;
-                gl.GetActiveAttrib(program.ShaderProgramObject, (uint)i, 64, out length, out size, out type, out name);
+                gl.GetActiveAttrib(program.ShaderProgramObject, (uint) i, 64, out length, out size, out type,
+                                   out name);
 
                 if (name == "Position")
                 {
                     Assert.AreEqual(1, size, "An incorrect size has been returned for an active attribute.");
-                    Assert.AreEqual(OpenGL.GL_FLOAT_VEC4, type, "An incorrect type has been returned for an active attribute.");
+                    Assert.AreEqual(OpenGL.GL_FLOAT_VEC4, type,
+                                    "An incorrect type has been returned for an active attribute.");
                 }
                 else if (name == "Normal")
                 {
                     Assert.AreEqual(1, size, "An incorrect size has been returned for an active attribute.");
-                    Assert.AreEqual(OpenGL.GL_FLOAT_VEC3, type, "An incorrect type has been returned for an active attribute.");
+                    Assert.AreEqual(OpenGL.GL_FLOAT_VEC3, type,
+                                    "An incorrect type has been returned for an active attribute.");
                 }
                 else
                 {
@@ -108,25 +121,29 @@ namespace SharpGL.Tests.ShaderPrograms
                 int length, size;
                 uint type;
                 string name;
-                gl.GetActiveUniform(program.ShaderProgramObject, (uint)i, 64, out length, out size, out type, out name);
+                gl.GetActiveUniform(program.ShaderProgramObject, (uint) i, 64, out length, out size, out type,
+                                    out name);
 
                 if (name == "Shininess")
                 {
                     Assert.AreEqual(1, size, "An incorrect size has been returned for an active uniform.");
-                    Assert.AreEqual(OpenGL.GL_FLOAT, type, "An incorrect type has been returned for an active uniform.");
+                    Assert.AreEqual(OpenGL.GL_FLOAT, type,
+                                    "An incorrect type has been returned for an active uniform.");
                 }
                 else if (name == "DiffuseMaterial")
                 {
                     Assert.AreEqual(1, size, "An incorrect size has been returned for an active uniform.");
-                    Assert.AreEqual(OpenGL.GL_FLOAT_VEC3, type, "An incorrect type has been returned for an active uniform.");
+                    Assert.AreEqual(OpenGL.GL_FLOAT_VEC3, type,
+                                    "An incorrect type has been returned for an active uniform.");
                 }
                 else if (name == "Projection")
                 {
                     Assert.AreEqual(1, size, "An incorrect size has been returned for an active uniform.");
-                    Assert.AreEqual(OpenGL.GL_FLOAT_MAT4, type, "An incorrect type has been returned for an active uniform.");
+                    Assert.AreEqual(OpenGL.GL_FLOAT_MAT4, type,
+                                    "An incorrect type has been returned for an active uniform.");
                 }
                 else if (!(name == "AmbientMaterial" || name == "SpecularMaterial" || name == "LightPosition"
-                    || name == "Modelview" || name == "NormalMatrix"))
+                           || name == "Modelview" || name == "NormalMatrix"))
                 {
                     Assert.Fail("An unexpected active uniform has been returned.");
                 }
@@ -136,6 +153,9 @@ namespace SharpGL.Tests.ShaderPrograms
 
             //  Unbind the shader.
             program.Unbind(gl);
+
+            context.Destroy(gl);
+
         }
     }
 }

@@ -165,7 +165,7 @@ namespace SharpGL.RenderContextProviders
         public void ReadBuffer()
         {
             //  Set the read buffer.
-            gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0_EXT);
+            gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0);
 
             //	Read the pixels into the DIB section.
             gl.ReadPixels(0, 0, Width, Height, OpenGL.GL_BGRA,

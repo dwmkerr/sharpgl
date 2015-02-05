@@ -844,6 +844,79 @@ namespace SharpGL
         }
 
         #endregion
+
+        #region SharpGL Helpers
+
+        /// <summary>
+        /// Delete named renderbuffer objects.
+        /// </summary>
+        /// <param name="renderbuffers">Specifies an array of renderbuffer objects to be deleted.</param>
+        [OpenGLAPI(SharpGL = true)]
+        public void DeleteRenderbuffers(uint[] renderbuffers)
+        {
+            GetDelegateFor<glDeleteRenderbuffers>()(renderbuffers.Length, renderbuffers);
+        }
+
+        /// <summary>
+        /// Generate renderbuffer object names.
+        /// </summary>
+        /// <param name="n">Specifies the number of renderbuffer object names to be generated.</param>
+        /// <returns>An array in which the generated renderbuffer object names are stored.</returns>
+        [OpenGLAPI(SharpGL = true)]
+        public uint[] GenRenderbuffers(int n)
+        {
+            var renderbuffers = new uint[n];
+            GetDelegateFor<glGenRenderbuffers>()(n, renderbuffers);
+            return renderbuffers;
+        }
+
+        /// <summary>
+        /// Delete named framebuffer objects.
+        /// </summary>
+        /// <param name="framebuffers">Specifies an array of framebuffer objects to be deleted.</param>
+        [OpenGLAPI(SharpGL = true)]
+        public void DeleteFramebuffers(uint[] framebuffers)
+        {
+            GetDelegateFor<glDeleteFramebuffers>()(framebuffers.Length, framebuffers);
+        }
+
+        /// <summary>
+        /// Generate framebuffer object names.
+        /// </summary>
+        /// <param name="n">Specifies the number of framebuffer object names to be generated.</param>
+        /// <returns>An array in which the generated framebuffer object names are stored.</returns>
+        [OpenGLAPI(SharpGL = true)]
+        public uint[] GenFramebuffers(int n)
+        {
+            var framebuffers = new uint[n];
+            GetDelegateFor<glGenFramebuffers>()(n, framebuffers);
+            return framebuffers;
+        }
+
+        /// <summary>
+        /// Delete vertex array objects.
+        /// </summary>
+        /// <param name="arrays">Specifies the address of an array containing the n names of the objects to be deleted.</param>
+        [OpenGLAPI(SharpGL = true)]
+        public void DeleteVertexArrays(uint[] arrays)
+        {
+            GetDelegateFor<glDeleteVertexArrays>()(arrays.Length, arrays);
+        }
+
+        /// <summary>
+        /// Generate vertex array object names.
+        /// </summary>
+        /// <param name="n">Specifies the number of vertex array object names to generate.</param>
+        /// <returns>An array in which the generated vertex array object names are stored.</returns>
+        [OpenGLAPI(SharpGL = true)]
+        public uint[] GenVertexArrays(int n)
+        {
+            var arrays = new uint[n];
+            GetDelegateFor<glGenVertexArrays>()(n, arrays);
+            return arrays;
+        }
+
+        #endregion
     }
 
 // ReSharper restore InconsistentNaming

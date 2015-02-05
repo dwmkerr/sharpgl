@@ -39,7 +39,7 @@ namespace SharpGL.Tests.BasicRendering
             //  Setup a black background, depth testing and smooth shading.
             gl.ShadeModel(OpenGL.GL_SMOOTH);
             gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            gl.ClearDepth(1.0f);
+            gl.ClearDepth(1.0);
             gl.Enable(OpenGL.GL_DEPTH_TEST);
             gl.DepthFunc(OpenGL.GL_LEQUAL);
             gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);

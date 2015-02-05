@@ -51,6 +51,8 @@
     <Compile Include="BasicShaders\BasicShadersTest.cs" />
     <Compile Include="BasicShaders\ManifestResourceLoader.cs" />
     <Compile Include="BasicShaders\TorusGeometry.cs" />
+    <Compile Include="Contexts\OffscreenContext.cs" />
+    <Compile Include="Contexts\OpenGLVersionException.cs" />
     <Compile Include="Helpers\ReadmeGenerator.cs" />
     <Compile Include="RenderingTest.cs" />
     <Compile Include="Helpers\ImageCompare.cs" />
