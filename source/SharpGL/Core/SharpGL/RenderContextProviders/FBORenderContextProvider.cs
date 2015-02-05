@@ -39,27 +39,27 @@ namespace SharpGL.RenderContextProviders
 
             //  First, create the frame buffer and bind it.
             ids = new uint[1];
-            gl.GenFramebuffersEXT(1, ids);
+            gl.GenFramebuffers(1, ids);
             frameBufferID = ids[0];
-            gl.BindFramebufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, frameBufferID);
+            gl.BindFramebuffer(OpenGL.GL_FRAMEBUFFER, frameBufferID);
                         
 		    //	Create the colour render buffer and bind it, then allocate storage for it.
-		    gl.GenRenderbuffersEXT(1, ids);
+		    gl.GenRenderbuffers(1, ids);
             colourRenderBufferID = ids[0];
-		    gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER_EXT, colourRenderBufferID);
-            gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER_EXT, OpenGL.GL_RGBA, width, height);
+		    gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, colourRenderBufferID);
+            gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_RGBA, width, height);
 
             //	Create the depth render buffer and bind it, then allocate storage for it.
-            gl.GenRenderbuffersEXT(1, ids);
+            gl.GenRenderbuffers(1, ids);
             depthRenderBufferID = ids[0];
-            gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
-            gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER_EXT, OpenGL.GL_DEPTH_COMPONENT24, width, height);
+            gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, depthRenderBufferID);
+            gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_DEPTH_COMPONENT24, width, height);
 
             //  Set the render buffer for colour and depth.
-            gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_COLOR_ATTACHMENT0_EXT,
-                OpenGL.GL_RENDERBUFFER_EXT, colourRenderBufferID);
-            gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_DEPTH_ATTACHMENT_EXT,
-                OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
+            gl.FramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_COLOR_ATTACHMENT0,
+                OpenGL.GL_RENDERBUFFER, colourRenderBufferID);
+            gl.FramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_DEPTH_ATTACHMENT,
+                OpenGL.GL_RENDERBUFFER, depthRenderBufferID);
 
             dibSectionDeviceContext = Win32.CreateCompatibleDC(deviceContextHandle);
 		
@@ -72,10 +72,10 @@ namespace SharpGL.RenderContextProviders
         private void DestroyFramebuffers()
         {
             //  Delete the render buffers.
-            gl.DeleteRenderbuffersEXT(2, new uint[] { colourRenderBufferID, depthRenderBufferID });
+            gl.DeleteRenderbuffers(2, new uint[] { colourRenderBufferID, depthRenderBufferID });
 
             //	Delete the framebuffer.
-            gl.DeleteFramebuffersEXT(1, new uint[] { frameBufferID });
+            gl.DeleteFramebuffers(1, new uint[] { frameBufferID });
 
             //  Reset the IDs.
             colourRenderBufferID = 0;
@@ -107,41 +107,42 @@ namespace SharpGL.RenderContextProviders
 
             //  TODO: We should be able to just use the code below - however we 
             //  get invalid dimension issues at the moment, so recreate for now.
+            //  TODO: DK: Quick tests show this works now we've correctly mapped the FBO extensions, however check
+            //  carefully before changing implementation.
 
-            /*
             //  Resize the render buffer storage.
-            gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER_EXT, colourRenderBufferID);
-            gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER_EXT, OpenGL.GL_RGBA, width, height);
-            gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
-            gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER_EXT, OpenGL.GL_DEPTH_ATTACHMENT_EXT, width, height);
-            var complete = gl.CheckFramebufferStatusEXT(OpenGL.GL_FRAMEBUFFER_EXT);
-            */
+            //gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, colourRenderBufferID);
+            //gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_RGBA, width, height);
+            //gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, depthRenderBufferID);
+            //gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_DEPTH_ATTACHMENT, width, height);
+            //var complete = gl.CheckFramebufferStatus(OpenGL.GL_FRAMEBUFFER);
+
 
             uint[] ids = new uint[1];
 
             //  First, create the frame buffer and bind it.
             ids = new uint[1];
-            gl.GenFramebuffersEXT(1, ids);
+            gl.GenFramebuffers(1, ids);
             frameBufferID = ids[0];
-            gl.BindFramebufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, frameBufferID);
+            gl.BindFramebuffer(OpenGL.GL_FRAMEBUFFER, frameBufferID);
 
             //	Create the colour render buffer and bind it, then allocate storage for it.
-            gl.GenRenderbuffersEXT(1, ids);
+            gl.GenRenderbuffers(1, ids);
             colourRenderBufferID = ids[0];
-            gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER_EXT, colourRenderBufferID);
-            gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER_EXT, OpenGL.GL_RGBA, width, height);
+            gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, colourRenderBufferID);
+            gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_RGBA, width, height);
 
             //	Create the depth render buffer and bind it, then allocate storage for it.
-            gl.GenRenderbuffersEXT(1, ids);
+            gl.GenRenderbuffers(1, ids);
             depthRenderBufferID = ids[0];
-            gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
-            gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER_EXT, OpenGL.GL_DEPTH_COMPONENT24, width, height);
+            gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, depthRenderBufferID);
+            gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_DEPTH_COMPONENT24, width, height);
 
             //  Set the render buffer for colour and depth.
-            gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_COLOR_ATTACHMENT0_EXT,
-                OpenGL.GL_RENDERBUFFER_EXT, colourRenderBufferID);
-            gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_DEPTH_ATTACHMENT_EXT,
-                OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
+            gl.FramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_COLOR_ATTACHMENT0,
+                OpenGL.GL_RENDERBUFFER, colourRenderBufferID);
+            gl.FramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_DEPTH_ATTACHMENT,
+                OpenGL.GL_RENDERBUFFER, depthRenderBufferID);
         }
 
         public override void Blit(IntPtr hdc)
@@ -149,7 +150,7 @@ namespace SharpGL.RenderContextProviders
             if (deviceContextHandle != IntPtr.Zero)
             {
                 //  Set the read buffer.
-                gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0_EXT);
+                gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0);
 
 			    //	Read the pixels into the DIB section.
 			    gl.ReadPixels(0, 0, Width, Height, OpenGL.GL_BGRA, 

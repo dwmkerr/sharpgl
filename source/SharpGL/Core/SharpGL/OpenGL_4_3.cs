@@ -405,10 +405,10 @@ namespace SharpGL
         /// <param name="pname">Specifies the type of information to query.</param>
         /// <param name="bufSize">Specifies the maximum number of basic machine units that may be written to params​ by the function.</param>
         /// <param name="parameters">Specifies the address of a variable into which to write the retrieved information.</param>
-        public void GetInternalformat(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters)
-        {
-            GetDelegateFor<glGetInternalformativ>()(target, internalformat, pname, bufSize, parameters);
-        }
+        //public void GetInternalformat(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters)
+        //{
+        //    GetDelegateFor<glGetInternalformativ>()(target, internalformat, pname, bufSize, parameters);
+        //}
 
         /// <summary>
         /// Retrieve information about implementation-dependent support for internal formats
@@ -424,14 +424,14 @@ namespace SharpGL
         }
 
         //  Delegates
-        private delegate void glGetInternalformativ(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters);
+        //  NOTE: actually implemented in 4.2 
+        //  private delegate void glGetInternalformativ(uint target, uint internalformat, uint pname, uint bufSize, int[] parameters);
         private delegate void glGetInternalformati64v(uint target, uint internalformat, uint pname, uint bufSize, Int64[] parameters);
 
         //  Constants
-        public const uint GL_RENDERBUFFER = 0x8D41;
         public const uint GL_TEXTURE_2D_MULTISAMPLE = 0x9100;
         public const uint GL_TEXTURE_2D_MULTISAMPLE_ARRAY = 0x9102;
-        public const uint GL_NUM_SAMPLE_COUNTS = 0x9380;
+        // public const uint GL_NUM_SAMPLE_COUNTS = 0x9380;
         public const uint GL_INTERNALFORMAT_SUPPORTED = 0x826F;
         public const uint GL_INTERNALFORMAT_PREFERRED = 0x8270;
         public const uint GL_INTERNALFORMAT_RED_SIZE = 0x8271;
@@ -492,7 +492,7 @@ namespace SharpGL
         public const uint GL_IMAGE_COMPATIBILITY_CLASS = 0x82A8;
         public const uint GL_IMAGE_PIXEL_FORMAT = 0x82A9;
         public const uint GL_IMAGE_PIXEL_TYPE = 0x82AA;
-        public const uint GL_IMAGE_FORMAT_COMPATIBILITY_TYPE = 0x90C7;
+        //public const uint GL_IMAGE_FORMAT_COMPATIBILITY_TYPE = 0x90C7;
         public const uint GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST = 0x82AC;
         public const uint GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST = 0x82AD;
         public const uint GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE = 0x82AE;

@@ -62,6 +62,13 @@ namespace SharpGL
 
         #region OpenGL 1.2
 
+        #region GL_EXT_bgra
+
+        public const uint GL_BGR = 0x80E0;
+        public const uint GL_BGRA = 0x80E1;
+
+        #endregion
+
         //  Methods
         public void BlendColor(float red, float green, float blue, float alpha)
         {
@@ -312,9 +319,6 @@ namespace SharpGL
         public const uint GL_UNSIGNED_SHORT_4_4_4_4_REV      = 0x8365;
         public const uint GL_UNSIGNED_SHORT_1_5_5_5_REV      = 0x8366;
         public const uint GL_UNSIGNED_INT_8_8_8_8_REV        = 0x8367;
-        public const uint GL_UNSIGNED_INT_2_10_10_10_REV     = 0x8368;
-        public const uint GL_BGR                             = 0x80E0;
-        public const uint GL_BGRA                            = 0x80E1;
         public const uint GL_MAX_ELEMENTS_VERTICES           = 0x80E8;
         public const uint GL_MAX_ELEMENTS_INDICES            = 0x80E9;
         public const uint GL_CLAMP_TO_EDGE                   = 0x812F;
@@ -1818,10 +1822,6 @@ namespace SharpGL
         {
             GetDelegateFor<glGetBooleani_v>()(target, index, data);
         }
-        public void GetInteger(uint target, uint index, int[] data)
-        {
-            GetDelegateFor<glGetIntegeri_v>()(target, index, data);
-        }
         public void Enable(uint target, uint index)
         {
             GetDelegateFor<glEnablei>()(target, index);
@@ -1833,42 +1833,6 @@ namespace SharpGL
         public bool IsEnabled(uint target, uint index)
         {
             return (bool)GetDelegateFor<glIsEnabledi>()(target, index);
-        }
-        public void BeginTransformFeedback(uint primitiveMode)
-        {
-            GetDelegateFor<glBeginTransformFeedback>()(primitiveMode);
-        }
-        public void EndTransformFeedback()
-        {
-            GetDelegateFor<glEndTransformFeedback>()();
-        }
-        public void BindBufferRange(uint target, uint index, uint buffer, int offset, int size)
-        {
-            GetDelegateFor<glBindBufferRange>()(target, index, buffer, offset, size);
-        }
-        public void BindBufferBase(uint target, uint index, uint buffer)
-        {
-            GetDelegateFor<glBindBufferBase>()(target, index, buffer);
-        }
-        public void TransformFeedbackVaryings(uint program, int count, string[] varyings, uint bufferMode)
-        {
-            GetDelegateFor<glTransformFeedbackVaryings>()(program, count, varyings, bufferMode);
-        }
-        public void GetTransformFeedbackVarying(uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
-        {
-            GetDelegateFor<glGetTransformFeedbackVarying>()(program, index, bufSize, length, size, type, name);
-        }
-        public void ClampColor(uint target, uint clamp)
-        {
-            GetDelegateFor<glClampColor>()(target, clamp);
-        }
-        public void BeginConditionalRender(uint id, uint mode)
-        {
-            GetDelegateFor<glBeginConditionalRender>()(id, mode);
-        }
-        public void EndConditionalRender()
-        {
-            GetDelegateFor<glEndConditionalRender>()();
         }
         public void VertexAttribIPointer(uint index, int size, uint type, int stride, IntPtr pointer)
         {
@@ -2006,22 +1970,7 @@ namespace SharpGL
         {
             GetDelegateFor<glUniform4uiv>()(location, count, value);
         }
-        public void TexParameterI(uint target, uint pname, int[] parameters)
-        {
-            GetDelegateFor<glTexParameterIiv>()(target, pname, parameters);
-        }
-        public void TexParameterI(uint target, uint pname, uint[] parameters)
-        {
-            GetDelegateFor<glTexParameterIuiv>()(target, pname, parameters);
-        }
-        public void GetTexParameterI(uint target, uint pname, int[] parameters)
-        {
-            GetDelegateFor<glGetTexParameterIiv>()(target, pname, parameters);
-        }
-        public void GetTexParameterI(uint target, uint pname, uint[] parameters)
-        {
-            GetDelegateFor<glGetTexParameterIuiv>()(target, pname, parameters);
-        }
+
         public void ClearBuffer(uint buffer, int drawbuffer, int[] value)
         {
             GetDelegateFor<glClearBufferiv>()(buffer, drawbuffer, value);
@@ -2046,19 +1995,9 @@ namespace SharpGL
         //  Delegates
         private delegate void glColorMaski (uint index, bool r, bool g, bool b, bool a);
         private delegate void glGetBooleani_v (uint target, uint index, bool[] data);
-        private delegate void glGetIntegeri_v (uint target, uint index, int[] data);
         private delegate void glEnablei (uint target, uint index);
         private delegate void glDisablei (uint target, uint index);
         private delegate bool glIsEnabledi (uint target, uint index);
-        private delegate void glBeginTransformFeedback (uint primitiveMode);
-        private delegate void glEndTransformFeedback ();
-        private delegate void glBindBufferRange (uint target, uint index, uint buffer, int offset, int size);
-        private delegate void glBindBufferBase (uint target, uint index, uint buffer);
-        private delegate void glTransformFeedbackVaryings (uint program, int count, string[] varyings, uint bufferMode);
-        private delegate void glGetTransformFeedbackVarying (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name);
-        private delegate void glClampColor (uint target, uint clamp);
-        private delegate void glBeginConditionalRender (uint id, uint mode);
-        private delegate void glEndConditionalRender ();
         private delegate void glVertexAttribIPointer (uint index, int size, uint type, int stride, IntPtr pointer);
         private delegate void glGetVertexAttribIiv (uint index, uint pname, int[] parameters);
         private delegate void glGetVertexAttribIuiv (uint index, uint pname, uint[] parameters);
@@ -2093,10 +2032,6 @@ namespace SharpGL
         private delegate void glUniform2uiv (int location, int count, uint[] value);
         private delegate void glUniform3uiv (int location, int count, uint[] value);
         private delegate void glUniform4uiv (int location, int count, uint[] value);
-        private delegate void glTexParameterIiv (uint target, uint pname, int[] parameters);
-        private delegate void glTexParameterIuiv (uint target, uint pname, uint[] parameters);
-        private delegate void glGetTexParameterIiv (uint target, uint pname, int[] parameters);
-        private delegate void glGetTexParameterIuiv (uint target, uint pname, uint[] parameters);
         private delegate void glClearBufferiv (uint buffer, int drawbuffer, int[] value);
         private delegate void glClearBufferuiv (uint buffer, int drawbuffer, uint[] value);
         private delegate void glClearBufferfv (uint buffer, int drawbuffer, float[] value);
@@ -2128,61 +2063,9 @@ namespace SharpGL
         public const uint GL_RGBA16F                                       = 0x881A;
         public const uint GL_RGB16F                                        = 0x881B;
         public const uint GL_VERTEX_ATTRIB_ARRAY_INTEGER                   = 0x88FD;
-        public const uint GL_MAX_ARRAY_TEXTURE_LAYERS                      = 0x88FF;
         public const uint GL_MIN_PROGRAM_TEXEL_OFFSET                      = 0x8904;
         public const uint GL_MAX_PROGRAM_TEXEL_OFFSET                      = 0x8905;
-        public const uint GL_CLAMP_READ_COLOR                              = 0x891C;
-        public const uint GL_FIXED_ONLY                                    = 0x891D;
         public const uint GL_MAX_VARYING_COMPONENTS                        = 0x8B4B;
-        public const uint GL_TEXTURE_1D_ARRAY                              = 0x8C18;
-        public const uint GL_PROXY_TEXTURE_1D_ARRAY                        = 0x8C19;
-        public const uint GL_TEXTURE_2D_ARRAY                              = 0x8C1A;
-        public const uint GL_PROXY_TEXTURE_2D_ARRAY                        = 0x8C1B;
-        public const uint GL_TEXTURE_BINDING_1D_ARRAY                      = 0x8C1C;
-        public const uint GL_TEXTURE_BINDING_2D_ARRAY                      = 0x8C1D;
-        public const uint GL_R11F_G11F_B10F                                = 0x8C3A;
-        public const uint GL_UNSIGNED_INT_10F_11F_11F_REV                  = 0x8C3B;
-        public const uint GL_RGB9_E5                                       = 0x8C3D;
-        public const uint GL_UNSIGNED_INT_5_9_9_9_REV                      = 0x8C3E;
-        public const uint GL_TEXTURE_SHARED_SIZE                           = 0x8C3F;
-        public const uint GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH         = 0x8C76;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_MODE                = 0x8C7F;
-        public const uint GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS    = 0x8C80;
-        public const uint GL_TRANSFORM_FEEDBACK_VARYINGS                   = 0x8C83;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_START               = 0x8C84;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_SIZE                = 0x8C85;
-        public const uint GL_PRIMITIVES_GENERATED                          = 0x8C87;
-        public const uint GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN         = 0x8C88;
-        public const uint GL_RASTERIZER_DISCARD                            = 0x8C89;
-        public const uint GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS = 0x8C8A;
-        public const uint GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS       = 0x8C8B;
-        public const uint GL_INTERLEAVED_ATTRIBS                           = 0x8C8C;
-        public const uint GL_SEPARATE_ATTRIBS                              = 0x8C8D;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER                     = 0x8C8E;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_BINDING             = 0x8C8F;
-        public const uint GL_RGBA32UI                                      = 0x8D70;
-        public const uint GL_RGB32UI                                       = 0x8D71;
-        public const uint GL_RGBA16UI                                      = 0x8D76;
-        public const uint GL_RGB16UI                                       = 0x8D77;
-        public const uint GL_RGBA8UI                                       = 0x8D7C;
-        public const uint GL_RGB8UI                                        = 0x8D7D;
-        public const uint GL_RGBA32I                                       = 0x8D82;
-        public const uint GL_RGB32I                                        = 0x8D83;
-        public const uint GL_RGBA16I                                       = 0x8D88;
-        public const uint GL_RGB16I                                        = 0x8D89;
-        public const uint GL_RGBA8I                                        = 0x8D8E;
-        public const uint GL_RGB8I                                         = 0x8D8F;
-        public const uint GL_RED_INTEGER                                   = 0x8D94;
-        public const uint GL_GREEN_INTEGER                                 = 0x8D95;
-        public const uint GL_BLUE_INTEGER                                  = 0x8D96;
-        public const uint GL_RGB_INTEGER                                   = 0x8D98;
-        public const uint GL_RGBA_INTEGER                                  = 0x8D99;
-        public const uint GL_BGR_INTEGER                                   = 0x8D9A;
-        public const uint GL_BGRA_INTEGER                                  = 0x8D9B;
-        public const uint GL_SAMPLER_1D_ARRAY                              = 0x8DC0;
-        public const uint GL_SAMPLER_2D_ARRAY                              = 0x8DC1;
-        public const uint GL_SAMPLER_1D_ARRAY_SHADOW                       = 0x8DC3;
-        public const uint GL_SAMPLER_2D_ARRAY_SHADOW                       = 0x8DC4;
         public const uint GL_SAMPLER_CUBE_SHADOW                           = 0x8DC5;
         public const uint GL_UNSIGNED_INT_VEC2                             = 0x8DC6;
         public const uint GL_UNSIGNED_INT_VEC3                             = 0x8DC7;
@@ -2199,10 +2082,6 @@ namespace SharpGL
         public const uint GL_UNSIGNED_INT_SAMPLER_CUBE                     = 0x8DD4;
         public const uint GL_UNSIGNED_INT_SAMPLER_1D_ARRAY                 = 0x8DD6;
         public const uint GL_UNSIGNED_INT_SAMPLER_2D_ARRAY                 = 0x8DD7;
-        public const uint GL_QUERY_WAIT                                    = 0x8E13;
-        public const uint GL_QUERY_NO_WAIT                                 = 0x8E14;
-        public const uint GL_QUERY_BY_REGION_WAIT                          = 0x8E15;
-        public const uint GL_QUERY_BY_REGION_NO_WAIT                       = 0x8E16;
         public const uint GL_BUFFER_ACCESS_FLAGS                           = 0x911F;
         public const uint GL_BUFFER_MAP_LENGTH                             = 0x9120;
         public const uint GL_BUFFER_MAP_OFFSET                             = 0x9121;
@@ -2233,47 +2112,13 @@ namespace SharpGL
 
         #region OpenGL 3.1
 
-        //  Methods
-        public void DrawArraysInstanced(uint mode, int first, int count, int primcount)
-        {
-            GetDelegateFor<glDrawArraysInstanced>()(mode, first, count, primcount);
-        }
-        public void DrawElementsInstanced(uint mode, int count, uint type, IntPtr indices, int primcount)
-        {
-            GetDelegateFor<glDrawElementsInstanced>()(mode, count, type, indices, primcount);
-        }
-        public void TexBuffer(uint target, uint internalformat, uint buffer)
-        {
-            GetDelegateFor<glTexBuffer>()(target, internalformat, buffer);
-        }
-        public void PrimitiveRestartIndex(uint index)
-        {
-            GetDelegateFor<glPrimitiveRestartIndex>()(index);
-        }
-
-        //  Delegates
-        private delegate void glDrawArraysInstanced (uint mode, int first, int count, int primcount);
-        private delegate void glDrawElementsInstanced (uint mode, int count, uint type, IntPtr indices, int primcount);
-        private delegate void glTexBuffer (uint target, uint internalformat, uint buffer);
-        private delegate void glPrimitiveRestartIndex (uint index);
 
         //  Constants
-        public const uint GL_SAMPLER_2D_RECT                       = 0x8B63;
-        public const uint GL_SAMPLER_2D_RECT_SHADOW                = 0x8B64;
         public const uint GL_SAMPLER_BUFFER                        = 0x8DC2;
         public const uint GL_INT_SAMPLER_2D_RECT                   = 0x8DCD;
         public const uint GL_INT_SAMPLER_BUFFER                    = 0x8DD0;
         public const uint GL_UNSIGNED_INT_SAMPLER_2D_RECT          = 0x8DD5;
         public const uint GL_UNSIGNED_INT_SAMPLER_BUFFER           = 0x8DD8;
-        public const uint GL_TEXTURE_BUFFER                        = 0x8C2A;
-        public const uint GL_MAX_TEXTURE_BUFFER_SIZE               = 0x8C2B;
-        public const uint GL_TEXTURE_BINDING_BUFFER                = 0x8C2C;
-        public const uint GL_TEXTURE_BUFFER_DATA_STORE_BINDING     = 0x8C2D;
-        public const uint GL_TEXTURE_BUFFER_FORMAT                 = 0x8C2E;
-        public const uint GL_TEXTURE_RECTANGLE                     = 0x84F5;
-        public const uint GL_TEXTURE_BINDING_RECTANGLE             = 0x84F6;
-        public const uint GL_PROXY_TEXTURE_RECTANGLE               = 0x84F7;
-        public const uint GL_MAX_RECTANGLE_TEXTURE_SIZE            = 0x84F8;
         public const uint GL_RED_SNORM                             = 0x8F90;
         public const uint GL_RG_SNORM                              = 0x8F91;
         public const uint GL_RGB_SNORM                             = 0x8F92;
@@ -2287,8 +2132,6 @@ namespace SharpGL
         public const uint GL_RGB16_SNORM                           = 0x8F9A;
         public const uint GL_RGBA16_SNORM                          = 0x8F9B;
         public const uint GL_SIGNED_NORMALIZED                     = 0x8F9C;
-        public const uint GL_PRIMITIVE_RESTART                     = 0x8F9D;
-        public const uint GL_PRIMITIVE_RESTART_INDEX               = 0x8F9E;
         
         #endregion
 
@@ -2303,28 +2146,14 @@ namespace SharpGL
         {
             GetDelegateFor<glGetBufferParameteri64v>()(target, pname, parameters);
         }
-        public void FramebufferTexture(uint target, uint attachment, uint texture, int level)
-        {
-            GetDelegateFor<glFramebufferTexture>()(target, attachment, texture, level);
-        }
 
         //  Delegates
         private delegate void glGetInteger64i_v (uint target, uint index, Int64[] data);
         private delegate void glGetBufferParameteri64v (uint target, uint pname, Int64[] parameters);
-        private delegate void glFramebufferTexture (uint target, uint attachment, uint texture, int level);
 
         //  Constants
         public const uint GL_CONTEXT_CORE_PROFILE_BIT                  = 0x00000001;
         public const uint GL_CONTEXT_COMPATIBILITY_PROFILE_BIT         = 0x00000002;
-        public const uint GL_LINES_ADJACENCY                           = 0x000A;
-        public const uint GL_LINE_STRIP_ADJACENCY                      = 0x000B;
-        public const uint GL_TRIANGLES_ADJACENCY                       = 0x000C;
-        public const uint GL_TRIANGLE_STRIP_ADJACENCY                  = 0x000D;
-        public const uint GL_PROGRAM_POINT_SIZE                        = 0x8642;
-        public const uint GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS          = 0x8C29;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_LAYERED            = 0x8DA7;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS      = 0x8DA8;
-        public const uint GL_GEOMETRY_SHADER                           = 0x8DD9;
         public const uint GL_GEOMETRY_VERTICES_OUT                     = 0x8916;
         public const uint GL_GEOMETRY_INPUT_TYPE                       = 0x8917;
         public const uint GL_GEOMETRY_OUTPUT_TYPE                      = 0x8918;
@@ -2339,65 +2168,15 @@ namespace SharpGL
         
         #endregion
 
-        #region OpenGL 3.3
-
-        //  Methods
-        public void VertexAttribDivisor(uint index, uint divisor)
-        {
-            GetDelegateFor<glVertexAttribDivisor>()(index, divisor);
-        }
-        
-        //  Delegates
-        private delegate void glVertexAttribDivisor (uint index, uint divisor);
-
-        //  Constants
-        public const uint GL_VERTEX_ATTRIB_ARRAY_DIVISOR             = 0x88FE;
-        
-        #endregion
-
         #region OpenGL 4.0
 
         //  Methods        
-        public void MinSampleShading(float value)
-        {
-            GetDelegateFor<glMinSampleShading>()(value);
-        }
-        public void BlendEquation(uint buf, uint mode)
-        {
-            GetDelegateFor<glBlendEquationi>()(buf, mode);
-        }
-        public void BlendEquationSeparate(uint buf, uint modeRGB, uint modeAlpha)
-        {
-            GetDelegateFor<glBlendEquationSeparatei>()(buf, modeRGB, modeAlpha);
-        }
-        public void BlendFunc(uint buf, uint src, uint dst)
-        {
-            GetDelegateFor<glBlendFunci>()(buf, src, dst);
-        }
-        public void BlendFuncSeparate(uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha)
-        {
-            GetDelegateFor<glBlendFuncSeparatei>()(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
-        }
 
         //  Delegates        
-        private delegate void glMinSampleShading (float value);
-        private delegate void glBlendEquationi (uint buf, uint mode);
-        private delegate void glBlendEquationSeparatei (uint buf, uint modeRGB, uint modeAlpha);
-        private delegate void glBlendFunci (uint buf, uint src, uint dst);
-        private delegate void glBlendFuncSeparatei (uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha);
 
         //  Constants
-        public const uint GL_SAMPLE_SHADING                        = 0x8C36;
-        public const uint GL_MIN_SAMPLE_SHADING_VALUE              = 0x8C37;
-        public const uint GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET     = 0x8E5E;
-        public const uint GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET     = 0x8E5F;
-        public const uint GL_TEXTURE_CUBE_MAP_ARRAY                = 0x9009;
-        public const uint GL_TEXTURE_BINDING_CUBE_MAP_ARRAY        = 0x900A;
-        public const uint GL_PROXY_TEXTURE_CUBE_MAP_ARRAY          = 0x900B;
-        public const uint GL_SAMPLER_CUBE_MAP_ARRAY                = 0x900C;
-        public const uint GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW         = 0x900D;
-        public const uint GL_INT_SAMPLER_CUBE_MAP_ARRAY            = 0x900E;
-        public const uint GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY   = 0x900F;
+        public const uint GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5E;
+        public const uint GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5F;
 
         #endregion
 
@@ -2449,12 +2228,6 @@ namespace SharpGL
 
         #endregion
 
-        #region GL_EXT_bgra
-
-        public const uint GL_BGR_EXT = 0x80E0;
-        public const uint GL_BGRA_EXT = 0x80E1;
-
-        #endregion
 
         #region GL_EXT_packed_pixels
 
@@ -3762,7 +3535,6 @@ namespace SharpGL
         public const uint GL_QUERY_RESULT_ARB = 0x8866;
         public const uint GL_QUERY_RESULT_AVAILABLE_ARB = 0x8867;
         public const uint GL_SAMPLES_PASSED_ARB = 0x8914;
-        public const uint GL_ANY_SAMPLES_PASSED = 0x8C2F;
 
         #endregion
 
@@ -4495,32 +4267,6 @@ namespace SharpGL
 
         #endregion
 
-        #region GL_ARB_texture_float
-
-        //  Constants
-        public const uint GL_TEXTURE_RED_TYPE_ARB = 0x8C10;
-        public const uint GL_TEXTURE_GREEN_TYPE_ARB = 0x8C11;
-        public const uint GL_TEXTURE_BLUE_TYPE_ARB = 0x8C12;
-        public const uint GL_TEXTURE_ALPHA_TYPE_ARB = 0x8C13;
-        public const uint GL_TEXTURE_LUMINANCE_TYPE_ARB = 0x8C14;
-        public const uint GL_TEXTURE_INTENSITY_TYPE_ARB = 0x8C15;
-        public const uint GL_TEXTURE_DEPTH_TYPE_ARB = 0x8C16;
-        public const uint GL_UNSIGNED_NORMALIZED_ARB = 0x8C17;
-        public const uint GL_RGBA32F_ARB = 0x8814;
-        public const uint GL_RGB32F_ARB = 0x8815;
-        public const uint GL_ALPHA32F_ARB = 0x8816;
-        public const uint GL_INTENSITY32F_ARB = 0x8817;
-        public const uint GL_LUMINANCE32F_ARB = 0x8818;
-        public const uint GL_LUMINANCE_ALPHA32F_ARB = 0x8819;
-        public const uint GL_RGBA16F_ARB = 0x881A;
-        public const uint GL_RGB16F_ARB = 0x881B;
-        public const uint GL_ALPHA16F_ARB = 0x881C;
-        public const uint GL_INTENSITY16F_ARB = 0x881D;
-        public const uint GL_LUMINANCE16F_ARB = 0x881E;
-        public const uint GL_LUMINANCE_ALPHA16F_ARB = 0x881F;
-
-        #endregion
-
         #region GL_EXT_blend_equation_separate
 
         //  Methods
@@ -4586,300 +4332,11 @@ namespace SharpGL
 
         #endregion
 
-        #region GL_EXT_framebuffer_object
-
-        //  Methods
-        public bool IsRenderbufferEXT(uint renderbuffer)
-        {
-            return (bool)GetDelegateFor<glIsRenderbufferEXT>()(renderbuffer);
-        }
-
-        public void BindRenderbufferEXT(uint target, uint renderbuffer)
-        {
-            GetDelegateFor<glBindRenderbufferEXT>()(target, renderbuffer);
-        }
-
-        public void DeleteRenderbuffersEXT(uint n, uint[] renderbuffers)
-        {
-            GetDelegateFor<glDeleteRenderbuffersEXT>()(n, renderbuffers);
-        }
-
-        public void GenRenderbuffersEXT(uint n, uint[] renderbuffers)
-        {
-            GetDelegateFor<glGenRenderbuffersEXT>()(n, renderbuffers);
-        }
-
-        public void RenderbufferStorageEXT(uint target, uint internalformat, int width, int height)
-        {
-            GetDelegateFor<glRenderbufferStorageEXT>()(target, internalformat, width, height);
-        }
-
-        public void GetRenderbufferParameterivEXT(uint target, uint pname, int[] parameters)
-        {
-            GetDelegateFor<glGetRenderbufferParameterivEXT>()(target, pname, parameters);
-        }
-
-        public bool IsFramebufferEXT(uint framebuffer)
-        {
-            return (bool)GetDelegateFor<glIsFramebufferEXT>()(framebuffer);
-        }
-
-        public void BindFramebufferEXT(uint target, uint framebuffer)
-        {
-            GetDelegateFor<glBindFramebufferEXT>()(target, framebuffer);
-        }
-
-        public void DeleteFramebuffersEXT(uint n, uint[] framebuffers)
-        {
-            GetDelegateFor<glDeleteFramebuffersEXT>()(n, framebuffers);
-        }
-
-        public void GenFramebuffersEXT(uint n, uint[] framebuffers)
-        {
-            GetDelegateFor<glGenFramebuffersEXT>()(n, framebuffers);
-        }
-
-        public uint CheckFramebufferStatusEXT(uint target)
-        {
-            return (uint)GetDelegateFor<glCheckFramebufferStatusEXT>()(target);
-        }
-
-        public void FramebufferTexture1DEXT(uint target, uint attachment, uint textarget, uint texture, int level)
-        {
-            GetDelegateFor<glFramebufferTexture1DEXT>()(target, attachment, textarget, texture, level);
-        }
-
-        public void FramebufferTexture2DEXT(uint target, uint attachment, uint textarget, uint texture, int level)
-        {
-            GetDelegateFor<glFramebufferTexture2DEXT>()(target, attachment, textarget, texture, level);
-        }
-
-        public void FramebufferTexture3DEXT(uint target, uint attachment, uint textarget, uint texture, int level, int zoffset)
-        {
-            GetDelegateFor<glFramebufferTexture3DEXT>()(target, attachment, textarget, texture, level, zoffset);
-        }
-
-        public void FramebufferRenderbufferEXT(uint target, uint attachment, uint renderbuffertarget, uint renderbuffer)
-        {
-            GetDelegateFor<glFramebufferRenderbufferEXT>()(target, attachment, renderbuffertarget, renderbuffer);
-        }
-
-        public void GetFramebufferAttachmentParameterivEXT(uint target, uint attachment, uint pname, int[] parameters)
-        {
-            GetDelegateFor<glGetFramebufferAttachmentParameterivEXT>()(target, attachment, pname, parameters);
-        }
-
-        public void GenerateMipmapEXT(uint target)
-        {
-            GetDelegateFor<glGenerateMipmapEXT>()(target);
-        }
-
-        //  Delegates
-        private delegate bool glIsRenderbufferEXT(uint renderbuffer);
-        private delegate void glBindRenderbufferEXT(uint target, uint renderbuffer);
-        private delegate void glDeleteRenderbuffersEXT(uint n, uint[] renderbuffers);
-        private delegate void glGenRenderbuffersEXT(uint n, uint[] renderbuffers);
-        private delegate void glRenderbufferStorageEXT(uint target, uint internalformat, int width, int height);
-        private delegate void glGetRenderbufferParameterivEXT(uint target, uint pname, int[] parameters);
-        private delegate bool glIsFramebufferEXT(uint framebuffer);
-        private delegate void glBindFramebufferEXT(uint target, uint framebuffer);
-        private delegate void glDeleteFramebuffersEXT(uint n, uint[] framebuffers);
-        private delegate void glGenFramebuffersEXT(uint n, uint[] framebuffers);
-        private delegate uint glCheckFramebufferStatusEXT(uint target);
-        private delegate void glFramebufferTexture1DEXT(uint target, uint attachment, uint textarget, uint texture, int level);
-        private delegate void glFramebufferTexture2DEXT(uint target, uint attachment, uint textarget, uint texture, int level);
-        private delegate void glFramebufferTexture3DEXT(uint target, uint attachment, uint textarget, uint texture, int level, int zoffset);
-        private delegate void glFramebufferRenderbufferEXT(uint target, uint attachment, uint renderbuffertarget, uint renderbuffer);
-        private delegate void glGetFramebufferAttachmentParameterivEXT(uint target, uint attachment, uint pname, int[] parameters);
-        private delegate void glGenerateMipmapEXT(uint target);
-
-        //  Constants
-        public const uint GL_INVALID_FRAMEBUFFER_OPERATION_EXT = 0x0506;
-        public const uint GL_MAX_RENDERBUFFER_SIZE_EXT = 0x84E8;
-        public const uint GL_FRAMEBUFFER_BINDING_EXT = 0x8CA6;
-        public const uint GL_RENDERBUFFER_BINDING_EXT = 0x8CA7;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE_EXT = 0x8CD0;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME_EXT = 0x8CD1;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL_EXT = 0x8CD2;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE_EXT = 0x8CD3;
-        public const uint GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_3D_ZOFFSET_EXT = 0x8CD4;
-        public const uint GL_FRAMEBUFFER_COMPLETE_EXT = 0x8CD5;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT = 0x8CD6;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT = 0x8CD7;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT = 0x8CD9;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT = 0x8CDA;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT = 0x8CDB;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT = 0x8CDC;
-        public const uint GL_FRAMEBUFFER_UNSUPPORTED_EXT = 0x8CDD;
-        public const uint GL_MAX_COLOR_ATTACHMENTS_EXT = 0x8CDF;
-        public const uint GL_COLOR_ATTACHMENT0_EXT = 0x8CE0;
-        public const uint GL_COLOR_ATTACHMENT1_EXT = 0x8CE1;
-        public const uint GL_COLOR_ATTACHMENT2_EXT = 0x8CE2;
-        public const uint GL_COLOR_ATTACHMENT3_EXT = 0x8CE3;
-        public const uint GL_COLOR_ATTACHMENT4_EXT = 0x8CE4;
-        public const uint GL_COLOR_ATTACHMENT5_EXT = 0x8CE5;
-        public const uint GL_COLOR_ATTACHMENT6_EXT = 0x8CE6;
-        public const uint GL_COLOR_ATTACHMENT7_EXT = 0x8CE7;
-        public const uint GL_COLOR_ATTACHMENT8_EXT = 0x8CE8;
-        public const uint GL_COLOR_ATTACHMENT9_EXT = 0x8CE9;
-        public const uint GL_COLOR_ATTACHMENT10_EXT = 0x8CEA;
-        public const uint GL_COLOR_ATTACHMENT11_EXT = 0x8CEB;
-        public const uint GL_COLOR_ATTACHMENT12_EXT = 0x8CEC;
-        public const uint GL_COLOR_ATTACHMENT13_EXT = 0x8CED;
-        public const uint GL_COLOR_ATTACHMENT14_EXT = 0x8CEE;
-        public const uint GL_COLOR_ATTACHMENT15_EXT = 0x8CEF;
-        public const uint GL_DEPTH_ATTACHMENT_EXT = 0x8D00;
-        public const uint GL_STENCIL_ATTACHMENT_EXT = 0x8D20;
-        public const uint GL_FRAMEBUFFER_EXT = 0x8D40;
-        public const uint GL_RENDERBUFFER_EXT = 0x8D41;
-        public const uint GL_RENDERBUFFER_WIDTH_EXT = 0x8D42;
-        public const uint GL_RENDERBUFFER_HEIGHT_EXT = 0x8D43;
-        public const uint GL_RENDERBUFFER_INTERNAL_FORMAT_EXT = 0x8D44;
-        public const uint GL_STENCIL_INDEX1_EXT = 0x8D46;
-        public const uint GL_STENCIL_INDEX4_EXT = 0x8D47;
-        public const uint GL_STENCIL_INDEX8_EXT = 0x8D48;
-        public const uint GL_STENCIL_INDEX16_EXT = 0x8D49;
-        public const uint GL_RENDERBUFFER_RED_SIZE_EXT = 0x8D50;
-        public const uint GL_RENDERBUFFER_GREEN_SIZE_EXT = 0x8D51;
-        public const uint GL_RENDERBUFFER_BLUE_SIZE_EXT = 0x8D52;
-        public const uint GL_RENDERBUFFER_ALPHA_SIZE_EXT = 0x8D53;
-        public const uint GL_RENDERBUFFER_DEPTH_SIZE_EXT = 0x8D54;
-        public const uint GL_RENDERBUFFER_STENCIL_SIZE_EXT = 0x8D55;
-
-        #endregion
-
-        #region GL_EXT_framebuffer_multisample
-
-        //  Methods
-        public void RenderbufferStorageMultisampleEXT(uint target, int samples, uint internalformat, int width, int height)
-        {
-            GetDelegateFor<glRenderbufferStorageMultisampleEXT>()(target, samples, internalformat, width, height);
-        }
-
-        //  Delegates
-        private delegate void glRenderbufferStorageMultisampleEXT(uint target, int samples, uint internalformat, int width, int height);
-
-        //  Constants
-        public const uint GL_RENDERBUFFER_SAMPLES_EXT = 0x8CAB;
-        public const uint GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_EXT = 0x8D56;
-        public const uint GL_MAX_SAMPLES_EXT = 0x8D57;
-
-        #endregion
-
-        #region GL_EXT_draw_instanced
-
-        //  Methods
-        public void DrawArraysInstancedEXT(uint mode, int start, int count, int primcount)
-        {
-            GetDelegateFor<glDrawArraysInstancedEXT>()(mode, start, count, primcount);
-        }
-        public void DrawElementsInstancedEXT(uint mode, int count, uint type, IntPtr indices, int primcount)
-        {
-            GetDelegateFor<glDrawElementsInstancedEXT>()(mode, count, type, indices, primcount);
-        }
-
-        //  Delegates
-        private delegate void glDrawArraysInstancedEXT(uint mode, int start, int count, int primcount);
-        private delegate void glDrawElementsInstancedEXT(uint mode, int count, uint type, IntPtr indices, int primcount);
-
-        #endregion
-
-        #region GL_ARB_vertex_array_object
-
-        //  Methods
-        public void BindVertexArray(uint array)
-        {
-            GetDelegateFor<glBindVertexArray>()(array);
-        }
-        public void DeleteVertexArrays(int n, uint[] arrays)
-        {
-            GetDelegateFor<glDeleteVertexArrays>()(n, arrays);
-        }
-        public void GenVertexArrays(int n, uint[] arrays)
-        {
-            GetDelegateFor<glGenVertexArrays>()(n, arrays);
-        }
-        public bool IsVertexArray(uint array)
-        {
-            return (bool)GetDelegateFor<glIsVertexArray>()(array);
-        }
-
-        //  Delegates
-        private delegate void glBindVertexArray(uint array);
-        private delegate void glDeleteVertexArrays(int n, uint[] arrays);
-        private delegate void glGenVertexArrays(int n, uint[] arrays);
-        private delegate bool glIsVertexArray(uint array);
-
-        //  Constants
-        public const uint GL_VERTEX_ARRAY_BINDING = 0x85B5;
-
-        #endregion
-
         #region GL_EXT_framebuffer_sRGB
 
         //  Constants
         public const uint GL_FRAMEBUFFER_SRGB_EXT = 0x8DB9;
         public const uint GL_FRAMEBUFFER_SRGB_CAPABLE_EXT = 0x8DBA;
-
-        #endregion
-
-        #region GGL_EXT_transform_feedback
-
-        //  Methods
-        public void BeginTransformFeedbackEXT(uint primitiveMode)
-        {
-            GetDelegateFor<glBeginTransformFeedbackEXT>()(primitiveMode);
-        }
-        public void EndTransformFeedbackEXT()
-        {
-            GetDelegateFor<glEndTransformFeedbackEXT>()();
-        }
-        public void BindBufferRangeEXT(uint target, uint index, uint buffer, int offset, int size)
-        {
-            GetDelegateFor<glBindBufferRangeEXT>()(target, index, buffer, offset, size);
-        }
-        public void BindBufferOffsetEXT(uint target, uint index, uint buffer, int offset)
-        {
-            GetDelegateFor<glBindBufferOffsetEXT>()(target, index, buffer, offset);
-        }
-        public void BindBufferBaseEXT(uint target, uint index, uint buffer)
-        {
-            GetDelegateFor<glBindBufferBaseEXT>()(target, index, buffer);
-        }
-        public void TransformFeedbackVaryingsEXT(uint program, int count, string[] varyings, uint bufferMode)
-        {
-            GetDelegateFor<glTransformFeedbackVaryingsEXT>()(program, count, varyings, bufferMode);
-        }
-        public void GetTransformFeedbackVaryingEXT(uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name)
-        {
-            GetDelegateFor<glGetTransformFeedbackVaryingEXT>()(program, index, bufSize, length, size, type, name);
-        }
-
-        //  Delegates
-        private delegate void glBeginTransformFeedbackEXT(uint primitiveMode);
-        private delegate void glEndTransformFeedbackEXT ();
-        private delegate void glBindBufferRangeEXT (uint target, uint index, uint buffer, int offset, int size);
-        private delegate void glBindBufferOffsetEXT (uint target, uint index, uint buffer, int offset);
-        private delegate void glBindBufferBaseEXT (uint target, uint index, uint buffer);
-        private delegate void glTransformFeedbackVaryingsEXT (uint program, int count, string[] varyings, uint bufferMode);
-        private delegate void glGetTransformFeedbackVaryingEXT (uint program, uint index, int bufSize, int[] length, int[] size, uint[] type, string name);
-
-        //  Constants
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_EXT                       = 0x8C8E;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_START_EXT                 = 0x8C84;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_SIZE_EXT                  = 0x8C85;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_BINDING_EXT               = 0x8C8F;
-        public const uint GL_INTERLEAVED_ATTRIBS_EXT                             = 0x8C8C;
-        public const uint GL_SEPARATE_ATTRIBS_EXT                                = 0x8C8D;
-        public const uint GL_PRIMITIVES_GENERATED_EXT                            = 0x8C87;
-        public const uint GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN_EXT           = 0x8C88;
-        public const uint GL_RASTERIZER_DISCARD_EXT                              = 0x8C89;
-        public const uint GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS_EXT   = 0x8C8A;
-        public const uint GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS_EXT         = 0x8C8B;
-        public const uint GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS_EXT      = 0x8C80;
-        public const uint GL_TRANSFORM_FEEDBACK_VARYINGS_EXT                     = 0x8C83;
-        public const uint GL_TRANSFORM_FEEDBACK_BUFFER_MODE_EXT                  = 0x8C7F;
-        public const uint GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH_EXT           = 0x8C76;
 
         #endregion
 

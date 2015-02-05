@@ -67,7 +67,6 @@ namespace SharpGL
         private delegate void glGetTransformFeedbacki_v(uint xfb, uint pname, uint index, out int param);
         private delegate void glGetTransformFeedbacki64_v(uint xfb, uint pname, uint index, out Int64 param);
         private delegate void glCreateBuffers(int n, uint[] buffers);
-        private delegate void glNamedBufferStorage(uint buffer, int size, IntPtr data, uint flags );
         private delegate void glNamedBufferData(uint buffer, int size, IntPtr data, uint usage);
         private delegate void glNamedBufferSubData(uint buffer, int offset, int size, IntPtr data);
         private delegate void glCopyNamedBufferSubData(uint readBuffer, uint writeBuffer, int readOffset, int writeOffset, int size);
@@ -238,18 +237,6 @@ namespace SharpGL
         public void CreateBuffers(int n, uint[] buffers)
         {
             GetDelegateFor<glCreateBuffers>()(n, buffers);
-        }
-
-        /// <summary>
-        /// Nameds the buffer storage.
-        /// </summary>
-        /// <param name="buffer">Specifies the name of the buffer object for glNamedBufferStorage function.</param>
-        /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
-        /// <param name="data">Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.</param>
-        /// <param name="flags">Specifies the size in bytes of the buffer object's new data store.</param>
-        public void NamedBufferStorage(uint buffer, int size, IntPtr data, uint flags)
-        {
-            GetDelegateFor<glNamedBufferStorage>()(buffer, size, data, flags);
         }
 
         /// <summary>
