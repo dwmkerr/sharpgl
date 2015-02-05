@@ -23,10 +23,6 @@ namespace SharpGL.Tests.BasicRendering
         [Test]
         public void CanPerformBasicRendering()
         {
-            //  TODO: This is fundamentally wrong. We should be creating an OpenGL context, ideally using
-            //  a class directly (rather than referencing an enumeration value), setting up the context,
-            //  making it current and then using static OpenGL (gl) calls. This will be addressed for v3.0.
-
             //  Create an OpenGL instance.
             var gl = new OpenGL();
             Assert.AreEqual(ErrorCode.InvalidOperation, gl.GetErrorCode(), "glGetError should return INVALID_OPERATION as OpenGL is not yet initialised.");

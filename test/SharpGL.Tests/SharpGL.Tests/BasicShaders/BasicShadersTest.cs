@@ -28,9 +28,10 @@ namespace SharpGL.Tests.BasicShaders
         private const int Height = 768;
 
         [Test]
+        [Ignore("It is impossible to let this test run until we can successfully demand a specific OpenGL version.")]
         public void CanPerformBasicRendering()
         {
-            //  Create an OpenGL instance, use the experimental offscreen context.
+            //  Create an OpenGL instance.
             var gl = new OpenGL();
             
             //var context = new OffscreenContext();
@@ -47,6 +48,9 @@ namespace SharpGL.Tests.BasicShaders
 
             gl.Viewport(0, 0, Width, Height);
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during render context setup.");
+
+            //  TODO: Make sure we've got at least OpenGL 3.0.
+
 
             //  Give our attributes codes (how we refer to them in C#) and
             //  names (how we load them as 'in' data in the shader).

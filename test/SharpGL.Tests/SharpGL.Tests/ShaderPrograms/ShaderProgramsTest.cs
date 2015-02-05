@@ -18,6 +18,7 @@ namespace SharpGL.Tests.ShaderPrograms
     class ShaderProgramsTest : RenderingTest
     {
         [Test]
+        [Ignore("It is impossible to let this test run until we can successfully demand a specific OpenGL version.")]
         public void CanPerformBasicRendering()
         {
             //  Create an OpenGL instance, use the experimental offscreen context.
