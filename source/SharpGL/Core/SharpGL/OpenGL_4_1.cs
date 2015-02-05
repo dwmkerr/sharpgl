@@ -949,8 +949,282 @@ namespace SharpGL
         #endregion
 
         #region ARB_vertex_attrib_64bit
+        
+        private delegate void glVertexAttribL1d(uint index, double x);
+        private delegate void glVertexAttribL2d(uint index, double x, double y);
+        private delegate void glVertexAttribL3d(uint index, double x, double y, double z);
+        private delegate void glVertexAttribL4d(uint index, double x, double y, double z, double w);
+        private delegate void glVertexAttribL1dv(uint index, double[] v);
+        private delegate void glVertexAttribL2dv(uint index, double[] v);
+        private delegate void glVertexAttribL3dv(uint index, double[] v);
+        private delegate void glVertexAttribL4dv(uint index, double[] v);
+        private delegate void glVertexAttribLPointer(uint index, int size, uint type, int stride, IntPtr pointer);
+        private delegate void glGetVertexAttribLdv(uint index, uint pname, double[] @params);
 
-        //  TODO WIP
+        //  (note:  VertexArrayVertexAttribLOffsetEXT is provided only if EXT_direct_state_access is supported.)
+        // void glVertexArrayVertexAttribLOffsetEXT(uint vaobj, uint buffer, uint index, int size, uint type, int stride, int offset);
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="x">Specifies the new values to be used for the specified vertex attribute.</param>
+        public void VertexAttribL(uint index, double x)
+        {
+            GetDelegateFor<glVertexAttribL1d>()(index, x);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="x">Specifies the new values to be used for the specified vertex attribute.</param>
+        /// <param name="y">Specifies the new values to be used for the specified vertex attribute.</param>
+        public void VertexAttribL(uint index, double x, double y)
+        {
+            GetDelegateFor<glVertexAttribL2d>()(index, x, y);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="x">Specifies the new values to be used for the specified vertex attribute.</param>
+        /// <param name="y">Specifies the new values to be used for the specified vertex attribute.</param>
+        /// <param name="z">Specifies the new values to be used for the specified vertex attribute.</param>
+        public void VertexAttribL(uint index, double x, double y, double z)
+        {
+            GetDelegateFor<glVertexAttribL3d>()(index, x, y, z);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="x">Specifies the new values to be used for the specified vertex attribute.</param>
+        /// <param name="y">Specifies the new values to be used for the specified vertex attribute.</param>
+        /// <param name="z">Specifies the new values to be used for the specified vertex attribute.</param>
+        /// <param name="w">Specifies the new values to be used for the specified vertex attribute.</param>
+        public void VertexAttribL(uint index, double x, double y, double z, double w)
+        {
+            GetDelegateFor<glVertexAttribL4d>()(index, x, y, z, w);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="v">Specifies the new values to be used for the specified vertex attribute.</param>
+        public void VertexAttribL1(uint index, double[] v)
+        {
+            GetDelegateFor<glVertexAttribL1dv>()(index, v);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="v">Secifies a pointer to an array of values to be used for the generic vertex attribute.</param>
+        public void VertexAttribL2(uint index, double[] v)
+        {
+            GetDelegateFor<glVertexAttribL2dv>()(index, v);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="v">Secifies a pointer to an array of values to be used for the generic vertex attribute.</param>
+        public void VertexAttribL3(uint index, double[] v)
+        {
+            GetDelegateFor<glVertexAttribL3dv>()(index, v);
+        }
+
+        /// <summary>
+        /// Specifies the value of a generic vertex attribute.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="v">Secifies a pointer to an array of values to be used for the generic vertex attribute.</param>
+        public void VertexAttribL4(uint index, double[] v)
+        {
+            GetDelegateFor<glVertexAttribL4dv>()(index, v);
+        }
+
+        /// <summary>
+        /// Define an array of generic vertex attribute data.
+        /// </summary>
+        /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
+        /// <param name="size">Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4. Additionally, the symbolic constant GL_BGRA​ is accepted by glVertexAttribPointer. The initial value is 4.</param>
+        /// <param name="type">Specifies the data type of each component in the array. The different functions take different values. glVertexAttribLPointer takes only GL_DOUBLE​.</param>
+        /// <param name="stride">Specifies the byte offset between consecutive generic vertex attributes. If stride​ is 0, the generic vertex attributes are understood to be tightly packed in the array. The initial value is 0.</param>
+        /// <param name="pointer">Specifies a offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the GL_ARRAY_BUFFER​ target. The initial value is 0.</param>
+        public void VertexAttribLPointer(uint index, int size, uint type, int stride, IntPtr pointer)
+        {
+            GetDelegateFor<glVertexAttribLPointer>()(index, size, type, stride, pointer);
+        }
+
+        /// <summary>
+        /// Return a generic vertex attribute parameter.
+        /// </summary>
+        /// <param name="index">Specifies the generic vertex attribute parameter to be queried.</param>
+        /// <param name="pname">Specifies the symbolic name of the vertex attribute parameter to be queried. Accepted values are GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING, GL_VERTEX_ATTRIB_ARRAY_ENABLED, GL_VERTEX_ATTRIB_ARRAY_SIZE, GL_VERTEX_ATTRIB_ARRAY_STRIDE, GL_VERTEX_ATTRIB_ARRAY_TYPE, GL_VERTEX_ATTRIB_ARRAY_NORMALIZED, GL_VERTEX_ATTRIB_ARRAY_INTEGER, GL_VERTEX_ATTRIB_ARRAY_DIVISOR, or GL_CURRENT_VERTEX_ATTRIB.</param>
+        /// <param name="params">Returns the requested data.</param>
+        public void GetVertexAttribL(uint index, uint pname, double[] @params)
+        {
+            GetDelegateFor<glGetVertexAttribLdv>()(index, pname, @params);
+        }
+
+        // Already defined in ARB_gpu_shader_fp64!
+        //public const uint GL_DOUBLE_VEC2 = 0x8FFC;
+        //public const uint GL_DOUBLE_VEC3 = 0x8FFD;
+        //public const uint GL_DOUBLE_VEC4 = 0x8FFE;
+        //public const uint GL_DOUBLE_MAT2 = 0x8F46;
+        //public const uint GL_DOUBLE_MAT3 = 0x8F47;
+        //public const uint GL_DOUBLE_MAT4 = 0x8F48;
+        //public const uint GL_DOUBLE_MAT2x3 = 0x8F49;
+        //public const uint GL_DOUBLE_MAT2x4 = 0x8F4A;
+        //public const uint GL_DOUBLE_MAT3x2 = 0x8F4B;
+        //public const uint GL_DOUBLE_MAT3x4 = 0x8F4C;
+        //public const uint GL_DOUBLE_MAT4x2 = 0x8F4D;
+        //public const uint GL_DOUBLE_MAT4x3 = 0x8F4E;
+
+        #endregion
+
+        #region ARB_viewport_array
+        
+        private delegate void glViewportArrayv(uint first, int count, float[] v);
+        private delegate void glViewportIndexedf(uint index, float x, float y, float w, float h);
+        private delegate void glViewportIndexedfv(uint index, float[] v);
+        private delegate void glScissorArrayv(uint first, int count, int[] v);
+        private delegate void glScissorIndexed(uint index, int left, int bottom, int width, int height);
+        private delegate void glScissorIndexedv(uint index, int[] v);
+        private delegate void glDepthRangeArrayv(uint first, int count, double[] v);
+        private delegate void glDepthRangeIndexed(uint index, double n, double f);
+        private delegate void glGetFloati_v(uint target, uint index, float[] data);
+        private delegate void glGetDoublei_v(uint target, uint index, double[] data);
+
+        /// <summary>
+        /// Set multiple viewports.
+        /// </summary>
+        /// <param name="first">Specify the first viewport to set.</param>
+        /// <param name="count">Specify the number of viewports to set.</param>
+        /// <param name="v">Specify the address of an array containing the viewport parameters.</param>
+        public void ViewportArray(uint first, int count, float[] v)
+        {
+            GetDelegateFor<glViewportArrayv>()(first, count, v);
+        }
+
+        /// <summary>
+        /// Set a specified viewport.
+        /// </summary>
+        /// <param name="index">Specify the first viewport to set.</param>
+        /// <param name="x">Specifies the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).</param>
+        /// <param name="y">Specifies the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).</param>
+        /// <param name="w">specifies the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
+        /// <param name="h">specifies the width and height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
+        public void ViewportIndexed(uint index, float x, float y, float w, float h)
+        {
+            GetDelegateFor<glViewportIndexedf>()(index, x, y, w, h);
+        }
+
+        /// <summary>
+        /// Set a specified viewport.
+        /// </summary>
+        /// <param name="index">Specify the first viewport to set.</param>
+        /// <param name="v">specifies the address of an array containing the viewport parameters.</param>
+        public void ViewportIndexed(uint index, float[] v)
+        {
+            GetDelegateFor<glViewportIndexedfv>()(index, v);
+        }
+
+        /// <summary>
+        /// Define the scissor box for multiple viewports.
+        /// </summary>
+        /// <param name="first">Specifies the index of the first viewport whose scissor box to modify.</param>
+        /// <param name="count">Specifies the number of scissor boxes to modify.</param>
+        /// <param name="v">Specifies the address of an array containing the left, bottom, width and height of each scissor box, in that order.</param>
+        public void ScissorArray(uint first, int count, int[] v)
+        {
+            GetDelegateFor<glScissorArrayv>()(first, count, v);
+        }
+
+        /// <summary>
+        /// Define the scissor box for a specific viewport.
+        /// </summary>
+        /// <param name="index">Specifies the index of the viewport whose scissor box to modify.</param>
+        /// <param name="left">Specify the coordinate of the bottom left corner of the scissor box, in pixels.</param>
+        /// <param name="bottom">Specify the coordinate of the bottom left corner of the scissor box, in pixels.</param>
+        /// <param name="width">Specify ths dimensions of the scissor box, in pixels.</param>
+        /// <param name="height">Specify ths dimensions of the scissor box, in pixels.</param>
+        public void ScissorIndexed(uint index, int left, int bottom, int width, int height)
+        {
+            GetDelegateFor<glScissorIndexed>()(index, left, bottom, width, height);
+        }
+
+        /// <summary>
+        /// Define the scissor box for a specific viewport.
+        /// </summary>
+        /// <param name="index">Specifies the index of the viewport whose scissor box to modify.</param>
+        /// <param name="v">Specifies the address of an array containing the left, bottom, width and height of each scissor box, in that order.</param>
+        public void ScissorIndexed(uint index, int[] v)
+        {
+            GetDelegateFor<glScissorIndexedv>()(index, v);
+        }
+        /// <summary>
+        /// Specify mapping of depth values from normalized device coordinates to window coordinates for a specified set of viewports.
+        /// </summary>
+        /// <param name="first">Specifies the index of the first viewport whose depth range to update.</param>
+        /// <param name="count">Specifies the number of viewports whose depth range to update.</param>
+        /// <param name="v">Specifies the address of an array containing the near and far values for the depth range of each modified viewport.</param>
+        public void DepthRangeArray(uint first, int count, double[] v)
+        {
+            GetDelegateFor<glDepthRangeArrayv>()(first, count, v);
+        }
+
+        /// <summary>
+        /// Specify mapping of depth values from normalized device coordinates to window coordinates for a specified viewport
+        /// </summary>
+        /// <param name="index">Specifies the index of the viewport whose depth range to update.</param>
+        /// <param name="n">Specifies the mapping of the near clipping plane to window coordinates. The initial value is 0.</param>
+        /// <param name="f">Specifies the mapping of the far clipping plane to window coordinates. The initial value is 1.</param>
+        public void DepthRangeIndexed(uint index, double n, double f)
+        {
+            GetDelegateFor<glDepthRangeIndexed>()(index, n, f);
+        }
+
+        /// <summary>
+        /// Return the value or values of a selected parameter.
+        /// </summary>
+        /// <param name="target">Specifies the parameter value to be returned. The symbolic constants in the list below are accepted.</param>
+        /// <param name="index">Specifies the zero-based index of the particular element being queried.</param>
+        /// <param name="data">Returns the value or values of the specified parameter.</param>
+        public void Get(uint target, uint index, float[] data)
+        {
+            GetDelegateFor<glGetFloati_v>()(target, index, data);
+        }
+
+        /// <summary>
+        /// Return the value or values of a selected parameter.
+        /// </summary>
+        /// <param name="target">Specifies the parameter value to be returned. The symbolic constants in the list below are accepted.</param>
+        /// <param name="index">Specifies the zero-based index of the particular element being queried.</param>
+        /// <param name="data">Returns the value or values of the specified parameter.</param>
+        public void Get(uint target, uint index, double[] data)
+        {
+            GetDelegateFor<glGetDoublei_v>()(target, index, data);
+        }
+        
+        //  TODO: #86
+        //  Note that GetIntegerIndexedvEXT, EnableIndexedEXT, DisableIndexedEXT and
+        //  IsEnabledIndexedEXT are introduced by other OpenGL extensions such as
+        //  EXT_draw_buffers2. If this extension is implemented against an earlier
+        //  version of OpenGL that does not support GetIntegeri_v and so on, the
+        //  'Indexed' versions of these functions may be used in their place.
+        
+        //void GetIntegerIndexedvEXT(enum target, uint index, int * v);
+        //void EnableIndexedEXT(enum target, uint index);
+        //void DisableIndexedEXT(enum target, uint index);
+        //boolean IsEnabledIndexedEXT(enum target, uint index);
 
         #endregion
     }

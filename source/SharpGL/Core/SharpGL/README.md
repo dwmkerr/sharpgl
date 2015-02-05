@@ -12,6 +12,7 @@ bitfield            uint
 const uint *        uint[]      NORMALLY, e.g in glDelete[Objects]
 uint *              uint[]      NORMALLY, e.g in glGen[Objects]
 clampf              float
+clampd              double
 
 OpenGL typedefs
 ---------------
