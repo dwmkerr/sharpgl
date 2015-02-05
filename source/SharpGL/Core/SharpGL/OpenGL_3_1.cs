@@ -193,10 +193,27 @@ namespace SharpGL
 
         #endregion
 
-        #region EXT_copy_buffer
+        #region EXT_copy_buffer (ARB_copy_buffer)
 
-        //  TODO: no spec online apparently
+        //  EXT_copy_buffer is missing, so ARB_copy_buffer is used.
+        private delegate void glCopyBufferSubData(uint readTarget, uint writeTarget, int readOffset, int writeOffset, int size);
 
+        /// <summary>
+        /// Copy all or part of the data store of a buffer object to the data store of another buffer object.
+        /// </summary>
+        /// <param name="readTarget">Specifies the target to which the source buffer object is bound for glCopyBufferSubData.</param>
+        /// <param name="writeTarget">Specifies the target to which the destination buffer object is bound for glCopyBufferSubData.</param>
+        /// <param name="readOffset">Specifies the name of the source buffer object for glCopyNamedBufferSubData.</param>
+        /// <param name="writeOffset">Specifies the name of the destination buffer object for glCopyNamedBufferSubData.</param>
+        /// <param name="size">Specifies the size, in basic machine units, of the data to be copied from the source buffer object to the destination buffer object.</param>
+        public void CopyBufferSubData(uint readTarget, uint writeTarget, int readOffset, int writeOffset, int size)
+        {
+            GetDelegateFor<glCopyBufferSubData>()(readTarget, writeTarget, readOffset, writeOffset, size);
+        }
+
+        public const uint GL_COPY_READ_BUFFER = 0x8F36;
+        public const uint GL_COPY_WRITE_BUFFER = 0x8F37;
+ 
         #endregion
 
         #region NV_primitive_restart
