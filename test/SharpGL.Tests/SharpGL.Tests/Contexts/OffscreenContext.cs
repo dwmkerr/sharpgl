@@ -36,7 +36,7 @@ namespace SharpGL.Tests.Contexts
 
             //	Create the invisible window.
             windowHandle = Win32.CreateWindowEx(0,
-                          "SharpGL_OffscreenContext",
+                          "SharpGLRenderWindow",
                           "",
                           Win32.WindowStyles.WS_CLIPCHILDREN | Win32.WindowStyles.WS_CLIPSIBLINGS | Win32.WindowStyles.WS_POPUP,
                           0, 0, 1, 1,
