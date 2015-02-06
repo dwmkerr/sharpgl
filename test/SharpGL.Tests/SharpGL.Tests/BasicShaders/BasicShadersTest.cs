@@ -92,15 +92,9 @@ namespace SharpGL.Tests.BasicShaders
             vertexBufferArray.Unbind(gl);
 
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during VBA setup.");
-
-            //  TODO: I can't quite get this right. Need to revisit the geometry and also the 
-            //  projection matrix (perhaps a simple sample that does geometry/projection/shader).
-
+            
             //  Create the projection matrix for our screen size.
-            const float S = 0.46f;
-            float H = S * Height / Width;
-//            var projectionMatrix = glm.frustum(-S, S, -H, H, 1, 100);
-            var projectionMatrix = glm.perspective(glm.radians(60f), Height/Width, 1, 100);
+            var projectionMatrix = glm.perspective(glm.radians(60f), (float)Height/Width, 1, 100);
             var modelView = glm.lookAt(new vec3(4f, 4f, 4f), new vec3(0f, 0f, 0f), new vec3(0f, 1f, 0f));
 
             //  Use the shader program.
@@ -128,7 +122,6 @@ namespace SharpGL.Tests.BasicShaders
             string name;
             gl.GetActiveUniform(program.ShaderProgramObject, normalAttribute, bufferSize, out length, out size, out type, out name);
   
-
             //  Bind the vertex buffer array.
             vertexBufferArray.Bind(gl);
 
