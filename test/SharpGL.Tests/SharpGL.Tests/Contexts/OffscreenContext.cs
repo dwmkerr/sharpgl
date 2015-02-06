@@ -87,7 +87,7 @@ namespace SharpGL.Tests.Contexts
             //	Create the colour render buffer and bind it, then allocate storage for it.
             var renderBuffers = gl.GenRenderbuffers(2);
             colourRenderbuffer = renderBuffers[0];
-            depthRenderbuffer = renderBuffers[0];
+            depthRenderbuffer = renderBuffers[1];
             gl.BindRenderbuffer(OpenGL.GL_RENDERBUFFER, colourRenderbuffer);
             gl.RenderbufferStorage(OpenGL.GL_RENDERBUFFER, OpenGL.GL_RGBA, width, height);
 
@@ -105,6 +105,21 @@ namespace SharpGL.Tests.Contexts
 
             //  Create the DIB section.
             dibSection.Create(dibSectionDeviceContext, width, height, bitDepth);
+
+            //  Are we complete?
+            var status = gl.CheckFramebufferStatus(OpenGL.GL_FRAMEBUFFER);
+            if (status != OpenGL.GL_FRAMEBUFFER_COMPLETE)
+            {
+                //  TODO: Consider how best to deal with this.
+                throw new Exception("The framebuffer created is not complete.");
+                //public const uint GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT = 0x8CD6;
+                //public const uint GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = 0x8CD7;
+                //public const uint GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER = 0x8CDB;
+                //public const uint GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER = 0x8CDC;
+                //public const uint GL_FRAMEBUFFER_UNSUPPORTED = 0x8CDD;
+                //public const uint GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 0x8D56;
+                //public const uint GL_FRAMEBUFFER_UNDEFINED = 0x8219;
+            }
         }
 
         public void SetDimensions(OpenGL gl, int width, int height)

@@ -34,24 +34,19 @@ namespace SharpGL.Tests.BasicShaders
             //  Create an OpenGL instance.
             var gl = new OpenGL();
             
-            //var context = new OffscreenContext();
-            //try
-            //{
-            //    context.Create(OpenGLVersion.OpenGL3_0, gl, 800, 600, 32);
-            //}
-            //catch (OpenGLVersionException versionException)
-            //{
-            //    Assert.Inconclusive(versionException.Message);
-            //}
-
-            gl.Create(OpenGLVersion.OpenGL3_0, RenderContextType.FBO, 800, 600, 32, null);
+            var context = new OffscreenContext();
+            try
+            {
+                context.Create(OpenGLVersion.OpenGL3_0, gl, 800, 600, 32);
+            }
+            catch (OpenGLVersionException versionException)
+            {
+                Assert.Inconclusive(versionException.Message);
+            }
 
             gl.Viewport(0, 0, Width, Height);
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during render context setup.");
-
-            //  TODO: Make sure we've got at least OpenGL 3.0.
-
-
+            
             //  Give our attributes codes (how we refer to them in C#) and
             //  names (how we load them as 'in' data in the shader).
             const uint positionAttribute = 0;
@@ -104,8 +99,8 @@ namespace SharpGL.Tests.BasicShaders
             //  Create the projection matrix for our screen size.
             const float S = 0.46f;
             float H = S * Height / Width;
-            var projectionMatrix = glm.frustum(-S, S, -H, H, 1, 100);
-//            var projectionMatrix = glm.perspective(glm.radians(60f), Height/Width, 1, 100);
+//            var projectionMatrix = glm.frustum(-S, S, -H, H, 1, 100);
+            var projectionMatrix = glm.perspective(glm.radians(60f), Height/Width, 1, 100);
             var modelView = glm.lookAt(new vec3(4f, 4f, 4f), new vec3(0f, 0f, 0f), new vec3(0f, 1f, 0f));
 
             //  Use the shader program.
@@ -134,7 +129,6 @@ namespace SharpGL.Tests.BasicShaders
             gl.GetActiveUniform(program.ShaderProgramObject, normalAttribute, bufferSize, out length, out size, out type, out name);
   
 
-
             //  Bind the vertex buffer array.
             vertexBufferArray.Bind(gl);
 
@@ -146,13 +140,12 @@ namespace SharpGL.Tests.BasicShaders
 
             Assert.AreEqual(ErrorCode.NoError, gl.GetErrorCode(), "OpenGL error during rendering of geometry.");
 
-            ((FBORenderContextProvider)gl.RenderContextProvider).ReadBuffer();
-            //context.ReadBuffer(gl);
+            gl.Flush();
 
-            var dibSection = ((FBORenderContextProvider) gl.RenderContextProvider).InternalDIBSection;
-
+            context.ReadBuffer(gl);
+            
             //  Get the rendered scene as an image.
-            using (var renderedScene = CreateComparibleBitmap(dibSection.HBitmap))
+            using (var renderedScene = CreateComparibleBitmap(context.DIBSection.HBitmap))
             {
                 if (ImageCompare.Compare(renderedScene, LoadReferenceBitmap()) == false)
                 {
@@ -165,7 +158,7 @@ namespace SharpGL.Tests.BasicShaders
                 }
             }
 
-            //context.Destroy(gl);
+            context.Destroy(gl);
         }
     }
 }
