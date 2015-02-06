@@ -319,7 +319,6 @@ namespace SharpGL
         public const uint GL_UNSIGNED_SHORT_4_4_4_4_REV      = 0x8365;
         public const uint GL_UNSIGNED_SHORT_1_5_5_5_REV      = 0x8366;
         public const uint GL_UNSIGNED_INT_8_8_8_8_REV        = 0x8367;
-        public const uint GL_UNSIGNED_INT_2_10_10_10_REV     = 0x8368;
         public const uint GL_MAX_ELEMENTS_VERTICES           = 0x80E8;
         public const uint GL_MAX_ELEMENTS_INDICES            = 0x80E9;
         public const uint GL_CLAMP_TO_EDGE                   = 0x812F;
@@ -2169,65 +2168,15 @@ namespace SharpGL
         
         #endregion
 
-        #region OpenGL 3.3
-
-        //  Methods
-        public void VertexAttribDivisor(uint index, uint divisor)
-        {
-            GetDelegateFor<glVertexAttribDivisor>()(index, divisor);
-        }
-        
-        //  Delegates
-        private delegate void glVertexAttribDivisor (uint index, uint divisor);
-
-        //  Constants
-        public const uint GL_VERTEX_ATTRIB_ARRAY_DIVISOR             = 0x88FE;
-        
-        #endregion
-
         #region OpenGL 4.0
 
         //  Methods        
-        public void MinSampleShading(float value)
-        {
-            GetDelegateFor<glMinSampleShading>()(value);
-        }
-        public void BlendEquation(uint buf, uint mode)
-        {
-            GetDelegateFor<glBlendEquationi>()(buf, mode);
-        }
-        public void BlendEquationSeparate(uint buf, uint modeRGB, uint modeAlpha)
-        {
-            GetDelegateFor<glBlendEquationSeparatei>()(buf, modeRGB, modeAlpha);
-        }
-        public void BlendFunc(uint buf, uint src, uint dst)
-        {
-            GetDelegateFor<glBlendFunci>()(buf, src, dst);
-        }
-        public void BlendFuncSeparate(uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha)
-        {
-            GetDelegateFor<glBlendFuncSeparatei>()(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
-        }
 
         //  Delegates        
-        private delegate void glMinSampleShading (float value);
-        private delegate void glBlendEquationi (uint buf, uint mode);
-        private delegate void glBlendEquationSeparatei (uint buf, uint modeRGB, uint modeAlpha);
-        private delegate void glBlendFunci (uint buf, uint src, uint dst);
-        private delegate void glBlendFuncSeparatei (uint buf, uint srcRGB, uint dstRGB, uint srcAlpha, uint dstAlpha);
 
         //  Constants
-        public const uint GL_SAMPLE_SHADING                        = 0x8C36;
-        public const uint GL_MIN_SAMPLE_SHADING_VALUE              = 0x8C37;
-        public const uint GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET     = 0x8E5E;
-        public const uint GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET     = 0x8E5F;
-        public const uint GL_TEXTURE_CUBE_MAP_ARRAY                = 0x9009;
-        public const uint GL_TEXTURE_BINDING_CUBE_MAP_ARRAY        = 0x900A;
-        public const uint GL_PROXY_TEXTURE_CUBE_MAP_ARRAY          = 0x900B;
-        public const uint GL_SAMPLER_CUBE_MAP_ARRAY                = 0x900C;
-        public const uint GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW         = 0x900D;
-        public const uint GL_INT_SAMPLER_CUBE_MAP_ARRAY            = 0x900E;
-        public const uint GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY   = 0x900F;
+        public const uint GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5E;
+        public const uint GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET = 0x8E5F;
 
         #endregion
 
