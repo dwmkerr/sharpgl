@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using CelShadingSample;
+﻿using System.Collections.Generic;
 using GlmNet;
 using NUnit.Framework;
 using SharpGL.Enumerations;
-using SharpGL.RenderContextProviders;
 using SharpGL.Shaders;
 using SharpGL.Tests.Contexts;
+using SharpGL.Tests.Helpers;
 using SharpGL.Version;
 
 namespace SharpGL.Tests.ShaderPrograms
@@ -18,8 +16,7 @@ namespace SharpGL.Tests.ShaderPrograms
     class ShaderProgramsTest : RenderingTest
     {
         [Test]
-        [Ignore("It is impossible to let this test run until we can successfully demand a specific OpenGL version.")]
-        public void CanPerformBasicRendering()
+        public void CanManageShaderPrograms()
         {
             //  Create an OpenGL instance, use the experimental offscreen context.
             var gl = new OpenGL();

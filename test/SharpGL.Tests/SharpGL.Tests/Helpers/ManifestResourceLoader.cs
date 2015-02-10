@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
-namespace CelShadingSample
+namespace SharpGL.Tests.Helpers
 {
     /// <summary>
     /// A small helper class to load manifest resource files.
@@ -21,6 +22,9 @@ namespace CelShadingSample
 
             using (var stream = executingAssembly.GetManifestResourceStream(location))
             {
+                if (stream == null)
+                    throw new InvalidOperationException("Unable to load manifest resource " + location);
+
                 using (var reader = new StreamReader(stream))
                 {
                     return reader.ReadToEnd();

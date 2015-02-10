@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using CelShadingSample;
 using GlmNet;
 using NUnit.Framework;
 using SharpGL.Enumerations;
-using SharpGL.RenderContextProviders;
 using SharpGL.Shaders;
 using SharpGL.Tests.Contexts;
 using SharpGL.Tests.Helpers;
@@ -28,8 +26,7 @@ namespace SharpGL.Tests.BasicShaders
         private const int Height = 768;
 
         [Test]
-        [Ignore("It is impossible to let this test run until we can successfully demand a specific OpenGL version.")]
-        public void CanPerformBasicRendering()
+        public void CanUseBasicShaders()
         {
             //  Create an OpenGL instance.
             var gl = new OpenGL();
