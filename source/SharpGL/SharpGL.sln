@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL", "Core\SharpGL\SharpGL.csproj", "{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}"
@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D2E990
 	ProjectSection(SolutionItems) = preProject
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DD314DB5-127A-47C1-BE5C-5CCE7E7C69CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.Tests", "..\..\test\SharpGL.Tests\SharpGL.Tests\SharpGL.Tests.csproj", "{F2655192-043D-4D73-8190-A2032CBA204B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +92,16 @@ Global
 		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}.Release|x86.ActiveCfg = Release|Any CPU
 		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}.Release|x86.Build.0 = Release|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F2655192-043D-4D73-8190-A2032CBA204B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,5 +113,6 @@ Global
 		{FDFA2632-A960-4778-A517-CA9E337C037C} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 		{D2E99047-F511-4CE1-B07F-41412E9FF7B4} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
+		{F2655192-043D-4D73-8190-A2032CBA204B} = {DD314DB5-127A-47C1-BE5C-5CCE7E7C69CE}
 	EndGlobalSection
 EndGlobal
