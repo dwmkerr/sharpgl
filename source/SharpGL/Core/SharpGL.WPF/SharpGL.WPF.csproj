@@ -72,6 +72,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CollectionCountToVisibilityConverter.cs" />
+    <Compile Include="RenderTrigger.cs" />
     <Compile Include="SceneTree\SceneTree.xaml.cs">
       <DependentUpon>SceneTree.xaml</DependentUpon>
     </Compile>
