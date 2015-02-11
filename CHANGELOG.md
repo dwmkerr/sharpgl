@@ -4,6 +4,7 @@
 * Added support and documentation for all OpenGL 4.4 features.
 * Added support and documentation for all OpenGL 4.5 features.
 * Added documentation for OpenGL 3.0 APIs, fixed some incorrect function signatures.
+* Added documentation for OpenGL 3.1 APIs, fixed some incorrect function signatures.
 
 ### Version 2.4
 
