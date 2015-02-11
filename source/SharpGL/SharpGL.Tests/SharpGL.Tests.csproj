@@ -36,7 +36,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\GlmNet.0.5.0.0\lib\net40\GlmNet.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -63,7 +64,6 @@
   <ItemGroup>
     <EmbeddedResource Include="BasicShaders\PerPixel.frag" />
     <EmbeddedResource Include="BasicShaders\PerPixel.vert" />
-    <None Include="packages.config" />
     <EmbeddedResource Include="ShaderPrograms\PerPixel.frag" />
     <EmbeddedResource Include="ShaderPrograms\PerPixel.vert" />
   </ItemGroup>
@@ -78,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BasicShaders\BasicShadersTest.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
