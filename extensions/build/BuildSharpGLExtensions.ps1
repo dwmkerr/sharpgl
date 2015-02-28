@@ -15,15 +15,16 @@ $extensionsRoot = Split-Path -parent $buildPath
 . "$buildPath\Resources\VsixTools.ps1"
 
 # Build the extensions solution.
-Write-Host "Building extensions..."
+Write-Host "`nBuild the extensions solution..."
 $solutionExtensions = Join-Path $extensionsRoot "\SharpGL\Extensions.sln"
 . $msbuild $solutionExtensions /p:Configuration=Release /verbosity:quiet
 
 # Put the built VSIX package in the build root.
+Write-Host "`nPut the built extension package (SharpGL.vsix) into the build root..."
 CopyItems (Join-Path $extensionsRoot "SharpGL\SharpGL\bin\Release\SharpGL.vsix") $buildPath
 
 # Now use vsix tools to tweak the extensions.
-Write-Host "Fixing vsix file for compatibility with the Visual Studio Gallery..."
+Write-Host "`nFixing vsix file for compatibility with the Visual Studio Gallery..."
 Vsix-FixInvalidMultipleFiles -VsixPath (Join-Path $buildPath "SharpGL.vsix") 
 
 # We're done!
