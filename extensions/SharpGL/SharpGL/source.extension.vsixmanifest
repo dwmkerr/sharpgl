@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="SharpGL..f2635109-640b-4fcc-94af-9a642165a4bb" Version="2.3.0.1" Language="en-US" Publisher="Dave Kerr" />
+    <Identity Id="SharpGL..f2635109-640b-4fcc-94af-9a642165a4bb" Version="2.3.0.1" Language="en-US" Publisher="Dave Kerr, Robin Sedlaczek" />
     <DisplayName>SharpGL</DisplayName>
     <Description xml:space="preserve">SharpGL unlocks the power of OpenGL for the .NET Framework. The SharpGL Visual Studio Extensions add project templates to Visual Studio that give you a quick start for OpenGL applications for WinForms or WPF.</Description>
     <MoreInfo>https://github.com/dwmkerr/sharpgl</MoreInfo>
