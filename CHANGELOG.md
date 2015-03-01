@@ -5,6 +5,7 @@
 * Added support and documentation for all OpenGL 4.5 features.
 * Added documentation for OpenGL 3.0 APIs, fixed some incorrect function signatures.
 * Added documentation for OpenGL 3.1 APIs, fixed some incorrect function signatures.
+* [robinsedlaczek](https://github.com/robinsedlaczek): Added support for Visual Studio 2015 extensions.
 
 ### Version 2.4
 
