@@ -17,7 +17,7 @@ $extensionsRoot = Split-Path -parent $buildPath
 # Build the extensions solution.
 Write-Host "`nBuild the extensions solution..."
 $solutionExtensions = Join-Path $extensionsRoot "\SharpGL\Extensions.sln"
-. $msbuild $solutionExtensions /p:Configuration=Release /verbosity:quiet
+. $msbuild $solutionExtensions /p:Configuration=Release /verbosity:quiet /p:VisualStudioVersion=14.0
 
 # Put the built VSIX package in the build root.
 Write-Host "`nPut the built extension package (SharpGL.vsix) into the build root..."
