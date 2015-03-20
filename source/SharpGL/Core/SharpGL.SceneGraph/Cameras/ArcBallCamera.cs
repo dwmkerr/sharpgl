@@ -14,15 +14,21 @@ namespace SharpGL.SceneGraph.Cameras
         /// <summary>
         /// Initializes a new instance of the <see cref="PerspectiveCamera"/> class.
         /// </summary>
-        public ArcBallCamera()
-		{
-			Name = "Camera (ArcBall)";
-		}
+        public ArcBallCamera(float eyex, float eyey, float eyez,
+            float centerx, float centery, float centerz,
+            float upx, float upy, float upz)
+        {
+            Name = "Camera (ArcBall)";
+            this.arcBall = new ArcBall(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+            this.Position = new Vertex(eyex, eyey, eyez);
+            this.Target = new Vertex(centerx, centery, centerz);
+            this.Up = new Vertex(upx, upy, upz);
+        }
 
-		/// <summary>
-		/// This is the class' main function, to override this function and perform a 
-		/// perspective transformation.
-		/// </summary>
+        /// <summary>
+        /// This is the class' main function, to override this function and perform a 
+        /// perspective transformation.
+        /// </summary>
         public override void TransformProjectionMatrix(OpenGL gl)
         {
             int[] viewport = new int[4];
@@ -31,8 +37,8 @@ namespace SharpGL.SceneGraph.Cameras
             //  Perform the perspective transformation.
             arcBall.SetBounds(viewport[2], viewport[3]);
             gl.Perspective(FieldOfView, AspectRatio, Near, Far);
-            Vertex target = new Vertex(0, 0, 0);
-            Vertex upVector = new Vertex(0, 0, 1);
+            Vertex target = this.Target;
+            Vertex upVector = this.Up;
 
             //  Perform the look at transformation.
             gl.LookAt((double)Position.X, (double)Position.Y, (double)Position.Z,
@@ -40,12 +46,14 @@ namespace SharpGL.SceneGraph.Cameras
                 (double)upVector.X, (double)upVector.Y, (double)upVector.Z);
 
             arcBall.TransformMatrix(gl);
-		}
+        }
 
         /// <summary>
         /// The arcball used for rotating.
         /// </summary>
-        private ArcBall arcBall = new ArcBall();
+        private ArcBall arcBall;// = new ArcBall();
+        private Vertex Target;
+        private Vertex Up;
 
         /// <summary>
         /// Gets the arc ball.

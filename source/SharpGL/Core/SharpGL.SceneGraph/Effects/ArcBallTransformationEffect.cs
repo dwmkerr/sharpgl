@@ -44,7 +44,7 @@ namespace SharpGL.SceneGraph.Effects
         /// <summary>
         /// The arcball.
         /// </summary>
-        private ArcBall arcBall = new ArcBall();
+        private ArcBall arcBall;// = new ArcBall();
 
         /// <summary>
         /// Gets or sets the linear transformation.
