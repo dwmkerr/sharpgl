@@ -181,7 +181,7 @@ namespace SharpGL.SceneGraph
 
             //  If the element can be bound, bind it.
             if (sceneElement is IBindable)
-                ((IBindable)sceneElement).Bind(gl);
+                ((IBindable)sceneElement).Push(gl);
 
             //  If the element has an object space, transform into it.
             if (sceneElement is IHasObjectSpace)
@@ -210,6 +210,10 @@ namespace SharpGL.SceneGraph
             //  If the element has an object space, transform out of it.
             if (sceneElement is IHasObjectSpace)
                 ((IHasObjectSpace)sceneElement).PopObjectSpace(gl);
+
+            //  pop(unbind) it.
+            if (sceneElement is IBindable)
+                ((IBindable)sceneElement).Pop(gl);
 
             //  Pop each effect.
             for (int i = sceneElement.Effects.Count - 1; i >= 0; i--)

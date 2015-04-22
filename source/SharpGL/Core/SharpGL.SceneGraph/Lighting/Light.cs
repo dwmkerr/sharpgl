@@ -47,8 +47,20 @@ namespace SharpGL.SceneGraph.Lighting
         /// <param name="gl">The OpenGL instance.</param>
         public virtual void Pop(OpenGL gl)
         {
+            UnBind(gl);
+
             //  Pop lighting attributes.
             gl.PopAttrib();
+        }
+
+        private void UnBind(OpenGL gl)
+        {
+            if (on)
+            {
+                // Disable this light.
+                gl.Disable(OpenGL.GL_LIGHTING);
+                gl.Disable(glCode);
+            }
         }
 
         /// <summary>
