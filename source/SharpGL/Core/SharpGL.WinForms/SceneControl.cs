@@ -51,7 +51,9 @@ namespace SharpGL
 			// OpenGLCtrl
 			// 
 			this.Name = "OpenGLCtrl";
-
+            // check https://github.com/dwmkerr/sharpgl/issues/105
+            // force 'glA' pointing to 'glB'
+            this.scene.OpenGL = this.OpenGL;
 		}
 		#endregion
 
