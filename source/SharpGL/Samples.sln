@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9C91BBE9-AEC4-47C0-98D7-1732A3F205FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.WinForms", "Core\SharpGL.WinForms\SharpGL.WinForms.csproj", "{B2984A6D-AD1C-4BE9-94AB-BA002B338751}"
@@ -61,6 +63,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BF3E19
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectLoadingSample", "Samples\WPF\ObjectLoadingSample\ObjectLoadingSample.csproj", "{66932482-AC9B-453A-AAE1-1CD292CD8FD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.SceneComponent", "Core\SharpGL.SceneComponent\SharpGL.SceneComponent.csproj", "{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -325,6 +329,16 @@ Global
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|x86.ActiveCfg = Release|x86
 		{66932482-AC9B-453A-AAE1-1CD292CD8FD8}.Release|x86.Build.0 = Release|x86
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
