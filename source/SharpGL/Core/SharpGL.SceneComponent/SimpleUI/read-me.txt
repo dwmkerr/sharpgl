@@ -1,0 +1,26 @@
+﻿This folder contains types that display UI elements in SharpGL's viewport.
+These types contains property 'Anchor' similar to 'System.Windows.Forms.Control'. They can bind their sides to viewport, and the distances are specified by the 'Margin' property.
+These types are all derived from 'SimpleUIRect', which draws a rectangle at fixed position in SharpGL's viewport.
+These UI types are not able to embed other UI types like containers in Winform system. Thus I named it 'SimpleUI'.
+If you want to make a new UI control, please follow these steps:
+	1. Create a class 'XXX' derived from 'SimpleUIRect'.
+	2. Go to the constructor method 'XXX(...);', add your UI model as a child element to 'XXX'. Make sure your UI model's center is (0, 0, 0).
+	3. Now in 'XXX' use 'override RenderModel(...);'. Set scale factor of your UI model so that it fills the 'SimpleUIRect's area.
+	4. Use 'override PushObjectSpace(.)'; and 'PopObjectSpace(.);' if your UI model has to rotate or translate.
+There are two examples you can refer to:
+'SimpleUIAxis' draw and axis with arc ball rotation effect at fixed position (left bottom corner) on viewport.
+'SimpleUIColorIndicator' draw color indicator at fixed position (bottom) on viewport. The colored rectangle fills SimpleUI's rectangle, and the numbers are actually below outsithe the rectangle.
+
+
+本文件夹包含的类型，是为了在SharpGL中显示UI元素（在SharpGL视口固定位置显示）。
+这些类型具有类似Winform里Control的Anchor属性，可以将某一侧绑定到SharpGL视口的一边。其到边的距离由Margin属性记录。
+这些类型都继承自SimpleUIRect，此类型实现了在OpenGL视口固定位置画一个矩形框的功能。
+这些类型不能像Winform里的容器控件一样嵌套其它控件，所以称为SimpleUI。
+想制作新的UI控件时，
+	1. 继承SimpleUIRect，
+	2. 在构造函数中初始化新控件的模型，将其作为子元素加入。要确保新控件的模型的中心位置在(0, 0, 0)。
+	3. override RenderModel(...);在此方法中设置子元素的缩放值，以保证子元素正好填充SimpleUIRect的范围。
+	4. 如果新UI元素需要旋转、移动，'override PushObjectSpace(.);'和'PopObjectSpace(.);'
+具体步骤可参考下面两个示例。
+'SimpleUIAxis'在SharpGL视口固定位置显示一个响应鼠标拖动的可旋转的三维坐标轴。其默认位置在左下角。
+'SimpleUIColorIndicator'在SharpGL视口固定位置显示一个色标。其默认位置在下方。色标的矩形色块填充了SimpleUIRect的矩形区域，其数字显示实际上在矩形区域的外部下方。

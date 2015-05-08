@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SharpGL.SceneComponent</RootNamespace>
     <AssemblyName>SharpGL.SceneComponent</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,8 +43,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ByteColor.cs" />
+    <Compile Include="CameraRotation.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="ECameraType.cs" />
+    <Compile Include="IMouseRotation.cs" />
+    <Compile Include="IMouseScale.cs" />
+    <Compile Include="IMouseTransform.cs" />
+    <Compile Include="IScientificModel.cs" />
+    <Compile Include="ITranslation.cs" />
+    <Compile Include="MySharpGL\MyArcBall.cs" />
+    <Compile Include="MySharpGL\MyArcBallEffect.cs" />
+    <Compile Include="MySharpGL\MyScene.cs" />
+    <Compile Include="MySharpGL\MySceneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MySharpGL\MySceneControl.Designer.cs">
+      <DependentUpon>MySceneControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PointerScientificModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScientificCamera.cs" />
+    <Compile Include="ScientificModelElement.cs" />
+    <Compile Include="ScientificVisual3DControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScientificVisual3DControl.Designer.cs">
+      <DependentUpon>ScientificVisual3DControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScientificVisual3DControlHelper.cs" />
+    <Compile Include="SimpleUI\Axis\CylinderAxis.cs" />
+    <Compile Include="SimpleUI\Axis\SimpleUIAxis.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorBar.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorData.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorDataFactory.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorNumber.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorPalette.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\QuantityRange.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\SimpleUIColorIndicator.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\UIColorIndicator.cs" />
+    <Compile Include="SimpleUI\SimpleUIRect.cs" />
+    <Compile Include="SimpleUI\SimpleUIRectArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">
@@ -55,10 +98,18 @@
       <Project>{b2984a6d-ad1c-4be9-94ab-ba002b338751}</Project>
       <Name>SharpGL.WinForms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharpGLM\SharpGLM.csproj">
+      <Project>{d15e2fee-512e-4804-8687-bcbdbedbeb7b}</Project>
+      <Name>SharpGLM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpGL\SharpGL.csproj">
       <Project>{5ef45533-e2c7-46f2-b4a3-b8f36cd406e0}</Project>
       <Name>SharpGL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MySharpGL\read-me.txt" />
+    <Content Include="SimpleUI\read-me.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
