@@ -63,9 +63,21 @@
     <Compile Include="DIBSection.cs" />
     <Compile Include="FontBitmaps.cs" />
     <Compile Include="FontOutlines.cs" />
-    <Compile Include="OpenGL.cs" />
+    <Compile Include="OpenGL\OpenGLDrawText.cs" />
+    <Compile Include="OpenGL\OpenGLProperties.cs" />
+    <Compile Include="OpenGL\OpenGLFields.cs" />
+    <Compile Include="OpenGL\OpenGLUtility.cs" />
+    <Compile Include="OpenGL\OpenGL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpenGL\OpenGLErrorChecking.cs" />
+    <Compile Include="OpenGL\OpenGLWrappedFunctions.cs" />
+    <Compile Include="OpenGL\OpenGLUFunctions.cs" />
+    <Compile Include="OpenGL\OpenGLFunctions.cs" />
+    <Compile Include="OpenGL\OpenGLUConst.cs" />
+    <Compile Include="OpenGL\OpenGLConst.cs" />
     <Compile Include="Enumerations\OpenGLEnumerations.cs" />
-    <Compile Include="OpenGLExtensions.cs" />
+    <Compile Include="OpenGL\OpenGLExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderContextProviders\DIBSectionRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\ExternalRenderContextProvider.cs" />
@@ -89,6 +101,7 @@
     <None Include="RenderContextProviders\IRenderContextProvider.cd" />
     <None Include="SharpGL.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
