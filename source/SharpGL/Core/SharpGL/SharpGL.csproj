@@ -86,6 +86,7 @@
     <Compile Include="Win32.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="RenderContextProviders\IRenderContextProvider.cd" />
     <None Include="SharpGL.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
