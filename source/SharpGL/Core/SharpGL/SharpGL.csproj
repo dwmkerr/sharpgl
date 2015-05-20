@@ -86,7 +86,7 @@
     <Compile Include="RenderContextProviders\IRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\NativeWindowRenderContextProvider.cs" />
     <Compile Include="RenderContextProviders\RenderContextProvider.cs" />
-    <Compile Include="RenderContextType.cs" />
+    <Compile Include="RenderContextProviders\RenderContextType.cs" />
     <Compile Include="Shaders\Shader.cs" />
     <Compile Include="Shaders\ShaderCompilationException.cs" />
     <Compile Include="Shaders\ShaderProgram.cs" />
