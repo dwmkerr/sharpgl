@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace SharpGL
 {
     /// <summary>
-    /// 
+    /// device-independent bitmap.
     /// </summary>
 	public class DIBSection : IDisposable
 	{
