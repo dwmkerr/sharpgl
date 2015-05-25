@@ -38,19 +38,19 @@
             this.openGLControl1.DrawFPS = false;
             this.openGLControl1.Location = new System.Drawing.Point(0, 0);
             this.openGLControl1.Name = "openGLControl1";
-            this.openGLControl1.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL4_4;
-            this.openGLControl1.RenderContextType = SharpGL.RenderContextType.NativeWindow;
+            this.openGLControl1.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL4_0;
+            this.openGLControl1.RenderContextType = SharpGL.RenderContextType.FBO;
             this.openGLControl1.RenderTrigger = SharpGL.RenderTrigger.TimerBased;
-            this.openGLControl1.Size = new System.Drawing.Size(784, 561);
+            this.openGLControl1.Size = new System.Drawing.Size(784, 518);
             this.openGLControl1.TabIndex = 0;
             this.openGLControl1.OpenGLInitialized += new System.EventHandler(this.openGLControl1_OpenGLInitialized);
             this.openGLControl1.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControl1_OpenGLDraw);
             // 
             // FormModernOpenGLSample
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(784, 518);
             this.Controls.Add(this.openGLControl1);
             this.Name = "FormModernOpenGLSample";
             this.Text = "Modern OpenGL Sample";
