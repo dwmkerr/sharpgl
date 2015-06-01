@@ -8,8 +8,7 @@ namespace SharpGL.SceneComponent
     /// <summary>
     /// interactive with mouse and transform model.
     /// </summary>
-    public interface IMouseTransform : IMouseRotation, IMouseScale, ITranslation
+    public interface IMouseTransform : IMouseLinearTransform, ITranslation
     {
-        void TransformMatrix(OpenGL gl);
     }
 }

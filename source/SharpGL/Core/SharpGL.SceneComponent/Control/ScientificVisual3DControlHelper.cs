@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace SharpGL.SceneComponent
 {
     /// <summary>
-    /// Initialize <see cref="ScientificVisual3DControl"/>'s UIScene.
+    /// Initialize <see cref="ScientificVisual3DControl"/>'s Scene and UIScene.
     /// </summary>
     internal class ScientificVisual3DControlHelper
     {
@@ -31,9 +31,19 @@ namespace SharpGL.SceneComponent
 
             InitializeUISceneAttributes(root);
 
-            scientificVisual3DControl.SetSceneCameraToUICamera();
+            SetSceneCameraToUICamera(scientificVisual3DControl);
 
             UIScene.RenderBoundingVolumes = false;
+        }
+        internal static void SetSceneCameraToUICamera(ScientificVisual3DControl scientificVisual3DControl)
+        {
+            ScientificCamera camera = scientificVisual3DControl.Scene.CurrentCamera;
+            if (camera == null)
+            { throw new Exception("this.Scene.CurrentCamera cannot be null."); }
+
+            scientificVisual3DControl.UIScene.CurrentCamera = camera;
+            scientificVisual3DControl.uiAxis.Camera = camera;
+            scientificVisual3DControl.CameraRotation.Camera = camera;
         }
 
         private static OpenGLAttributesEffect InitializeUISceneAttributes(SceneElement parent)
@@ -70,13 +80,12 @@ namespace SharpGL.SceneComponent
 
             SimpleUIColorIndicator uiColorIndicator = new SimpleUIColorIndicator(
                 AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Right,
-                new Padding(10 + 40 + 10, 0, 40, 40), new Size(100, 15)) { Name = "UI: Color Indicator", };
+                new Padding(80, 0, 80, 40), new Size(100, 15)) { Name = "UI: Color Indicator", };
             ColorIndicatorData rainbow = ColorIndicatorDataFactory.CreateRainbow();
             uiColorIndicator.Data = rainbow;
             parent.AddChild(uiColorIndicator);
             scientificVisual3DControl.uiColorIndicator = uiColorIndicator;
 
-            scientificVisual3DControl.CameraRotation = new CameraRotation();
         }
 
         internal static void InitializeScene(ScientificVisual3DControl scientificVisual3DControl)
@@ -94,12 +103,16 @@ namespace SharpGL.SceneComponent
 
             scene.RenderBoundingVolumes = false;
 
-            ScientificModelElement element = new ScientificModelElement();
-            MyArcBallEffect arcBallEffect = new MyArcBallEffect();
-            element.AddEffect(arcBallEffect);
-            element.modelTranslation = arcBallEffect.ArcBall;
-            root.AddChild(element);
-            scientificVisual3DControl.SetModelElement(element);
+            //SceneElement scientificModelElementRoot = new SceneElement() 
+            //{ Name = "Scientific Model Elements' root" };
+            //scene.SceneContainer.AddChild(scientificModelElementRoot);
+            //scientificVisual3DControl.scientificModelElementRoot = scientificModelElementRoot;
+            ModelContainer container = new ModelContainer()
+            { Name = "model space's container which contains models as children." };
+            scene.SceneContainer.AddChild(container);
+            scientificVisual3DControl.modelContainer = container;
+
+            scientificVisual3DControl.CameraRotation = new SatelliteRotation();
         }
 
         private static OpenGLAttributesEffect InitializeSceneAttributes(SceneElement parent)

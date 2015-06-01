@@ -18,8 +18,16 @@ namespace SharpGL.SceneComponent
         /// 
         /// </summary>
         /// <param name="isClear">Execute gl.ClearColor() and gl.Clear() if true.</param>
-        public MyScene(bool isClear = true)
+        public MyScene(SharedStageInfo stagetInfo = null, bool isClear = true)
         {
+            if (stagetInfo != null)
+            {
+                this.StageInfo = stagetInfo;
+            }
+            else
+            {
+                this.StageInfo = new SharedStageInfo();
+            }
             this.IsClear = isClear;
         }
 
@@ -28,7 +36,14 @@ namespace SharpGL.SceneComponent
         /// </summary>
         public bool IsClear { get; set; }
 
-        public override void Draw(SceneGraph.Cameras.Camera camera = null)
+        public SharedStageInfo StageInfo { get; set; }
+
+        /// <summary>
+        /// Draw the scene.
+        /// </summary>
+        /// <param name="renderMode">Use Render for normal rendering and HitTest for picking.</param>
+        /// <param name="camera">Keep this to null if <see cref="CurrentCamera"/> is already set up.</param>
+        public void Draw(RenderMode renderMode = RenderMode.Render, SceneGraph.Cameras.Camera camera = null)
         {
             var gl = OpenGL;
             if (gl == null) { return; }
@@ -41,10 +56,29 @@ namespace SharpGL.SceneComponent
 
             if (IsClear)
             {
-                //	Set the clear color.
-                float[] clear = (SharpGL.SceneGraph.GLColor)ClearColor;
+                if (renderMode == RenderMode.HitTest)
+                {
+                    // When picking on a position that no model exists, 
+                    // the picked color would be
+                    // =255
+                    // +255 << 8
+                    // +255 << 16
+                    // +255 << 24
+                    // =255
+                    // +65280
+                    // +16711680
+                    // +4278190080
+                    // =4294967295
+                    // This makes it easier to determin whether we picked something or not.
+                    gl.ClearColor(1, 1, 1, 1);
+                }
+                else
+                {
+                    //	Set the clear color.
+                    float[] clear = (SharpGL.SceneGraph.GLColor)ClearColor;
 
-                gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
+                    gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
+                }
             }
 
             //  Reproject.
@@ -60,9 +94,12 @@ namespace SharpGL.SceneComponent
 
             //gl.BindTexture(OpenGL.GL_TEXTURE_2D, 0);
 
+            SharedStageInfo info = this.StageInfo;
+            info.Reset();
+
             //  Render the root element, this will then render the whole
             //  of the scene tree.
-            MyRenderElement(SceneContainer, gl, RenderMode.Design);
+            MyRenderElement(SceneContainer, gl, renderMode, info);
 
             //  TODO: Adding this code here re-enables textures- it should work without it but it
             //  doesn't, look into this.
@@ -72,12 +109,17 @@ namespace SharpGL.SceneComponent
             gl.Flush();
         }
 
+        //public override void Draw(SceneGraph.Cameras.Camera camera = null)
+        //{
+        //    this.Draw(camera, RenderMode.Design);
+        //}
+
         /// <summary>
         /// Renders the element.
         /// </summary>
         /// <param name="gl">The gl.</param>
         /// <param name="renderMode">The render mode.</param>
-        public void MyRenderElement(SceneElement sceneElement, OpenGL gl, RenderMode renderMode)
+        public void MyRenderElement(SceneElement sceneElement, OpenGL gl, RenderMode renderMode, SharedStageInfo info)
         {
             //  If the element is disabled, we're done.
             if (sceneElement.IsEnabled == false)
@@ -103,9 +145,26 @@ namespace SharpGL.SceneComponent
                 if (hasMaterial != null && hasMaterial.Material != null)
                 { hasMaterial.Material.Push(gl); }
 
-                //  If the element can be rendered, render it.
-                IRenderable renderable = sceneElement as IRenderable;
-                if (renderable != null) renderable.Render(gl, renderMode);
+                if (renderMode == RenderMode.HitTest)
+                {
+                    IColorCodedPicking picking = sceneElement as IColorCodedPicking;
+                    if (picking != null)
+                    {
+                        picking.PickingBaseID = info.RenderedVertexCount;
+
+                        //  If the element can be rendered, render it.
+                        IRenderable renderable = sceneElement as IRenderable;
+                        if (renderable != null) renderable.Render(gl, renderMode);
+
+                        info.RenderedVertexCount += picking.VertexCount;
+                    }
+                }
+                else
+                {
+                    //  If the element can be rendered, render it.
+                    IRenderable renderable = sceneElement as IRenderable;
+                    if (renderable != null) renderable.Render(gl, renderMode);
+                }
 
                 //  If the element has a material, pop it.
                 if (hasMaterial != null && hasMaterial.Material != null)
@@ -123,7 +182,7 @@ namespace SharpGL.SceneComponent
 
             //  Recurse through the children.
             foreach (var childElement in sceneElement.Children)
-                MyRenderElement(childElement, gl, renderMode);
+                MyRenderElement(childElement, gl, renderMode, info);
 
             //  If the element has an object space, transform out of it.
             if (hasObjectSpace != null) hasObjectSpace.PopObjectSpace(gl);
@@ -140,14 +199,50 @@ namespace SharpGL.SceneComponent
         /// <summary>
         /// Gets the current camera.
         /// </summary>
-        /// <value>
-        /// The current camera.
-        /// </value>
         [Description("The current camera being used to view the scene."), Category("Scene")]
-        public new Camera CurrentCamera
+        public new ScientificCamera CurrentCamera
         {
-            get { return base.CurrentCamera; }
+            get { return base.CurrentCamera as ScientificCamera; }
             internal set { base.CurrentCamera = value; }
+        }
+
+        /// <summary>
+        /// Get picked primitive by <paramref name="stageVertexID"/> as the last vertex that constructs the primitive.
+        /// </summary>
+        /// <param name="stageVertexID">The last vertex that constructs the primitive.</param>
+        /// <returns></returns>
+        public IPickedPrimitive Pick(int stageVertexID)
+        {
+            if (stageVertexID < 0) { return null; }
+
+            IPickedPrimitive picked = null;
+
+            SceneElement element = this.SceneContainer;
+            picked = Pick(element, stageVertexID);
+
+            return picked;
+        }
+
+        private IPickedPrimitive Pick(SceneElement element, int stageVertexID)
+        {
+            IPickedPrimitive result = null;
+            IColorCodedPicking picking = element as IColorCodedPicking;
+            if (picking != null)
+            {
+                result = picking.Pick(stageVertexID);
+            }
+
+            if (result == null)
+            {
+                foreach (var item in element.Children)
+                {
+                    result = Pick(item, stageVertexID);
+                    if (result != null)
+                    { break; }
+                }
+            }
+
+            return result;
         }
     }
 }

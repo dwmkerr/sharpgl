@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="SharpGL.SceneComponent.ITranslation">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>TransformInterface\ITranslation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IMouseTransform">
+    <Position X="5.25" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TransformInterface\IMouseTransform.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IMouseScale">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TransformInterface\IMouseScale.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IMouseRotation">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAEAAAAAAAAAAAAAAEAAAABAAAACAAAA=</HashCode>
+      <FileName>TransformInterface\IMouseRotation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IMouseLinearTransform">
+    <Position X="2.5" Y="2.25" Width="2" />
+    <InheritanceLine Type="SharpGL.SceneComponent.IMouseScale" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="3.25" />
+        <Point X="2.5" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>TransformInterface\IMouseLinearTransform.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

@@ -12,19 +12,17 @@ namespace SharpGL.SceneComponent
     /// </summary>
     internal class ColorIndicatorBar : SceneElement, IRenderable
     {
+        private long lastModified = 0;
+
         private ColorIndicatorData data;
 
         public ColorIndicatorData Data
         {
             get { return data; }
-            set
-            {
-                data = value;
-                Update(value);
-            }
+            set { data = value; }
         }
 
-        private unsafe void Update(ColorIndicatorData data)
+        private unsafe void TryUpdate(ColorIndicatorData data)
         {
             if (data == null)
             {
@@ -34,125 +32,171 @@ namespace SharpGL.SceneComponent
                 return;
             }
 
+            if (data.LastModified == this.lastModified) { return; }
 
             // initialize rectangles with gradient color.
-            {
-                int length = data.Colors.Length;
-                PointerScientificModel rectModel = new PointerScientificModel(length * 2, Enumerations.BeginMode.QuadStrip);
-                Vertex* positions = rectModel.Positions;
-                for (int i = 0; i < length; i++)
-                {
-                    positions[i * 2].X = barWidth * i / (length - 1);
-                    positions[i * 2].Y = 0;
-                    positions[i * 2].Z = 0;
-                    positions[i * 2 + 1].X = barWidth * i / (length - 1);
-                    positions[i * 2 + 1].Y = barHeight;
-                    positions[i * 2 + 1].Z = 0;
-                }
-                // move the rectangles' center to (0, 0, 0)
-                for (int i = 0; i < length * 2; i++)
-                {
-                    positions[i].X -= barWidth / 2;
-                    positions[i].Y -= barHeight / 2;
-                }
+            GenerateRectangles(data);
 
-                ByteColor* colors = rectModel.Colors;
-                for (int i = 0; i < length; i++)
-                {
-                    GLColor color = data.Colors[i];
-                    colors[i * 2].red = (byte)(color.R * byte.MaxValue / 2);
-                    colors[i * 2].green = (byte)(color.G * byte.MaxValue / 2);
-                    colors[i * 2].blue = (byte)(color.B * byte.MaxValue / 2);
-                    colors[i * 2 + 1].red = (byte)(color.R * byte.MaxValue / 2);
-                    colors[i * 2 + 1].green = (byte)(color.G * byte.MaxValue / 2);
-                    colors[i * 2 + 1].blue = (byte)(color.B * byte.MaxValue / 2);
-                }
-
-                this.rectModel = rectModel;
-            }
             // initialize two horizontal white lines.
-            {
-                int length = 4;
-                PointerScientificModel horizontalLines = new PointerScientificModel(length, Enumerations.BeginMode.Lines);
-                Vertex* positions = horizontalLines.Positions;
-                positions[0].X = 0; positions[0].Y = 0; positions[0].Z = 0;
-                positions[1].X = barWidth; positions[1].Y = 0; positions[1].Z = 0;
-                positions[2].X = 0; positions[2].Y = barHeight; positions[2].Z = 0;
-                positions[3].X = barWidth;
-                positions[3].Y = barHeight;
-                positions[3].Z = 0;
-                // move the horizontal white lines' center to (0, 0, 0)
-                for (int i = 0; i < length; i++)
-                {
-                    positions[i].X -= barWidth / 2;
-                    positions[i].Y -= barHeight / 2;
-                }
-                ByteColor* colors = horizontalLines.Colors;
-                for (int i = 0; i < length; i++)
-                {
-                    colors[i].red = byte.MaxValue / 2;
-                    colors[i].green = byte.MaxValue / 2;
-                    colors[i].blue = byte.MaxValue / 2;
-                }
+            GenerateHorizontalLines();
 
-                this.horizontalLines = horizontalLines;
-            }
             // initialize vertical lines.
+            GenerateVerticalLines(data);
+
+            this.lastModified = data.LastModified;
+        }
+
+        unsafe private void GenerateVerticalLines(ColorIndicatorData data)
+        {
+            int blockCount = data.GetBlockCount();
+            //int blockCount = data.BlockCount;
+            int segmentCount = blockCount + 1;
+            ScientificModel verticalLines = new ScientificModel(segmentCount * 2, Enumerations.BeginMode.Lines);
+            float[] positions = verticalLines.Positions;
+            for (int i = 0; i < segmentCount; i++)
             {
-                int length = data.Colors.Length;
-                PointerScientificModel verticalLines = new PointerScientificModel(length * 2, Enumerations.BeginMode.Lines);
-                Vertex* positions = verticalLines.Positions;
-                for (int i = 0; i < length; i++)
+                if (i + 1 != segmentCount)
                 {
-                    positions[i * 2].X = barWidth * i / (length - 1);
-                    positions[i * 2].Y = -9;
-                    positions[i * 2].Z = 0;
-                    positions[i * 2 + 1].X = barWidth * i / (length - 1);
-                    positions[i * 2 + 1].Y = barHeight;
-                    positions[i * 2 + 1].Z = 0;
+                    if (data.MaxValue != data.MinValue)
+                    {
+                        positions[i * 2 * 3 + 0] = barWidth * (i * data.Step / (data.MaxValue - data.MinValue));
+                    }
+                    else
+                    {
+                        positions[i * 2 * 3 + 0] = barWidth * 0;
+                    }
                 }
-                // move the vertical lines' center to (0, 0, 0)
-                for (int i = 0; i < length * 2; i++)
+                else
                 {
-                    positions[i].X -= barWidth / 2;
-                    positions[i].Y -= barHeight / 2;
+                    positions[i * 2 * 3 + 0] = barWidth;
                 }
-
-                ByteColor* colors = verticalLines.Colors;
-                for (int i = 0; i < length * 2; i++)
-                {
-                    colors[i].red = byte.MaxValue / 2;
-                    colors[i].green = byte.MaxValue / 2;
-                    colors[i].blue = byte.MaxValue / 2;
-                }
-
-                this.verticalLines = verticalLines;
+                positions[i * 2 * 3 + 1] = -9;
+                positions[i * 2 * 3 + 2] = 0;
+                positions[i * 2 * 3 + 3 + 0] = positions[i * 2 * 3 + 0];
+                positions[i * 2 * 3 + 3 + 1] = barHeight;
+                positions[i * 2 * 3 + 3 + 2] = 0;
             }
+            // move the vertical lines' center to (0, 0, 0)
+            for (int i = 0; i < segmentCount * 2; i++)
+            {
+                positions[i * 3 + 0] -= barWidth / 2;
+                positions[i * 3 + 1] -= barHeight / 2;
+            }
+
+            float[] colors = verticalLines.Colors;
+            for (int i = 0; i < segmentCount * 2; i++)
+            {
+                colors[i * 3 + 0] = 1;
+                colors[i * 3 + 1] = 1;
+                colors[i * 3 + 2] = 1;
+                //colors[i].red = byte.MaxValue / 2;
+                //colors[i].green = byte.MaxValue / 2;
+                //colors[i].blue = byte.MaxValue / 2;
+            }
+
+            this.verticalLines = verticalLines;
+        }
+
+        unsafe private void GenerateHorizontalLines()
+        {
+            int length = 4;
+            ScientificModel horizontalLines = new ScientificModel(length, Enumerations.BeginMode.Lines);
+            float[] positions = horizontalLines.Positions;
+            //positions[0].X = 0; positions[0].Y = 0; positions[0].Z = 0;
+            //positions[1].X = barWidth; positions[1].Y = 0; positions[1].Z = 0;
+            //positions[2].X = 0; positions[2].Y = barHeight; positions[2].Z = 0;
+            //positions[3].X = barWidth;
+            //positions[3].Y = barHeight;
+            //positions[3].Z = 0;
+            positions[0 * 3 + 0] = 0; positions[0 * 3 + 1] = 0; positions[0 * 3 + 2] = 0;
+            positions[1 * 3 + 0] = barWidth; positions[1 * 3 + 1] = 0; positions[1 * 3 + 2] = 0;
+            positions[2 * 3 + 0] = 0; positions[2 * 3 + 1] = barHeight; positions[2 * 3 + 2] = 0;
+            positions[3 * 3 + 0] = barWidth;
+            positions[3 * 3 + 1] = barHeight;
+            positions[3 * 3 + 2] = 0;
+            // move the horizontal white lines' center to (0, 0, 0)
+            for (int i = 0; i < length; i++)
+            {
+                positions[i * 3 + 0] -= barWidth / 2;
+                positions[i * 3 + 1] -= barHeight / 2;
+            }
+            float[] colors = horizontalLines.Colors;
+            for (int i = 0; i < length; i++)
+            {
+                colors[i * 3 + 0] = 1;
+                colors[i * 3 + 1] = 1;
+                colors[i * 3 + 2] = 1;
+                //colors[i].red = byte.MaxValue / 2;
+                //colors[i].green = byte.MaxValue / 2;
+                //colors[i].blue = byte.MaxValue / 2;
+            }
+
+            this.horizontalLines = horizontalLines;
+        }
+
+        unsafe private void GenerateRectangles(ColorIndicatorData data)
+        {
+            int rectCount = data.ColorPalette.Colors.Length;
+            ScientificModel rectModel = new ScientificModel(rectCount * 2, Enumerations.BeginMode.QuadStrip);
+            float[] positions = rectModel.Positions;
+            for (int i = 0; i < rectCount; i++)
+            {
+                positions[i * 2 * 3 + 0] = barWidth * data.ColorPalette.Coords[i];
+                positions[i * 2 * 3 + 1] = 0;
+                positions[i * 2 * 3 + 2] = 0;
+                positions[i * 2 * 3 + 3 + 0] = positions[i * 2 * 3];
+                positions[i * 2 * 3 + 3 + 1] = barHeight;
+                positions[i * 2 * 3 + 3 + 2] = 0;
+            }
+            // move the rectangles' center to (0, 0, 0)
+            for (int i = 0; i < rectCount * 2; i++)
+            {
+                positions[i * 3 + 0] -= barWidth / 2;
+                positions[i * 3 + 1] -= barHeight / 2;
+            }
+
+            float[] colors = rectModel.Colors;
+            for (int i = 0; i < rectCount; i++)
+            {
+                GLColor color = data.ColorPalette.Colors[i];
+                colors[i * 2 * 3 + 0] = (color.R);
+                colors[i * 2 * 3 + 1] = (color.G);
+                colors[i * 2 * 3 + 2] = (color.B);
+                colors[i * 2 * 3 + 3 + 0] = (color.R);
+                colors[i * 2 * 3 + 3 + 1] = (color.G);
+                colors[i * 2 * 3 + 3 + 2] = (color.B);
+            }
+
+            this.rectModel = rectModel;
         }
 
         public const int barWidth = 100;
         public const int barHeight = 30;
 
-        private PointerScientificModel rectModel;
+        private ScientificModel rectModel;
 
-        private PointerScientificModel verticalLines;
+        private ScientificModel verticalLines;
 
-        private PointerScientificModel horizontalLines;
+        private ScientificModel horizontalLines;
 
         public void Render(OpenGL gl, RenderMode renderMode)
         {
-            PointerScientificModel rectModel = this.rectModel;
-            PointerScientificModel verticalLines = this.verticalLines;
-            PointerScientificModel horizontalLines = this.horizontalLines;
+            TryUpdate(this.data);
+
+            ScientificModel rectModel = this.rectModel;
+            ScientificModel verticalLines = this.verticalLines;
+            ScientificModel horizontalLines = this.horizontalLines;
+
 
             if (rectModel != null)
-            { rectModel.Render(gl, renderMode); }
+            { rectModel.RenderLegacyOpenGL(gl, renderMode); }
 
             if (verticalLines != null)
-            { verticalLines.Render(gl, renderMode); }
+            { verticalLines.RenderLegacyOpenGL(gl, renderMode); }
 
             if (horizontalLines != null)
-            { horizontalLines.Render(gl, renderMode); }
+            { horizontalLines.RenderLegacyOpenGL(gl, renderMode); }
         }
+
     }
 }

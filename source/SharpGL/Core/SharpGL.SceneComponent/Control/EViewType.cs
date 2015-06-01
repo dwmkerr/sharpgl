@@ -5,11 +5,14 @@ using System.Text;
 
 namespace SharpGL.SceneComponent
 {
-    public struct ByteColor
+    public enum EViewType
     {
-        public byte red;
-        public byte green;
-        public byte blue;
-        //public byte alpha;
+        UserView,
+        Top,
+        Bottom,
+        Left,
+        Right,
+        Front,
+        Back,
     }
 }

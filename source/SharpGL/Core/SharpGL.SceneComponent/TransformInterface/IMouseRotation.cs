@@ -6,11 +6,11 @@ using System.Text;
 namespace SharpGL.SceneComponent
 {
     /// <summary>
-    /// Rotate model with mouse operation.
+    /// Rotate something(model, camera, etc) with mouse operation.
     /// </summary>
     public interface IMouseRotation
     {
-        SceneGraph.Cameras.LookAtCamera Camera { get; set; }
+        IScientificCamera Camera { get; set; }
 
         void MouseUp(int x, int y);
 

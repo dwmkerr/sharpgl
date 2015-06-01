@@ -12,9 +12,9 @@ namespace SharpGL.SceneComponent
 {
     /// <summary>
     /// The MyArcBall supports arcball projection, making it ideal for use with a mouse.
-    /// <para><see cref="MyArcBall"/> is a better(support all moving camera's) version of <see cref="SharpGL.SceneGraph.Core.ArcBall"/>.</para>
+    /// <para><see cref="ArcBallTransform"/> is a better(support all moving camera's) version of <see cref="SharpGL.SceneGraph.Core.ArcBall"/>.</para>
     /// </summary>
-    public class MyArcBall : IMouseTransform
+    public class ArcBallTransform : IMouseTransform
     {
         protected bool isCameraSet = false;
         public bool mouseDownFlag;
@@ -29,7 +29,7 @@ namespace SharpGL.SceneComponent
         protected Vertex _right;
         //protected mat4 currentRotation = mat4.identity();
         float _scale = 1.0f;
-        SceneGraph.Cameras.LookAtCamera _camera;
+        IScientificCamera _camera;
              
         private Vertex GetArcBallPosition(int x, int y)
         {
@@ -52,7 +52,7 @@ namespace SharpGL.SceneComponent
 
         private void UpdateCameraAxis()
         {
-            LookAtCamera camera = this._camera;
+            IViewCamera camera = this._camera;
             if (camera == null) { return; }
 
             _back = camera.Position - camera.Target;
@@ -157,7 +157,7 @@ namespace SharpGL.SceneComponent
 
         #region IMouseRotation 成员
 
-        public LookAtCamera Camera
+        public IScientificCamera Camera
         {
             get { return _camera; }
             set

@@ -63,6 +63,7 @@ namespace SharpGL.SceneComponent
             this.colorBarTransform.ScaleX = (float)args.UIWidth / (float)ColorIndicatorBar.barWidth;
             this.colorBarTransform.ScaleY = (float)args.UIHeight / (float)ColorIndicatorBar.barHeight;
             //this.colorBarTransform.ScaleZ = 1;// This is not needed.
+            this.colorBarTransform.TranslateZ = -base.zNear;// make sure UI shows in front of enything else.
 
             this.colorNumber.CurrentArgs = args;
         }

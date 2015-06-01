@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SharpGL.SceneGraph.Core;
 
 namespace SharpGL.SceneComponent
 {
@@ -28,7 +29,7 @@ namespace SharpGL.SceneComponent
             this.scene.OpenGL = this.OpenGL;
 
             //  Initialise the scene.
-            SceneGraph.Helpers.SceneHelper.InitialiseModelingScene(Scene);
+            MySceneControlHelper.InitialiseModelingScene(scene);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -40,7 +41,7 @@ namespace SharpGL.SceneComponent
             OpenGL.MakeCurrent();
 
             //	Do the scene drawing.
-            scene.Draw();
+            scene.Draw(SharpGL.SceneGraph.Core.RenderMode.Render);
 
             //	If there is a draw handler, then call it.
             DoOpenGLDraw(new RenderEventArgs(e.Graphics));
@@ -106,6 +107,7 @@ namespace SharpGL.SceneComponent
             get { return scene; }
             set { scene = value; }
         }
+        
     }
 
 }

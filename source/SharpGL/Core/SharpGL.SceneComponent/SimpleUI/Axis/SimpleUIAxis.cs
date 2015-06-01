@@ -14,7 +14,7 @@ namespace SharpGL.SceneComponent
     /// </summary>
     public class SimpleUIAxis : SimpleUIRect, IMouseRotation
     {
-        internal IMouseTransform mouseTransform = new MyArcBall();
+        internal IMouseTransform mouseTransform = new ArcBallTransform();
         /// <summary>
         /// keeps axis' scale.
         /// </summary>
@@ -52,18 +52,65 @@ namespace SharpGL.SceneComponent
             // ** / 3: CylinderAxis' length is 3.
             this.axisTransform.ScaleX = args.UIWidth / 2 / 3;
             this.axisTransform.ScaleY = args.UIHeight / 2 / 3;
-            int max = Math.Max(args.UIWidth,args.UIHeight);
-            this.axisTransform.ScaleZ = (this.RightHandAxis ? -1 : 1) * max / 2 / 3;
+            int max = Math.Max(args.UIWidth, args.UIHeight);
+            this.axisTransform.ScaleZ = (this.RightHandAxis ? 1 : -1) * max / 2 / 3;
+            //this.axisTransform.TranslateZ = base.zFar;// make sure UI shows in front of enything else.
+            //var target2Position = base.Camera.Position - base.Camera.Target;
+            //target2Position.Normalize();
+            //target2Position *= 100;
+            //this.axisTransform.TranslateX = base.Camera.Position.X + target2Position.X;
+            //this.axisTransform.TranslateY = base.Camera.Position.Y + target2Position.Y;
+            //this.axisTransform.TranslateZ = base.Camera.Position.Z + target2Position.Z;
         }
 
         public override void PushObjectSpace(OpenGL gl)
         {
-            base.PushObjectSpace(gl);
+            //base.PushObjectSpace(gl);
+
+            this.args = new SimpleUIRectArgs();
+            //int viewWidth;
+            //int viewHeight;
+            CalculateViewport(gl, args);
+
+            //int UIWidth, UIHeight, left, bottom;
+            CalculateCoords(args.viewWidth, args.viewHeight, args);
+
+            gl.MatrixMode(SharpGL.Enumerations.MatrixMode.Projection);
+            gl.PushMatrix();
+            gl.LoadIdentity();
+            gl.Ortho(args.left, args.right, args.bottom, args.top, zNear, zFar);
+
+            IViewCamera camera = this.Camera;
+            if (camera == null)
+            {
+                gl.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);
+                //throw new Exception("Camera not set!");
+            }
+            else
+            {
+                Vertex position = camera.Position;
+                Vertex target = camera.Target;
+                //position.Normalize();
+                gl.LookAt(position.X, position.Y, position.Z,
+                    target.X, target.Y, target.Z,
+                    camera.UpVector.X, camera.UpVector.Y, camera.UpVector.Z);
+            }
+
+            gl.MatrixMode(SharpGL.Enumerations.MatrixMode.Modelview);
+            gl.PushMatrix();
 
             if (mouseTransform.Camera != null)
             {
-                mouseTransform.TransformMatrix(gl);
+                //mouseTransform.TransformMatrix(gl);
             }
+
+            var target2Position = base.Camera.Position - base.Camera.Target;
+            target2Position.Normalize();
+            target2Position *= 100;
+            var x = base.Camera.Position.X + target2Position.X;
+            var y = base.Camera.Position.Y + target2Position.Y;
+            var z = base.Camera.Position.Z + target2Position.Z;
+            gl.Translate(x, y, z);
         }
 
 
@@ -75,7 +122,7 @@ namespace SharpGL.SceneComponent
         /// <para>gl.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);</para>
         /// <para>Otherwise, it uses gl.LookAt(Camera's (Position - Target), Target, UpVector);</para>
         /// </summary>
-        public override SceneGraph.Cameras.LookAtCamera Camera
+        public override IScientificCamera Camera
         {
             get
             {

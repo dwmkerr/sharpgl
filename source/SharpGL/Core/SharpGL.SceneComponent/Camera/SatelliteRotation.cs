@@ -9,9 +9,10 @@ using SharpGL.SceneGraph.Cameras;
 namespace SharpGL.SceneComponent
 {
     /// <summary>
-    /// rotate and translate camera on a sphere, whose center is camera's Target.
+    /// Rotates a camera on a sphere, whose center is camera's Target.
+    /// <para>Just like a satellite moves around a fixed star.</para>
     /// </summary>
-    public class CameraRotation : IMouseRotation
+    public class SatelliteRotation : IMouseRotation
     {
         private Point downPosition = new Point();
         private Size bound = new Size();
@@ -22,12 +23,16 @@ namespace SharpGL.SceneComponent
         private SharpGL.SceneGraph.Vertex back;
         private SharpGL.SceneGraph.Vertex right;
 
-        public CameraRotation(SharpGL.SceneGraph.Cameras.LookAtCamera lookAtCamera = null)
+        /// <summary>
+        /// Rotates a camera on a sphere, whose center is camera's Target.
+        /// <para>Just like a satellite moves around a fixed star.</para> 
+        /// </summary>
+        /// <param name="camera"></param>
+        public SatelliteRotation(IScientificCamera camera = null)
         {
-            this.Camera = lookAtCamera;
+            this.Camera = camera;
         }
 
-      
 
         public override string ToString()
         {
@@ -43,38 +48,11 @@ namespace SharpGL.SceneComponent
         }
 
 
-
         #region IRotation 成员
 
-        private SharpGL.SceneGraph.Cameras.LookAtCamera camera;
-        private LookAtCamera originalCamera;
+        private IScientificCamera originalCamera;
 
-        public LookAtCamera Camera
-        {
-            get { return camera; }
-            set
-            {
-                camera = value;
-                if (value != null)
-                {
-                    Vertex back = camera.Position - camera.Target;
-                    Vertex right = Camera.UpVector.VectorProduct(back);
-                    Vertex up = back.VectorProduct(right);
-                    back.Normalize(); 
-                    right.Normalize();
-                    up.Normalize();
-
-                    this.back = back; 
-                    this.right = right; 
-                    this.up = up;
-
-                    if (this.originalCamera == null)
-                    { this.originalCamera = new LookAtCamera(); }
-                    this.originalCamera.Position = value.Position;
-                    this.originalCamera.UpVector = value.UpVector;
-                }
-            }
-        }
+        public IScientificCamera Camera { get; set; }
 
         public void MouseUp(int x, int y)
         {
@@ -85,7 +63,7 @@ namespace SharpGL.SceneComponent
         {
             if (this.mouseDownFlag)
             {
-                LookAtCamera camera = this.Camera;
+                IViewCamera camera = this.Camera;
                 if (camera == null) { return; }
 
                 Vertex back = this.back;
@@ -142,13 +120,37 @@ namespace SharpGL.SceneComponent
             this.downPosition.X = x;
             this.downPosition.Y = y;
             this.mouseDownFlag = true;
+            PrepareCamera();
+        }
+
+        private void PrepareCamera()
+        {
+            var camera = this.Camera;
+            if (camera != null)
+            {
+                Vertex back = camera.Position - camera.Target;
+                Vertex right = Camera.UpVector.VectorProduct(back);
+                Vertex up = back.VectorProduct(right);
+                back.Normalize();
+                right.Normalize();
+                up.Normalize();
+
+                this.back = back;
+                this.right = right;
+                this.up = up;
+
+                if (this.originalCamera == null)
+                { this.originalCamera = new ScientificCamera(); }
+                this.originalCamera.Position = camera.Position;
+                this.originalCamera.UpVector = camera.UpVector;
+            }
         }
 
         public void ResetRotation()
         {
-            LookAtCamera camera = this.Camera;
+            IViewCamera camera = this.Camera;
             if (camera == null) { return; }
-            LookAtCamera originalCamera = this.originalCamera;
+            IViewCamera originalCamera = this.originalCamera;
             if (originalCamera == null) { return; }
 
             camera.Position = originalCamera.Position;

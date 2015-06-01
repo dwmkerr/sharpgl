@@ -44,16 +44,57 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteColor.cs" />
-    <Compile Include="CameraRotation.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="ECameraType.cs" />
-    <Compile Include="IMouseRotation.cs" />
-    <Compile Include="IMouseScale.cs" />
-    <Compile Include="IMouseTransform.cs" />
-    <Compile Include="IScientificModel.cs" />
-    <Compile Include="ITranslation.cs" />
-    <Compile Include="MySharpGL\MyArcBall.cs" />
-    <Compile Include="MySharpGL\MyArcBallEffect.cs" />
+    <Compile Include="Camera\CameraHelper.cs" />
+    <Compile Include="Camera\ECameraType.cs" />
+    <Compile Include="Camera\IOrthoCamera.cs" />
+    <Compile Include="Camera\IOrthoViewCamera.cs" />
+    <Compile Include="Camera\IPerspectiveCamera.cs" />
+    <Compile Include="Camera\IPerspectiveViewCamera.cs" />
+    <Compile Include="Camera\IScientificCamera.cs" />
+    <Compile Include="Camera\IViewCamera.cs" />
+    <Compile Include="Camera\SatelliteRotation.cs" />
+    <Compile Include="Camera\ScientificCamera.cs" />
+    <Compile Include="ColorCodedPicking\ColorCodedPickingHelper.cs" />
+    <Compile Include="ColorCodedPicking\GeometryTypes.cs" />
+    <Compile Include="ColorCodedPicking\IColorCodedPicking.cs" />
+    <Compile Include="ColorCodedPicking\IColorCodedPickingHelper.cs" />
+    <Compile Include="ColorCodedPicking\IPickedPrimitive.cs" />
+    <Compile Include="ColorCodedPicking\PickedPrimitive.cs" />
+    <Compile Include="ColorCodedPicking\SharedStageInfo.cs" />
+    <Compile Include="Control\EViewType.cs" />
+    <Compile Include="Control\ScientificControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ScientificControl.Designer.cs">
+      <DependentUpon>ScientificControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ScientificControlHelper.cs" />
+    <Compile Include="Control\ScientificVisual3DControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ScientificVisual3DControl.Designer.cs">
+      <DependentUpon>ScientificVisual3DControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ScientificVisual3DControlHelper.cs" />
+    <Compile Include="Model\BoundingBox.cs" />
+    <Compile Include="Model\CylinderBoundingBox.cs" />
+    <Compile Include="Model\IBoundingBox.cs" />
+    <Compile Include="Model\ModelContainer.cs" />
+    <Compile Include="Model\ModelHelper\ScientificModelBuildHelper.cs" />
+    <Compile Include="Model\ModelHelper\ScientificModelRendererHelper.cs" />
+    <Compile Include="Model\ModelObject.cs" />
+    <Compile Include="Model\ModelSpace.cs" />
+    <Compile Include="Model\ScientificModel.cs" />
+    <Compile Include="Model\ScientificModelElement.cs" />
+    <Compile Include="MySharpGL\ArcBallTransform.cs" />
+    <Compile Include="MySharpGL\ArcBallTransformEffect.cs" />
+    <Compile Include="MySharpGL\LinearArcBallTransform.cs" />
+    <Compile Include="MySharpGL\MyOpenGLControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MySharpGL\MyOpenGLControl.Designer.cs">
+      <DependentUpon>MyOpenGLControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MySharpGL\MyScene.cs" />
     <Compile Include="MySharpGL\MySceneControl.cs">
       <SubType>UserControl</SubType>
@@ -61,17 +102,9 @@
     <Compile Include="MySharpGL\MySceneControl.Designer.cs">
       <DependentUpon>MySceneControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="PointerScientificModel.cs" />
+    <Compile Include="MySharpGL\MySceneControlHelper.cs" />
+    <Compile Include="MySharpGL\UIScene.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScientificCamera.cs" />
-    <Compile Include="ScientificModelElement.cs" />
-    <Compile Include="ScientificVisual3DControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScientificVisual3DControl.Designer.cs">
-      <DependentUpon>ScientificVisual3DControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ScientificVisual3DControlHelper.cs" />
     <Compile Include="SimpleUI\Axis\CylinderAxis.cs" />
     <Compile Include="SimpleUI\Axis\SimpleUIAxis.cs" />
     <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorBar.cs" />
@@ -82,8 +115,20 @@
     <Compile Include="SimpleUI\ColorIndicator\QuantityRange.cs" />
     <Compile Include="SimpleUI\ColorIndicator\SimpleUIColorIndicator.cs" />
     <Compile Include="SimpleUI\ColorIndicator\UIColorIndicator.cs" />
+    <Compile Include="SimpleUI\IOrthoInfo.cs" />
     <Compile Include="SimpleUI\SimpleUIRect.cs" />
     <Compile Include="SimpleUI\SimpleUIRectArgs.cs" />
+    <Compile Include="SimpleUI\UIContainer.cs" />
+    <Compile Include="TransformInterface\IMouseLinearTransform.cs" />
+    <Compile Include="TransformInterface\IMouseRotation.cs" />
+    <Compile Include="TransformInterface\IMouseScale.cs" />
+    <Compile Include="TransformInterface\IMouseTransform.cs" />
+    <Compile Include="TransformInterface\ITranslation.cs" />
+    <Compile Include="Utility\ArrayHelper.cs" />
+    <Compile Include="Utility\BeginModeHelper.cs" />
+    <Compile Include="Utility\FloatHelper.cs" />
+    <Compile Include="Utility\GeometryTypesHelper.cs" />
+    <Compile Include="Utility\ManifestResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">
@@ -106,6 +151,13 @@
       <Project>{5ef45533-e2c7-46f2-b4a3-b8f36cd406e0}</Project>
       <Name>SharpGL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Model\PickingShader.frag" />
+    <None Include="Model\PickingShader.vert" />
+    <None Include="Model\Shader.frag" />
+    <None Include="Model\Shader.vert" />
+    <None Include="TransformInterface\TransformInterface.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MySharpGL\read-me.txt" />

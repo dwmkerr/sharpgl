@@ -19,6 +19,8 @@ namespace SharpGL.SceneComponent.SimpleUI.ColorIndicator
         /// </summary>
         private GLColor[] colors;
 
+        private float[] coords;
+
         /// <summary>
         /// protected default constructor
         /// </summary>
@@ -26,13 +28,14 @@ namespace SharpGL.SceneComponent.SimpleUI.ColorIndicator
         {
         }
 
-        public ColorPalette(String paletteName,GLColor[] colors)
+        public ColorPalette(String paletteName,GLColor[] colors,float[] coords)
         {
-            if (colors == null || colors.Length < 2)
+            if (colors == null||colors == null||colors.Length<2 || colors.Length < 2||colors.Length!=coords.Length)
             { 
-                throw new ArgumentNullException("colors", "colors' length must greater than 1."); 
+                throw new ArgumentNullException("ColorPalette", "ColorPalette define error"); 
             }
             this.colors = colors;
+            this.coords = coords;
             this.name = paletteName;
         }
         
@@ -45,8 +48,26 @@ namespace SharpGL.SceneComponent.SimpleUI.ColorIndicator
            }
         }
 
+        public float[] Coords
+        {
+            get
+            {
+                return this.coords;
+            }
+        }
+
+        public GLColor[] Colors
+        {
+            get
+            {
+                return this.colors;
+            }
+        }
+
+      
+
         public GLColor MapToColor(float x, float minValue, float maxValue){
-            return ColorMapHelper.MapToColor(colors, x, minValue, maxValue);
+            return ColorMapHelper.MapToColor(colors,this.coords, x, minValue, maxValue);
         }
     }
 
@@ -56,12 +77,22 @@ namespace SharpGL.SceneComponent.SimpleUI.ColorIndicator
         public static ColorPalette CreateRainbow()
         {
             GLColor[] colors = new GLColor[5];
+            float[] coords = new float[5];
+            coords[0] = 0.0f;
             colors[0] = System.Drawing.Color.FromArgb(255, 0, 22, 76);
+
+            coords[1] = 0.25f;
             colors[1] = System.Drawing.Color.FromArgb(255, 0, 193, 136);
+
+            coords[2] = 0.5f;
             colors[2] = System.Drawing.Color.FromArgb(255, 166, 255, 27);
+
+            coords[3] = 0.75f;
             colors[3] = System.Drawing.Color.FromArgb(255, 255, 173, 0);
+
+            coords[4] = 1.0f;
             colors[4] = System.Drawing.Color.FromArgb(255, 255, 8, 1);
-            return new ColorPalette("Rainbow",colors);
+            return new ColorPalette("Rainbow",colors,coords);
         }
 
         public static IList<ColorPalette> LoadColorPalettes(String filePath)
@@ -85,42 +116,58 @@ namespace SharpGL.SceneComponent.SimpleUI.ColorIndicator
             return (y2 - y1) / dx;
         }
 
-        public static GLColor MapToColor(GLColor[] template, double x, double minValue, double maxValue)
+        public static GLColor MapToColor(GLColor[] colors,float[] coords, double value, double minValue, double maxValue)
         {
-            if (template.Length < 2)
+            if (colors.Length < 2)
                 throw new ArgumentException("template colors size error");
 
             double d = maxValue - minValue;
             if (d < 0.0f)
                 throw new ArgumentException("fault value range");
 
-            if (x < minValue)
-                x = minValue;
-            if (x > maxValue)
-                x = maxValue;
+            if (value < minValue)
+                value = minValue;
+            if (value > maxValue)
+                value = maxValue;
 
             if (d == 0.0d)
-                return template[0];
+                return colors[0];
 
-            double step = d / template.Length;
+            double dx = value - minValue;
 
-            double d0 = x - minValue;
-            int minIndex = (int)Math.Floor(d0 / step);
+            double x = dx / d;
+            if(x<=0.000000001d)
+                return colors[0];
+
+            bool find = false;
+            double xi=0.0d, xi1=0.0d;
+            GLColor yi=colors[0], yi1=colors[1];
+
+            for (int i = 0; i < coords.Length - 1; i++)
+            {
+                xi = coords[i];
+                xi1 = coords[i + 1];
+                yi = colors[i];
+                yi1 = colors[i + 1];
+                if (x >= xi && x <= xi1)
+                {
+                    find = true;
+                    break;
+                }
+            }
+            if (!find)
+                throw new ArgumentException("not found colors,template fault default not in[0,1] ?");
 
 
-            double x0 = minIndex * step;
-            double x1 = (minIndex + 1) * step;
-
-            GLColor y0 = template[minIndex];
-            GLColor y1 = template[minIndex + 1];
-
+            double dxi = x - xi;
+            
             GLColor color = new GLColor();
-            double kr = LineSlope(y1.R, y0.R, step);
-            double kg = LineSlope(y1.G, y0.G, step);
-            double kb = LineSlope(y1.B, y0.B, step);
-            double r = y0.R + kr * (x - x0);
-            double g = y0.G + kg * (x - x0);
-            double b = y0.B + kb * (x - x0);
+            double kr = LineSlope(yi1.R, yi.R, dxi);
+            double kg = LineSlope(yi1.G, yi.G, dxi);
+            double kb = LineSlope(yi1.B, yi.B, dxi);
+            double r = yi.R + kr * (x - xi);
+            double g = yi.G + kg * (x - xi);
+            double b = yi.B + kb * (x - xi);
 
             double total = r + g + b;
             color.Set((float)(r / total), (float)(g / total), (float)(b / total));
