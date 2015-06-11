@@ -103,7 +103,6 @@
       <DependentUpon>MySceneControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MySharpGL\MySceneControlHelper.cs" />
-    <Compile Include="MySharpGL\UIScene.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleUI\Axis\CylinderAxis.cs" />
     <Compile Include="SimpleUI\Axis\SimpleUIAxis.cs" />
