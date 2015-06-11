@@ -22,18 +22,15 @@ using System.Xml.Serialization;
 
 namespace SharpGL.SceneGraph
 {
-	[TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
+    [TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
     [XmlInclude(typeof(PerspectiveCamera))]
     [XmlInclude(typeof(OrthographicCamera))]
     [XmlInclude(typeof(FrustumCamera))]
     [XmlInclude(typeof(LookAtCamera))]
     [XmlInclude(typeof(ArcBallCamera))]
-	public class Scene : IHasOpenGLContext
-	{
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Scene"/> class.
-        /// </summary>
-		public Scene()
+    public class Scene : IHasOpenGLContext
+    {
+        public Scene()
         {
             RenderBoundingVolumes = true;
 
@@ -48,60 +45,63 @@ namespace SharpGL.SceneGraph
         /// <param name="x">The x.</param>
         /// <param name="y">The y.</param>
         /// <returns>The elements hit.</returns>
-		public virtual IEnumerable<SceneElement> DoHitTest(int x, int y)
-		{
+        public virtual IEnumerable<SceneElement> DoHitTest(int x, int y)
+        {
             //  Create a result set.
             List<SceneElement> resultSet = new List<SceneElement>();
+
+            OpenGL gl = this.gl;
+            if (gl == null) { return resultSet; }
 
             //  Create a hitmap.
             Dictionary<uint, SceneElement> hitMap = new Dictionary<uint, SceneElement>();
 
-			//	If we don't have a current camera, we cannot hit test.
+            //	If we don't have a current camera, we cannot hit test.
             if (currentCamera == null)
                 return resultSet;
 
-			//	Create an array that will be the viewport.
-			int[] viewport = new int[4];
-			
-			//	Get the viewport, then convert the mouse point to an opengl point.
-			gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
-			y = viewport[3] - y;
+            //	Create an array that will be the viewport.
+            int[] viewport = new int[4];
 
-			//	Create a select buffer.
-			uint[] selectBuffer = new uint[512];
-			gl.SelectBuffer(512, selectBuffer);
-			
-			//	Enter select mode.
-			gl.RenderMode(OpenGL.GL_SELECT);
-                        
-			//	Initialise the names, and add the first name.
-			gl.InitNames();
-			gl.PushName(0);
-		
-			//	Push matrix, set up projection, then load matrix.
+            //	Get the viewport, then convert the mouse point to an opengl point.
+            gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
+            y = viewport[3] - y;
+
+            //	Create a select buffer.
+            uint[] selectBuffer = new uint[512];
+            gl.SelectBuffer(512, selectBuffer);
+
+            //	Enter select mode.
+            gl.RenderMode(OpenGL.GL_SELECT);
+
+            //	Initialise the names, and add the first name.
+            gl.InitNames();
+            gl.PushName(0);
+
+            //	Push matrix, set up projection, then load matrix.
             gl.MatrixMode(OpenGL.GL_PROJECTION);
-			gl.PushMatrix();
-			gl.LoadIdentity();
-			gl.PickMatrix(x, y, 4, 4, viewport);
-			currentCamera.TransformProjectionMatrix(gl);
+            gl.PushMatrix();
+            gl.LoadIdentity();
+            gl.PickMatrix(x, y, 4, 4, viewport);
+            currentCamera.TransformProjectionMatrix(gl);
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
-			gl.LoadIdentity();
+            gl.LoadIdentity();
 
             //  Create the name.
             uint currentName = 1;
 
             //  Render the root for hit testing.
             RenderElementForHitTest(SceneContainer, hitMap, ref currentName);
-													
-			//	Pop matrix and flush commands.
-            gl.MatrixMode(OpenGL.GL_PROJECTION);
-			gl.PopMatrix();
-            gl.MatrixMode(OpenGL.GL_MODELVIEW);
-			gl.Flush();
 
-			//	End selection.
+            //	Pop matrix and flush commands.
+            gl.MatrixMode(OpenGL.GL_PROJECTION);
+            gl.PopMatrix();
+            gl.MatrixMode(OpenGL.GL_MODELVIEW);
+            gl.Flush();
+
+            //	End selection.
             int hits = gl.RenderMode(OpenGL.GL_RENDER);
-			uint posinarray = 0;
+            uint posinarray = 0;
 
             //  Go through each name.
             for (int hit = 0; hit < hits; hit++)
@@ -122,30 +122,33 @@ namespace SharpGL.SceneGraph
             }
 
             //  Return the result set.
-			return resultSet;
-		}
+            return resultSet;
+        }
 
-		/// <summary>
-		/// This function draws all of the objects in the scene (i.e. every quadric
-		/// in the quadrics arraylist etc).
-		/// </summary>
-		public virtual void Draw(Camera camera = null)
-		{
+        /// <summary>
+        /// This function draws all of the objects in the scene (i.e. every quadric
+        /// in the quadrics arraylist etc).
+        /// </summary>
+        public virtual void Draw(Camera camera = null)
+        {
+            OpenGL gl = this.gl;
+            if (gl == null) { return; }
+
             //  TODO: we must decide what to do about drawing - are 
             //  cameras completely outside of the responsibility of the scene?
             //  If no camera has been provided, use the current one.
             if (camera == null)
                 camera = currentCamera;
 
-			//	Set the clear color.
-			float[] clear = clearColour;
-			gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
+            //	Set the clear color.
+            float[] clear = clearColour;
+            gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
 
             //  Reproject.
             if (camera != null)
                 camera.Project(gl);
 
-			//	Clear.
+            //	Clear.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT |
                 OpenGL.GL_STENCIL_BUFFER_BIT);
 
@@ -159,9 +162,9 @@ namespace SharpGL.SceneGraph
             //  doesn't, look into this.
             //gl.BindTexture(OpenGL.GL_TEXTURE_2D, 0);
             //gl.Enable(OpenGL.GL_TEXTURE_2D);
-                        
-			gl.Flush();
-		}
+
+            gl.Flush();
+        }
 
         /// <summary>
         /// Renders the element.
@@ -170,54 +173,67 @@ namespace SharpGL.SceneGraph
         /// <param name="renderMode">The render mode.</param>
         public void RenderElement(SceneElement sceneElement, RenderMode renderMode)
         {
+            OpenGL gl = this.gl;
+            if (gl == null) { return; }
+
+            //  If the element is disabled, we're done.
+            if (sceneElement.IsEnabled == false)
+                return;
             //  If the element is disabled, we're done.
             if (sceneElement.IsEnabled == false)
                 return;
 
             //  Push each effect.
             foreach (var effect in sceneElement.Effects)
-                if(effect.IsEnabled)
+                if (effect.IsEnabled)
                     effect.Push(gl, sceneElement);
 
             //  If the element can be bound, bind it.
-            if (sceneElement is IBindable)
-                ((IBindable)sceneElement).Push(gl);
+            IBindable bindable = sceneElement as IBindable;// example: Light
+            if (bindable != null) bindable.Push(gl);
 
             //  If the element has an object space, transform into it.
-            if (sceneElement is IHasObjectSpace)
-                ((IHasObjectSpace)sceneElement).PushObjectSpace(gl);
+            IHasObjectSpace hasObjectSpace = sceneElement as IHasObjectSpace;// example: Polygon, quadric, Teapot
+            if (hasObjectSpace != null) hasObjectSpace.PushObjectSpace(gl);
 
-            //  If the element has a material, push it.
-            if (sceneElement is IHasMaterial && ((IHasMaterial)sceneElement).Material != null)
-                ((IHasMaterial)sceneElement).Material.Push(gl);
+            //  Render self.
+            {
+                //  If the element has a material, push it.
+                IHasMaterial hasMaterial = sceneElement as IHasMaterial;// example: Polygon, quadric, Teapot
+                if (hasMaterial != null && hasMaterial.Material != null)
+                { hasMaterial.Material.Push(gl); }
 
-            //  If the element can be rendered, render it.
-            if (sceneElement is IRenderable)
-                ((IRenderable)sceneElement).Render(gl, renderMode);
+                //  If the element can be rendered, render it.
+                IRenderable renderable = sceneElement as IRenderable;
+                if (renderable != null) renderable.Render(gl, renderMode);
 
-            //  If the element has a material, pop it.
-            if (sceneElement is IHasMaterial && ((IHasMaterial)sceneElement).Material != null)
-                ((IHasMaterial)sceneElement).Material.Pop(gl);
+                //  If the element has a material, pop it.
+                if (hasMaterial != null && hasMaterial.Material != null)
+                { hasMaterial.Material.Pop(gl); }
+            }
 
-            //  IF the element is volume bound and we are rendering volumes, render the volume.
-            if (RenderBoundingVolumes && sceneElement is IVolumeBound)
-                ((IVolumeBound)sceneElement).BoundingVolume.Render(gl, renderMode);
+            //  If the element is volume bound and we are rendering volumes, render the volume.
+            IVolumeBound volumeBound = null;
+            if (RenderBoundingVolumes)
+            {
+                volumeBound = sceneElement as IVolumeBound;
+                if (volumeBound != null)
+                { volumeBound.BoundingVolume.Render(gl, renderMode); }
+            }
 
             //  Recurse through the children.
             foreach (var childElement in sceneElement.Children)
                 RenderElement(childElement, renderMode);
 
             //  If the element has an object space, transform out of it.
-            if (sceneElement is IHasObjectSpace)
-                ((IHasObjectSpace)sceneElement).PopObjectSpace(gl);
+            if (hasObjectSpace != null) hasObjectSpace.PopObjectSpace(gl);
 
-            //  pop(unbind) it.
-            if (sceneElement is IBindable)
-                ((IBindable)sceneElement).Pop(gl);
+            //  If the element can be bound, bind it.
+            if (bindable != null) bindable.Pop(gl);
 
             //  Pop each effect.
             for (int i = sceneElement.Effects.Count - 1; i >= 0; i--)
-                if(sceneElement.Effects[i].IsEnabled)
+                if (sceneElement.Effects[i].IsEnabled)
                     sceneElement.Effects[i].Pop(gl, sceneElement);
         }
 
@@ -227,7 +243,7 @@ namespace SharpGL.SceneGraph
         /// <param name="sceneElement">The scene element.</param>
         /// <param name="hitMap">The hit map.</param>
         /// <param name="currentName">Current hit name.</param>
-        private void RenderElementForHitTest(SceneElement sceneElement, 
+        private void RenderElementForHitTest(SceneElement sceneElement,
             Dictionary<uint, SceneElement> hitMap, ref uint currentName)
         {
             //  If the element is disabled, we're done.
@@ -272,29 +288,32 @@ namespace SharpGL.SceneGraph
                     sceneElement.Effects[i].Pop(gl, sceneElement);
         }
 
-		/// <summary>
-		/// Use this function to resize the scene window, and also to look through
-		/// the current camera.
-		/// </summary>
-		/// <param name="width">Width of the screen.</param>
-		/// <param name="height">Height of the screen.</param>
-		public virtual void Resize(int width, int height)
-		{
-			if(width != -1 && height != -1)
-			{
+        /// <summary>
+        /// Use this function to resize the scene window, and also to look through
+        /// the current camera.
+        /// </summary>
+        /// <param name="width">Width of the screen.</param>
+        /// <param name="height">Height of the screen.</param>
+        public virtual void Resize(int width, int height)
+        {
+            OpenGL gl = this.gl;
+            if (gl == null) { return; }
+
+            if (width != -1 && height != -1)
+            {
                 //	Resize.
-				gl.Viewport(0, 0, width, height);
-				
+                gl.Viewport(0, 0, width, height);
+
                 if (currentCamera != null)
                 {
                     //  Set aspect ratio.
                     currentCamera.AspectRatio = (float)width / (float)height;
 
-				    //	Then project.
+                    //	Then project.
                     currentCamera.Project(gl);
                 }
-			}
-		}
+            }
+        }
 
         /// <summary>
         /// Create in the context of the supplied OpenGL instance.
@@ -318,10 +337,10 @@ namespace SharpGL.SceneGraph
         {
         }
 
-		/// <summary>
-		/// This is the OpenGL class, use it to call OpenGL functions.
-		/// </summary>
-        private OpenGL gl = new OpenGL();
+        /// <summary>
+        /// This is the OpenGL class, use it to call OpenGL functions.
+        /// </summary>
+        private OpenGL gl;//= new OpenGL();
 
         /// <summary>
         /// The main scene container - this is the top level element of the Scene Tree.
@@ -333,15 +352,15 @@ namespace SharpGL.SceneGraph
         /// </summary>
         private ObservableCollection<Asset> assets = new ObservableCollection<Asset>();
 
-		/// <summary>
-		/// This is the camera that is currently being used to view the scene.
-		/// </summary>
+        /// <summary>
+        /// This is the camera that is currently being used to view the scene.
+        /// </summary>
         private Camera currentCamera;
 
-		/// <summary>
-		/// This is the colour of the background of the scene.
-		/// </summary>
-		private GLColor clearColour = new GLColor(0, 0, 0, 0);
+        /// <summary>
+        /// This is the colour of the background of the scene.
+        /// </summary>
+        private GLColor clearColour = new GLColor(0, 0, 0, 0);
 
         /// <summary>
         /// Gets or sets the open GL.
@@ -350,12 +369,12 @@ namespace SharpGL.SceneGraph
         /// The open GL.
         /// </value>
         [XmlIgnore]
-		[Description("OpenGL API Wrapper Class"), Category("OpenGL/External")]
-		public OpenGL OpenGL
-		{
-			get {return gl;}
-			set {gl = value;}
-		}
+        [Description("OpenGL API Wrapper Class"), Category("OpenGL/External")]
+        public OpenGL OpenGL
+        {
+            get { return gl; }
+            set { gl = value; }
+        }
 
         /// <summary>
         /// Gets or sets the scene container.
@@ -385,12 +404,12 @@ namespace SharpGL.SceneGraph
         /// <value>
         /// The current camera.
         /// </value>
-		[Description("The current camera being used to view the scene."), Category("Scene")]
-		public Camera CurrentCamera
-		{
-			get {return currentCamera;}
-			set {currentCamera = value;}
-		}
+        [Description("The current camera being used to view the scene."), Category("Scene")]
+        public Camera CurrentCamera
+        {
+            get { return currentCamera; }
+            set { currentCamera = value; }
+        }
 
         /// <summary>
         /// Gets or sets the color of the clear.
@@ -398,12 +417,12 @@ namespace SharpGL.SceneGraph
         /// <value>
         /// The color of the clear.
         /// </value>
-		[Description("The background colour."), Category("Scene")]
-		public Color ClearColor
-		{
-			get {return clearColour;}
-			set {clearColour = value;}
-		}
+        [Description("The background colour."), Category("Scene")]
+        public Color ClearColor
+        {
+            get { return clearColour; }
+            set { clearColour = value; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether [render bounding volumes].
