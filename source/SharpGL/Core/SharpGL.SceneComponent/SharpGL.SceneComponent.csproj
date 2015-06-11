@@ -76,12 +76,6 @@
     <Compile Include="MySharpGL\ArcBallTransform.cs" />
     <Compile Include="MySharpGL\ArcBallTransformEffect.cs" />
     <Compile Include="Camera\CameraTypes.cs" />
-    <Compile Include="MySharpGL\MyOpenGLControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MySharpGL\MyOpenGLControl.Designer.cs">
-      <DependentUpon>MyOpenGLControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="MySharpGL\MySceneControlHelper.cs" />
     <Compile Include="ColorCodedPicking\SharedStageInfo.cs" />
     <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorBar.cs">
