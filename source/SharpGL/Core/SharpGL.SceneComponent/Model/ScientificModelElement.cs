@@ -13,7 +13,7 @@ namespace SharpGL.SceneComponent
     /// <summary>
     /// scene element that holds a <see cref="ScientificModel"/>.
     /// </summary>
-    public class ScientificModelElement : SceneElement, IRenderable, IColorCodedPicking
+    public class ScientificModelElement : SceneElement, IColorCodedPicking
     {
         /// <summary>
         /// The model shown in <see cref="ScientificVisual3DControl"/>.
@@ -76,8 +76,8 @@ namespace SharpGL.SceneComponent
             }
             {
                 //  Create the picking shader program.
-                var vertexShaderSource = ManifestResourceLoader.LoadTextFile(@"Model\PickingShader.vert");
-                var fragmentShaderSource = ManifestResourceLoader.LoadTextFile(@"Model\PickingShader.frag");
+                var vertexShaderSource = ColorCodedPickingShaderHelper.GetShaderSource(ColorCodedPickingShaderHelper.ShaderTypes.VertexShader);
+                var fragmentShaderSource = ColorCodedPickingShaderHelper.GetShaderSource(ColorCodedPickingShaderHelper.ShaderTypes.FragmentShader);
                 var shaderProgram = new ShaderProgram();
                 shaderProgram.Create(gl, vertexShaderSource, fragmentShaderSource, null);
                 shaderProgram.BindAttributeLocation(gl, attributeIndexPosition, "in_Position");
@@ -146,13 +146,13 @@ namespace SharpGL.SceneComponent
             IScientificCamera camera = this.Camera;
             if (camera != null)
             {
-                if (camera.CameraType == ECameraType.Perspecitive)
+                if (camera.CameraType == CameraTypes.Perspecitive)
                 {
                     IPerspectiveViewCamera perspective = camera;
                     this.projectionMatrix = perspective.GetProjectionMat4();
                     this.viewMatrix = perspective.GetViewMat4();
                 }
-                else if (camera.CameraType == ECameraType.Ortho)
+                else if (camera.CameraType == CameraTypes.Ortho)
                 {
                     IOrthoViewCamera ortho = camera;
                     this.projectionMatrix = ortho.GetProjectionMat4();
@@ -243,52 +243,46 @@ namespace SharpGL.SceneComponent
 
         #region IColorCodedPicking 成员
 
-        int IColorCodedPicking.PickingBaseID { get; set; }
+        uint IColorCodedPicking.PickingBaseID { get; set; }
 
-        int IColorCodedPicking.VertexCount
+        uint IColorCodedPicking.GetVertexCount()
         {
-            get { return this.Model.VertexCount; }
+            return (uint)this.Model.VertexCount;
         }
 
-        IPickedPrimitive IColorCodedPicking.Pick(int stageVertexID)
+        IPickedGeometry IColorCodedPicking.Pick(uint stageVertexID)
         {
-            ScientificModel model = this.Model;
-            if (model == null) { return null; }
+            IColorCodedPicking element = this as IColorCodedPicking;
+            PickedGeometryColored pickedGeometry = element.TryPick<PickedGeometryColored>(
+                this.Model.Mode, stageVertexID, this.Model.Positions);
 
-            IColorCodedPicking picking = this;
+            if (pickedGeometry == null) { return null; }
 
-            int lastVertexID = picking.GetLastVertexIDOfPickedPrimitive(stageVertexID);
-            if (lastVertexID < 0) { return null; }
-
-            PickedPrimitive primitive = new PickedPrimitive();
-
-            // complete the primitive's content as a result.
-            primitive.GeometryType = model.Mode.ToGeometryType();
-            primitive.StageVertexID = stageVertexID;
-            primitive.Element = this;
             // Fill primitive's positions and colors. This maybe changes much more than lines above in second dev.
+            uint lastVertexID;
+            if(element.GetLastVertexIDOfPickedGeometry(stageVertexID, out lastVertexID))
             {
-                int vertexCount = primitive.GeometryType.GetVertexCount();
+                ScientificModel model = this.Model;
+
+                int vertexCount = pickedGeometry.GeometryType.GetVertexCount();
                 if (vertexCount == -1) { vertexCount = model.VertexCount; }
 
-                float[] positions = new float[vertexCount * 3];
-                float[] colors = new float[vertexCount * 3];
+                float[] geometryColors = new float[vertexCount * 3];
 
-                float[] modelPositions = model.Positions;
                 float[] modelColors = model.Colors;
-                for (int i = lastVertexID * 3 + 2, j = positions.Length - 1; j >= 0; i--, j--)
+
+                uint i = lastVertexID * 3 + 2;
+                for (int j = (geometryColors.Length - 1); j >= 0; i--, j--)
                 {
-                    if (i < 0)
-                    { i += modelPositions.Length; }
-                    positions[j] = modelPositions[i];
-                    colors[j] = modelColors[i];
+                    if (i == uint.MaxValue)// This is when mode is GL_LINE_LOOP.
+                    { i = (uint)modelColors.Length - 1; }
+                    geometryColors[j] = modelColors[i];
                 }
 
-                primitive.positions = positions;
-                primitive.colors = colors;
+                pickedGeometry.colors = geometryColors;
             }
 
-            return primitive;
+            return pickedGeometry;
         }
 
         #endregion

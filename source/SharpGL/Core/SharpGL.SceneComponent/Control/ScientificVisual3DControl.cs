@@ -33,7 +33,7 @@ namespace SharpGL.SceneComponent
         public ModelContainer ModelContainer
         { get { return this.modelContainer; } }
 
-        private EViewType viewType;
+        private ViewTypes viewType;
 
         public ScientificVisual3DControl()
         {
@@ -146,7 +146,7 @@ namespace SharpGL.SceneComponent
             //	Do the scene drawing.
             Scene.Draw();
 
-            if (this.CameraType == ECameraType.Ortho)
+            if (this.CameraType == CameraTypes.Ortho)
             {
                 // Redraw model container's bounding box so that it appears in front of models.
                 // TODO: this is not needed in ECameraType.Perspecitive mode. fix this.
@@ -300,7 +300,7 @@ namespace SharpGL.SceneComponent
         /// <summary>
         /// Gets or sets camera's view type.
         /// </summary>
-        public ECameraType CameraType
+        public CameraTypes CameraType
         {
             get { return this.Scene.CurrentCamera.CameraType; }
             set
@@ -317,7 +317,7 @@ namespace SharpGL.SceneComponent
         /// <summary>
         /// Gets or sets view type(top, bottom, left, right, front, back and userView).
         /// </summary>
-        public EViewType ViewType
+        public ViewTypes ViewType
         {
             get { return this.viewType; }
             set
@@ -325,19 +325,19 @@ namespace SharpGL.SceneComponent
                 this.viewType = value;
                 ScientificCamera camera = this.Scene.CurrentCamera;
 
-                if (camera.CameraType == ECameraType.Perspecitive)
+                //if (camera.CameraType == CameraTypes.Perspecitive)
                 {
                     IPerspectiveViewCamera perspecitive = camera;
                     perspecitive.ApplyViewType(this.modelContainer.BoundingBox, this.OpenGL, value);
                 }
-                else if (camera.CameraType == ECameraType.Ortho)
+                //else if (camera.CameraType == CameraTypes.Ortho)
                 {
                     IOrthoViewCamera orthoCamera = camera;
                     orthoCamera.ApplyViewType(this.modelContainer.BoundingBox, this.OpenGL, value);
                 }
-                else
+                //else
                 {
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
                 } 
                 //// force CameraRotation to udpate.
                 //this.CameraRotation.Camera = this.Scene.CurrentCamera;
@@ -360,26 +360,26 @@ namespace SharpGL.SceneComponent
         {
             ScientificCamera camera = this.Scene.CurrentCamera;
 
-            if (camera.CameraType == ECameraType.Perspecitive)
+            //if (camera.CameraType == CameraTypes.Perspecitive)
             {
                 IPerspectiveViewCamera perspecitive = camera;
                 perspecitive.AdjustCamera(this.modelContainer.BoundingBox, this.OpenGL);
             }
-            else if (camera.CameraType == ECameraType.Ortho)
+            //else if (camera.CameraType == CameraTypes.Ortho)
             {
                 IOrthoViewCamera orthoCamera = camera;
                 orthoCamera.AdjustCamera(this.modelContainer.BoundingBox, this.OpenGL);
             }
-            else
+            //else
             {
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
             //// force CameraRotation to udpate.
             //this.CameraRotation.Camera = this.Scene.CurrentCamera;
             ManualRender(this);
         }
 
-        public IPickedPrimitive PickedPrimitive { get; set; }
+        public IPickedGeometry PickedPrimitive { get; set; }
 
         /// <summary>
         /// Get picked primitive at specified screen location.
@@ -387,7 +387,7 @@ namespace SharpGL.SceneComponent
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private IPickedPrimitive Pick(int x, int y)
+        private IPickedGeometry Pick(int x, int y)
         {
             // render the scene for color-coded picking.
             this.Scene.Draw(RenderMode.HitTest);
@@ -414,17 +414,17 @@ namespace SharpGL.SceneComponent
             // get vertexID from coded color.
             // the vertexID is the last vertex that constructs the primitive.
             // see http://www.cnblogs.com/bitzhuwei/p/modern-opengl-picking-primitive-in-VBO-2.html
-            var shiftedR = (uint)codedColor[0];
-            var shiftedG = (uint)codedColor[1] << 8;
-            var shiftedB = (uint)codedColor[2] << 16;
-            var shiftedA = (uint)codedColor[3] << 24;
-            var stageVertexID = shiftedR + shiftedG + shiftedB + shiftedA;
+            uint shiftedR = (uint)codedColor[0];
+            uint shiftedG = (uint)codedColor[1] << 8;
+            uint shiftedB = (uint)codedColor[2] << 16;
+            uint shiftedA = (uint)codedColor[3] << 24;
+            uint stageVertexID = shiftedR + shiftedG + shiftedB + shiftedA;
 
             // get picked primitive.
-            IPickedPrimitive picked = null;
-            picked = this.Scene.Pick((int)stageVertexID);
+            IPickedGeometry pickedGeometry = null;
+            pickedGeometry = this.Scene.Pick(stageVertexID);
 
-            return picked;
+            return pickedGeometry;
         }
     }
 }

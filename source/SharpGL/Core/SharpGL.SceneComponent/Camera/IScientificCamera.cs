@@ -16,6 +16,6 @@ namespace SharpGL.SceneComponent
         /// <summary>
         /// camera's perspective type.
         /// </summary>
-        ECameraType CameraType { get; set; }
+        CameraTypes CameraType { get; set; }
     }
 }

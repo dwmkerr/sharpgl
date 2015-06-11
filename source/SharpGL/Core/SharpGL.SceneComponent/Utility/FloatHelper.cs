@@ -10,7 +10,7 @@ namespace System
         public static string ToShortString(this float value)
         {
             string result = null;
-            if (10 <= value || value <= -10)
+            if (value <= -10 || 10 <= value)
             {
                 result = string.Format("{0:0.0}", value);
             }

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="SharpGL.SceneComponent.ScientificCamera">
+    <Position X="7.5" Y="1.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QEAQAABIAgAAAAAEBAIACCBAACBgAAACgAAAIAAAAAA=</HashCode>
+      <FileName>Camera\ScientificCamera.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="SharpGL.SceneComponent.IOrthoCamera">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAgAAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>Camera\IOrthoCamera.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IOrthoViewCamera">
+    <Position X="4.25" Y="3.25" Width="1.75" />
+    <InheritanceLine Type="SharpGL.SceneComponent.IOrthoCamera" FixedFromPoint="true">
+      <Path>
+        <Point X="5.938" Y="2.553" />
+        <Point X="5.938" Y="2.875" />
+        <Point X="5.125" Y="2.875" />
+        <Point X="5.125" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <InheritanceLine Type="SharpGL.SceneComponent.IViewCamera" FixedFromPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.98" />
+        <Point X="4.25" Y="2.875" />
+        <Point X="5.125" Y="2.875" />
+        <Point X="5.125" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Camera\IOrthoViewCamera.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IPerspectiveCamera">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAgAAAAAAAAgAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Camera\IPerspectiveCamera.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IPerspectiveViewCamera">
+    <Position X="1.25" Y="3.25" Width="2" />
+    <InheritanceLine Type="SharpGL.SceneComponent.IPerspectiveCamera" FixedFromPoint="true">
+      <Path>
+        <Point X="1.312" Y="2.171" />
+        <Point X="1.312" Y="2.875" />
+        <Point X="2.25" Y="2.875" />
+        <Point X="2.25" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <InheritanceLine Type="SharpGL.SceneComponent.IViewCamera" FixedFromPoint="true">
+      <Path>
+        <Point X="3.25" Y="1.98" />
+        <Point X="3.25" Y="2.875" />
+        <Point X="2.25" Y="2.875" />
+        <Point X="2.25" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Camera\IPerspectiveViewCamera.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IScientificCamera">
+    <Position X="2.75" Y="5.25" Width="2" />
+    <InheritanceLine Type="SharpGL.SceneComponent.IPerspectiveViewCamera" FixedToPoint="true">
+      <Path>
+        <Point X="2.25" Y="4.373" />
+        <Point X="2.25" Y="4.875" />
+        <Point X="3.25" Y="4.875" />
+        <Point X="3.25" Y="5.25" />
+      </Path>
+    </InheritanceLine>
+    <InheritanceLine Type="SharpGL.SceneComponent.IOrthoViewCamera" FixedToPoint="true">
+      <Path>
+        <Point X="5.125" Y="4.373" />
+        <Point X="5.125" Y="4.875" />
+        <Point X="4.25" Y="4.875" />
+        <Point X="4.25" Y="5.25" />
+      </Path>
+    </InheritanceLine>
+    <InheritanceLine Type="SharpGL.SceneComponent.IPerspectiveCamera" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="0.875" Y="2.171" />
+        <Point X="0.875" Y="5.562" />
+        <Point X="2.75" Y="5.562" />
+      </Path>
+    </InheritanceLine>
+    <InheritanceLine Type="SharpGL.SceneComponent.IOrthoCamera" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.5" Y="2.553" />
+        <Point X="6.5" Y="5.562" />
+        <Point X="4.75" Y="5.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Camera\IScientificCamera.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IViewCamera">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAgAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Camera\IViewCamera.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

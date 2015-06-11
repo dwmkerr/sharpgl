@@ -60,15 +60,15 @@ namespace SharpGL.SceneComponent
                 {
                     // When picking on a position that no model exists, 
                     // the picked color would be
-                    // =255
-                    // +255 << 8
-                    // +255 << 16
-                    // +255 << 24
-                    // =255
-                    // +65280
-                    // +16711680
-                    // +4278190080
-                    // =4294967295
+                    // = 255
+                    // + 255 << 8
+                    // + 255 << 16
+                    // + 255 << 24
+                    // = 255
+                    // + 65280
+                    // + 16711680
+                    // + 4278190080
+                    // = 4294967295
                     // This makes it easier to determin whether we picked something or not.
                     gl.ClearColor(1, 1, 1, 1);
                 }
@@ -148,16 +148,7 @@ namespace SharpGL.SceneComponent
                 if (renderMode == RenderMode.HitTest)
                 {
                     IColorCodedPicking picking = sceneElement as IColorCodedPicking;
-                    if (picking != null)
-                    {
-                        picking.PickingBaseID = info.RenderedVertexCount;
-
-                        //  If the element can be rendered, render it.
-                        IRenderable renderable = sceneElement as IRenderable;
-                        if (renderable != null) renderable.Render(gl, renderMode);
-
-                        info.RenderedVertexCount += picking.VertexCount;
-                    }
+                    info.RenderForPicking(picking, gl, renderMode);
                 }
                 else
                 {
@@ -211,38 +202,39 @@ namespace SharpGL.SceneComponent
         /// </summary>
         /// <param name="stageVertexID">The last vertex that constructs the primitive.</param>
         /// <returns></returns>
-        public IPickedPrimitive Pick(int stageVertexID)
+        public IPickedGeometry Pick(uint stageVertexID)
         {
             if (stageVertexID < 0) { return null; }
 
-            IPickedPrimitive picked = null;
-
             SceneElement element = this.SceneContainer;
-            picked = Pick(element, stageVertexID);
+            IPickedGeometry pickedGeometry = Pick(element, stageVertexID);
 
-            return picked;
+            return pickedGeometry;
         }
 
-        private IPickedPrimitive Pick(SceneElement element, int stageVertexID)
+        private IPickedGeometry Pick(SceneElement element, uint stageVertexID)
         {
-            IPickedPrimitive result = null;
-            IColorCodedPicking picking = element as IColorCodedPicking;
-            if (picking != null)
+            IPickedGeometry pickedGeometry = null;
+            IColorCodedPicking pickingElement = element as IColorCodedPicking;
+            if (pickingElement != null)
             {
-                result = picking.Pick(stageVertexID);
+                pickedGeometry = pickingElement.Pick(stageVertexID);
             }
 
-            if (result == null)
+            if (pickedGeometry == null)
             {
-                foreach (var item in element.Children)
+                if (element != null)
                 {
-                    result = Pick(item, stageVertexID);
-                    if (result != null)
-                    { break; }
+                    foreach (var item in element.Children)
+                    {
+                        pickedGeometry = Pick(item, stageVertexID);
+                        if (pickedGeometry != null)
+                        { break; }
+                    }
                 }
             }
 
-            return result;
+            return pickedGeometry;
         }
     }
 }

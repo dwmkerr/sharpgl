@@ -33,11 +33,11 @@ namespace System
         /// Print elements in format 'x,y,z; x,y,z; ...'
         /// </summary>
         /// <param name="array"></param>
-        /// <param name="dimension">2, 3, or 4.</param>
+        /// <param name="components">2, 3, or 4.</param>
         /// <returns></returns>
-        public static string PrintVectors(this float[] array, int dimension = 3)
+        public static string PrintVectors(this float[] array, int components = 3)
         {
-            if (dimension < 1) { throw new ArgumentOutOfRangeException("dimension"); }
+            if (components < 1) { throw new ArgumentOutOfRangeException("components"); }
 
             if (array == null) { return string.Empty; }
 
@@ -47,10 +47,15 @@ namespace System
             {
                 builder.Append(item.ToShortString());
                 counter++;
-                if (counter % dimension == 0)
-                { builder.Append("; "); }
+                if (counter % components == 0)
+                { 
+                    builder.Append("; ");
+                    counter = 0;
+                }
                 else
-                { builder.Append(","); }
+                { 
+                    builder.Append(", "); 
+                }
             }
 
             return builder.ToString();

@@ -14,7 +14,7 @@ namespace SharpGL.SceneComponent
         /// <summary>
         /// Gets or sets how many vertices have been rendered during hit test.
         /// </summary>
-        public virtual int RenderedVertexCount { get; set; }
+        public virtual uint RenderedVertexCount { get; set; }
 
         /// <summary>
         /// Reset this instance's fields' values to initial state so that it can be used again during rendering.
@@ -29,5 +29,36 @@ namespace SharpGL.SceneComponent
             return string.Format("rendered {0} primitives during hit test(picking).", RenderedVertexCount);
             //return base.ToString();
         }
+
+        /// <summary>
+        /// Render the element that inherts <see cref="IColorCodedPicking"/> for color coded picking.
+        /// </summary>
+        /// <param name="picking"></param>
+        /// <param name="gl"></param>
+        /// <param name="renderMode"></param>
+        public virtual void RenderForPicking(IColorCodedPicking picking, OpenGL gl, SceneGraph.Core.RenderMode renderMode)
+        {
+            if (picking != null)
+            {
+                picking.PickingBaseID = this.RenderedVertexCount;
+
+                //  render the element.
+                SharpGL.SceneGraph.Core.IRenderable renderable = picking;
+                renderable.Render(gl, renderMode);
+
+                uint rendered = this.RenderedVertexCount + picking.GetVertexCount();
+                if (this.RenderedVertexCount <= rendered)
+                {
+                    this.RenderedVertexCount = rendered;
+                }
+                else
+                {
+                    throw new OverflowException(
+                        string.Format("Too many geometries({0} + {1} > {2}) for color coded picking.",
+                            this.RenderedVertexCount, picking.GetVertexCount(), uint.MaxValue));
+                }
+            }
+        }
+
     }
 }

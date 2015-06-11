@@ -55,11 +55,10 @@
     </Compile>
     <Compile Include="ColorCodedPicking\ColorCodedPickingShaderHelper.cs" />
     <Compile Include="ColorCodedPicking\IColorCodedPickingHelper.cs" />
-    <Compile Include="ColorCodedPicking\IPickedPrimitive.cs" />
-    <Compile Include="ColorCodedPicking\PickedPrimitive.cs" />
+    <Compile Include="ColorCodedPicking\IPickedGeometry.cs" />
+    <Compile Include="ColorCodedPicking\PickedGeometryBase.cs" />
     <Compile Include="ColorCodedPicking\PickedGeometryColored.cs" />
     <Compile Include="ColorCodedPicking\GeometryTypes.cs" />
-    <Compile Include="Control\EViewType.cs" />
     <Compile Include="Control\ViewTypes.cs" />
     <Compile Include="Camera\CameraHelper.cs" />
     <Compile Include="Model\ModelContainer.cs" />
@@ -76,7 +75,7 @@
     <Compile Include="MySharpGL\LinearArcBallTransform.cs" />
     <Compile Include="MySharpGL\ArcBallTransform.cs" />
     <Compile Include="MySharpGL\ArcBallTransformEffect.cs" />
-    <Compile Include="ByteColor.cs" />
+    <Compile Include="Camera\CameraTypes.cs" />
     <Compile Include="MySharpGL\MyOpenGLControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -165,10 +164,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Model\Shader.vert" />
     <EmbeddedResource Include="Model\Shader.frag" />
+    <EmbeddedResource Include="ColorCodedPicking\PickingShader.vert" />
     <EmbeddedResource Include="ColorCodedPicking\PickingShader.frag" />
     <None Include="Camera\Camera.cd" />
     <None Include="ColorCodedPicking\ColorCodedPicking.cd" />
-    <None Include="Model\PickingShader.vert" />
     <None Include="TransformInterface\TransformInterface.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

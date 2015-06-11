@@ -21,7 +21,7 @@ namespace SharpGL.SceneComponent
             return string.Format("{0}/{1}", Name, count);
             //return base.ToString();
         }
-        public ScientificCamera(ECameraType cameraType = ECameraType.Perspecitive)
+        public ScientificCamera(CameraTypes cameraType = CameraTypes.Perspecitive)
         {
             Name = "Scientific Camera: " + count++;
             IPerspectiveCamera perspectiveCamera = this;
@@ -73,11 +73,11 @@ namespace SharpGL.SceneComponent
             //  Perform the look at transformation.
             switch (CameraType)
             {
-                case ECameraType.Perspecitive:
+                case CameraTypes.Perspecitive:
                     IPerspectiveCamera perspectiveCamera = this;
                     gl.Perspective(perspectiveCamera.FieldOfView, perspectiveCamera.AspectRatio, perspectiveCamera.Near, perspectiveCamera.Far);
                     break;
-                case ECameraType.Ortho:
+                case CameraTypes.Ortho:
                     IOrthoCamera orthoCamera = this;
                     gl.Ortho(orthoCamera.Left, orthoCamera.Right, orthoCamera.Bottom, orthoCamera.Top, orthoCamera.Near, orthoCamera.Far);
                     break;
@@ -110,7 +110,7 @@ namespace SharpGL.SceneComponent
         /// <summary>
         /// camera's perspective type.
         /// </summary>
-        public ECameraType CameraType { get; set; }
+        public CameraTypes CameraType { get; set; }
 
         #region IPerspectiveCamera 成员
 
@@ -147,7 +147,7 @@ namespace SharpGL.SceneComponent
         public void Scale(int delta)
         {
             ScientificCamera camera = this;
-            if (camera.CameraType == ECameraType.Perspecitive)
+            //if (camera.CameraType == CameraTypes.Perspecitive)
             {
                 var target2Position = camera.Position - camera.Target;
                 if (target2Position.Magnitude () < 0.01)
@@ -168,7 +168,7 @@ namespace SharpGL.SceneComponent
                 orthoCamera.Far += lengthDiff;
                 orthoCamera.Near += lengthDiff;
             }
-            else if (camera.CameraType == ECameraType.Ortho)
+            //else if (camera.CameraType == CameraTypes.Ortho)
             {
                 IOrthoCamera orthoCamera = camera;
                 double distanceX = orthoCamera.Right - orthoCamera.Left;
