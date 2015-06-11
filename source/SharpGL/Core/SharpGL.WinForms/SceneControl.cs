@@ -9,7 +9,7 @@ namespace SharpGL
 	/// The SceneControl is an OpenGLControl that contains and draws a Scene object.
     /// </summary>
     [System.Drawing.ToolboxBitmap(typeof(SceneControl), "SharpGL.png")]
-	public class SceneControl : SharpGL.OpenGLControl
+	public class SceneControl : SharpGL.OpenGLControl   
 	{
 		private System.ComponentModel.IContainer components = null;
 
@@ -50,7 +50,7 @@ namespace SharpGL
 			// 
 			// OpenGLCtrl
 			// 
-			this.Name = "OpenGLCtrl";
+			this.Name = "SceneControl";
             // check https://github.com/dwmkerr/sharpgl/issues/105
             // force 'glA' pointing to 'glB'
             this.scene.OpenGL = this.OpenGL;
@@ -59,6 +59,7 @@ namespace SharpGL
 
 		protected override void OnPaint(PaintEventArgs e)
         {
+            // check https://github.com/dwmkerr/sharpgl/issues/105
             //  Start the stopwatch so that we can time the rendering.
             stopwatch.Restart();
             
@@ -113,6 +114,9 @@ namespace SharpGL
 		{
 			//  Don't call the base- we handle sizing ourselves.
 
+            OpenGL gl = this.OpenGL;
+            if (gl == null) { return; }
+
 			//	OpenGL needs to resize the viewport.
             OpenGL.SetDimensions(Width, Height);
 			scene.Resize(Width, Height);
@@ -131,5 +135,15 @@ namespace SharpGL
 			get {return scene;}
 			set {scene = value;}
 		}
+
+        /// <summary>
+        /// check https://github.com/dwmkerr/sharpgl/issues/105
+        /// </summary>
+        public override void EndInit()
+        {
+            base.EndInit();
+            this.scene.OpenGL = base.OpenGL;
+        }
+        
 	}
 }

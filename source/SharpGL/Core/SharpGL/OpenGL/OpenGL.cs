@@ -12,6 +12,8 @@ namespace SharpGL
     /// </summary>
     public partial class OpenGL
     {
+        protected OpenGL() { }
+
         /// <summary>
         /// Creates the OpenGL instance.
         /// </summary>
@@ -22,7 +24,24 @@ namespace SharpGL
         /// <param name="bitDepth">The bit depth.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns></returns>
-        public virtual bool Create(OpenGLVersion openGLVersion, RenderContextType renderContextType, int width, int height, int bitDepth, object parameter)
+        public static OpenGL CreateGLContext(OpenGLVersion openGLVersion, RenderContextType renderContextType, int width, int height, int bitDepth, object parameter)
+        {
+            OpenGL gl = new OpenGL();
+            gl.Create(openGLVersion, renderContextType, width, height, bitDepth, parameter);
+            return gl;
+        }
+
+        /// <summary>
+        /// Creates the OpenGL instance.
+        /// </summary>
+        /// <param name="openGLVersion">The OpenGL version requested.</param>
+        /// <param name="renderContextType">Type of the render context.</param>
+        /// <param name="width">The drawing context width.</param>
+        /// <param name="height">The drawing context height.</param>
+        /// <param name="bitDepth">The bit depth.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns></returns>
+        protected virtual bool Create(OpenGLVersion openGLVersion, RenderContextType renderContextType, int width, int height, int bitDepth, object parameter)
         {
             //  Return if we don't have a sensible width or height.
             if (width == 0 || height == 0 || bitDepth == 0)
@@ -64,7 +83,7 @@ namespace SharpGL
         /// <returns>
         /// True on success
         /// </returns>
-        public virtual bool CreateFromExternalContext(OpenGLVersion openGLVersion, int width, int height, int bitDepth, IntPtr windowHandle, IntPtr renderContextHandle, IntPtr deviceContextHandle)
+        protected virtual bool CreateFromExternalContext(OpenGLVersion openGLVersion, int width, int height, int bitDepth, IntPtr windowHandle, IntPtr renderContextHandle, IntPtr deviceContextHandle)
         {
             // Return if we don't have a sensible width or height.
             if (width == 0 || height == 0 || bitDepth == 0)
