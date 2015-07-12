@@ -21,6 +21,9 @@ namespace SharpGL.Serialization.Wavefront
             string[] lineParts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (lineParts.Length >= 4)
             {
+                lineParts[1] = lineParts[1].Replace(".", ",");
+                lineParts[2] = lineParts[1].Replace(".", ",");
+                lineParts[3] = lineParts[1].Replace(".", ",");
                 // Convert float a,r,g,b values to byte values.  Make sure they fall in 0-255 range.
                 int a = Convert.ToInt32(255 * alpha);
                 if (a < 0) a = 0; if (a > 255) a = 255;
