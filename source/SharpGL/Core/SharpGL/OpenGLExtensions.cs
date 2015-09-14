@@ -5837,5 +5837,82 @@ namespace SharpGL
         public const uint GL_MAX_VERTEX_ATTRIB_BINDINGS                     = 0x82DA;  
 
         #endregion
+
+        #region WGL_NV_DX_interop / WGL_NV_DX_interop2
+
+        public bool DXSetResourceShareHandleNV(IntPtr dxObject, IntPtr shareHandle)
+        {
+            return (bool)GetDelegateFor<wglDXSetResourceShareHandleNV>()(dxObject, shareHandle);
+        }
+
+        public IntPtr DXOpenDeviceNV(IntPtr dxDevice)
+        {
+            return (IntPtr)GetDelegateFor<wglDXOpenDeviceNV>()(dxDevice);
+        }
+
+        public bool DXCloseDeviceNV(IntPtr hDevice)
+        {
+            return (bool)GetDelegateFor<wglDXCloseDeviceNV>()(hDevice);
+        }
+
+        public IntPtr DXRegisterObjectNV(IntPtr hDevice, IntPtr dxObject, uint name, uint type, uint access)
+        {
+            return (IntPtr)GetDelegateFor<wglDXRegisterObjectNV>()(hDevice, dxObject, name, type, access);
+        }
+
+        public bool DXUnregisterObjectNV(IntPtr hDevice, IntPtr hObject)
+        {
+            return (bool)GetDelegateFor<wglDXUnregisterObjectNV>()(hDevice, hObject);
+        }
+
+        public bool DXObjectAccessNV(IntPtr hObject, uint access)
+        {
+            return (bool)GetDelegateFor<wglDXObjectAccessNV>()(hObject, access);
+        }
+
+        public bool DXLockObjectsNV(IntPtr hDevice, IntPtr[] hObjects)
+        {
+            unsafe
+            {
+                void** objects = stackalloc void*[hObjects.Length];
+
+                for (int i = 0; i<hObjects.Length; i++)
+                {
+                    objects[i] = hObjects[i].ToPointer();
+                }
+
+                return (bool)GetDelegateFor<wglDXLockObjectsNV>()(hDevice, hObjects.Length, objects);
+            }
+        }
+
+        public bool DXUnlockObjectsNV(IntPtr hDevice, IntPtr[] hObjects)
+        {
+            unsafe
+            {
+                void** objects = stackalloc void*[hObjects.Length];
+
+                for (int i = 0; i<hObjects.Length; i++)
+                {
+                    objects[i] = hObjects[i].ToPointer();
+                }
+
+                return (bool)GetDelegateFor<wglDXUnlockObjectsNV>()(hDevice, hObjects.Length, objects);
+            }
+        }
+
+        private delegate bool wglDXSetResourceShareHandleNV(IntPtr dxObject, IntPtr shareHandle);
+        private delegate IntPtr wglDXOpenDeviceNV(IntPtr dxDevice);
+        private delegate bool wglDXCloseDeviceNV(IntPtr hDevice);
+        private delegate IntPtr wglDXRegisterObjectNV(IntPtr hDevice, IntPtr dxObject, uint name, uint type, uint access);
+        private delegate bool wglDXUnregisterObjectNV(IntPtr hDevice, IntPtr hObject);
+        private delegate bool wglDXObjectAccessNV(IntPtr hObject, uint access);
+        private unsafe delegate bool wglDXLockObjectsNV(IntPtr hDevice, int count, void** hObjects);
+        private unsafe delegate bool wglDXUnlockObjectsNV(IntPtr hDevice, int count, void** hObjects);
+
+        public const uint WGL_ACCESS_READ_ONLY_NV = 0x0000;
+        public const uint WGL_ACCESS_READ_WRITE_NV = 0x0001;
+        public const uint WGL_ACCESS_WRITE_DISCARD_NV = 0x0002;
+
+        #endregion
     }
 }
