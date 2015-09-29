@@ -216,7 +216,7 @@ namespace FastGL
             _gl.MatrixMode(OpenGL.GL_MODELVIEW);
             _gl.LoadIdentity();
 
-            // Korrektur, siehe auch:
+            // Pixel-position correction, look there:
             // http://msdn.microsoft.com/en-us/library/windows/desktop/dd374282(v=vs.85).aspx
             _gl.Translate(0.375, 0.375, 0);
 
@@ -281,7 +281,7 @@ namespace FastGL
         /// </summary>
         /// <param name="sender">Sender of the event</param>
         /// <param name="e">Arguments of the event</param>
-        public delegate void RenderHandler(object sender, RenderEventArgs args);
+        public delegate void RenderHandler(object sender, RenderEventArgs e);
 
         /// <summary>
         /// Raised when we have to render with GL.
@@ -329,7 +329,9 @@ namespace FastGL
             _gl.DXUnlockObjectsNV(_dxDeviceGLHandle, new IntPtr[] { _glRenderBufferHandle });
 
             // Copy OpenGL-Framebuffer to backbuffer of our device (this is done on the GPU)
-            _device.StretchRectangle(_renderBuffer, _device.GetBackBuffer(0, 0), TextureFilter.None);
+            Surface backBuffer = _device.GetBackBuffer(0, 0);
+            _device.StretchRectangle(_renderBuffer, backBuffer, TextureFilter.None);
+            backBuffer.Dispose();
 
             // Refresh D3DImage
             _image.Lock();
@@ -340,7 +342,7 @@ namespace FastGL
         /// <summary>
         /// Argument for the Render-event.
         /// </summary>
-        public class RenderEventArgs
+        public class RenderEventArgs : EventArgs
         {
             /// <summary>
             /// The GL-instance you can use for drawing.
