@@ -17,6 +17,7 @@ Contents
 3. [Sample Applications](#sample-applications)
 4. [Documentation](https://github.com/dwmkerr/sharpgl/wiki)
 5. [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
+6. [Built With SharpGL](#built-with-sharpgl)
 
 Getting Started
 ---------------
@@ -86,3 +87,11 @@ Many thanks to [Red Gate](http://www.red-gate.com/) who have kindly provided Sha
 ![JetBrains](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/jetbrains.png?raw=true "JetBrains")
 
 Thanks for [JetBrains](http://www.jetbrains.com/) for sponsoring SharpGL with [Resharper](http://www.jetbrains.com/resharper/)!
+
+# Built with SharpGL
+
+If you've got a project that uses SharpGL and you'd like to show it off, just add the details here in a PR!
+
+## [Open Vogel](https://sites.google.com/site/gahvogel/)
+
+Checkout https://sites.google.com/site/gahvogel/ to see a free, open source project which supports aerodynamics!
