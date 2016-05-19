@@ -1221,7 +1221,20 @@ namespace SharpGL
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexGeni (uint coord, uint pname, int param);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexGeniv (uint coord, uint pname,  int []params_notkeyword);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  byte[] pixels);
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  sbyte[] pixels); //format=GL_BYTE
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  ushort[] pixels); //format=GL_UNSIGNED_SHORT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  short[] pixels); //format=GL_SHORT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  uint[] pixels); //format=GL_UNSIGNED_INT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  int[] pixels); //format=GL_INT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  float[] pixels); //format=GL_FLOAT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage1D (uint target, int level, uint internalformat, int width, int border, uint format, uint type,  IntPtr pixels);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, byte[] pixels);
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, sbyte[] pixels); //format=GL_BYTE
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, ushort[] pixels); //format=GL_UNSIGNED_SHORT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, short[] pixels); //format=GL_SHORT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, uint[] pixels); //format=GL_UNSIGNED_INT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, int[] pixels); //format=GL_INT
+		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, float[] pixels); //format=GL_FLOAT
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexImage2D (uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, IntPtr pixels);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexParameterf (uint target, uint pname, float param);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glTexParameterfv (uint target, uint pname,  float []params_notkeyword);
@@ -5757,6 +5770,132 @@ namespace SharpGL
 		/// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
 		/// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
 		/// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+		/// <param name="border">The width of the border (0 or 1).</param>
+		/// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+		/// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+		/// <param name="pixels">The actual pixel data.</param>
+		public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, sbyte[] pixels)
+		{
+		    PreGLCall();
+		    glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+		    PostGLCall();
+		}
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, ushort[] pixels)
+        {
+            PreGLCall();
+            glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, short[] pixels)
+        {
+            PreGLCall();
+            glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, uint[] pixels)
+        {
+            PreGLCall();
+            glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, int[] pixels)
+        {
+            PreGLCall();
+            glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, float[] pixels)
+        {
+            PreGLCall();
+            glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage1D(uint target, int level, uint internalformat, int width, int border, uint format, uint type, IntPtr pixels)
+        {
+            PreGLCall();
+            glTexImage1D(target, level, internalformat, width, border, format, type, pixels);
+            PostGLCall();
+        }
+
+		/// <summary>
+		/// This function sets the image for the currently binded texture.
+		/// </summary>
+		/// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+		/// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+		/// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+		/// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
 		/// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
 		/// <param name="border">The width of the border (0 or 1).</param>
 		/// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
@@ -5768,6 +5907,120 @@ namespace SharpGL
 			glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 			PostGLCall();
 		}
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, sbyte[] pixels)
+        {
+            PreGLCall();
+            glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, ushort[] pixels)
+        {
+            PreGLCall();
+            glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, short[] pixels)
+        {
+            PreGLCall();
+            glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, uint[] pixels)
+        {
+            PreGLCall();
+            glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, int[] pixels)
+        {
+            PreGLCall();
+            glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            PostGLCall();
+        }
+
+        /// <summary>
+        /// This function sets the image for the currently binded texture.
+        /// </summary>
+        /// <param name="target">The type of texture, TEXTURE_2D or PROXY_TEXTURE_2D.</param>
+        /// <param name="level">For mip-map textures, ordinary textures should be '0'.</param>
+        /// <param name="internalformat">The format of the data you are want OpenGL to create, e.g  RGB16.</param>
+        /// <param name="width">The width of the texture image (must be a power of 2, e.g 64).</param>
+        /// <param name="height">The height of the texture image (must be a power of 2, e.g 32).</param>
+        /// <param name="border">The width of the border (0 or 1).</param>
+        /// <param name="format">The format of the data you are passing, e.g. RGBA.</param>
+        /// <param name="type">The type of data you are passing, e.g GL_BYTE.</param>
+        /// <param name="pixels">The actual pixel data.</param>
+        public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, float[] pixels)
+        {
+            PreGLCall();
+            glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+            PostGLCall();
+        }
 
         /// <summary>
         /// This function sets the image for the currently binded texture.
