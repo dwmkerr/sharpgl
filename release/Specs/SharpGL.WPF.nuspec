@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>SharpGL.WPF</id>
-    <version>2.1.0</version>
+    <version>2.4.1</version>
     <title>SharpGL for WPF</title>
     <authors>Dave Kerr</authors>
     <owners />
@@ -12,7 +12,7 @@
     <summary>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WPF controls.</summary>
     <copyright>Copyright © Dave Kerr 2015</copyright>
     <dependencies>
-      <dependency id="SharpGL" version="2.4.0.0" />
+      <dependency id="SharpGL" version="2.4.1.0" />
     </dependencies>
   </metadata>
 </package>
