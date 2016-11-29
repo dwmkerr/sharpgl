@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CFFBB91A-C898-45CA-A074-B16F3FFE7F3B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpGLBase</RootNamespace>
+    <AssemblyName>SharpGLBase</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GlmNet">
+      <HintPath>..\packages\GlmNet.0.0.2.0\lib\net40\GlmNet.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SharpGL">
+      <HintPath>..\..\sharpgl\source\SharpGL\Core\SharpGL\bin\Debug\SharpGL.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SharpGL.SceneGraph">
+      <HintPath>..\..\sharpgl\source\SharpGL\Core\SharpGL.SceneGraph\bin\Debug\SharpGL.SceneGraph.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Core">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Data">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System.Xml">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events\ModelSelectedEvent.cs" />
+    <Compile Include="Extensions\CommonExtensions.cs" />
+    <Compile Include="Extensions\GlmNetExtensions.cs" />
+    <Compile Include="IO\IFileModel.cs" />
+    <Compile Include="ManifestResourceLoader.cs" />
+    <Compile Include="Primitives\AxisVBO.cs" />
+    <Compile Include="Primitives\Lines.cs" />
+    <Compile Include="Primitives\ModelComponents\Face.cs" />
+    <Compile Include="Primitives\ModelComponents\Mesh.cs" />
+    <Compile Include="Primitives\ModelComponents\Vertex.cs" />
+    <Compile Include="Primitives\Model3DBase.cs" />
+    <Compile Include="Primitives\Axis.cs" />
+    <Compile Include="Primitives\PrimitivesGlobal.cs" />
+    <Compile Include="Primitives\SquareGrid.cs" />
+    <Compile Include="Primitives\SquareGridVBO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scene\OpenGLHitTestExtensions.cs" />
+    <Compile Include="Scene\ModelView.cs" />
+    <Compile Include="Scene\Normal.cs" />
+    <Compile Include="Scene\Projection.cs" />
+    <Compile Include="Scene\OpenGLScene.cs" />
+    <Compile Include="Scene\Shaders.cs" />
+    <Compile Include="Scene\TransformableBase.cs" />
+    <Compile Include="Shaders\ExtShaderProgram.cs" />
+    <Compile Include="Shaders\Parameters\ISingleLightParameters.cs" />
+    <Compile Include="Shaders\Parameters\IMVPNParameters.cs" />
+    <Compile Include="Shaders\Parameters\IShaderParameterIds.cs" />
+    <Compile Include="Shaders\Parameters\IMaterialShaderParameters.cs" />
+    <Compile Include="Shaders\Parameters\PerPixelParameters.cs" />
+    <Compile Include="Shaders\Parameters\SimpleShaderParameters.cs" />
+    <Compile Include="Shaders\Parameters\ToonParameters.cs" />
+    <Compile Include="VertexAttributes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shaders\PerPixel.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shaders\PerPixel.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shaders\Toon.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shaders\Toon.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Shaders\SimpleShader.frag" />
+    <EmbeddedResource Include="Shaders\SimpleShader.vert" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

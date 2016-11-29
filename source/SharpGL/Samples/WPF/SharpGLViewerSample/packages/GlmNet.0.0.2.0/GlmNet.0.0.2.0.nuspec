@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>GlmNet</id>
+    <version>0.0.2.0</version>
+    <title>GlmNet</title>
+    <authors>Dave Kerr</authors>
+    <owners>Dave Kerr</owners>
+    <projectUrl>https://github.com/dwmkerr/glmnet</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>GLM .NET is a .NET version of the popular GLM mathematics library.</description>
+    <summary>GLM .NET is a .NET version of the popular GLM mathematics library.</summary>
+    <releaseNotes />
+    <copyright>Copyright © Dave Kerr 2014</copyright>
+    <language />
+  </metadata>
+</package>

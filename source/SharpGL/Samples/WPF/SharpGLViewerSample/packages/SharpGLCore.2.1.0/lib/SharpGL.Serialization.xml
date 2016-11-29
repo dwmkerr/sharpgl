@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpGL.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:SharpGL.Serialization.IFileFormat">
+            <summary>
+            A Format class has the functionality to load data from a certain type of file.
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.IFileFormat.LoadData(System.String)">
+            <summary>
+            Load the data from the specified file stream. The data
+            should be loaded into a scene object. Also, for consistency
+            the ObjectLoaded event should be fired every time an object
+            (such as a polygon or material) is loaded.
+            </summary>
+            <param name="path">The path.</param>
+            <returns>The scene or null if loading failed.</returns>
+        </member>
+        <member name="M:SharpGL.Serialization.IFileFormat.SaveData(SharpGL.SceneGraph.Scene,System.String)">
+            <summary>
+            Saves the scene to the specified stream.
+            </summary>
+            <param name="scene">The scene.</param>
+            <param name="path">The path.</param>
+            <returns>True if saved correctly.</returns>
+        </member>
+        <member name="P:SharpGL.Serialization.IFileFormat.FileTypes">
+            <summary>
+            This property returns an array of file types that can be used with this
+            format, e.g the CaligariFormat would return "cob", "scn".
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.IFileFormat.Filter">
+            <summary>
+            This gets a filter suitable for a file open/save dialog, e.g 
+            "Caligari trueSpace Files (*.cob, *.scn)|*.cob;*.scn".
+            </summary>
+        </member>
+        <member name="T:SharpGL.Serialization.SharpGL.SharpGLXmlFormat">
+            <summary>
+            The SharpGL XML format.
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.SharpGL.SharpGLXmlFormat.LoadData(System.String)">
+            <summary>
+            Load the data from the specified file stream. The data
+            should be loaded into a scene object. Also, for consistency
+            the ObjectLoaded event should be fired every time an object
+            (such as a polygon or material) is loaded.
+            </summary>
+            <param name="path">The path.</param>
+            <returns>
+            The scene or null if loading failed.
+            </returns>
+        </member>
+        <member name="M:SharpGL.Serialization.SharpGL.SharpGLXmlFormat.SaveData(SharpGL.SceneGraph.Scene,System.String)">
+            <summary>
+            Saves the scene to the specified stream.
+            </summary>
+            <param name="scene">The scene.</param>
+            <param name="path">The path.</param>
+            <returns>
+            True if saved correctly.
+            </returns>
+        </member>
+        <member name="P:SharpGL.Serialization.SharpGL.SharpGLXmlFormat.FileTypes">
+            <summary>
+            This property returns an array of file types that can be used with this
+            format, e.g the CaligariFormat would return "cob", "scn".
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.SharpGL.SharpGLXmlFormat.Filter">
+            <summary>
+            This gets a filter suitable for a file open/save dialog, e.g
+            "Caligari trueSpace Files (*.cob, *.scn)|*.cob;*.scn".
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.Caligari.CaligariChunk.Read(System.IO.BinaryReader)">
+            <summary>
+            This is the one chunk that reads no scene object, use it to skip
+            past unknown chunks.
+            </summary>
+            <param name="reader">The Reader to read from.</param>
+            <returns>The object that has been read.</returns>
+        </member>
+        <member name="M:SharpGL.Serialization.Caligari.CaligariChunk.Write(System.IO.BinaryWriter,SharpGL.SceneGraph.Core.SceneElement)">
+            <summary>
+            This function writes an object to the stream.
+            </summary>
+            <param name="writer">The writer to write to.</param>
+            <param name="sceneObject">The object to write.</param>
+        </member>
+        <member name="M:SharpGL.Serialization.Caligari.CaligariChunk.ReadData(System.IO.BinaryReader)">
+            <summary>
+            This function reads the chunk header.
+            </summary>
+            <param name="reader">The Reader to read from.</param>
+        </member>
+        <member name="M:SharpGL.Serialization.Caligari.CaligariChunk.WriteData(System.IO.BinaryWriter,SharpGL.SceneGraph.Core.SceneElement)">
+            <summary>
+            Writes the data.
+            </summary>
+            <param name="writer">The writer.</param>
+            <param name="sceneObject">The scene object.</param>
+        </member>
+        <member name="M:SharpGL.Serialization.Caligari.PolygonChunk.ReadData(System.IO.BinaryReader)">
+            <summary>
+            This function reads a polygon.
+            </summary>
+            <param name="reader"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SharpGL.Serialization.SerializationEngine">
+            <summary>
+            The serialization engine is a singleton that allows
+            scene objects and their contents to be saved and loaded.
+            </summary>
+        </member>
+        <member name="F:SharpGL.Serialization.SerializationEngine.instance">
+            <summary>
+            Singleton instance.
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.SerializationEngine.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:SharpGL.Serialization.SerializationEngine"/> class from being created.
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.SerializationEngine.Compose">
+            <summary>
+            Composes this instance.
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.SerializationEngine.IsFormatValidForPath(SharpGL.Serialization.IFileFormat,System.String)">
+            <summary>
+            Determines whether [is format valid for path] [the specified file format].
+            </summary>
+            <param name="fileFormat">The file format.</param>
+            <param name="path">The path.</param>
+            <returns>
+              <c>true</c> if [is format valid for path] [the specified file format]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:SharpGL.Serialization.SerializationEngine.GetFormatForPath(System.String)">
+            <summary>
+            Gets the format for path.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SharpGL.Serialization.SerializationEngine.LoadScene(System.String)">
+            <summary>
+            Loads the scene.
+            </summary>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SharpGL.Serialization.SerializationEngine.SaveScene(SharpGL.SceneGraph.Scene,System.String)">
+            <summary>
+            Saves the scene.
+            </summary>
+            <param name="scene">The scene.</param>
+            <param name="path">The path.</param>
+            <returns></returns>
+        </member>
+        <member name="F:SharpGL.Serialization.SerializationEngine.fileFormats">
+            <summary>
+            The file formats, composed via MEF.
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.SerializationEngine.Instance">
+            <summary>
+            Gets the instance.
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.SerializationEngine.FileFormats">
+            <summary>
+            Gets the file formats.
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.SerializationEngine.Filter">
+            <summary>
+            Gets the filter.
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.Caligari.CaligariFormatSCN.FileTypes">
+            <summary>
+            This property returns an array of file types that can be used with this
+            format, e.g the CaligariFormat would return "cob", "scn".
+            </summary>
+        </member>
+        <member name="P:SharpGL.Serialization.Caligari.CaligariFormatSCN.Filter">
+            <summary>
+            This gets a filter suitable for a file open/save dialog, e.g
+            "Caligari trueSpace Files (*.cob, *.scn)|*.cob;*.scn".
+            </summary>
+        </member>
+        <member name="M:SharpGL.Serialization.Discreet.MAXChunk.ReadData(SharpGL.SceneGraph.Scene,System.IO.BinaryReader)">
+            <summary>
+            This function reads the chunk and bangs the data in it into the scene.
+            </summary>
+            <param name="stream">The file stream to read from.</param>
+            <param name="scene">The scene to put data into.</param>
+        </member>
+    </members>
+</doc>
