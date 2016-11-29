@@ -48,8 +48,13 @@ namespace SceneSample
             //  Add the light.
             sceneControl1.Scene.SceneContainer.AddChild(light);
 
+            var camera = this.sceneControl1.Scene.CurrentCamera as LookAtCamera;
             //  Create a sphere.
             Cube cube = new Cube();
+            arcBallEffect.ArcBall = new ArcBall(
+                camera.Position.X, camera.Position.Y, camera.Position.Z,
+                camera.Target.X, camera.Target.Y, camera.Target.Z,
+                camera.UpVector.X, camera.UpVector.Y, camera.UpVector.Z);
             cube.AddEffect(arcBallEffect);
             
             //  Add it.
