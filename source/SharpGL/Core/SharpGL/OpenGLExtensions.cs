@@ -2024,9 +2024,11 @@ namespace SharpGL
         {
             GetDelegateFor<glClearBufferfi>()(buffer, drawbuffer, depth, stencil);
         }
-        public string GetString(uint name, uint index)
+        public unsafe string GetString(uint name, uint index)
         {
-            return (string)GetDelegateFor<glGetStringi>()(name, index);
+            sbyte* pStr = (sbyte*)GetDelegateFor<glGetStringi>()(name, index);
+            var str = new string(pStr);
+            return str;
         }
 
         //  Delegates
@@ -2087,7 +2089,7 @@ namespace SharpGL
         private delegate void glClearBufferuiv (uint buffer, int drawbuffer, uint[] value);
         private delegate void glClearBufferfv (uint buffer, int drawbuffer, float[] value);
         private delegate void glClearBufferfi (uint buffer, int drawbuffer, float depth, int stencil);
-        private delegate string glGetStringi (uint name, uint index);
+        private delegate IntPtr glGetStringi (uint name, uint index);
 
         //  Constants
         public const uint GL_COMPARE_REF_TO_TEXTURE                        = 0x884E;
