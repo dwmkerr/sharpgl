@@ -1,0 +1,63 @@
+<div class="wikidoc">
+<p><strong>The SharpGL Visual Studio Extension</strong></p>
+<p>Running the SharpGL.vsix installer will add the SharpGL extensions to Visual Studio 2010. These extensions provide new project templates for creating SharpGL projects - for WinForms and WPF. The features provided by SharpGL.vsix are detailed on this page.
+ To get the extension, go to the Downloads page, choose the latest download and download the 'SharpGL Visual Studio Extension' file.</p>
+<p><strong>Installing the Extension</strong></p>
+<p>Download the SharpGL Core Binaries or SharpGL Visual Studio Extension package. Double click on the SharpGL.vsix file and you will be asked to confirm the installation of the extension:</p>
+<p><img src="http://download.codeplex.com/Download?ProjectName=sharpgl&DownloadId=345178" alt=""></p>
+<p>This will install the SharpGL Extension.</p>
+<p><strong>Using the WinForms Project Template</strong></p>
+<p>The first template installed is the WinForms project template.</p>
+<p>Choose 'File &gt; New &gt; Project...' and from the list choose the 'SharpGL Windows Forms Application' template:</p>
+<p><img src="http://download.codeplex.com/Download?ProjectName=sharpgl&DownloadId=345179" alt=""></p>
+<p>This template provides a WinForms application with an OpenGL control. The three main events of an OpenGL control are handled:</p>
+<p>&nbsp;</p>
+<div style="color:black; background-color:white">
+<pre><span style="color:blue">private</span> <span style="color:blue">void</span> openGLControl_OpenGLDraw(<span style="color:blue">object</span> sender, PaintEventArgs e)
+        {
+            <span style="color:green">//  Get the OpenGL object.</span>
+            OpenGL gl = openGLControl.OpenGL;
+
+            <span style="color:green">//  Clear the color and depth buffer.</span>
+            gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+
+            <span style="color:green">// ... etc ...</span>
+        }
+
+<span style="color:blue">private</span> <span style="color:blue">void</span> openGLControl_OpenGLInitialized(<span style="color:blue">object</span> sender, EventArgs e)
+        {
+            <span style="color:green">//  TODO: Initialise OpenGL here.</span>
+
+            <span style="color:green">//  Get the OpenGL object.</span>
+            OpenGL gl = openGLControl.OpenGL;
+
+            <span style="color:green">//  Set the clear color.</span>
+            gl.ClearColor(0, 0, 0, 0);
+        }
+<span style="color:blue">private</span> <span style="color:blue">void</span> openGLControl_Resized(<span style="color:blue">object</span> sender, EventArgs e)
+        {
+            <span style="color:green">//  TODO: Set the projection matrix here.</span>
+
+            <span style="color:green">//  Get the OpenGL object.</span>
+            OpenGL gl = openGLControl.OpenGL;
+
+            <span style="color:green">//  Set the projection matrix.</span>
+            gl.MatrixMode(OpenGL.GL_PROJECTION);
+
+            <span style="color:green">//  ...etc...</span>
+        }
+</pre>
+</div>
+<p>&nbsp;</p>
+<p>Running the application shows that the project renders a pyramid, performs a perspective projection transformation and initialises the clear color:</p>
+<p><img src="http://download.codeplex.com/Download?ProjectName=sharpgl&DownloadId=345180" alt=""></p>
+<p>This is a great starting point for your own OpenGL powered applications.</p>
+<p><strong>Using the WPF Project Template</strong></p>
+<p>The second template installed is the WPF project template.</p>
+<p>Choose 'File &gt; New &gt; Project...' and from the list choose the 'SharpGL WPF Application' template:</p>
+<p><img src="http://download.codeplex.com/Download?ProjectName=sharpgl&DownloadId=345181" alt=""></p>
+<p>This template provides a WPF application with an OpenGL control. The three main events of an OpenGL control are handled, Draw, Resize and Initialise. This is the perfect baseline for your own SharpGL WPF application. The default drawing routine creates a
+ pyramid, as shown below:</p>
+<p><img src="http://download.codeplex.com/Download?ProjectName=sharpgl&DownloadId=345182" alt=""></p>
+<p>Other templates can be created if the community has a desire for them - if you would like to see more templates or different features, then please comment below or join in on the Discussions page.</p>
+</div><div class="ClearBoth"></div>
