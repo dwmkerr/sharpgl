@@ -88,10 +88,8 @@ namespace SharpGL.WPF
                 //  If we have a project handler, call it...
                 if (width != -1 && height != -1)
                 {
-                    var handler = Resized;
-                    if (handler != null)
-                        handler(this, eventArgsFast);
-                    else
+                    RaiseEvent(new OpenGLRoutedEventArgs(ResizedEvent, gl));
+                    if (ResizedCounter <= 0)
                     {
                         //  Otherwise we do our own projection.
                         gl.MatrixMode(OpenGL.GL_PROJECTION);
@@ -135,9 +133,7 @@ namespace SharpGL.WPF
             gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
 
             //  Fire the OpenGL initialised event.
-            var handler = OpenGLInitialized;
-            if (handler != null)
-                handler(this, eventArgsFast);
+            RaiseEvent(new OpenGLRoutedEventArgs(OpenGLInitializedEvent, gl));
 
             timer.Interval = new TimeSpan(0, 0, 0, 0, (int)(1000.0 / FrameRate));
         }
@@ -159,10 +155,8 @@ namespace SharpGL.WPF
                 gl.MakeCurrent();
 
                 //	If there is a draw handler, then call it.
-                var handler = OpenGLDraw;
-                if (handler != null)
-                    handler(this, eventArgsFast);
-                else
+                RaiseEvent(new OpenGLRoutedEventArgs(OpenGLDrawEvent, gl));
+                if (OpenGLDrawCounter <= 0)
                     gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT);
 
                 //  Draw the FPS.
@@ -217,7 +211,7 @@ namespace SharpGL.WPF
                 stopwatch.Stop();
 
                 //  Store the frame time.
-                frameTime = stopwatch.Elapsed.TotalMilliseconds;      
+                frameTime = stopwatch.Elapsed.TotalMilliseconds;
             }
         }
 
@@ -274,7 +268,7 @@ namespace SharpGL.WPF
         /// The OpenGL instance.
         /// </summary>
         private OpenGL gl = new OpenGL();
-        
+
         /// <summary>
         /// The dispatcher timer.
         /// </summary>
@@ -290,24 +284,41 @@ namespace SharpGL.WPF
         /// </summary>
         protected double frameTime = 0;
 
+        public static readonly RoutedEvent OpenGLInitializedEvent = EventManager.RegisterRoutedEvent("OpenGLInitialized", RoutingStrategy.Direct, typeof(OpenGLRoutedEventHandler), typeof(OpenGLControl));
         /// <summary>
         /// Occurs when OpenGL should be initialised.
         /// </summary>
         [Description("Called when OpenGL has been initialized."), Category("SharpGL")]
-        public event OpenGLEventHandler OpenGLInitialized;
+        public event OpenGLRoutedEventHandler OpenGLInitialized
+        {
+            add { AddHandler(OpenGLInitializedEvent, value); }
+            remove { RemoveHandler(OpenGLInitializedEvent, value); }
+        }
 
+        public static readonly RoutedEvent OpenGLDrawEvent = EventManager.RegisterRoutedEvent("OpenGLDraw", RoutingStrategy.Direct, typeof(OpenGLRoutedEventHandler), typeof(OpenGLControl));
         /// <summary>
         /// Occurs when OpenGL drawing should occur.
         /// </summary>
         [Description("Called whenever OpenGL drawing can should occur."), Category("SharpGL")]
-        public event OpenGLEventHandler OpenGLDraw;
+        public event OpenGLRoutedEventHandler OpenGLDraw
+        {
+            add { OpenGLDrawCounter++; AddHandler(OpenGLDrawEvent, value); }
+            remove { OpenGLDrawCounter--; RemoveHandler(OpenGLDrawEvent, value); }
+        }
+        private int OpenGLDrawCounter = 0;
 
+        public static readonly RoutedEvent ResizedEvent = EventManager.RegisterRoutedEvent("Resized", RoutingStrategy.Direct, typeof(OpenGLRoutedEventHandler), typeof(OpenGLControl));
         /// <summary>
         /// Occurs when the control is resized. This can be used to perform custom projections.
         /// </summary>
         [Description("Called when the control is resized - you can use this to do custom viewport projections."), Category("SharpGL")]
-        public event OpenGLEventHandler Resized;
-        
+        public event OpenGLRoutedEventHandler Resized
+        {
+            add { ResizedCounter++; AddHandler(ResizedEvent, value); }
+            remove { ResizedCounter--; RemoveHandler(ResizedEvent, value); }
+        }
+        private int ResizedCounter = 0;
+
         /// <summary>
         /// The frame rate dependency property.
         /// </summary>

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using SharpGL;
 using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph;
+using SharpGL.WPF;
 
 namespace TextRenderingSample
 {
@@ -31,8 +32,8 @@ namespace TextRenderingSample
         /// Handles the OpenGLDraw event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="SharpGL.SceneGraph.OpenGLEventArgs"/> instance containing the event data.</param>
-        private void OpenGLControl_OpenGLDraw(object sender, OpenGLEventArgs args)
+        /// <param name="args">The <see cref="SharpGL.WPF.OpenGLRoutedEventArgs"/> instance containing the event data.</param>
+        private void OpenGLControl_OpenGLDraw(object sender, OpenGLRoutedEventArgs args)
         {
             OpenGL gl = args.OpenGL;	
             
@@ -65,8 +66,8 @@ namespace TextRenderingSample
         /// Handles the OpenGLInitialized event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="SharpGL.SceneGraph.OpenGLEventArgs"/> instance containing the event data.</param>
-        private void OpenGLControl_OpenGLInitialized(object sender, OpenGLEventArgs args)
+        /// <param name="args">The <see cref="SharpGL.WPF.OpenGLRoutedEventArgs"/> instance containing the event data.</param>
+        private void OpenGLControl_OpenGLInitialized(object sender, OpenGLRoutedEventArgs args)
         {
             OpenGL gl = args.OpenGL;
 

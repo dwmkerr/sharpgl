@@ -27,7 +27,7 @@ namespace TwoDSample
             InitializeComponent();
         }
         
-        private void openGLControl1_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
+        private void openGLControl1_OpenGLDraw(object sender, SharpGL.WPF.OpenGLRoutedEventArgs args)
         {
             //  If there aren't any shapes, create them.
             if (!shapes.Any())
@@ -128,7 +128,7 @@ namespace TwoDSample
             return random.NextDouble()*(maximum - minimum) + minimum;
         }
 
-        private void openGLControl1_Resized(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
+        private void openGLControl1_Resized(object sender, SharpGL.WPF.OpenGLRoutedEventArgs args)
         {
             //  Get the OpenGL instance.
             var gl = args.OpenGL;
