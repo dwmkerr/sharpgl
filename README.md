@@ -95,3 +95,7 @@ If you've got a project that uses SharpGL and you'd like to show it off, just ad
 ## [Open Vogel](https://sites.google.com/site/gahvogel/)
 
 Checkout https://sites.google.com/site/gahvogel/ to see a free, open source project which supports aerodynamics!
+
+## [AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)
+
+This is the *very first* open source Precision Agricultural App! Built by [Brian Tischler](https://github.com/farmerbriantee), you can see (the discussions and excitement on this project with farmers across the world)[http://www.thecombineforum.com/forums/31-technology/278810-agopengps.html]!
