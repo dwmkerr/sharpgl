@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using SharpGL.Version;
 
@@ -8,6 +9,9 @@ namespace SharpGL.RenderContextProviders
 {
     public class FBORenderContextProvider : HiddenWindowRenderContextProvider
     {
+        [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
+        public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FBORenderContextProvider"/> class.
         /// </summary>
@@ -60,6 +64,14 @@ namespace SharpGL.RenderContextProviders
             gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_DEPTH_ATTACHMENT_EXT,
                 OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
 
+
+			if(usePBO)
+			{
+				pboIds = new uint[PBO_COUNT];
+				int byte_count = width * height * 4;
+				CreatePBOs((uint)byte_count, pboIds);
+			}
+
             dibSectionDeviceContext = Win32.CreateCompatibleDC(deviceContextHandle);
 		
             //  Create the DIB section.
@@ -67,6 +79,17 @@ namespace SharpGL.RenderContextProviders
             
             return true;
 	    }
+
+		private void CreatePBOs(uint byte_count, uint[] ids)
+		{
+			gl.GenBuffersARB(PBO_COUNT, pboIds);
+            for (int i = 0; i < PBO_COUNT; ++i)
+            {
+                gl.BindBufferARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB, ids[i]);
+                gl.BufferDataARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB, byte_count, (IntPtr)0, OpenGL.GL_STREAM_READ_ARB);
+            }
+			gl.BindBufferARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB, 0);
+		}
 
         private void DestroyFramebuffers()
         {
@@ -80,6 +103,11 @@ namespace SharpGL.RenderContextProviders
             colourRenderBufferID = 0;
             depthRenderBufferID = 0;
             frameBufferID = 0;
+
+            if (usePBO)
+            {
+                gl.DeleteBuffersARB(PBO_COUNT, pboIds);
+            }
         }
 
         public override void Destroy()
@@ -141,22 +169,53 @@ namespace SharpGL.RenderContextProviders
                 OpenGL.GL_RENDERBUFFER_EXT, colourRenderBufferID);
             gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_DEPTH_ATTACHMENT_EXT,
                 OpenGL.GL_RENDERBUFFER_EXT, depthRenderBufferID);
+
+            if (usePBO)
+            {
+                CreatePBOs((uint)(width * height * 4), pboIds);
+            }
         }
 
         public override void Blit(IntPtr hdc)
         {
             if (deviceContextHandle != IntPtr.Zero)
             {
-                //  Set the read buffer.
-                gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0_EXT);
+				if(!usePBO)
+				{
+                	//  Set the read buffer.
+                	gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0_EXT);
 
-			    //	Read the pixels into the DIB section.
-			    gl.ReadPixels(0, 0, Width, Height, OpenGL.GL_BGRA, 
-                    OpenGL.GL_UNSIGNED_BYTE, dibSection.Bits);
+			    	//	Read the pixels into the DIB section.
+			    	gl.ReadPixels(0, 0, Width, Height, OpenGL.GL_BGRA, 
+                    	OpenGL.GL_UNSIGNED_BYTE, dibSection.Bits);
 
-			    //	Blit the DC (containing the DIB section) to the target DC.
-			    Win32.BitBlt(hdc, 0, 0, Width, Height,
-                    dibSectionDeviceContext, 0, 0, Win32.SRCCOPY);
+			    	//	Blit the DC (containing the DIB section) to the target DC.
+			    	Win32.BitBlt(hdc, 0, 0, Width, Height,
+                    	dibSectionDeviceContext, 0, 0, Win32.SRCCOPY);
+				}
+				else
+				{
+                    uint pbo_count = (uint)PBO_COUNT;
+                    current_pbo_index = (current_pbo_index + 1) % pbo_count;
+					uint nextIndex = (current_pbo_index + pbo_count - 1) % pbo_count;
+                	//  Set the read buffer.
+                	gl.ReadBuffer(OpenGL.GL_COLOR_ATTACHMENT0_EXT);
+
+        			gl.BindBufferARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB, pboIds[current_pbo_index]);
+        			gl.ReadPixels(0, 0, Width, Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, null);
+
+        			// map the PBO that contain framebuffer pixels before processing it
+        			gl.BindBufferARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB, pboIds[nextIndex]);
+        			IntPtr src = gl.MapBufferARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB, OpenGL.GL_READ_ONLY_ARB);
+
+                    CopyMemory(dibSection.Bits, src, (uint)(Width*Height*4));
+
+                    //	Blit the DC (containing the DIB section) to the target DC.
+                    Win32.BitBlt(hdc, 0, 0, Width, Height,
+                    	dibSectionDeviceContext, 0, 0, Win32.SRCCOPY);
+
+            		gl.UnmapBufferARB(OpenGL.GL_PIXEL_PACK_BUFFER_ARB);
+				}
 		    }
         }
 
@@ -166,6 +225,12 @@ namespace SharpGL.RenderContextProviders
         protected IntPtr dibSectionDeviceContext = IntPtr.Zero;
         protected DIBSection dibSection = new DIBSection();
         protected OpenGL gl;
+
+        protected bool usePBO = false;
+		protected int PBO_COUNT = 2;
+        protected uint[] pboIds;
+        //protected 
+        protected uint current_pbo_index = 0;
 
         /// <summary>
         /// Gets the internal DIB section.
