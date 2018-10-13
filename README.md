@@ -1,7 +1,7 @@
 SharpGL
 =======
 
-[![Build status](https://ci.appveyor.com/api/projects/status/thfa4defh5f4itga?svg=true)](https://ci.appveyor.com/project/dwmkerr/sharpgl)
+[![Build status](https://ci.appveyor.com/api/projects/status/thfa4defh5f4itga?svg=true)](https://ci.appveyor.com/project/dwmkerr/sharpgl) [![GuardRails badge](https://badges.production.guardrails.io/dwmkerr/sharpgl.svg)](https://www.guardrails.io)
 
 Unlock the power of OpenGL in any .NET application. SharpGL wraps all modern OpenGL features, provides helpful wrappers for advanced objects like Vertex Buffer Arrays and Shader, as well as offering a powerful Scene Graph and utility library to help you build your projects.
 
