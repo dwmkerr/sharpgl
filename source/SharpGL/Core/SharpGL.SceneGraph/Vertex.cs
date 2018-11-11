@@ -191,6 +191,9 @@ namespace SharpGL.SceneGraph
         /// </summarY>
         public void UnitLength()
         {
+            //  Zero length vertexes are always normalized to zero.
+            if (x == 0f && y == 0f && z == 0f) return;
+
             float f = X * X + Y * Y + Z * Z;
             float frt = (float)Math.Sqrt(f);
             X /= frt;
