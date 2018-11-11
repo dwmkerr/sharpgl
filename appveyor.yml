@@ -1,0 +1,19 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+environment:
+  CODECOV_TOKEN: e8ebb1fe-fbb0-4dd2-9d30-9986cb2d94f4
+
+# Before building, restore Nuget packages and install dependencies.
+before_build:
+- ps: |
+    nuget restore source/SharpGL/SharpGL.sln
+    .\SharpShell\config.ps1
+
+build:
+  project: source/SharpGL/SharpGL.sln
+  verbosity: minimal
+
+# After the build as completed, analyse coverage and upload.
+on_success:
+- ps: ./source/SharpGL/coverage.ps1

@@ -31,6 +31,10 @@ build/nuspec/SharpGLforWPF/lib/
 release/2.*
 source/SharpGL/packages/
 
+# Artifacts and vs code.
+source/SharpGL/.vs
+source/SharpGL/artifacts
+
 # Ignores for the extensions.
 extensions/build/SharpGL.2010.vsix
 extensions/build/SharpGL.vsix
