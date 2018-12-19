@@ -76,7 +76,7 @@ namespace SharpGL
             }
 
             //  Create the render context.
-            gl.Create(OpenGLVersion, RenderContextType, Width, Height, 32, parameter);
+            OpenGL gl = OpenGL.CreateGLContext(OpenGLVersion, RenderContextType, Width, Height, 32, parameter);
 
             //  Set the most basic OpenGL styles.
             gl.ShadeModel(OpenGL.GL_SMOOTH);
@@ -85,6 +85,8 @@ namespace SharpGL
             gl.Enable(OpenGL.GL_DEPTH_TEST);
             gl.DepthFunc(OpenGL.GL_LEQUAL);
             gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
+
+            this.gl = gl;
 
             //  Fire the OpenGL initialized event.
             DoOpenGLInitialized();
@@ -107,6 +109,9 @@ namespace SharpGL
         /// <param name="graphics">The graphics to render to.</param>
         protected void Render(Graphics graphics)
         {
+            OpenGL gl = this.gl;
+            if (gl == null) { return; }
+
             //  Start the stopwatch so that we can time the rendering.
             stopwatch.Restart();
 
@@ -157,6 +162,9 @@ namespace SharpGL
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
+
+            OpenGL gl = this.gl;
+            if (gl == null) { return; }
 
             //  If we do not have a render context there is nothing more
             //  we can do.
@@ -240,14 +248,14 @@ namespace SharpGL
         /// <summary>
         /// Signals the object that initialization is starting.
         /// </summary>
-        void ISupportInitialize.BeginInit()
+        public virtual void BeginInit()
         {
         }
 
         /// <summary>
         /// Signals the object that initialization is complete.
         /// </summary>
-        void ISupportInitialize.EndInit()
+        public virtual void EndInit()
         {
             InitialiseOpenGL();
             OnSizeChanged(null);
@@ -285,7 +293,7 @@ namespace SharpGL
         /// <summary>
         /// The OpenGL object for the control.
         /// </summary>
-        private readonly OpenGL gl = new OpenGL();
+        private OpenGL gl;// = new OpenGL();
 
         /// <summary>
         /// A stopwatch used for timing rendering.
@@ -384,6 +392,7 @@ namespace SharpGL
         /// </value>
         [Description("The render trigger - determines when rendering will occur."), Category("SharpGL")]
         public RenderTrigger RenderTrigger { get; set; }
+
     }
 
     /// <summary>

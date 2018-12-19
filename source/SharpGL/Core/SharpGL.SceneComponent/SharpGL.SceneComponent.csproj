@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5C50FB2E-1B05-4FC3-A300-E5CB7B7A8A81}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpGL.SceneComponent</RootNamespace>
+    <AssemblyName>SharpGL.SceneComponent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Camera\IOrthoCamera.cs" />
+    <Compile Include="Camera\IPerspectiveCamera.cs" />
+    <Compile Include="Camera\IOrthoViewCamera.cs" />
+    <Compile Include="Camera\IScientificCamera.cs" />
+    <Compile Include="Camera\IPerspectiveViewCamera.cs" />
+    <Compile Include="Camera\IViewCamera.cs" />
+    <Compile Include="Camera\SatelliteRotation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ColorCodedPicking\ColorCodedPickingShaderHelper.cs" />
+    <Compile Include="ColorCodedPicking\IColorCodedPickingHelper.cs" />
+    <Compile Include="ColorCodedPicking\IPickedGeometry.cs" />
+    <Compile Include="ColorCodedPicking\PickedGeometryBase.cs" />
+    <Compile Include="ColorCodedPicking\PickedGeometryColored.cs" />
+    <Compile Include="ColorCodedPicking\GeometryTypes.cs" />
+    <Compile Include="Control\ViewTypes.cs" />
+    <Compile Include="Camera\CameraHelper.cs" />
+    <Compile Include="Model\ModelContainer.cs" />
+    <Compile Include="Model\BoundingBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\IBoundingBox.cs" />
+    <Compile Include="Model\ModelHelper\ScientificModelRendererHelper.cs" />
+    <Compile Include="Model\ModelHelper\ScientificModelBuildHelper.cs" />
+    <Compile Include="Model\ScientificModelElement.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ColorCodedPicking\IColorCodedPicking.cs" />
+    <Compile Include="MySharpGL\LinearArcBallTransform.cs" />
+    <Compile Include="MySharpGL\ArcBallTransform.cs" />
+    <Compile Include="MySharpGL\ArcBallTransformEffect.cs" />
+    <Compile Include="Camera\CameraTypes.cs" />
+    <Compile Include="MySharpGL\MySceneControlHelper.cs" />
+    <Compile Include="ColorCodedPicking\SharedStageInfo.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorBar.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorData.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorDataFactory.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorIndicatorNumber.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SimpleUI\Axis\CylinderAxis.cs" />
+    <Compile Include="MySharpGL\MyScene.cs" />
+    <Compile Include="MySharpGL\MySceneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MySharpGL\MySceneControl.Designer.cs">
+      <DependentUpon>MySceneControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TransformInterface\IMouseLinearTransform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TransformInterface\IMouseRotation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TransformInterface\IMouseScale.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TransformInterface\IMouseTransform.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TransformInterface\ITranslation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utility\ArrayHelper.cs" />
+    <Compile Include="Utility\FloatHelper.cs" />
+    <Compile Include="Utility\ManifestResourceLoader.cs" />
+    <Compile Include="ColorCodedPicking\GeometryTypesHelper.cs" />
+    <Compile Include="Utility\BeginModeHelper.cs" />
+    <Content Include="Camera\Camera.png" />
+    <Content Include="ColorCodedPicking\ColorCodedPicking.png" />
+    <Content Include="MySharpGL\read-me.txt" />
+    <Compile Include="SimpleUI\Axis\SimpleUIAxis.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\ColorPalette.cs" />
+    <Compile Include="SimpleUI\ColorIndicator\SimpleUIColorIndicator.cs" />
+    <Compile Include="SimpleUI\SimpleUIRect.cs" />
+    <Compile Include="SimpleUI\SimpleUIRectArgs.cs" />
+    <Compile Include="Model\ScientificModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Camera\ScientificCamera.cs" />
+    <Compile Include="Control\ScientificVisual3DControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ScientificVisual3DControl.Designer.cs">
+      <DependentUpon>ScientificVisual3DControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ScientificVisual3DControlHelper.cs" />
+    <Content Include="SimpleUI\read-me.txt" />
+    <Content Include="TransformInterface\TransformInterface.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj">
+      <Project>{47bcaa39-edad-4404-b6bd-4742b0abb523}</Project>
+      <Name>SharpGL.SceneGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpGL.WinForms\SharpGL.WinForms.csproj">
+      <Project>{b2984a6d-ad1c-4be9-94ab-ba002b338751}</Project>
+      <Name>SharpGL.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpGLM\SharpGLM.csproj">
+      <Project>{d15e2fee-512e-4804-8687-bcbdbedbeb7b}</Project>
+      <Name>SharpGLM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpGL\SharpGL.csproj">
+      <Project>{5ef45533-e2c7-46f2-b4a3-b8f36cd406e0}</Project>
+      <Name>SharpGL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Shader.vert" />
+    <EmbeddedResource Include="Model\Shader.frag" />
+    <EmbeddedResource Include="ColorCodedPicking\PickingShader.vert" />
+    <EmbeddedResource Include="ColorCodedPicking\PickingShader.frag" />
+    <None Include="Camera\Camera.cd" />
+    <None Include="ColorCodedPicking\ColorCodedPicking.cd" />
+    <None Include="TransformInterface\TransformInterface.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

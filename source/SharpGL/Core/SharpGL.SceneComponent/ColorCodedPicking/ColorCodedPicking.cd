@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="SharpGL.SceneComponent.GeometryTypesHelper">
+    <Position X="3.75" Y="2.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>ColorCodedPicking\GeometryTypesHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpGL.SceneComponent.IColorCodedPickingHelper">
+    <Position X="3.75" Y="4.5" Width="7.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAABBAACAAAAAAAAAAAA=</HashCode>
+      <FileName>ColorCodedPicking\IColorCodedPickingHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpGL.SceneComponent.PickedGeometryBase">
+    <Position X="3.75" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAAAAAAAEAAAAIAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ColorCodedPicking\PickedGeometryBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="SharpGL.SceneComponent.IColorCodedPicking">
+    <Position X="0.5" Y="4.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAABAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>ColorCodedPicking\IColorCodedPicking.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpGL.SceneComponent.IPickedGeometry">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <AssociationLine Name="GeometryType" Type="SharpGL.SceneComponent.GeometryTypes" FixedToPoint="true">
+      <Path>
+        <Point X="2.75" Y="1.789" />
+        <Point X="2.75" Y="2.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.07" Y="0.464" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="From" Type="SharpGL.SceneComponent.IColorCodedPicking" FixedToPoint="true">
+      <Path>
+        <Point X="1.312" Y="1.789" />
+        <Point X="1.312" Y="4.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.091" Y="0.443" Height="0.161" Width="0.554" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ColorCodedPicking\IPickedGeometry.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="GeometryType" />
+      <Property Name="From" />
+    </ShowAsAssociation>
+  </Interface>
+  <Enum Name="SharpGL.SceneComponent.GeometryTypes">
+    <Position X="2" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAABAAAAAAAAAAAAAAAAAAAAAAEBACA=</HashCode>
+      <FileName>ColorCodedPicking\GeometryTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

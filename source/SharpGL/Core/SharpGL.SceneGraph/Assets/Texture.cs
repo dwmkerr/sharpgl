@@ -47,8 +47,16 @@ namespace SharpGL.SceneGraph.Assets
         /// <param name="gl">The OpenGL instance.</param>
         public virtual void Pop(OpenGL gl)
         {
+            UnBind(gl);
+
             //  Pop attributes.
             gl.PopAttrib();
+        }
+
+        private void UnBind(OpenGL gl)
+        {
+            //	UnBind our texture object
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, 0);
         }
 
         /// <summary>

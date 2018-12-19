@@ -1,0 +1,11 @@
+﻿This folder contains types that are a better version of corresponding types in SharpGL.
+The type 'MyXXX' takes place of type 'XXX' in SharpGL.
+For example, 'MyArcBall' is a better(support all moving camera's) version of 'SharpGL.SceneGraph.Core.ArcBall'.
+'MyScene' overrides the 'Draw()' method and implement a new 'RenderElement()' method as 'MyRenderElement()'. 'MyRenderElement()' takes 'IBindable' as an operation with 'Push()' and 'Pop()' so that types of 'IBindable' such as 'Light' only affects its child elements.
+'MySceneControl' takes place of 'SceneControl' and it uses 'MyScene' instead of 'Scene'.
+
+本文件夹包含的类型，是为了替换SharpGL原有的对应类型。
+类型 'MyXXX' 用于代替SharpGL中的 'XXX'。
+例如，'MyArcBall' 代替了 'SharpGL.SceneGraph.Core.ArcBall'，它支持所有位置的摄像机，并且允许摄像机移动。
+'MyScene' 这个类型override了 'Draw()' 方法，并实现了 'MyRenderElement()'（代替 'RenderElement()'）。'MyRenderElement()' 对 'IBindable' 接口类型执行 'Push()' 和 'Pop()' 操作。这样，像 'Light' 这样实现了 'IBindable' 接口的类型就会只影响它的子元素了。
+'MySceneControl' 代替了 'SceneControl'，它内部使用 'MyScene' 而不是 'Scene'。
