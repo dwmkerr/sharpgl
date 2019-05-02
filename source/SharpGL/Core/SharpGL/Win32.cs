@@ -578,6 +578,10 @@ namespace SharpGL
         [return: MarshalAs(UnmanagedType.U2)]
         public static extern short RegisterClassEx([In] ref WNDCLASSEX lpwcx);
 
+        [DllImport(User32, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnregisterClass(string lpClassName, IntPtr hInstance);
+
         #endregion
         
         [Flags]

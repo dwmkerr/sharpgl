@@ -17,6 +17,8 @@ namespace SharpGL.RenderContextProviders
             GDIDrawingEnabled = true;
         }
 
+        private Win32.WNDCLASSEX wndClass;
+
         /// <summary>
         /// Creates the render context provider. Must also create the OpenGL extensions.
         /// </summary>
@@ -33,7 +35,7 @@ namespace SharpGL.RenderContextProviders
             base.Create(openGLVersion, gl, width, height, bitDepth, parameter);
 
             //	Create a new window class, as basic as possible.                
-            Win32.WNDCLASSEX wndClass = new Win32.WNDCLASSEX();
+            wndClass = new Win32.WNDCLASSEX();
             wndClass.Init();
 		    wndClass.style			= Win32.ClassStyles.HorizontalRedraw | Win32.ClassStyles.VerticalRedraw | Win32.ClassStyles.OwnDC;
             wndClass.lpfnWndProc    = wndProcDelegate;
@@ -111,6 +113,9 @@ namespace SharpGL.RenderContextProviders
 
 		    //	Destroy the window.
 		    Win32.DestroyWindow(windowHandle);
+
+            //  Unregister Class
+            Win32.UnregisterClass(wndClass.lpszClassName, wndClass.hInstance);
 
 		    //	Call the base, which will delete the render context handle.
             base.Destroy();
