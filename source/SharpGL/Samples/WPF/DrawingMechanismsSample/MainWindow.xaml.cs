@@ -98,7 +98,7 @@ namespace DrawingMechanismsSample
             uint counter = 0;
             for (uint i = 0; i < vertices.Length; i++)
             {
-                vertexArrayValues[counter] = vertices[i].X;
+                vertexArrayValues[counter++] = vertices[i].X;
                 vertexArrayValues[counter++] = vertices[i].Y;
                 vertexArrayValues[counter++] = vertices[i].Z;
             }
