@@ -37,9 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GlmNet, Version=0.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\GlmNet.0.0.2.0\lib\net40\GlmNet.dll</HintPath>
+    <Reference Include="GlmNet, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\GlmNet.0.7.0\lib\net40\GlmNet.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

@@ -45,8 +45,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GlmNet">
-      <HintPath>Dependencies\GlmNet.dll</HintPath>
+    <Reference Include="GlmNet, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\GlmNet.0.7.0\lib\net40\GlmNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -105,6 +105,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
