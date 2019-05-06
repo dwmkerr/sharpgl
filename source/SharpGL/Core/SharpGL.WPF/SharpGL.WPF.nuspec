@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+        <id>$id$</id>
+        <version>$version$</version>
+        <title>SharpGL</title>
+        <authors>Dave Kerr</authors>
+        <owners>Dave Kerr</owners>
+        <projectUrl>https://github.com/dwmkerr/sharpgl</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WPF controls.</description>
+    <summary>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WPF controls.</summary>
+    <copyright>Copyright © Dave Kerr 2019</copyright>
+        <tags>SharpGL,OpenGL,WPF</tags>
+    <dependencies>
+            <dependency id="SharpGL" version="$version$" />
+    </dependencies>
+  </metadata>
+</package>
