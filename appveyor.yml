@@ -12,6 +12,7 @@ before_build:
 
 build:
   project: source/SharpGL/SharpGL.sln
+  publish_nuget: true
   verbosity: minimal
 
 # After the build as completed, analyse coverage and upload.
