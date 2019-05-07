@@ -12,8 +12,24 @@ before_build:
 
 build:
   project: source/SharpGL/SharpGL.sln
+  publish_nuget: true
   verbosity: minimal
 
 # After the build as completed, analyse coverage and upload.
 on_success:
 - ps: ./source/SharpGL/coverage.ps1
+
+# If we have a tag, deploy.
+deploy:
+- provider: NuGet
+  api_key:
+    secure: TWio+nDN8Ew7+OH7J3tLcEoM6DmxrIwfAr+2Ag8ROWJUEnXyoSAZ/I1GxBgB0qMd
+  on:
+    APPVEYOR_REPO_TAG: true
+- provider: GitHub
+  auth_token:
+    secure: KTWUORrnJKPKLSf/3ROLY50T9UfgTMnKHf3OjBOv8tlY/DAxtlglRU3eM+j45fMt
+  artifact: SharpGL.nupkg, SharpGL.WPF.nuspec, SharpGL.WinForms.nuspec
+  on:
+    APPVEYOR_REPO_TAG: true
+

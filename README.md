@@ -11,17 +11,15 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
 
 <!-- vim-markdown-toc GFM -->
 
-    * [Getting Started](#getting-started)
-    * [Developer Guide](#developer-guide)
-    * [Sample Applications](#sample-applications)
-    * [Documentation](#documentation)
-    * [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
+* [Getting Started](#getting-started)
+* [Developer Guide](#developer-guide)
+    * [Releasing](#releasing)
+* [Sample Applications](#sample-applications)
+* [Documentation](#documentation)
+* [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
 * [Built with SharpGL](#built-with-sharpgl)
-    * [Open Vogel](#open-vogel)
-    * [AgOpenGPS](#agopengps)
 
 <!-- vim-markdown-toc -->
-
 
 ## Getting Started
 
@@ -71,6 +69,16 @@ artifacts\
   \coverage               # Coverage Reports
 ```
 
+### Releasing
+
+To make and publish a release:
+
+1. Update the `SharedAssemblyInfo.cs` file with the version
+2. Create the version tag (e.g. `git tag v3.2.1`)
+3. Push the code and tags (e.g. `git push --follow-tags`)
+
+AppVeyor will automatically push the release to NuGet and GitHub.
+
 ## Sample Applications
 
 There are a large number of sample applications that show how to use SharpGL. Check out the 'Samples' solution to see the samples that are available - they'll be documented soon.
@@ -104,14 +112,14 @@ Many thanks to [Red Gate](http://www.red-gate.com/) who have kindly provided Sha
 
 Thanks for [JetBrains](http://www.jetbrains.com/) for sponsoring SharpGL with [Resharper](http://www.jetbrains.com/resharper/)!
 
-# Built with SharpGL
+## Built with SharpGL
 
 If you've got a project that uses SharpGL and you'd like to show it off, just add the details here in a PR!
 
-## [Open Vogel](https://sites.google.com/site/gahvogel/)
+**[Open Vogel](https://sites.google.com/site/gahvogel/)**
 
 Checkout https://sites.google.com/site/gahvogel/ to see a free, open source project which supports aerodynamics!
 
-## [AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)
+**[AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)**
 
-This is the *very first* open source Precision Agricultural App! Built by [Brian Tischler](https://github.com/farmerbriantee), you can see (the discussions and excitement on this project with farmers across the world)[http://www.thecombineforum.com/forums/31-technology/278810-agopengps.html]!
+This is the *very first* open source Precision Agricultural App! Built by [Brian Tischler](https://github.com/farmerbriantee), you can see [the discussions and excitement on this project with farmers across the world](http://www.thecombineforum.com/forums/31-technology/278810-agopengps.html)!
