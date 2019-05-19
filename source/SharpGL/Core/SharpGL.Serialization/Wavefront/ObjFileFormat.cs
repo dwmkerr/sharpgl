@@ -101,9 +101,10 @@ namespace SharpGL.Serialization.Wavefront
                             mtl.Diffuse = ReadMaterialColor(line, alpha);
                         else if (line.StartsWith("Ks"))
                             mtl.Specular = ReadMaterialColor(line, alpha);
-                        else if (line.StartsWith("Ns"))
+                        else if (line.StartsWith("Ns")) {
+                            line = line.Replace(".", ",");
                             mtl.Shininess = Convert.ToSingle(ReadMaterialValue(line));
-                        else if (line.StartsWith("map_Ka") ||
+                        } else if (line.StartsWith("map_Ka") ||
                             line.StartsWith("map_Kd") ||
                             line.StartsWith("map_Ks"))
                         {
@@ -136,6 +137,7 @@ namespace SharpGL.Serialization.Wavefront
                         }
                         else if (line.StartsWith("d") || line.StartsWith("Tr"))
                         {
+                            line = line.Replace(".", ",");
                             alpha = Convert.ToSingle(ReadMaterialValue(line));
                             SetAlphaForMaterial(mtl, alpha);
                         }
