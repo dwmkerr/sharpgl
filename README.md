@@ -31,14 +31,12 @@ PM> Install-Package SharpGL
 
 The available packages are:
 
-| Package              | Link                                                                                                                              | Usage                                                                                            |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `SharpGL`            | [![SharpGL Core](https://img.shields.io/nuget/v/SharpGL.svg)](https://www.nuget.org/packages/SharpGL)                             | The Core is simply the full set of OpenGL functions and extensions wrapped and available to use. |
-| `SharpGL.SceneGraph` | [![SharpGL SceneGraph](https://img.shields.io/nuget/v/SharpGL.SceneGraph.svg)](https://www.nuget.org/packages/SharpGL.SceneGraph) | The SceneGraph library contains a full class library which models key OpenGL entities.           |
-| `SharpGL.WPF`        | [![SharpGL WPF](https://img.shields.io/nuget/v/SharpGL.WPF.svg)](https://www.nuget.org/packages/SharpGL.WPF)                      | SharpGL for WPF includes the Core as well as OpenGL controls to drop into your WPF app.
-|
-| `SharpGL.WinForms` | [![SharpGL WinForms](https://img.shields.io/nuget/v/SharpGL.WinForms.svg)](https://www.nuget.org/packages/SharpGL.WinForms) | SharpGL for WinForms includes the Core as well as OpenGL controls to drop into your WinForms app.
-|
+| Package              | Link                                                                                                                              | Usage                                                                                             |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| `SharpGL`            | [![SharpGL Core](https://img.shields.io/nuget/v/SharpGL.svg)](https://www.nuget.org/packages/SharpGL)                             | The Core is simply the full set of OpenGL functions and extensions wrapped and available to use.  |
+| `SharpGL.SceneGraph` | [![SharpGL SceneGraph](https://img.shields.io/nuget/v/SharpGL.SceneGraph.svg)](https://www.nuget.org/packages/SharpGL.SceneGraph) | The SceneGraph library contains a full class library which models key OpenGL entities.            |
+| `SharpGL.WPF`        | [![SharpGL WPF](https://img.shields.io/nuget/v/SharpGL.WPF.svg)](https://www.nuget.org/packages/SharpGL.WPF)                      | SharpGL for WPF includes the Core as well as OpenGL controls to drop into your WPF app.           |
+| `SharpGL.WinForms`   | [![SharpGL WinForms](https://img.shields.io/nuget/v/SharpGL.WinForms.svg)](https://www.nuget.org/packages/SharpGL.WinForms)       | SharpGL for WinForms includes the Core as well as OpenGL controls to drop into your WinForms app. |
 
 There are project templates available for SharpGL WinForms and WPF projects - just search for SharpGL on the Visual Studio Extensions gallery, or get the extensions directly:
 
