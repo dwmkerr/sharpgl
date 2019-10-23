@@ -2294,10 +2294,40 @@ namespace SharpGL
             GetDelegateFor<glFramebufferTexture>()(target, attachment, texture, level);
         }
 
+        /// <summary>
+        /// Render primitives from array data with a per-element offset.
+        /// </summary>
+        /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants OpenGL.GL_POINTS, OpenGL.GL_LINE_STRIP, OpenGL.GL_LINE_LOOP, OpenGL.GL_LINES, OpenGL.GL_TRIANGLE_STRIP, OpenGL.GL_TRIANGLE_FAN, OpenGL.GL_TRIANGLES, OpenGL.GL_LINES_ADJACENCY, OpenGL.GL_LINE_STRIP_ADJACENCY, OpenGL.GL_TRIANGLES_ADJACENCY, OpenGL.GL_TRIANGLE_STRIP_ADJACENCY and OpenGL.GL_PATCHES are accepted.</param>
+        /// <param name="count">Specifies the number of elements to be rendered.</param>
+        /// <param name="type">Specifies the type of the values in indices. Must be one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, or GL_UNSIGNED_INT.</param>
+        /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
+        /// <param name="basevertex">Specifies a constant that should be added to each element of indices when chosing elements from the enabled vertex arrays.</param>
+        public void DrawElementsBaseVertex(uint mode, int count, uint type, IntPtr indices, int basevertex)
+        {
+            GetDelegateFor<glDrawElementsBaseVertex>()(mode, count, type, indices, basevertex);
+        }
+
+        /// <summary>
+        /// Render primitives from array data with a per-element offset. Uses OpenGL.GL_UNSIGNED_INT as the data type.
+        /// </summary>
+        /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants OpenGL.GL_POINTS, OpenGL.GL_LINE_STRIP, OpenGL.GL_LINE_LOOP, OpenGL.GL_LINES, OpenGL.GL_TRIANGLE_STRIP, OpenGL.GL_TRIANGLE_FAN, OpenGL.GL_TRIANGLES, OpenGL.GL_LINES_ADJACENCY, OpenGL.GL_LINE_STRIP_ADJACENCY, OpenGL.GL_TRIANGLES_ADJACENCY, OpenGL.GL_TRIANGLE_STRIP_ADJACENCY and OpenGL.GL_PATCHES are accepted.</param>
+        /// <param name="count">Specifies the number of elements to be rendered.</param>
+        /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
+        /// <param name="basevertex">Specifies a constant that should be added to each element of indices when chosing elements from the enabled vertex arrays.</param>
+        public void DrawElementsBaseVertex(uint mode, int count, uint[] indices, int basevertex)
+        {
+            //  This helper version of the the function handles the pinning of the memory for the caller.
+            var pinnedIndices = GCHandle.Alloc(indices, GCHandleType.Pinned);
+            var pointer = pinnedIndices.AddrOfPinnedObject();
+            GetDelegateFor<glDrawElementsBaseVertex>()(mode, count, OpenGL.GL_UNSIGNED_INT, pointer, basevertex);
+            pinnedIndices.Free();
+        }
+
         //  Delegates
         private delegate void glGetInteger64i_v (uint target, uint index, Int64[] data);
         private delegate void glGetBufferParameteri64v (uint target, uint pname, Int64[] parameters);
         private delegate void glFramebufferTexture (uint target, uint attachment, uint texture, int level);
+        private delegate void glDrawElementsBaseVertex(uint mode, int count, uint type, IntPtr indices, int basevertex);
 
         //  Constants
         public const uint GL_CONTEXT_CORE_PROFILE_BIT                  = 0x00000001;
@@ -2306,6 +2336,7 @@ namespace SharpGL
         public const uint GL_LINE_STRIP_ADJACENCY                      = 0x000B;
         public const uint GL_TRIANGLES_ADJACENCY                       = 0x000C;
         public const uint GL_TRIANGLE_STRIP_ADJACENCY                  = 0x000D;
+        public const uint GL_PATCHES                                   = 0x000E;
         public const uint GL_PROGRAM_POINT_SIZE                        = 0x8642;
         public const uint GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS          = 0x8C29;
         public const uint GL_FRAMEBUFFER_ATTACHMENT_LAYERED            = 0x8DA7;
@@ -2322,7 +2353,7 @@ namespace SharpGL
         public const uint GL_MAX_GEOMETRY_OUTPUT_COMPONENTS            = 0x9124;
         public const uint GL_MAX_FRAGMENT_INPUT_COMPONENTS             = 0x9125;
         public const uint GL_CONTEXT_PROFILE_MASK                      = 0x9126;
-        
+
         #endregion
 
         #region OpenGL 3.3
