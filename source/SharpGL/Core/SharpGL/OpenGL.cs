@@ -981,11 +981,11 @@ namespace SharpGL
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawBuffer (uint mode);
         [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawElements(uint mode, int count, uint type, IntPtr indices);
         [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawElements(uint mode, int count, uint type, uint[] indices);
-		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, float[] pixels);
-    [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, uint[] pixels);
-    [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, ushort[] pixels);
-    [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, byte[] pixels);
-    [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, IntPtr pixels);
+	    [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, float[] pixels);
+        [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, uint[] pixels);
+        [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, ushort[] pixels);
+        [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, byte[] pixels);
+        [DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glDrawPixels(int width, int height, uint format, uint type, IntPtr pixels);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glEdgeFlag (byte flag);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glEdgeFlagPointer (int stride,  int[] pointer);
 		[DllImport(LIBRARY_OPENGL, SetLastError = true)] private static extern void glEdgeFlagv ( byte []flag);
@@ -2276,7 +2276,7 @@ namespace SharpGL
         }
 
         /// <summary>
-        /// Render primitives from array data.
+        /// Render primitives from array data. Uses OpenGL.GL_UNSIGNED_INT as the data type.
         /// </summary>
         /// <param name="mode">Specifies what kind of primitives to	render. Symbolic constants OpenGL.POINTS, OpenGL.LINE_STRIP, OpenGL.LINE_LOOP, OpenGL.LINES, OpenGL.TRIANGLE_STRIP, OpenGL.TRIANGLE_FAN, OpenGL.TRIANGLES, OpenGL.QUAD_STRIP, OpenGL.QUADS, and OpenGL.POLYGON are accepted.</param>
         /// <param name="count">Specifies the number of elements to be rendered.</param>
@@ -2291,9 +2291,9 @@ namespace SharpGL
         /// <summary>
         /// Render primitives from array data.
         /// </summary>
-        /// <param name="mode">Specifies what kind of primitives to	render. Symbolic constants OpenGL.POINTS, OpenGL.LINE_STRIP, OpenGL.LINE_LOOP, OpenGL.LINES, OpenGL.TRIANGLE_STRIP, OpenGL.TRIANGLE_FAN, OpenGL.TRIANGLES, OpenGL.QUAD_STRIP, OpenGL.QUADS, and OpenGL.POLYGON are accepted.</param>
+        /// <param name="mode">Specifies what kind of primitives to	render. Symbolic constants OpenGL.GL_POINTS, OpenGL.GL_LINE_STRIP, OpenGL.GL_LINE_LOOP, OpenGL.GL_LINES, OpenGL.GL_TRIANGLE_STRIP, OpenGL.TRIANGLE_FAN, OpenGL.GL_TRIANGLES, OpenGL.GL_QUAD_STRIP, OpenGL.GL_QUADS, and OpenGL.GL_POLYGON are accepted.</param>
         /// <param name="count">Specifies the number of elements to be rendered.</param>
-        /// <param name="type">Specifies the type of the values in indices.	Must be one of OpenGL.UNSIGNED_BYTE, OpenGL.UNSIGNED_SHORT, or OpenGL.UNSIGNED_INT.</param>
+        /// <param name="type">Specifies the type of the values in indices.	Must be one of OpenGL.GL_UNSIGNED_BYTE, OpenGL.GL_UNSIGNED_SHORT, or OpenGL.GL_UNSIGNED_INT.</param>
         /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
         public void DrawElements(uint mode, int count, uint type, IntPtr indices)
         {
