@@ -101,6 +101,8 @@ namespace SharpGL.Serialization.Wavefront
                             mtl.Diffuse = ReadMaterialColor(line, alpha);
                         else if (line.StartsWith("Ks"))
                             mtl.Specular = ReadMaterialColor(line, alpha);
+                        else if (line.StartsWith("Ke"))
+                            mtl.Emission = this.ReadMaterialColor(line, alpha);
                         else if (line.StartsWith("Ns"))
                             mtl.Shininess = Convert.ToSingle(ReadMaterialValue(line));
                         else if (line.StartsWith("map_Ka") ||
@@ -176,8 +178,8 @@ namespace SharpGL.Serialization.Wavefront
                         float y = float.Parse(values[1]);
                         
                         //  Parse texture coordinates.
-                        float u = float.Parse(values[0]);
-                        float v = float.Parse(values[1]);
+                        float u = x// float.Parse(values[0]);
+                        float v = 1.0f - y; //float.Parse(values[1]);
 
                         //  Add the texture coordinate.
                         polygon.UVs.Add(new UV(u, v));
