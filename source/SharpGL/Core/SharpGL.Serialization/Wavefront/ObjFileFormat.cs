@@ -178,7 +178,7 @@ namespace SharpGL.Serialization.Wavefront
                         float y = float.Parse(values[1]);
                         
                         //  Parse texture coordinates.
-                        float u = x// float.Parse(values[0]);
+                        float u = x; // float.Parse(values[0]);
                         float v = 1.0f - y; //float.Parse(values[1]);
 
                         //  Add the texture coordinate.
