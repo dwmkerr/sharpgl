@@ -170,13 +170,20 @@ namespace SharpGL.SceneGraph.Assets
         public virtual bool Create(OpenGL gl, string path)
         {
             //  Try and load the bitmap. Return false on failure.
-            using (Bitmap image = new Bitmap(path))
+            try
             {
-                if (image == null)
-                    return false;
+                using (Bitmap image = new Bitmap(path))
+                {
+                    if (image == null)
+                        return false;
 
-                //  Call the main create function.
-                return Create(gl, image);
+                    //  Call the main create function.
+                    return Create(gl, image);
+                }
+            }
+            catch
+            {
+                return false; // Couldn't load the image; probably because of an invalid path
             }
         }
 

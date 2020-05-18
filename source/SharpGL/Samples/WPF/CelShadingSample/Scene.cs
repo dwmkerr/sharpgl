@@ -55,7 +55,7 @@ namespace CelShadingSample
             //  Create the projection matrix for our screen size.
             const float S = 0.46f;
             float H = S * screenHeight / screenWidth;
-            projectionMatrix = glm.pfrustum(-S, S, -H, H, 1, 100);
+            projectionMatrix = glm.frustum(-S, S, -H, H, 1, 100);
 
             //  When we do immediate mode drawing, OpenGL needs to know what our projection matrix
             //  is, so set it now.
