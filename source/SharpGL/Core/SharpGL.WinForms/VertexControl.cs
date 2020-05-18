@@ -132,8 +132,8 @@ namespace SharpGL.Controls
 		private void textBoxX_TextChanged(object sender, System.EventArgs e)
 		{
 			try
-			{
-				vertex.X = float.Parse(textBoxX.Text);
+			{				
+				vertex.X = float.Parse(textBoxX.Text); // Culture-dependant parsing
 			}
 			catch(System.FormatException)
 			{
@@ -146,7 +146,7 @@ namespace SharpGL.Controls
 		{
 			try
 			{
-				vertex.Y = float.Parse(textBoxY.Text);
+				vertex.Y = float.Parse(textBoxY.Text);// Culture-dependant parsing
 			}
 			catch(System.FormatException)
 			{
@@ -159,7 +159,7 @@ namespace SharpGL.Controls
 		{
 			try
 			{
-				vertex.Z = float.Parse(textBoxZ.Text);
+				vertex.Z = float.Parse(textBoxZ.Text);// Culture-dependant parsing
 			}
 			catch(System.FormatException)
 			{

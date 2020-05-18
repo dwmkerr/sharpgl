@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.WPF", "Core\SharpGL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinForms Samples", "WinForms Samples", "{7B5EC8D9-8BB2-4738-AE7C-1B6E4BE0DFF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuckySample", "Samples\WinForms\DuckySample\DuckySample.csproj", "{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeTexturesSample", "Samples\WinForms\NativeTexturesSample\NativeTexturesSample.csproj", "{3130CA21-EC44-49B1-AA7A-52EE64BD6AF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSystemSample", "Samples\WinForms\ParticleSystemSample\ParticleSystemSample.csproj", "{A6FE827E-D58F-4389-9E27-7960FE68FF5C}"
@@ -92,6 +94,16 @@ Global
 		{53E67055-13D2-4467-BB57-79589AFAC2CD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{53E67055-13D2-4467-BB57-79589AFAC2CD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{53E67055-13D2-4467-BB57-79589AFAC2CD}.Release|x86.ActiveCfg = Release|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{18CA489C-B5DA-4E0B-9250-6EC9A925F87F}.Release|x86.ActiveCfg = Release|Any CPU
 		{3130CA21-EC44-49B1-AA7A-52EE64BD6AF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3130CA21-EC44-49B1-AA7A-52EE64BD6AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3130CA21-EC44-49B1-AA7A-52EE64BD6AF4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
