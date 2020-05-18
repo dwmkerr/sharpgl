@@ -4,6 +4,7 @@ $coverageReport = "$coverageDir\coverage.xml"
 
 # Quote arguments for the commandline.
 $testAssemblyArgs = "`"$PSScriptRoot\Core\SharpGL.SceneGraph.Tests\bin\Release\SharpGL.SceneGraph.Tests.dll`""
+$testAssemblyArgs = $testAssemblyArgs + " `"$PSScriptRoot\SharpGL.Serialization.Tests\bin\Release\SharpGL.Serialization.Tests.dll`""
 $workArgs = "`"$PSScriptRoot\artifacts\tests`""
 
 # Create an artifacts directory and build the report.

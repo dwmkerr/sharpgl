@@ -91,21 +91,18 @@ namespace SharpGL.SceneGraph
 							if(comma != -1 && openbracket != -1) 
 							{
 								//	We have the comma and open bracket, so get x.
-								string parsed = s.Substring(openbracket + 1, (comma - (openbracket + 1)));
-								parsed.Trim();
-								xValue = float.Parse(parsed);
+								string parsed = s.Substring(openbracket + 1, comma - (openbracket + 1)).Trim();
+								xValue = float.Parse(parsed, CultureInfo.InvariantCulture);
 						
 								if(comma != -1 && nextcomma != -1)
 								{
-									parsed = s.Substring(comma + 1, (nextcomma - (comma + 1)));
-									parsed.Trim();
-									yValue = float.Parse(parsed);
+									parsed = s.Substring(comma + 1, nextcomma - (comma + 1)).Trim();
+									yValue = float.Parse(parsed, CultureInfo.InvariantCulture);
 						
 									if(nextcomma != -1 && closebracket != -1)
 									{
-										parsed = s.Substring(nextcomma + 1, (closebracket - (nextcomma + 1)));
-										parsed.Trim();
-										zValue = float.Parse(parsed);
+										parsed = s.Substring(nextcomma + 1, closebracket - (nextcomma + 1)).Trim();
+										zValue = float.Parse(parsed, CultureInfo.InvariantCulture);
 								
 										return new Vertex(xValue, yValue, zValue);
 									}

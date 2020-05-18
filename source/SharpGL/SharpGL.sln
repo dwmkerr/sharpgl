@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2046
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}"
 EndProject
@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D2E990
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.SceneGraph.Tests", "Core\SharpGL.SceneGraph.Tests\SharpGL.SceneGraph.Tests.csproj", "{C112C29B-1DB7-49D6-B453-F3B80117F1F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.Serialization.Tests", "SharpGL.Serialization.Tests\SharpGL.Serialization.Tests.csproj", "{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +106,18 @@ Global
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0}.Release|x86.Build.0 = Release|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|x86.Build.0 = Debug|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|x86.ActiveCfg = Release|Any CPU
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +130,7 @@ Global
 		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 		{D2E99047-F511-4CE1-B07F-41412E9FF7B4} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
+		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7502DB8-5CD0-44F2-A435-778B59584E0C}

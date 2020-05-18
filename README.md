@@ -15,6 +15,7 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
 * [Developer Guide](#developer-guide)
     * [Releasing](#releasing)
 * [Sample Applications](#sample-applications)
+    * [Ducky Sample](#ducky-sample)
 * [Documentation](#documentation)
 * [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
 * [Built with SharpGL](#built-with-sharpgl)
@@ -78,6 +79,18 @@ AppVeyor will automatically push the release to NuGet and GitHub.
 
 There are a large number of sample applications that show how to use SharpGL. Check out the 'Samples' solution to see the samples that are available - they'll be documented soon.
 
+### Ducky Sample
+
+This WinForms sample shows how to load an object file with materials, using the Serialization library. It also has great support for internationalization (thanks [`odalet`](https://github.com/odalet)!
+
+![Ducky Sample](assets/samples/DuckySample.png)
+
+This sample demonstrates:
+
+- Loading `*.obj` files and associated materials
+- Building polygons from `*.obj` files
+- Arcball rotation
+
 ## Documentation
 
 All documentation is available on [the Wiki](https://github.com/dwmkerr/sharpgl/wiki).
@@ -86,8 +99,9 @@ All documentation is available on [the Wiki](https://github.com/dwmkerr/sharpgl/
 
 SharpGL is written and maintained by me. Special thanks go to the following contributors:
 
- * [robinsedlaczek](https://github.com/robinsedlaczek) - Code and documentation updates, tireless patience 
+ * [`robinsedlaczek`](https://github.com/robinsedlaczek) - Code and documentation updates, tireless patience 
    while I get through a backlog of work!
+ * [`odalet`](https://github.com/odalet) - amazing work on internationalization and making the serialization code work in all locales
 
 **NDepend**
 
