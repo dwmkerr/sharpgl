@@ -117,9 +117,9 @@ Many thanks to [Red Gate](http://www.red-gate.com/) who have kindly provided Sha
 
 **JetBrains**
 
-![JetBrains](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/jetbrains.png?raw=true "JetBrains")
+[![JetBrains](https://github.com/dwmkerr/sharpgl/blob/master/assets/sponsors/jetbrains.png?raw=true "JetBrains")](https://www.jetbrains.com/?from=sharpgl)
 
-Thanks for [JetBrains](http://www.jetbrains.com/) for sponsoring SharpGL with [Resharper](http://www.jetbrains.com/resharper/)!
+Thanks for [JetBrains](https://www.jetbrains.com/?from=sharpgl) for sponsoring SharpGL with [Resharper](http://www.jetbrains.com/resharper/)!
 
 ## Built with SharpGL
 
