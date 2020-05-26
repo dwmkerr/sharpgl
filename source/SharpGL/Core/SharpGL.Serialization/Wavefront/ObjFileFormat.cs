@@ -148,13 +148,13 @@ namespace SharpGL.Serialization.Wavefront
             {
                 // Convert float a,r,g,b values to byte values.  Make sure they fall in 0-255 range.
                 int a = Convert.ToInt32(255 * alpha);
-                if (a < 0) a = 0; if (a > 255) a = 255;
+                a = a < 0 ? 0 : a > 255 ? 255 : a;
                 int r = Convert.ToInt32(255 * float.Parse(lineParts[1], CultureInfo.InvariantCulture));
-                if (r < 0) r = 0; if (r > 255) r = 255;
+                r = r < 0 ? 0 : r > 255 ? 255 : r;
                 int g = Convert.ToInt32(255 * float.Parse(lineParts[2], CultureInfo.InvariantCulture));
-                if (g < 0) g = 0; if (g > 255) g = 255;
+                g = g < 0 ? 0 : g > 255 ? 255 : g;
                 int b = Convert.ToInt32(255 * float.Parse(lineParts[3], CultureInfo.InvariantCulture));
-                if (b < 0) b = 0; if (b > 255) b = 255;
+                b = b < 0 ? 0 : b > 255 ? 255 : b;
 
                 return System.Drawing.Color.FromArgb(a, r, g, b);
             }
