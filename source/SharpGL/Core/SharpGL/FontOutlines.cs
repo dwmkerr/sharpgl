@@ -106,7 +106,10 @@ namespace SharpGL
         /// <param name="faceName">Name of the face.</param>
         /// <param name="fontSize">Size of the font.</param>
         /// <param name="text">The text.</param>
-        public void DrawText(OpenGL gl, int x, int y, float r, float g, float b, string faceName, float fontSize, string text)
+        /// <param name="resWidth">Horizontal resolution.</param>
+        /// <param name="resHeight">Vertical resolution.</param>
+        public void DrawText(OpenGL gl, int x, int y, float r, float g, float b, string faceName, float fontSize, string text,
+            double resWidth, double resHeight)
         {
             //  Get the font size in pixels.
             var fontHeight = (int)(fontSize * (16.0f / 12.0f));
@@ -125,18 +128,13 @@ namespace SharpGL
             //  If we don't have the FBE, we must create it.
             if (fontBitmapEntry == null)
                 fontBitmapEntry = CreateFontBitmapEntry(gl, faceName, fontHeight);
-
-            double width = gl.RenderContextProvider.Width;
-            double height = gl.RenderContextProvider.Height;
             
             //  Create the appropriate projection matrix.
             gl.MatrixMode(OpenGL.GL_PROJECTION);
             gl.PushMatrix();
             gl.LoadIdentity();
             
-            int[] viewport = new int[4];
-            gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
-            gl.Ortho(0, width, 0, height, -1, 1);
+            gl.Ortho(0, resWidth, 0, resHeight, -1, 1);
 
             //  Create the appropriate modelview matrix.
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
