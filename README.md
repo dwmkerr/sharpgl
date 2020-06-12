@@ -8,14 +8,32 @@ Unlock the power of OpenGL in any .NET application. SharpGL wraps all modern Ope
 
 Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they're a great place to start learning how to use SharpGL.
 
-
 <!-- vim-markdown-toc GFM -->
 
 * [Getting Started](#getting-started)
 * [Developer Guide](#developer-guide)
     * [Releasing](#releasing)
 * [Sample Applications](#sample-applications)
-    * [Ducky Sample](#ducky-sample)
+    * [WinForms - Ducky Sample](#winforms---ducky-sample)
+    * [WinForms - Extensions Sample](#winforms---extensions-sample)
+    * [WinForms - Hit Test Sample](#winforms---hit-test-sample)
+    * [WinForms - Modern OpenGL Sample](#winforms---modern-opengl-sample)
+    * [WinForms - Native Textures Sample](#winforms---native-textures-sample)
+    * [WinForms - Particle Systems Sample](#winforms---particle-systems-sample)
+    * [WinForms - Polygon Loading](#winforms---polygon-loading)
+    * [WinForms - Radial Blue](#winforms---radial-blue)
+    * [WinForms - Render Contexts Sample](#winforms---render-contexts-sample)
+    * [WinForms - Render Trigger Sample](#winforms---render-trigger-sample)
+    * [WinForms - Scene Sample](#winforms---scene-sample)
+    * [WinForms - SharpGL Textures Sample](#winforms---sharpgl-textures-sample)
+    * [WinForms - Simple Drawing Sample](#winforms---simple-drawing-sample)
+    * [WPF - Cel Shading Sample](#wpf---cel-shading-sample)
+    * [WPF - Drawing Mechanisms Sample](#wpf---drawing-mechanisms-sample)
+    * [WPF - Object Loading Sample](#wpf---object-loading-sample)
+    * [WPF - Simple Shader Sample](#wpf---simple-shader-sample)
+    * [WPF - Tea Pot Sample](#wpf---tea-pot-sample)
+    * [WPF - Text Rendering Sample](#wpf---text-rendering-sample)
+    * [WPF - Two Dimensional Rendering Sample](#wpf---two-dimensional-rendering-sample)
 * [Documentation](#documentation)
 * [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
 * [Built with SharpGL](#built-with-sharpgl)
@@ -264,3 +282,6 @@ Checkout https://sites.google.com/site/gahvogel/ to see a free, open source proj
 **[AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)**
 
 This is the *very first* open source Precision Agricultural App! Built by [Brian Tischler](https://github.com/farmerbriantee), you can see [the discussions and excitement on this project with farmers across the world](http://www.thecombineforum.com/forums/31-technology/278810-agopengps.html)!
+
+
+
