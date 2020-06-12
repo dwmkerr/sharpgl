@@ -2,7 +2,7 @@
 using SharpGL;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
-using SharpGL.SceneGraph;
+using SharpGL.WPF;
 
 namespace CelShadingSample
 {
@@ -16,7 +16,7 @@ namespace CelShadingSample
             InitializeComponent();
         }
 
-        private void OpenGLControl_OpenGLDraw(object sender, OpenGLEventArgs args)
+        private void OpenGLControl_OpenGLDraw(object sender, OpenGLRoutedEventArgs args)
         {
             //  Get the OpenGL instance.
             var gl = args.OpenGL;	
@@ -46,7 +46,7 @@ namespace CelShadingSample
             }
         }
         
-        private void OpenGLControl_OpenGLInitialized(object sender, OpenGLEventArgs args)
+        private void OpenGLControl_OpenGLInitialized(object sender, OpenGLRoutedEventArgs args)
         {
             OpenGL gl = args.OpenGL;
             
@@ -54,7 +54,7 @@ namespace CelShadingSample
             scene.Initialise(gl);
         }
 
-        private void OpenGLControl_Resized(object sender, OpenGLEventArgs args)
+        private void OpenGLControl_Resized(object sender, OpenGLRoutedEventArgs args)
         {
             //  Get the OpenGL instance.
             var gl = args.OpenGL;       
