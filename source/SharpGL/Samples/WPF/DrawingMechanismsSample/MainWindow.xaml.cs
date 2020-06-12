@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using SharpGL;
-using SharpGL.Enumerations;
 using SharpGL.SceneGraph;
 using SharpGL.SceneGraph.Cameras;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
+using SharpGL.WPF;
 
 namespace DrawingMechanismsSample
 {
@@ -30,7 +18,7 @@ namespace DrawingMechanismsSample
             InitializeComponent();
         }
 
-        private void openGLCtrl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
+        private void openGLCtrl_OpenGLDraw(object sender, OpenGLRoutedEventArgs args)
         {
             //  Get the OpenGL instance that's been passed to us.
             OpenGL gl = args.OpenGL;
@@ -86,7 +74,7 @@ namespace DrawingMechanismsSample
             gl.DisableClientState(OpenGL.GL_VERTEX_ARRAY);
         }
 
-        private void openGLCtrl_OpenGLInitialized(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
+        private void openGLCtrl_OpenGLInitialized(object sender, OpenGLRoutedEventArgs args)
         {
             //  Create the vertices.
             vertices = GeometryGenerator.GenerateGeometry(Properties.Settings.Default.NumberOfVertices, 1f);

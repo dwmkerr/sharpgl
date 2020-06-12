@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using SharpGL;
-using SharpGL.SceneGraph.Primitives;
-using SharpGL.SceneGraph;
+using SharpGL.WPF;
 
 namespace TextRenderingSample
 {
@@ -31,8 +18,8 @@ namespace TextRenderingSample
         /// Handles the OpenGLDraw event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="SharpGL.SceneGraph.OpenGLEventArgs"/> instance containing the event data.</param>
-        private void OpenGLControl_OpenGLDraw(object sender, OpenGLEventArgs args)
+        /// <param name="args">The <see cref="OpenGLRoutedEventArgs"/> instance containing the event data.</param>
+        private void OpenGLControl_OpenGLDraw(object sender, OpenGLRoutedEventArgs args)
         {
             OpenGL gl = args.OpenGL;	
             
@@ -65,8 +52,8 @@ namespace TextRenderingSample
         /// Handles the OpenGLInitialized event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The <see cref="SharpGL.SceneGraph.OpenGLEventArgs"/> instance containing the event data.</param>
-        private void OpenGLControl_OpenGLInitialized(object sender, OpenGLEventArgs args)
+        /// <param name="args">The <see cref="OpenGLRoutedEventArgs"/> instance containing the event data.</param>
+        private void OpenGLControl_OpenGLInitialized(object sender, OpenGLRoutedEventArgs args)
         {
             OpenGL gl = args.OpenGL;
 
