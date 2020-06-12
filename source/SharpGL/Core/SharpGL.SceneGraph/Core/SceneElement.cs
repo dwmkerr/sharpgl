@@ -61,7 +61,7 @@ namespace SharpGL.SceneGraph.Core
                 IHasOpenGLContext contextChild = child as IHasOpenGLContext;
 
                 //  Get the parent OpenGL.
-                OpenGL gl = TraverseToRootElement().ParentScene.OpenGL;
+                OpenGL gl = TraverseToRootElement().ParentScene.CurrentOpenGLContext;
 
                 //  If we don't exist in this context, create in this context.
                 if(contextChild.CurrentOpenGLContext != gl)
@@ -77,8 +77,8 @@ namespace SharpGL.SceneGraph.Core
         {       
             //  If the child has OpenGL context which is not the current one, we must destroy it.
             if (child is IHasOpenGLContext)
-                if(((IHasOpenGLContext)child).CurrentOpenGLContext != TraverseToRootElement().ParentScene.OpenGL)
-                    ((IHasOpenGLContext)child).DestroyInContext(TraverseToRootElement().ParentScene.OpenGL);
+                if(((IHasOpenGLContext)child).CurrentOpenGLContext != TraverseToRootElement().ParentScene.CurrentOpenGLContext)
+                    ((IHasOpenGLContext)child).DestroyInContext(TraverseToRootElement().ParentScene.CurrentOpenGLContext);
   
             //  Throw an exception if the child is not a child of this element..
             if (child.Parent != this)

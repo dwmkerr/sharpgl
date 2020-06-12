@@ -77,19 +77,151 @@ AppVeyor will automatically push the release to NuGet and GitHub.
 
 ## Sample Applications
 
-There are a large number of sample applications that show how to use SharpGL. Check out the 'Samples' solution to see the samples that are available - they'll be documented soon.
+There are a large number of sample applications that show how to use SharpGL. Check out the 'Samples' solution to see the samples that are available.
 
-### Ducky Sample
+### WinForms - Ducky Sample
 
-This WinForms sample shows how to load an object file with materials, using the Serialization library. It also has great support for internationalization (thanks [`odalet`](https://github.com/odalet)!
+This sample shows how to load an object file with materials, using the Serialization library. It also has great support for internationalization (thanks [`odalet`](https://github.com/odalet))!
 
-![Ducky Sample](assets/samples/DuckySample.png)
+<img width="1024" alt="Ducky Sample" src="assets/samples/DuckySample.png" />
 
 This sample demonstrates:
 
 - Loading `*.obj` files and associated materials
 - Building polygons from `*.obj` files
 - Arcball rotation
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+### WinForms - Extensions Sample
+
+This sample shows how to use OpenGL extensions. It demonstrates this by using the 'bump map' extensions.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Extensions Sample" src="assets/samples/WinFormsExtensionsSample.png" />
+
+### WinForms - Hit Test Sample
+
+This sample shows how to use to perform hit testing with SharpGL. It uses the _Scene Graph_ to support this.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Extensions Sample" src="assets/samples/WinFormsExtensionsSample.png" />
+
+### WinForms - Modern OpenGL Sample
+
+This sample shows how to use modern OpenGL capabilities which are Shader based, by showing a vertex and fragment shader.
+
+<img width="1024" alt="Extensions Sample" src="assets/samples/ModernOpenGLSampleLarge.png" />
+
+### WinForms - Native Textures Sample
+
+This sample shows how to load textures into OpenGL using pure OpenGL functions. However, the `Texture` object from the `SceneGraph` will be much easier to use!
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinformsNativeTexturesSample.png" />
+
+### WinForms - Particle Systems Sample
+
+This sample shows how to build a simple particle system with OpenGL.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinformsParticleSystemsSample.png" />
+
+### WinForms - Polygon Loading
+
+This sample shows how to load polygon data with the Scene Graph and Serialization libraries.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinformsPolygonLoadingSample.png" />
+
+### WinForms - Radial Blue
+
+This sample shows how to use a Radial Blur effect in OpenGL.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinformsRadialBlueSample.png" />
+
+### WinForms - Render Contexts Sample
+
+This sample demonstrates the different types of render contexts which are available, and how they affect performance and the extensions available.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinformsRenderContextsSample.png" />
+
+### WinForms - Render Trigger Sample
+
+This sample shows different ways to render; either on a timer or on demand.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinformsRenderTriggerSample.png" />
+
+### WinForms - Scene Sample
+
+This sample demonstrates the _Scene Graph_ which can be used to manage and render geometry.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinFormsSceneSample.png" />
+
+### WinForms - SharpGL Textures Sample
+
+This sample demonstrates how textures can be loaded using the SharpGL `Textures` object, which greatly simplifies texture management.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WinFormsSharpGLTexturesSample.png" />
+
+### WinForms - Simple Drawing Sample
+
+This sample demonstrates the most basic form of simple drawing in OpenGL.
+
+Note that this sample uses _immediate mode_ OpenGL, which is officially deprecated.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/SimpleDrawingSample.png" />
+
+### WPF - Cel Shading Sample
+
+This sample demonstrates how to use shaders to crete a cel-shaing effect.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/CelShadingSampleToonLarge.png" />
+
+### WPF - Drawing Mechanisms Sample
+
+This sample demonstrates how to use shaders to crete a cel-shaing effect.
+
+<img width="1024" alt="Native Textures Sample" src="assets/samples/WpfDrawingMechanismsSample.png" />
+
+### WPF - Object Loading Sample
+
+This sample demonstrates how to load objects in a WPF OpenGL project.
+
+### WPF - Simple Shader Sample
+
+This sample shows how to use a simple shader.
+
+<img width="1024" alt="Simple Shader Sample" src="assets/samples/WpfSimpleShaderSample.png" />
+
+### WPF - Tea Pot Sample
+
+This sample shows how to quickly and easily render geometry.
+
+<img width="1024" alt="Simple Shader Sample" src="WpfTeapotSample.png" />
+
+### WPF - Text Rendering Sample
+
+This sample shows how to render 3D and 2D text.
+
+<img width="1024" alt="Text Rendering Sample" src="WpfTextRenderingSample.png" />
+
+### WPF - Two Dimensional Rendering Sample
+
+This sample shows how to do simple 2D render, with a visual like an old Windows Screen-Saver.
+
+<img width="1024" alt="Text Rendering Sample" src="Wpf2DDrawingSample.png" />
 
 ## Documentation
 

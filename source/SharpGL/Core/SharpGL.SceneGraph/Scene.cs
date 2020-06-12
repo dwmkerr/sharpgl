@@ -1,34 +1,19 @@
-using System;
 using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
-using System.Collections;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Collections.Generic;
-
-using SharpGL;
-using SharpGL.SceneGraph.Quadrics;
 using SharpGL.SceneGraph.Cameras;
-using SharpGL.SceneGraph.Evaluators;
-using SharpGL.SceneGraph.Collections;
 using SharpGL.SceneGraph.Core;
-using SharpGL.SceneGraph.Lighting;
-using SharpGL.SceneGraph.Effects;
 using SharpGL.SceneGraph.Assets;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
 namespace SharpGL.SceneGraph
 {
-	[TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
+	[TypeConverter(typeof(ExpandableObjectConverter))]
     [XmlInclude(typeof(PerspectiveCamera))]
     [XmlInclude(typeof(OrthographicCamera))]
     [XmlInclude(typeof(FrustumCamera))]
     [XmlInclude(typeof(LookAtCamera))]
-    [XmlInclude(typeof(ArcBallCamera))]
-	public class Scene : IHasOpenGLContext
+    public class Scene : IHasOpenGLContext
 	{
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene"/> class.
@@ -38,7 +23,7 @@ namespace SharpGL.SceneGraph
             RenderBoundingVolumes = true;
 
             //  The SceneContainer must have it's parent scene set.
-            sceneContainer.ParentScene = this;
+            SceneContainer.ParentScene = this;
         }
 
         /// <summary>
@@ -57,7 +42,7 @@ namespace SharpGL.SceneGraph
             Dictionary<uint, SceneElement> hitMap = new Dictionary<uint, SceneElement>();
 
 			//	If we don't have a current camera, we cannot hit test.
-            if (currentCamera == null)
+            if (CurrentCamera == null)
                 return resultSet;
 
 			//	Create an array that will be the viewport.
@@ -83,7 +68,7 @@ namespace SharpGL.SceneGraph
 			gl.PushMatrix();
 			gl.LoadIdentity();
 			gl.PickMatrix(x, y, 4, 4, viewport);
-			currentCamera.TransformProjectionMatrix(gl);
+			CurrentCamera.TransformProjectionMatrix(gl);
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
 			gl.LoadIdentity();
 
@@ -107,8 +92,8 @@ namespace SharpGL.SceneGraph
             for (int hit = 0; hit < hits; hit++)
             {
                 uint nameCount = selectBuffer[posinarray++];
-                uint z1 = selectBuffer[posinarray++];
-                uint z2 = selectBuffer[posinarray++];
+                uint unused = selectBuffer[posinarray++];
+                uint unused1 = selectBuffer[posinarray++];
 
                 if (nameCount == 0)
                     continue;
@@ -135,10 +120,10 @@ namespace SharpGL.SceneGraph
             //  cameras completely outside of the responsibility of the scene?
             //  If no camera has been provided, use the current one.
             if (camera == null)
-                camera = currentCamera;
+                camera = CurrentCamera;
 
 			//	Set the clear color.
-			float[] clear = clearColour;
+			float[] clear = _clearColour;
 			gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
 
             //  Reproject.
@@ -153,7 +138,7 @@ namespace SharpGL.SceneGraph
 
             //  Render the root element, this will then render the whole
             //  of the scene tree.
-            RenderElement(sceneContainer, RenderMode.Design);
+            RenderElement(SceneContainer, RenderMode.Design);
 
             //  TODO: Adding this code here re-enables textures- it should work without it but it
             //  doesn't, look into this.
@@ -163,12 +148,12 @@ namespace SharpGL.SceneGraph
 			gl.Flush();
 		}
 
-        /// <summary>
-        /// Renders the element.
-        /// </summary>
-        /// <param name="gl">The gl.</param>
-        /// <param name="renderMode">The render mode.</param>
-        public void RenderElement(SceneElement sceneElement, RenderMode renderMode)
+	    /// <summary>
+	    /// Renders the element.
+	    /// </summary>
+	    /// <param name="sceneElement">The secene element to render.</param>
+	    /// <param name="renderMode">The render mode.</param>
+	    public void RenderElement(SceneElement sceneElement, RenderMode renderMode)
         {
             //  If the element is disabled, we're done.
             if (sceneElement.IsEnabled == false)
@@ -228,7 +213,7 @@ namespace SharpGL.SceneGraph
         {
             //  If the element is disabled, we're done.
             //  Also, never hit test the current camera.
-            if (sceneElement.IsEnabled == false || sceneElement == currentCamera)
+            if (sceneElement.IsEnabled == false || sceneElement == CurrentCamera)
                 return;
 
             //  Push each effect.
@@ -276,132 +261,59 @@ namespace SharpGL.SceneGraph
 		/// <param name="height">Height of the screen.</param>
 		public virtual void Resize(int width, int height)
 		{
-			if(width != -1 && height != -1)
+			if(width != -1 && height != -1 && gl != null)
 			{
                 //	Resize.
 				gl.Viewport(0, 0, width, height);
 				
-                if (currentCamera != null)
+                if (CurrentCamera != null)
                 {
                     //  Set aspect ratio.
-                    currentCamera.AspectRatio = (float)width / (float)height;
+                    CurrentCamera.AspectRatio = width / (float)height;
 
 				    //	Then project.
-                    currentCamera.Project(gl);
+                    CurrentCamera.Project(gl);
                 }
 			}
 		}
-
-        /// <summary>
-        /// Create in the context of the supplied OpenGL instance.
-        /// </summary>
-        /// <param name="gl">The OpenGL instance.</param>
-        public void CreateInContext(OpenGL gl)
-        {
-            //  Create every scene element.
-            var openGLContextElements = SceneContainer.Traverse<SceneElement>(
-                se => se is IHasOpenGLContext);
-            foreach (var openGLContextElement in openGLContextElements)
-                ((IHasOpenGLContext)openGLContextElement).CreateInContext(gl);
-            this.gl = gl;
-        }
-
-        /// <summary>
-        /// Destroy in the context of the supplied OpenGL instance.
-        /// </summary>
-        /// <param name="gl">The OpenGL instance.</param>
-        public void DestroyInContext(OpenGL gl)
-        {
-        }
-
+        
+       
 		/// <summary>
 		/// This is the OpenGL class, use it to call OpenGL functions.
+		/// Only set when the context is set.
 		/// </summary>
-        private OpenGL gl = new OpenGL();
+        private OpenGL gl;
 
-        /// <summary>
-        /// The main scene container - this is the top level element of the Scene Tree.
-        /// </summary>
-        private SceneContainer sceneContainer = new SceneContainer();
-
-        /// <summary>
-        /// The set of scene assets.
-        /// </summary>
-        private ObservableCollection<Asset> assets = new ObservableCollection<Asset>();
-
-		/// <summary>
-		/// This is the camera that is currently being used to view the scene.
-		/// </summary>
-        private Camera currentCamera;
-
-		/// <summary>
+	    /// <summary>
 		/// This is the colour of the background of the scene.
 		/// </summary>
-		private GLColor clearColour = new GLColor(0, 0, 0, 0);
+		private GLColor _clearColour = new GLColor(0, 0, 0, 0);
 
-        /// <summary>
-        /// Gets or sets the open GL.
-        /// </summary>
-        /// <value>
-        /// The open GL.
-        /// </value>
-        [XmlIgnore]
-		[Description("OpenGL API Wrapper Class"), Category("OpenGL/External")]
-		public OpenGL OpenGL
-		{
-			get {return gl;}
-			set {gl = value;}
-		}
-
-        /// <summary>
+	    /// <summary>
         /// Gets or sets the scene container.
         /// </summary>
         /// <value>
         /// The scene container.
         /// </value>
         [Description("The top-level object in the Scene Tree"), Category("Scene")]
-        public SceneContainer SceneContainer
-        {
-            get { return sceneContainer; }
-            set { sceneContainer = value; }
-        }
+        public SceneContainer SceneContainer { get; set; } = new SceneContainer();
 
-        /// <summary>
+	    /// <summary>
         /// Gets the assets.
         /// </summary>
         [Description("The scene assets."), Category("Scene")]
-        public ObservableCollection<Asset> Assets
-        {
-            get { return assets; }
-        }
+        public ObservableCollection<Asset> Assets { get; } = new ObservableCollection<Asset>();
 
-        /// <summary>
+	    /// <summary>
         /// Gets or sets the current camera.
         /// </summary>
         /// <value>
         /// The current camera.
         /// </value>
 		[Description("The current camera being used to view the scene."), Category("Scene")]
-		public Camera CurrentCamera
-		{
-			get {return currentCamera;}
-			set {currentCamera = value;}
-		}
+		public Camera CurrentCamera { get; set; }
 
-        /// <summary>
-        /// Gets or sets the color of the clear.
-        /// </summary>
-        /// <value>
-        /// The color of the clear.
-        /// </value>
-		[Description("The background colour."), Category("Scene")]
-		public Color ClearColor
-		{
-			get {return clearColour;}
-			set {clearColour = value;}
-		}
-
-        /// <summary>
+	    /// <summary>
         /// Gets or sets a value indicating whether [render bounding volumes].
         /// </summary>
         /// <value>
@@ -414,14 +326,28 @@ namespace SharpGL.SceneGraph
             set;
         }
 
-        /// <summary>
-        /// Gets the current OpenGL that the object exists in context.
-        /// </summary>
-        [XmlIgnore]
-        [Browsable(false)]
-        public OpenGL CurrentOpenGLContext
-        {
-            get { return gl; }
+	    public void CreateInContext(OpenGL gl)
+	    {
+            //  Set our current context.
+	        this.gl = gl;
+
+	        //  Create every scene element.
+	        var openGLContextElements = SceneContainer.Traverse<SceneElement>(
+	            se => se is IHasOpenGLContext);
+	        foreach (var openGLContextElement in openGLContextElements)
+	            ((IHasOpenGLContext)openGLContextElement).CreateInContext(gl);
+	        
         }
-    }
+
+	    public void DestroyInContext(OpenGL gl)
+	    {
+	        //  Create every scene element.
+	        var openGLContextElements = SceneContainer.Traverse<SceneElement>(
+	            se => se is IHasOpenGLContext);
+	        foreach (var openGLContextElement in openGLContextElements)
+	            ((IHasOpenGLContext)openGLContextElement).CreateInContext(gl);
+        }
+
+	    public OpenGL CurrentOpenGLContext => gl;
+	}
 }

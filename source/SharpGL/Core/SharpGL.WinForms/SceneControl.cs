@@ -23,6 +23,9 @@ namespace SharpGL
 
             //  Initialise the scene.
             SceneGraph.Helpers.SceneHelper.InitialiseModelingScene(Scene);
+
+            //  When the underlying OpenGL instance is initialised provide it to the scene.
+		    OpenGLInitialized += (sender, args) => Scene.CreateInContext(OpenGL);
 		}
 
 		/// <summary> 
@@ -40,7 +43,8 @@ namespace SharpGL
 			base.Dispose( disposing );
 		}
 
-		#region Component Designer generated code
+		#region Component Designer generated 
+
 		/// <summary> 
 		/// Required method for Designer support - do not modify 
 		/// the contents of this method with the code editor.
@@ -53,6 +57,7 @@ namespace SharpGL
 			this.Name = "OpenGLCtrl";
 
 		}
+
 		#endregion
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -64,7 +69,7 @@ namespace SharpGL
 			OpenGL.MakeCurrent();
 
 			//	Do the scene drawing.
-			scene.Draw();
+			Scene.Draw();
 
 			//	If there is a draw handler, then call it.
             DoOpenGLDraw(new RenderEventArgs(e.Graphics));
@@ -92,7 +97,6 @@ namespace SharpGL
             frameTime = stopwatch.Elapsed.TotalMilliseconds;   
 		}
 
-
         /// <summary>
         /// Raises the <see cref="E:PaintBackground"/> event.
         /// </summary>
@@ -113,21 +117,12 @@ namespace SharpGL
 
 			//	OpenGL needs to resize the viewport.
             OpenGL.SetDimensions(Width, Height);
-			scene.Resize(Width, Height);
+			Scene.Resize(Width, Height);
 
 			Invalidate();
 		}
-                		
-		/// <summary>
-		/// This is the scene itself.
-		/// </summary>
-		private Scene scene = new Scene();
-        
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Scene Scene 
-		{
-			get {return scene;}
-			set {scene = value;}
-		}
+
+	    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public Scene Scene { get; set; } = new Scene();
 	}
 }

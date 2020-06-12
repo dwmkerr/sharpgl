@@ -252,7 +252,7 @@ namespace SharpGL.Serialization.Wavefront
 
                                 // Create/load texture.
                                 theTexture = new Texture();
-                                theTexture.Create(scene.OpenGL, textureFile);
+                                theTexture.Create(scene.CurrentOpenGLContext, textureFile);
                             }
 
                             // Set texture for material.

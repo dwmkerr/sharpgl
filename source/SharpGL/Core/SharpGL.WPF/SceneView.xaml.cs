@@ -54,7 +54,7 @@ namespace SharpGL.WPF
                 int height = (int)e.NewSize.Height;
 
                 //  Resize the scene.
-                Scene.OpenGL.SetDimensions(width, height);
+                Scene.CurrentOpenGLContext.SetDimensions(width, height);
                 Scene.Resize(width, height);
             }
         }
@@ -95,13 +95,13 @@ namespace SharpGL.WPF
                 //  Draw the FPS.
                 if (DrawFPS)
                 {
-                    Scene.OpenGL.DrawText(5, 5, 1.0f, 0.0f, 0.0f, "Courier New", 12.0f, string.Format("Draw Time: {0:0.0000} ms ~ {1:0.0} FPS", frameTime, 1000.0 / frameTime));
-                    Scene.OpenGL.Flush();
+                    Scene.CurrentOpenGLContext.DrawText(5, 5, 1.0f, 0.0f, 0.0f, "Courier New", 12.0f, string.Format("Draw Time: {0:0.0000} ms ~ {1:0.0} FPS", frameTime, 1000.0 / frameTime));
+                    Scene.CurrentOpenGLContext.Flush();
                 }
 
-                if (Scene.OpenGL.RenderContextProvider is RenderContextProviders.DIBSectionRenderContextProvider)
+                if (Scene.CurrentOpenGLContext.RenderContextProvider is RenderContextProviders.DIBSectionRenderContextProvider)
                 {
-                    RenderContextProviders.DIBSectionRenderContextProvider provider = Scene.OpenGL.RenderContextProvider as RenderContextProviders.DIBSectionRenderContextProvider;
+                    RenderContextProviders.DIBSectionRenderContextProvider provider = Scene.CurrentOpenGLContext.RenderContextProvider as RenderContextProviders.DIBSectionRenderContextProvider;
 
                     //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
                     //  meaning the drawing comes out transparent.
@@ -114,9 +114,9 @@ namespace SharpGL.WPF
                     //  Copy the pixels over.
                     image.Source = newFormatedBitmapSource;
                 }
-                else if (Scene.OpenGL.RenderContextProvider is RenderContextProviders.FBORenderContextProvider)
+                else if (Scene.CurrentOpenGLContext.RenderContextProvider is RenderContextProviders.FBORenderContextProvider)
                 {
-                    RenderContextProviders.FBORenderContextProvider provider = Scene.OpenGL.RenderContextProvider as RenderContextProviders.FBORenderContextProvider;
+                    RenderContextProviders.FBORenderContextProvider provider = Scene.CurrentOpenGLContext.RenderContextProvider as RenderContextProviders.FBORenderContextProvider;
 
                     //  TODO: We have to remove the alpha channel - for some reason it comes out as 0.0 
                     //  meaning the drawing comes out transparent.

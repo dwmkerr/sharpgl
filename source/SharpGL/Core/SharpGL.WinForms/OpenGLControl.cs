@@ -197,9 +197,7 @@ namespace SharpGL
         /// </summary>
         protected virtual void DoOpenGLInitialized()
         {
-            var handler = OpenGLInitialized;
-            if (handler != null)
-                handler(this, null);
+            OpenGLInitialized?.Invoke(this, null);
         }
 
         /// <summary>
@@ -207,9 +205,7 @@ namespace SharpGL
         /// </summary>
         protected virtual void DoOpenGLDraw(RenderEventArgs e)
         {
-            var handler = OpenGLDraw;
-            if (handler != null)
-                handler(this, e);
+            OpenGLDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -217,9 +213,7 @@ namespace SharpGL
         /// </summary>
         protected virtual void DoGDIDraw(RenderEventArgs e)
         {
-            var handler = GDIDraw;
-            if (handler != null)
-                handler(this, e);
+            GDIDraw?.Invoke(this, e);
         }
 
         /// <summary>
@@ -293,11 +287,6 @@ namespace SharpGL
         protected Stopwatch stopwatch = new Stopwatch();
 
         /// <summary>
-        /// The render context type.
-        /// </summary>
-        protected RenderContextType renderContextType = RenderContextType.DIBSection;
-
-        /// <summary>
         /// The last frame time in milliseconds.
         /// </summary>
         protected double frameTime;
@@ -307,10 +296,7 @@ namespace SharpGL
         /// </summary>
         /// <value>The OpenGL.</value>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public OpenGL OpenGL
-        {
-            get { return gl; }
-        }
+        public OpenGL OpenGL => gl;
 
         /// <summary>
         /// Gets or sets a value indicating whether to draw FPS information.
@@ -352,11 +338,7 @@ namespace SharpGL
         /// The type of the render context.
         /// </value>
         [Description("The render context type."), Category("SharpGL")]
-        public RenderContextType RenderContextType
-        {
-            get { return renderContextType; }
-            set { renderContextType = value; }
-        }
+        public RenderContextType RenderContextType { get; set; } = RenderContextType.DIBSection;
 
         /// <summary>
         /// Gets or sets the desired OpenGL version.
@@ -365,16 +347,7 @@ namespace SharpGL
         /// The desired OpenGL version.
         /// </value>
         [Description("The desired OpenGL version for the control."), Category("SharpGL")]
-   	    public OpenGLVersion OpenGLVersion
-   	    {
-            get { return openGLVersion; }
-            set { openGLVersion = value; }
-   	    }
-
-        /// <summary>
-        /// The default desired OpenGL version.
-        /// </summary>
-        private OpenGLVersion openGLVersion = OpenGLVersion.OpenGL2_1;
+   	    public OpenGLVersion OpenGLVersion { get; set; } = OpenGLVersion.OpenGL2_1;
 
         /// <summary>
         /// Gets or sets the render trigger.

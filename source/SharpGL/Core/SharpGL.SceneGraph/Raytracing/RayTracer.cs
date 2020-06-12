@@ -24,7 +24,7 @@ namespace SharpGL.SceneGraph.Raytracing
         public Image Render(Scene scene, Camera camera)
         {
             //  Useful references.
-            OpenGL gl = scene.OpenGL;
+            OpenGL gl = scene.CurrentOpenGLContext;
 
             //	First, we need the matricies and viewport.
             double[] modelview = new double[16];

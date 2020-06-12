@@ -43,5 +43,10 @@ namespace ModernOpenGLSample
         /// The scene that we are rendering.
         /// </summary>
         private readonly Scene scene = new Scene();
+
+        private void openGLControl1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
