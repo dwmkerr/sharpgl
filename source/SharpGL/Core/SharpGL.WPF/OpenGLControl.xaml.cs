@@ -43,7 +43,10 @@ namespace SharpGL.WPF
 
             //  DispatcherTimer setup
             timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
+            if (RenderTrigger == RenderTrigger.TimerBased)
+            {
+                timer.Start();
+            }
         }
 
         /// <summary>
@@ -149,6 +152,14 @@ namespace SharpGL.WPF
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void timer_Tick(object sender, EventArgs e)
         {
+            DoRender();
+        }
+
+        /// <summary>
+        /// Executes the GL Render
+        /// </summary>
+        public void DoRender()
+        {
             //  Lock on OpenGL.
             lock (gl)
             {
@@ -168,7 +179,7 @@ namespace SharpGL.WPF
                 //  Draw the FPS.
                 if (DrawFPS)
                 {
-                    gl.DrawText(5, 5, 1.0f, 0.0f, 0.0f, "Courier New", 12.0f,  string.Format("Draw Time: {0:0.0000} ms ~ {1:0.0} FPS", frameTime, 1000.0 / frameTime));
+                    gl.DrawText(5, 5, 1.0f, 0.0f, 0.0f, "Courier New", 12.0f, string.Format("Draw Time: {0:0.0000} ms ~ {1:0.0} FPS", frameTime, 1000.0 / frameTime));
                     gl.Flush();
                 }
 
@@ -217,7 +228,7 @@ namespace SharpGL.WPF
                 stopwatch.Stop();
 
                 //  Store the frame time.
-                frameTime = stopwatch.Elapsed.TotalMilliseconds;      
+                frameTime = stopwatch.Elapsed.TotalMilliseconds;
             }
         }
 
@@ -386,6 +397,30 @@ namespace SharpGL.WPF
         {
             get { return (bool)GetValue(DrawFPSProperty); }
             set { SetValue(DrawFPSProperty, value); }
+        }
+
+        /// <summary>
+        /// The Render trigger of this control
+        /// </summary>
+        public static readonly DependencyProperty RenderTriggerProperty =
+            DependencyProperty.Register("RenderMode", typeof(RenderTrigger), typeof(OpenGLControl),
+            new PropertyMetadata(RenderTrigger.TimerBased));
+
+        /// <summary>
+        /// Gets or sets the Render trigger of this control
+        /// </summary>
+        public RenderTrigger RenderTrigger {
+            get { return (RenderTrigger)GetValue(RenderTriggerProperty); }
+            set
+            {
+                SetValue(RenderTriggerProperty, value);
+                if (value == RenderTrigger.TimerBased)
+                {
+                    timer.Start();
+                } else {
+                    timer.Stop();
+                }
+            }
         }
 
         /// <summary>
