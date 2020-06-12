@@ -29,6 +29,7 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
     * [WinForms - Simple Drawing Sample](#winforms---simple-drawing-sample)
     * [WPF - Cel Shading Sample](#wpf---cel-shading-sample)
     * [WPF - Drawing Mechanisms Sample](#wpf---drawing-mechanisms-sample)
+    * [WPF - FastGL](#wpf---fastgl)
     * [WPF - Object Loading Sample](#wpf---object-loading-sample)
     * [WPF - Simple Shader Sample](#wpf---simple-shader-sample)
     * [WPF - Tea Pot Sample](#wpf---tea-pot-sample)
@@ -211,7 +212,9 @@ This sample demonstrates how to use shaders to crete a cel-shaing effect.
 
 This sample demonstrates how to use shaders to crete a cel-shaing effect.
 
-<img width="640" alt="Native Textures Sample" src="assets/samples/WpfDrawingMechanismsSample.png" />
+### WPF - FastGL
+
+This sample demonstrates how to use `NV_DX_interop(2)` to accelerate drawing using DirectX.
 
 ### WPF - Object Loading Sample
 
