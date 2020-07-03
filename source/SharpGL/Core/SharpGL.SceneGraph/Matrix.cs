@@ -3,12 +3,6 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
 
-using SharpGL.SceneGraph;
-using SharpGL.SceneGraph.Collections;
-using SharpGL.SceneGraph.NETDesignSurface.Converters;
-using SharpGL.SceneGraph.Core;
-using SharpGL.SceneGraph.Primitives;
-
 namespace SharpGL.SceneGraph
 {
     /// <summary>
@@ -101,6 +95,11 @@ namespace SharpGL.SceneGraph
             this.in_Mat = (double[,])Mat.Clone();
         }
 
+        /// <summary>
+        /// Matrix object constructor, constructs a matrix from an
+        /// existing matrix.
+        /// </summary>
+        /// <param name="matrix">The matrix to clone.</param>
         public Matrix(Matrix matrix)
         {
             this.in_Mat = (double[,])matrix.in_Mat.Clone();
@@ -140,7 +139,7 @@ namespace SharpGL.SceneGraph
         /// <summary>
         /// Creates a matrix from a row major array.
         /// </summary>
-        /// <param name="columnMajorArray">The column major array.</param>
+        /// <param name="rowMajorArray">The row major array.</param>
         /// <param name="rows">The rows.</param>
         /// <param name="columns">The columns.</param>
         /// <returns>The matrix.</returns>
@@ -295,6 +294,10 @@ namespace SharpGL.SceneGraph
 
         #region copy
 
+        /// <summary>
+        /// Provides a fast and reasonably accurate single value decomposition.
+        /// </summary>
+        /// <returns>A single value decomposition of the matrix.</returns>
         public float TempSVD()
         {
         // this is a simple svd.
@@ -306,7 +309,13 @@ namespace SharpGL.SceneGraph
                 (this[2,0] * this[2,0]) + (this[2,1] * this[2,1]) + (this[2,2] * this[2,2]) ) / 3.0f );                
         }
 
-        public void Multiply(float value, int rows, int cols)
+        /// <summary>
+        /// Scale a matrix, or a subset of the matrix.
+        /// </summary>
+        /// <param name="scale">The amount to scale by.</param>
+        /// <param name="rows">The number of rows to scale.</param>
+        /// <param name="cols">The number of columns to scale.</param>
+        public void Multiply(float scale, int rows, int cols)
         {
             int myrows, mycols;
 
@@ -327,7 +336,7 @@ namespace SharpGL.SceneGraph
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    this[i, j] *= value;
+                    this[i, j] *= scale;
                 }
             }
         }
@@ -822,6 +831,9 @@ namespace SharpGL.SceneGraph
 
         #region "Transpose of a Matrix"
 
+        /// <summary>
+        /// Transposes the matrix.
+        /// </summary>
         public void Transpose()
         {
             in_Mat = Transpose(in_Mat);

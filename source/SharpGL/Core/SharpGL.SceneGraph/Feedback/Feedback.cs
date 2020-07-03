@@ -40,9 +40,9 @@ namespace SharpGL.SceneGraph.Feedback
             //	Check for buffer size.
             if (values == -1)
             {
-                System.Windows.Forms.MessageBox.Show("The scene contained too much data! The data buffer has been doubled in size now, please try again.");
-                feedbackBuffer = new float[feedbackBuffer.Length * 2];
-                return new float[] { -1 };
+                //  TODO: Previously this would double the buffer size and prompt the user to try again. Now we throw.
+                //  We need a way to allow the caller to specify a larger buffer size.
+                throw new InvalidOperationException("The scene contained too much data! The data buffer is not large enough, you may need to allocate more data.");
             }
 
             //	Parse the data.

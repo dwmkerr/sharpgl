@@ -3,26 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL", "Core\SharpGL\SharpGL.csproj", "{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL", "Core\SharpGL\SharpGL.csproj", "{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.WinForms", "Core\SharpGL.WinForms\SharpGL.WinForms.csproj", "{B2984A6D-AD1C-4BE9-94AB-BA002B338751}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.WinForms", "Core\SharpGL.WinForms\SharpGL.WinForms.csproj", "{B2984A6D-AD1C-4BE9-94AB-BA002B338751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.WPF", "Core\SharpGL.WPF\SharpGL.WPF.csproj", "{53E67055-13D2-4467-BB57-79589AFAC2CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.WPF", "Core\SharpGL.WPF\SharpGL.WPF.csproj", "{53E67055-13D2-4467-BB57-79589AFAC2CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.Serialization", "Core\SharpGL.Serialization\SharpGL.Serialization.csproj", "{FDFA2632-A960-4778-A517-CA9E337C037C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.Serialization", "Core\SharpGL.Serialization\SharpGL.Serialization.csproj", "{FDFA2632-A960-4778-A517-CA9E337C037C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.SceneGraph", "Core\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj", "{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.SceneGraph", "Core\SharpGL.SceneGraph\SharpGL.SceneGraph.csproj", "{47BCAA39-EDAD-4404-B6BD-4742B0ABB523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.SceneGraph.Tests", "Core\SharpGL.SceneGraph.Tests\SharpGL.SceneGraph.Tests.csproj", "{C112C29B-1DB7-49D6-B453-F3B80117F1F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D2E99047-F511-4CE1-B07F-41412E9FF7B4}"
-	ProjectSection(SolutionItems) = preProject
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.WinForms.Tests", "Core\SharpGL.WinForms.Tests\SharpGL.WinForms.Tests.csproj", "{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.SceneGraph.Tests", "Core\SharpGL.SceneGraph.Tests\SharpGL.SceneGraph.Tests.csproj", "{C112C29B-1DB7-49D6-B453-F3B80117F1F0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGL.Serialization.Tests", "SharpGL.Serialization.Tests\SharpGL.Serialization.Tests.csproj", "{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpGL.Serialization.Tests", "Core\SharpGL.Serialization.Tests\SharpGL.Serialization.Tests.csproj", "{390E00A5-D434-4D2A-B31C-C62C9DC161ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,31 +101,33 @@ Global
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{C112C29B-1DB7-49D6-B453-F3B80117F1F0}.Release|x86.Build.0 = Release|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Debug|x86.Build.0 = Debug|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|x86.ActiveCfg = Release|Any CPU
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1}.Release|x86.Build.0 = Release|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7336D2B-4E17-40ED-9DFE-BDF0C0640AD1}.Release|x86.Build.0 = Release|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{390E00A5-D434-4D2A-B31C-C62C9DC161ED}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{5EF45533-E2C7-46F2-B4A3-B8F36CD406E0} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{B2984A6D-AD1C-4BE9-94AB-BA002B338751} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{53E67055-13D2-4467-BB57-79589AFAC2CD} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{FDFA2632-A960-4778-A517-CA9E337C037C} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{47BCAA39-EDAD-4404-B6BD-4742B0ABB523} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{D2E99047-F511-4CE1-B07F-41412E9FF7B4} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{C112C29B-1DB7-49D6-B453-F3B80117F1F0} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
-		{44FF00B8-9DB8-4AC1-A55F-875E48B1A8C1} = {EC6B45C3-BF0D-41E0-B3FE-D73A8265F1D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7502DB8-5CD0-44F2-A435-778B59584E0C}

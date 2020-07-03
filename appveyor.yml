@@ -1,8 +1,16 @@
 version: 1.0.{build}
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 environment:
   CODECOV_TOKEN: e8ebb1fe-fbb0-4dd2-9d30-9986cb2d94f4
+
+# Cache chocolatey packages and Nuget packages. Nuget package cache is invalidated
+# on any change to a project file, the choco cache on any change to the config
+# nuget file.
+cache:
+- source/SharpGL/packages -> **/*.csproj
+- C:/ProgramData/chocolatey/bin -> ./source/SharpGL/config.ps1
+- C:/ProgramData/chocolatey/lib -> ./source/SharpGL/config.ps1
 
 # Before building, restore Nuget packages and install dependencies.
 before_build:
@@ -10,16 +18,24 @@ before_build:
     nuget restore source/SharpGL/SharpGL.sln
     ./source/SharpGL/config.ps1
 
-build:
-  project: source/SharpGL/SharpGL.sln
-  publish_nuget: true
-  verbosity: minimal
+# Use our own build script as it hides some unneeded warnings.
+build_script:
+- ps: |
+    ./source/SharpGL/build.ps1
+    ./source/SharpGL/pack.ps1
 
 # After the build as completed, analyse coverage and upload.
 on_success:
 - ps: ./source/SharpGL/coverage.ps1
 
-# If we have a tag, deploy.
+# All packages will be stored as artifacts, and pushed.
+# We need to make sure we specify 'source', otherwise we will also gather
+# legacy artifacts from 'extensions', which really needs to be moved into
+# a totally separate repository.
+artifacts:
+  - path: './source/**/*.nupkg'
+
+# Deploy to Nuget and GitHub if we have pushed a tag.
 deploy:
 - provider: NuGet
   api_key:
@@ -29,7 +45,6 @@ deploy:
 - provider: GitHub
   auth_token:
     secure: KTWUORrnJKPKLSf/3ROLY50T9UfgTMnKHf3OjBOv8tlY/DAxtlglRU3eM+j45fMt
-  artifact: SharpGL.nupkg, SharpGL.WPF.nuspec, SharpGL.WinForms.nuspec
   on:
     APPVEYOR_REPO_TAG: true
 

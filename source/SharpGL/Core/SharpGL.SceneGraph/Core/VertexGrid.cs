@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 using SharpGL.SceneGraph;
 using SharpGL.SceneGraph.Collections;
-using SharpGL.SceneGraph.NETDesignSurface.Converters;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
 

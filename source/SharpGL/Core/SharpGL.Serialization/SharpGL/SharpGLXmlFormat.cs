@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Xml.Serialization;
 using SharpGL.SceneGraph;
-using System.ComponentModel.Composition;
 
 namespace SharpGL.Serialization.SharpGL
 {
     /// <summary>
     /// The SharpGL XML format.
     /// </summary>
-    [Export(typeof(IFileFormat))]
     public class SharpGLXmlFormat : IFileFormat
     {
         /// <summary>

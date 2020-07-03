@@ -34,7 +34,7 @@ namespace SharpGL.WPF
         /// Handles the Loaded event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
+        /// <param name="routedEventArgs">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
         private void OpenGLControl_Loaded(object sender, RoutedEventArgs routedEventArgs)
         {
             SizeChanged += OpenGLControl_SizeChanged;
@@ -53,7 +53,7 @@ namespace SharpGL.WPF
         /// Handles the Unloaded event of the OpenGLControl control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
+        /// <param name="routedEventArgs">The <see cref="System.Windows.RoutedEventArgs"/> Instance containing the event data.</param>
         private void OpenGLControl_Unloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             SizeChanged -= OpenGLControl_SizeChanged;
@@ -79,7 +79,6 @@ namespace SharpGL.WPF
         /// <param name="height">The height of the OpenGL drawing area.</param>
         private void UpdateOpenGLControl(int width, int height)
         {
-            SizeChangedEventArgs e;
             // Lock on OpenGL.
             lock (gl)
             {

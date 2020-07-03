@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
 using SharpGL.Version;
+using SharpGL.WinForms.NETDesignSurface.Designers;
 
 namespace SharpGL
 {
@@ -11,6 +12,7 @@ namespace SharpGL
 	/// This is the basic OpenGL control object, it gives all of the basic OpenGL functionality.
 	/// </summary>
     [ToolboxBitmap(typeof(OpenGLControl), "SharpGL.png")]
+    [Designer(typeof(OpenGLCtrlDesigner))]
     public partial class OpenGLControl : UserControl, ISupportInitialize
     {
         /// <summary>

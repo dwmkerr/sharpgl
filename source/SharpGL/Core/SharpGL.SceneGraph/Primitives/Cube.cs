@@ -13,10 +13,10 @@ namespace SharpGL.SceneGraph.Primitives
 	[Serializable]
 	public class Cube : Polygon
 	{
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PolyCubegon"/> class.
-        /// </summary>
-        public Cube() 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Polygon"/> class.
+		/// </summary>
+		public Cube() 
 		{
             //  Set the name.
             Name = "Cube";

@@ -1435,8 +1435,10 @@ namespace SharpGL
             //  turn off error reporting until glEnd.
             glBegin(mode);
 
-            //  Set the begun flag.
-            insideGLBegin = true;
+#if DEBUG
+			//  Set the begun flag.
+			insideGLBegin = true;
+#endif
         }
 
         /// <summary>
@@ -1453,8 +1455,10 @@ namespace SharpGL
             //  turn off error reporting until glEnd.
             glBegin((uint)mode);
 
-            //  Set the begun flag.
-            insideGLBegin = true;
+#if DEBUG
+			//  Set the begun flag.
+			insideGLBegin = true;
+#endif
         }
 
 		/// <summary>
@@ -2477,9 +2481,11 @@ namespace SharpGL
 		public void End()
 		{
 			glEnd();
-            
-            //  Clear the begun flag.
-            insideGLBegin = false;
+
+#if DEBUG
+			//  Clear the begun flag.
+			insideGLBegin = false;
+#endif
 
             // This matches Begin()'s PreGLCall()
             PostGLCall();
@@ -6870,9 +6876,9 @@ namespace SharpGL
             PostGLCall();
         }
 		
-		#endregion
+#endregion
 
-		#region Error Checking
+#region Error Checking
 
         /// <summary>
         /// Gets the error description for a given error code.
@@ -6959,9 +6965,9 @@ if (insideGLBegin == false)
 #endif
         }
 
-		#endregion
+#endregion
         
-		#region Utility Functions
+#region Utility Functions
 
 		/// <summary>
 		/// This function transforms a windows point into an OpenGL point,
@@ -6979,7 +6985,7 @@ if (insideGLBegin == false)
 			y = viewport[3] - y;
 		}
 
-		#endregion
+#endregion
 
         /// <summary>
         /// Creates the OpenGL instance.
@@ -7159,7 +7165,7 @@ if (insideGLBegin == false)
             fontOutlines.DrawText(this, faceName, fontSize, deviation, extrusion, text); 
         }
 
-        #region Member Variables
+#region Member Variables
 
         /// <summary>
         /// The current OpenGL instance.
@@ -7171,24 +7177,26 @@ if (insideGLBegin == false)
         /// </summary>
         private IRenderContextProvider renderContextProvider;
 
-        /// <summary>
-        /// Set to true if we're inside glBegin.
-        /// </summary>
-        private bool insideGLBegin;
+#if DEBUG
+		/// <summary>
+		/// Set to true if we're inside glBegin.
+		/// </summary>
+		private bool insideGLBegin;
+#endif
 
-        /// <summary>
-        /// The fontbitmaps object is used to allow easy rendering of text.
-        /// </summary>
-        private readonly FontBitmaps fontBitmaps = new FontBitmaps();
+		/// <summary>
+		/// The fontbitmaps object is used to allow easy rendering of text.
+		/// </summary>
+		private readonly FontBitmaps fontBitmaps = new FontBitmaps();
 
         /// <summary>
         /// The FontOutlines object is used to allow rendering of text.
         /// </summary>
         private readonly FontOutlines fontOutlines = new FontOutlines();
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
         /// <summary>
         /// Gets the render context provider.
@@ -7237,6 +7245,6 @@ if (insideGLBegin == false)
 
         
 
-        #endregion
+#endregion
     }
 }
