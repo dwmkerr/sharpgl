@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,10 +6,10 @@ using SharpGL.SceneGraph;
 using SharpGL.SceneGraph.Assets;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Primitives;
+using Index = SharpGL.SceneGraph.Index;
 
 namespace SharpGL.Serialization.Wavefront
 {
-    [Export(typeof(IFileFormat))]
     public class ObjFileFormat : IFileFormat
     {
         public Scene LoadData(string path)

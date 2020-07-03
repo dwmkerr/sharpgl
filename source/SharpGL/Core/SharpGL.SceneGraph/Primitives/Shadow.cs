@@ -104,7 +104,6 @@ namespace SharpGL.SceneGraph.Primitives
         /// Casts a real time 3D shadow.
         /// </summary>
         /// <param name="gl">The OpenGL object.</param>
-        /// <param name="lights">The lights.</param>
 		private void CastShadow(OpenGL gl)
 		{
 			//	Set the connectivity, (calculate the neighbours of each face).
@@ -202,8 +201,8 @@ namespace SharpGL.SceneGraph.Primitives
 		/// polygon using the specified light.
 		/// </summary>
 		/// <param name="gl">The OpenGL object.</param>
-		/// <param name="light">The light casting the shadow.</param>
-		/// <param name="visibleArray">An array of bools.</param>
+		/// <param name="lightPos">The position of the light casting the shadow.</param>
+		/// <param name="visibleArray">An array of bools indicating the visible faces.</param>
 		private void DoShadowPass(OpenGL gl, Vertex lightPos, bool[] visibleArray)
 		{
             //  Helpful references.

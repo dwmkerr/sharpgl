@@ -7,6 +7,7 @@ using System.IO;
 using SharpGL.SceneGraph.Collections;
 using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Core;
+using Index = SharpGL.SceneGraph.Index;
 
 namespace SharpGL.Serialization.Discreet
 {

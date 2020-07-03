@@ -6,12 +6,16 @@ using System.Windows;
 
 namespace SharpGL.WPF
 {
+    /// <summary>
+    /// RoutedEvent arguments for OpenGL events.
+    /// </summary>
     public class OpenGLRoutedEventArgs : RoutedEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OpenGLRoutedEventArgs"/> class.
         /// </summary>
-        /// <param name="gl">The gl.</param>
+        /// <param name="routedEvent">The routed event.</param>
+        /// <param name="gl">The OpenGL instance.</param>
         public OpenGLRoutedEventArgs(RoutedEvent routedEvent, OpenGL gl)
             : base(routedEvent)
         {
@@ -19,19 +23,10 @@ namespace SharpGL.WPF
         }
 
         /// <summary>
-        /// The OpenGL instance.
+        /// Gets or sets the OpenGL instance.
         /// </summary>
-        private OpenGL gl = null;
-
-        /// <summary>
-        /// Gets or sets the open GL.
-        /// </summary>
-        /// <value>The open GL.</value>
-        public OpenGL OpenGL
-        {
-            get { return gl; }
-            private set { gl = value; }
-        }
+        /// <value>The the OpenGL instance.</value>
+        public OpenGL OpenGL { get; private set; } = null;
     }
 
     /// <summary>

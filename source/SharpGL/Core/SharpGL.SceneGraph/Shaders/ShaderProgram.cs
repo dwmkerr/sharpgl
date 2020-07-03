@@ -179,7 +179,6 @@ namespace SharpGL.SceneGraph.Shaders
         }*/
         
         /// <summary>
-        /// <summary>
         /// The set of attached shaders.
         /// </summary>
         private List<Shader> attachedShaders = new List<Shader>();

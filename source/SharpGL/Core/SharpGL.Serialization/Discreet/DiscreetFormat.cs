@@ -1,14 +1,9 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
-
 using SharpGL.SceneGraph;
-using SharpGL.SceneGraph.Collections;
-using System.ComponentModel.Composition;
 
 namespace SharpGL.Serialization.Discreet
 {
-    [Export(typeof(IFileFormat))]
 	public class Discreet3dsFormat : IFileFormat
 	{
         /*

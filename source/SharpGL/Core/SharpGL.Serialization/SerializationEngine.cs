@@ -3,9 +3,6 @@ using System.IO;
 using System.Linq;
 
 using SharpGL.SceneGraph;
-using SharpGL.SceneGraph.Collections;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Collections.Generic;
 
 namespace SharpGL.Serialization
@@ -43,9 +40,14 @@ namespace SharpGL.Serialization
         /// </summary>
         private void Compose()
         {
-            var catalog = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
-            var container = new CompositionContainer(catalog);
-            container.ComposeParts(this);
+            //  Note that this code previously used the MEF, but that causes compatibility issues and was overkill.
+            FileFormats = new IFileFormat[]
+            {
+                new Caligari.CaligariFileFormat(),
+                new Discreet.Discreet3dsFormat(),
+                new SharpGL.SharpGLXmlFormat(),
+                new Wavefront.ObjFileFormat(),
+            };
         }
 
         /// <summary>
@@ -114,18 +116,9 @@ namespace SharpGL.Serialization
         }
 
         /// <summary>
-        /// The file formats, composed via MEF.
-        /// </summary>
-        [ImportMany]
-        private IEnumerable<IFileFormat> fileFormats = null;
-
-        /// <summary>
         /// Gets the file formats.
         /// </summary>
-        public IEnumerable<IFileFormat> FileFormats
-        {
-            get { return fileFormats; }
-        }
+        public IEnumerable<IFileFormat> FileFormats { get; private set; } = null;
 
         /// <summary>
         /// Gets the filter.
@@ -135,10 +128,10 @@ namespace SharpGL.Serialization
             get
             {
                 string allSupportedTypes = string.Empty;
-                foreach (var f in fileFormats)
+                foreach (var f in FileFormats)
                     foreach (var ext in f.FileTypes)
                         allSupportedTypes += "*." + ext + ";";
-                return string.Join("|", (from IFileFormat f in fileFormats select f.Filter))
+                return string.Join("|", (from IFileFormat f in FileFormats select f.Filter))
                     + "|All Supported File Types|" + allSupportedTypes;
             }
         }

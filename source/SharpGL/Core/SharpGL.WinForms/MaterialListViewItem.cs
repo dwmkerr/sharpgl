@@ -18,17 +18,12 @@ namespace SharpGL.Controls
 	/// </summary>
 	public class MaterialListViewItem : System.Windows.Forms.ListViewItem
 	{
-		public MaterialListViewItem()
-		{
-		}
-
 		/// <summary>
 		/// This function creates the list view item from a material, with an image
 		/// of the specified size.
 		/// </summary>
 		/// <param name="material">The material to create it from.</param>
-		/// <param name="sizeX">Size of the thumbnail.</param>
-		/// <param name="sizeY">Size of the thumbnail.</param>
+		/// <param name="images">The set of images.</param>
 		public MaterialListViewItem(Material material, ImageList images)
 		{
 			//	Create a preview of the material.

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Composition;
 using SharpGL.SceneGraph;
 using System.IO;
 using SharpGL.SceneGraph.Primitives;
 
 namespace SharpGL.Serialization.Caligari
 {
-    [Export(typeof(IFileFormat))]
-    public class CaligariFormatSCN : IFileFormat
+    public class CaligariFileFormat : IFileFormat
     {
         protected virtual string Peep(BinaryReader reader)
         {

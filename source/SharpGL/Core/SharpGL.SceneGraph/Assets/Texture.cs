@@ -1,10 +1,9 @@
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Design;
 using System.ComponentModel;
 using SharpGL.SceneGraph.Core;
 using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
 
 namespace SharpGL.SceneGraph.Assets
 {
@@ -12,8 +11,7 @@ namespace SharpGL.SceneGraph.Assets
 	/// A Texture object is simply an array of bytes. It has OpenGL functions, but is
 	/// not limited to OpenGL, so DirectX or custom library functions could be later added.
 	/// </summary>
-	[Editor(typeof(NETDesignSurface.Editors.UITextureEditor), typeof(UITypeEditor))]
-	[TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
+	[TypeConverter(typeof(ExpandableObjectConverter))]
 	[Serializable()]
 	public class Texture : Asset, IBindable
 	{

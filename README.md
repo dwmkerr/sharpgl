@@ -36,6 +36,7 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
     * [WPF - Text Rendering Sample](#wpf---text-rendering-sample)
     * [WPF - Two Dimensional Rendering Sample](#wpf---two-dimensional-rendering-sample)
 * [Documentation](#documentation)
+* [SharpGL Visual Studio Extensions](#sharpgl-visual-studio-extensions)
 * [Credits, Sponsorship & Thanks](#credits-sponsorship--thanks)
 * [Built with SharpGL](#built-with-sharpgl)
 
@@ -43,25 +44,20 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
 
 ## Getting Started
 
+SharpGL is made up of a number of packages, you can install whichever package or packages you need!
+
+| Package | Link | Overview |
+| `SharpGL` | [![SharpGL Core](https://img.shields.io/nuget/v/SharpGL.svg)](https://www.nuget.org/packages/SharpGL) | All OpenGL functions wrapped and ready to execute, as well as all OpenGL extensions. |
+| `SharpGL.SceneGraph` | [![SharpGL SceneGraph](https://img.shields.io/nuget/v/SharpGL.SceneGraph.svg)](https://www.nuget.org/packages/SharpGL.SceneGraph) | The SceneGraph library contains a full class library which models key 3D entities. |
+| `SharpGL.Serialization` | [![SharpGL Serialization](https://img.shields.io/nuget/v/SharpGL.Serialization.svg)](https://www.nuget.org/packages/SharpGL.Serialization) | The Serialization library contains utilities to load data from Discreet, Wavefront and Caligari file formats. |
+| `SharpGL.WPF` | [![SharpGL WPF](https://img.shields.io/nuget/v/SharpGL.WPF.svg)](https://www.nuget.org/packages/SharpGL.WPF) | SharpGL for WPF includes the Core as well as OpenGL controls to drop into your WPF app. |
+| `SharpGL.WinForms` | [![SharpGL WinForms](https://img.shields.io/nuget/v/SharpGL.WinForms.svg)](https://www.nuget.org/packages/SharpGL.WinForms)       | SharpGL for WinForms includes the Core as well as OpenGL controls to drop into your WinForms app. |
+
 Install SharpGL packages with NuGet, either by using the Package Explorer or the Package Manager tool, e.g:
 
 ```
 PM> Install-Package SharpGL
 ```
-
-The available packages are:
-
-| Package              | Link                                                                                                                              | Usage                                                                                             |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| `SharpGL`            | [![SharpGL Core](https://img.shields.io/nuget/v/SharpGL.svg)](https://www.nuget.org/packages/SharpGL)                             | The Core is simply the full set of OpenGL functions and extensions wrapped and available to use.  |
-| `SharpGL.SceneGraph` | [![SharpGL SceneGraph](https://img.shields.io/nuget/v/SharpGL.SceneGraph.svg)](https://www.nuget.org/packages/SharpGL.SceneGraph) | The SceneGraph library contains a full class library which models key OpenGL entities.            |
-| `SharpGL.WPF`        | [![SharpGL WPF](https://img.shields.io/nuget/v/SharpGL.WPF.svg)](https://www.nuget.org/packages/SharpGL.WPF)                      | SharpGL for WPF includes the Core as well as OpenGL controls to drop into your WPF app.           |
-| `SharpGL.WinForms`   | [![SharpGL WinForms](https://img.shields.io/nuget/v/SharpGL.WinForms.svg)](https://www.nuget.org/packages/SharpGL.WinForms)       | SharpGL for WinForms includes the Core as well as OpenGL controls to drop into your WinForms app. |
-
-There are project templates available for SharpGL WinForms and WPF projects - just search for SharpGL on the Visual Studio Extensions gallery, or get the extensions directly:
-
-* [SharpGL for Visual Studio 2010](http://visualstudiogallery.msdn.microsoft.com/ba57efa3-4061-4cdf-97f5-51715c4f120a)
-* [SharpGL for Visual Studio 2012/2013](http://visualstudiogallery.msdn.microsoft.com/b61cc443-4790-42b7-b7ab-2691119667d2)
 
 ## Developer Guide
 
@@ -75,6 +71,7 @@ You can also use the following scripts to run the processes:
 | `build.ps1`    | Build all solutions. Ensures that we build both 32/64 bit versions of native components.                                |
 | `test.ps1`     | Run all tests, including those in samples.                                                                              |
 | `coverage.ps1` | Create a coverage report. Reports are written to `./artifacts/coverage`                                                 |
+| `pack.ps1`     | Create all of the SharpGL NuGet packages, which are copied to `./artifacts/packages`.                                   |
 
 These scripts will generate various artifacts which may be useful to review:
 
@@ -82,13 +79,14 @@ These scripts will generate various artifacts which may be useful to review:
 artifacts\
   \tests                  # NUnit Test Reports
   \coverage               # Coverage Reports
+  \packages               # NuGet Packages
 ```
 
 ### Releasing
 
 To make and publish a release:
 
-1. Update the `SharedAssemblyInfo.cs` file with the version
+1. Update the `*.csproj` files with the new version number
 2. Create the version tag (e.g. `git tag v3.2.1`)
 3. Push the code and tags (e.g. `git push --follow-tags`)
 
@@ -248,6 +246,15 @@ This sample shows how to do simple 2D render, with a visual like an old Windows 
 
 All documentation is available on [the Wiki](https://github.com/dwmkerr/sharpgl/wiki).
 
+## SharpGL Visual Studio Extensions
+
+There are project templates available for SharpGL WinForms and WPF projects - just search for SharpGL on the Visual Studio Extensions gallery, or get the extensions directly:
+
+* [SharpGL for Visual Studio 2010](http://visualstudiogallery.msdn.microsoft.com/ba57efa3-4061-4cdf-97f5-51715c4f120a)
+* [SharpGL for Visual Studio 2012/2013](http://visualstudiogallery.msdn.microsoft.com/b61cc443-4790-42b7-b7ab-2691119667d2)
+
+Please be aware that these extensions have not been maintained over time and I am looking for support in maintaining them.
+
 ## Credits, Sponsorship & Thanks
 
 SharpGL is written and maintained by me. Special thanks go to the following contributors:
@@ -285,6 +292,3 @@ Checkout https://sites.google.com/site/gahvogel/ to see a free, open source proj
 **[AgOpenGPS](https://github.com/farmerbriantee/AgOpenGPS)**
 
 This is the *very first* open source Precision Agricultural App! Built by [Brian Tischler](https://github.com/farmerbriantee), you can see [the discussions and excitement on this project with farmers across the world](http://www.thecombineforum.com/forums/31-technology/278810-agopengps.html)!
-
-
-
