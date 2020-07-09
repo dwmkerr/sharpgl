@@ -155,7 +155,6 @@ namespace SharpGL.SceneGraph.Core
 
         }
 
-        private float radius = 1.0f;
         private float adjustWidth = 1.0f;
         private float adjustHeight = 1.0f;
 

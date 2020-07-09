@@ -475,7 +475,6 @@ namespace SharpGL.SceneGraph.Primitives
 		/// <summary>
 		/// This function subdivides the faces of this polygon.
 		/// </summary>
-		/// <param name="smooth">If set to true the faces will be smoothed.</param>
 		/// <returns>The number of faces in the new subdivided polygon.</returns>
 		public int Subdivide()
 		{

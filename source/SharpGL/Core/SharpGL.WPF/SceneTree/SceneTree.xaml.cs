@@ -20,6 +20,9 @@ namespace SharpGL.WPF.SceneTree
     /// </summary>
     public partial class SceneTree : UserControl
     {
+        /// <summary>
+        /// Constructor for the SceneTree.
+        /// </summary>
         public SceneTree()
         {
             InitializeComponent();
@@ -32,11 +35,13 @@ namespace SharpGL.WPF.SceneTree
             }
         }
 
-        
         private static readonly DependencyProperty SceneProperty =
           DependencyProperty.Register("Scene", typeof(Scene), typeof(SceneTree),
           new PropertyMetadata(null, new PropertyChangedCallback(OnSceneChanged)));
 
+        /// <summary>
+        /// The Scene which is being presented.
+        /// </summary>
         public Scene Scene
         {
             get { return (Scene)GetValue(SceneProperty); }
@@ -45,9 +50,6 @@ namespace SharpGL.WPF.SceneTree
 
         private static void OnSceneChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            SceneTree me = o as SceneTree;
         }
-                
- 
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using SharpGL.SceneGraph;
 using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Core;
+using Index = SharpGL.SceneGraph.Index;
 
 namespace SharpGL.Serialization.Caligari
 {

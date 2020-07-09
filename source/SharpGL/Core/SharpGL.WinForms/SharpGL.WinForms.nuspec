@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>$id$</id>
-        <version>$version$</version>
+        <version>$version$-alpha1</version>
         <title>SharpGL for WinForms</title>
         <authors>Dave Kerr</authors>
         <owners>Dave Kerr</owners>
@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WinForms controls.</description>
         <summary>SharpGL wraps the popular OpenGL library. This package installs SharpGL and the WinForms controls.</summary>
-        <copyright>Copyright © Dave Kerr 2019</copyright>
+        <copyright>Copyright © Dave Kerr 2020</copyright>
         <tags>SharpGL,OpenGL,WinForms</tags>
         <dependencies>
             <dependency id="SharpGL" version="$version$" />

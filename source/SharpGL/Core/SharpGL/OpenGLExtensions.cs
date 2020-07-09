@@ -4926,14 +4926,14 @@ namespace SharpGL
         /// </summary>
         /// <param name="hShareContext">
         /// If is not null, then all shareable data (excluding
-        /// OpenGL texture objects named 0) will be shared by <hshareContext>,
-        /// all other contexts <hshareContext> already shares with, and the
+        /// OpenGL texture objects named 0) will be shared by hShareContext,
+        /// all other contexts hShareContext already shares with, and the
         /// newly created context. An arbitrary number of contexts can share
         /// data in this fashion.</param>
         /// <param name="attribList">
         /// specifies a list of attributes for the context. The
-        /// list consists of a sequence of <name,value> pairs terminated by the
-        /// value 0. If an attribute is not specified in <attribList>, then the
+        /// list consists of a sequence of (name,value) pairs terminated by the
+        /// value 0. If an attribute is not specified in attribList, then the
         /// default value specified below is used instead. If an attribute is
         /// specified more than once, then the last value specified is used.
         /// </param>

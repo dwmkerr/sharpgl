@@ -11,6 +11,7 @@ namespace SharpGL
         /// <summary>
         /// Creates the specified width.
         /// </summary>
+        /// <param name="hDC">The handle to the device context.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="bitCount">The bit count.</param>
@@ -89,6 +90,7 @@ namespace SharpGL
 		/// <summary>
 		/// This function sets the pixel format of the underlying bitmap.
 		/// </summary>
+        /// <param name="hDC">The handle to the device context.</param>
 		/// <param name="bitCount">The bitcount.</param>
 		protected virtual bool SetPixelFormat(IntPtr hDC, int bitCount)
 		{
@@ -112,7 +114,8 @@ namespace SharpGL
 			//	Sets the pixel format
             if (Win32.SetPixelFormat(hDC, iPixelformat, pixelFormat) == 0)
 			{
-				int lastError = Marshal.GetLastWin32Error();
+                //  Clear the error and fail.
+				int _ = Marshal.GetLastWin32Error();
 				return false;
 			}
 
