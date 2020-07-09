@@ -7,7 +7,7 @@
     <Copyright>Copyright (c) Dave Kerr 2020</Copyright>
     <PackageProjectUrl>https://github.com/dwmkerr/sharpgl</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dwmkerr/sharpgl</RepositoryUrl>
-    <Version>3.0.0.0-alpha1</Version>
+    <Version>3.1.0.0</Version>
     <Authors>Dave Kerr</Authors>
     <Company>Dave Kerr</Company>
     <PackageTags>SharpGL;SceneGraph;OpenGL</PackageTags>
