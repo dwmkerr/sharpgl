@@ -21,21 +21,19 @@ namespace TextRenderingSample
         /// <param name="args">The <see cref="OpenGLRoutedEventArgs"/> instance containing the event data.</param>
         private void OpenGLControl_OpenGLDraw(object sender, OpenGLRoutedEventArgs args)
         {
-            OpenGL gl = args.OpenGL;	
+            var gl = args.OpenGL;	
             
-            // Clear The Screen And The Depth Buffer
+            //  Clear the screen and the depth buffer.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
             
-            // Move Left And Into The Screen
-            gl.LoadIdentity();		
-
-
+            //  Reset the projection matrix, move left and into the screen, scale the font.
+            gl.LoadIdentity();
             gl.Translate(0f, 0.0f, -6.0f);
             gl.Rotate(rotation, 1.0f, 0.0f, 0.0f);
+            var scale = viewModel.FontSize3D / 12.0f;
+            gl.Scale(scale, scale, scale);
 
-
-            gl.DrawText3D(viewModel.FaceName3D, viewModel.FontSize3D,
-                viewModel.Deviation3D, viewModel.Extrusion3D, viewModel.Text3D);
+            gl.DrawText3D(viewModel.FaceName3D, viewModel.Deviation3D, viewModel.Extrusion3D, viewModel.Text3D);
 
             rotation += 3.0f;
 

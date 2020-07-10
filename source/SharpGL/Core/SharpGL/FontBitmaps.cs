@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SharpGL
 {
@@ -41,18 +40,6 @@ namespace SharpGL
         /// The name of the face.
         /// </value>
         public string FaceName
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the height.
-        /// </summary>
-        /// <value>
-        /// The height.
-        /// </value>
-        public int Height
         {
             get;
             set;
@@ -196,14 +183,14 @@ namespace SharpGL
     /// </summary>
     public class FontOutlines
     {
-        private FontOutlineEntry CreateFontOutlineEntry(OpenGL gl, string faceName, int height,
+        private FontOutlineEntry CreateFontOutlineEntry(OpenGL gl, string faceName,
             float deviation, float extrusion, FontOutlineFormat fontOutlineFormat)
         {
             //  Make the OpenGL instance current.
             gl.MakeCurrent();
 
             //  Create the font based on the face name.
-            var hFont = Win32.CreateFont(height, 0, 0, 0, Win32.FW_DONTCARE, 0, 0, 0, Win32.DEFAULT_CHARSET, 
+            var hFont = Win32.CreateFont(12, 0, 0, 0, Win32.FW_DONTCARE, 0, 0, 0, Win32.DEFAULT_CHARSET, 
                 Win32.OUT_OUTLINE_PRECIS, Win32.CLIP_DEFAULT_PRECIS, Win32.CLEARTYPE_QUALITY, Win32.VARIABLE_PITCH, faceName);
             
             //  Select the font handle.
@@ -225,13 +212,15 @@ namespace SharpGL
             //  Free the font.
             Win32.DeleteObject(hFont);
 
+            //  If we failed to create the font outlines, bail out now.
+            if (result == false) return null;
+
             //  Create the font bitmap entry.
             var foe = new FontOutlineEntry()
             {
                 HDC = gl.RenderContextProvider.DeviceContextHandle,
                 HRC = gl.RenderContextProvider.RenderContextHandle,
                 FaceName = faceName,
-                Height = height,
                 ListBase = listBase,
                 ListCount = 255,
                 Deviation = deviation,
@@ -251,17 +240,13 @@ namespace SharpGL
         /// </summary>
         /// <param name="gl">The gl.</param>
         /// <param name="faceName">Name of the face.</param>
-        /// <param name="fontSize">Size of the font.</param>
         /// <param name="deviation">The deviation.</param>
         /// <param name="extrusion">The extrusion.</param>
         /// <param name="text">The text.</param>
-        public void DrawText(OpenGL gl, string faceName, float fontSize, 
-                             float deviation, float extrusion, string text)
+        /// <returns>True if the text was rendered, false if the underlying font could not be created.</returns>
+        public bool DrawText(OpenGL gl, string faceName, float deviation, float extrusion, string text)
         {
-            //  Pass to the glyph metrics version of the function.
-            GLYPHMETRICSFLOAT[] glyphMetrics;
-
-            DrawText(gl, faceName, fontSize, deviation, extrusion, text, out glyphMetrics);
+            return DrawText(gl, faceName, deviation, extrusion, text, out _);
         }
 
         /// <summary>
@@ -269,32 +254,32 @@ namespace SharpGL
         /// </summary>
         /// <param name="gl">The gl.</param>
         /// <param name="faceName">Name of the face.</param>
-        /// <param name="fontSize">Size of the font.</param>
         /// <param name="deviation">The deviation.</param>
         /// <param name="extrusion">The extrusion.</param>
         /// <param name="text">The text.</param>
         /// <param name="glyphMetrics"> </param>
-        public void DrawText(OpenGL gl, string faceName, float fontSize, float deviation, float extrusion, string text, out GLYPHMETRICSFLOAT[] glyphMetrics)
+        /// <returns>True if the text was rendered, false if the underlying font could not be created.</returns>
+        public bool DrawText(OpenGL gl, string faceName, float deviation, float extrusion, string text, out GLYPHMETRICSFLOAT[] glyphMetrics)
         {
-            //  Get the font size in pixels.
-            var fontHeight = (int)(fontSize * (16.0f / 12.0f));
-
             //  Do we have a font bitmap entry for this OpenGL instance and face name?
-            var result = (from fbe in fontOutlineEntries
-                         where fbe.HDC == gl.RenderContextProvider.DeviceContextHandle
-                         && fbe.HRC == gl.RenderContextProvider.RenderContextHandle
-                         && String.Compare(fbe.FaceName, faceName, StringComparison.OrdinalIgnoreCase) == 0
-                         && fbe.Height == fontHeight
-                         && fbe.Deviation == deviation
-                         && fbe.Extrusion == extrusion
-                         select fbe).ToList();
+            //  If not, create one.
+            const float tolerance = 0.01f;
+            var fontOutlineEntry = (from fbe in fontOutlineEntries
+                                       where fbe.HDC == gl.RenderContextProvider.DeviceContextHandle
+                                             && fbe.HRC == gl.RenderContextProvider.RenderContextHandle
+                                             && string.Compare(fbe.FaceName, faceName, StringComparison.OrdinalIgnoreCase) == 0
+                                             && Math.Abs(fbe.Deviation - deviation) < tolerance
+                                             && Math.Abs(fbe.Extrusion - extrusion) < tolerance
+                                       select fbe).FirstOrDefault()
+                                   ?? CreateFontOutlineEntry(gl, faceName, deviation, extrusion,
+                                       FontOutlineFormat.Polygons);
 
-            //  Get the FBE or null.
-            var fontOutlineEntry = result.FirstOrDefault();
-
-            //  If we don't have the FBE, we must create it.
+            //  If we failed to create the outline entry we'll need to bail.
             if (fontOutlineEntry == null)
-                fontOutlineEntry = CreateFontOutlineEntry(gl, faceName, fontHeight, deviation, extrusion, FontOutlineFormat.Polygons);
+            {
+                glyphMetrics = null;
+                return false;
+            }
 
             //  Set the list base.
             gl.ListBase(fontOutlineEntry.ListBase);
@@ -308,6 +293,7 @@ namespace SharpGL
 
             //  Return the glyph metrics used.
             glyphMetrics = fontOutlineEntry.GlyphMetrics;
+            return true;
         }
 
         /// <summary>
