@@ -7155,14 +7155,13 @@ if (insideGLBegin == false)
         /// Draws 3D text.
         /// </summary>
         /// <param name="faceName">Name of the face.</param>
-        /// <param name="fontSize">Size of the font.</param>
         /// <param name="deviation">The deviation.</param>
         /// <param name="extrusion">The extrusion.</param>
         /// <param name="text">The text.</param>
-        public void DrawText3D(string faceName, float fontSize, float deviation, float extrusion, string text)
+        public void DrawText3D(string faceName, float deviation, float extrusion, string text)
         {
             //  Use the font outlines object to render the text.
-            fontOutlines.DrawText(this, faceName, fontSize, deviation, extrusion, text); 
+            fontOutlines.DrawText(this, faceName, deviation, extrusion, text); 
         }
 
 #region Member Variables
