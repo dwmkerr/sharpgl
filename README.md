@@ -60,15 +60,15 @@ Install SharpGL packages with NuGet, either by using the Package Explorer or the
 PM> Install-Package SharpGL
 ```
 
-## Compatability
+## Compatibility
 
-SharpGL has built in support for OpenGL support, newer functions can be loaded on demand as needed. The table below shows the compatiblity across frameworks and platforms.
+SharpGL has built in support for OpenGL support, newer functions can be loaded on demand as needed. The table below shows the compatibility across frameworks and platforms.
 
 **OpenGL**
 
 Currently SharpGL has built in bindings for **OpenGL 4.0** - functions from later versions can be loaded at runtime as needed.
 
-**Framework Compatiblity**
+**Framework Compatibility**
 
 All components support the .NET Framework 4.0 onwards, .NET Core 3.0 onwards and .NET Standard 2.1 onwards. Some components also support earlier versions.
 
@@ -240,13 +240,13 @@ Note that this sample uses _immediate mode_ OpenGL, which is officially deprecat
 
 ### WPF - Cel Shading Sample
 
-This sample demonstrates how to use shaders to crete a cel-shaing effect.
+This sample demonstrates how to use shaders to create a cel-shaing effect.
 
 <img width="640" alt="Native Textures Sample" src="assets/samples/CelShadingSampleToonLarge.png" />
 
 ### WPF - Drawing Mechanisms Sample
 
-This sample demonstrates how to use shaders to crete a cel-shaing effect.
+This sample demonstrates how to use shaders to create a cel-shaing effect.
 
 ### WPF - FastGL
 
