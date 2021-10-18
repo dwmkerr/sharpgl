@@ -40,3 +40,8 @@ extensions/build/SharpGL.2010.vsix
 extensions/build/SharpGL.vsix
 extensions/Seeds/packages
 *.GhostDoc.xml
+source/SharpGL/.idea/.idea.SharpGL/.idea/discord.xml
+source/SharpGL/.idea/.idea.SharpGL/.idea/encodings.xml
+source/SharpGL/.idea/.idea.SharpGL/.idea/indexLayout.xml
+source/SharpGL/.idea/.idea.SharpGL/.idea/vcs.xml
+source/SharpGL/Core/SharpGL.WinForms/SharpGL.WinForms.csproj.DotSettings
