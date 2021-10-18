@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1;net40;net45;net472</TargetFrameworks>
+    <TargetFrameworks>net46;net472;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <OutputType>library</OutputType>
     <UseWpf>true</UseWpf>
     <!-- The following properies are used to manage how the project is packaged. -->

@@ -38,18 +38,18 @@ namespace SharpGL.Serialization.Caligari
 	{
 		public virtual void Read(BinaryReader stream)
 		{
-			centre = new Vertex(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
-			directionX = new Vertex(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
-			directionY = new Vertex(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
-			directionZ = new Vertex(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
+			centre = new System.Numerics.Vector3(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
+			directionX = new System.Numerics.Vector3(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
+			directionY = new System.Numerics.Vector3(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
+			directionZ = new System.Numerics.Vector3(stream.ReadSingle(), stream.ReadSingle(), stream.ReadSingle());
 
 			//	The X axis in SharpGL is always (1, 0, 0).
 
-			xAxis = new Vertex(1, 0, 0);
+			xAxis = new System.Numerics.Vector3(1, 0, 0);
 			float angleX = xAxis.ScalarProduct(directionX);
-			yAxis = new Vertex(0, 1, 0);
+			yAxis = new System.Numerics.Vector3(0, 1, 0);
 			float angleY = yAxis.ScalarProduct(directionY);
-			zAxis = new Vertex(0, 0, 1);
+			zAxis = new System.Numerics.Vector3(0, 0, 1);
 			float angleZ = zAxis.ScalarProduct(directionZ);
 			angleX = (float)System.Math.Asin(angleX);
 			angleY = (float)System.Math.Asin(angleY);
@@ -59,7 +59,7 @@ namespace SharpGL.Serialization.Caligari
 			angleY = (180 * angleY) / (float)Math.PI;
 			angleZ = (180 * angleZ) / (float)Math.PI;
 
-			rotate = new Vertex(-angleX, -angleY, -angleZ);
+			rotate = new System.Numerics.Vector3(-angleX, -angleY, -angleZ);
 
 			xAxis = xAxisGL = directionX;
 			yAxis = zAxisGL = directionY;
@@ -67,19 +67,19 @@ namespace SharpGL.Serialization.Caligari
 			xAxisGL.X = -xAxisGL.X;
 
 		}
-		public Vertex centre;
-		public Vertex rotate;
+		public System.Numerics.Vector3 centre;
+		public System.Numerics.Vector3 rotate;
 
-		public Vertex directionX;
-		public Vertex directionY;
-		public Vertex directionZ;
+		public System.Numerics.Vector3 directionX;
+		public System.Numerics.Vector3 directionY;
+		public System.Numerics.Vector3 directionZ;
 
-		public Vertex xAxis;
-		public Vertex yAxis;
-		public Vertex zAxis;
-		public Vertex xAxisGL;
-		public Vertex yAxisGL;
-		public Vertex zAxisGL;
+		public System.Numerics.Vector3 xAxis;
+		public System.Numerics.Vector3 yAxis;
+		public System.Numerics.Vector3 zAxis;
+		public System.Numerics.Vector3 xAxisGL;
+		public System.Numerics.Vector3 yAxisGL;
+		public System.Numerics.Vector3 zAxisGL;
 	}
 
 	internal class CaligariPosition

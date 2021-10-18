@@ -36,14 +36,14 @@ namespace SharpGL.SceneGraph.Primitives
 			UVs.Add(new UV(1, 0));
 	
 			//	Add the vertices.
-			Vertices.Add(new Vertex(-1, -1, -1));
-			Vertices.Add(new Vertex( 1, -1, -1));
-			Vertices.Add(new Vertex( 1, -1,  1));
-			Vertices.Add(new Vertex(-1, -1,  1));
-			Vertices.Add(new Vertex(-1,  1, -1));
-			Vertices.Add(new Vertex( 1,  1, -1));
-			Vertices.Add(new Vertex( 1,  1,  1));
-			Vertices.Add(new Vertex(-1,  1,  1));
+			Vertices.Add(new System.Numerics.Vector3(-1, -1, -1));
+			Vertices.Add(new System.Numerics.Vector3( 1, -1, -1));
+			Vertices.Add(new System.Numerics.Vector3( 1, -1,  1));
+			Vertices.Add(new System.Numerics.Vector3(-1, -1,  1));
+			Vertices.Add(new System.Numerics.Vector3(-1,  1, -1));
+			Vertices.Add(new System.Numerics.Vector3( 1,  1, -1));
+			Vertices.Add(new System.Numerics.Vector3( 1,  1,  1));
+			Vertices.Add(new System.Numerics.Vector3(-1,  1,  1));
 
 			//	Add the faces.
 			Face face = new Face();	//	bottom

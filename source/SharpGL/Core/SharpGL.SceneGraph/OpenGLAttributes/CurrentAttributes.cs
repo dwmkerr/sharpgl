@@ -63,9 +63,9 @@ namespace SharpGL.OpenGLAttributes
 
         private GLColor currentColor;
         private int? currentColorIndex;
-        private Vertex? currentNormalVector;
+        private System.Numerics.Vector3? currentNormalVector;
         private UV? currentTextureCoordiate;
-        private Vertex? currentRasterPosition;
+        private System.Numerics.Vector3? currentRasterPosition;
         private GLColor currentRasterColor;
         private int? currentRasterColorIndex;
         private UV? currentRasterTextureCoordiate;
@@ -104,7 +104,7 @@ namespace SharpGL.OpenGLAttributes
         /// The current normal vector.
         /// </value>
         [Description(""), Category("Current")]
-        public Vertex? CurrentNormalVector
+        public System.Numerics.Vector3? CurrentNormalVector
         {
             get { return currentNormalVector; }
             set { currentNormalVector = value; }
@@ -130,7 +130,7 @@ namespace SharpGL.OpenGLAttributes
         /// The current raster position.
         /// </value>
         [Description(""), Category("Current")]
-        public Vertex? CurrentRasterPosition
+        public System.Numerics.Vector3? CurrentRasterPosition
         {
             get { return currentRasterPosition; }
             set { currentRasterPosition = value; }

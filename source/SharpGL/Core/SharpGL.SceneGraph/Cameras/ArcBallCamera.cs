@@ -31,8 +31,8 @@ namespace SharpGL.SceneGraph.Cameras
             //  Perform the perspective transformation.
             arcBall.SetBounds(viewport[2], viewport[3]);
             gl.Perspective(FieldOfView, AspectRatio, Near, Far);
-            Vertex target = new Vertex(0, 0, 0);
-            Vertex upVector = new Vertex(0, 0, 1);
+            System.Numerics.Vector3 target = new System.Numerics.Vector3(0, 0, 0);
+            System.Numerics.Vector3 upVector = new System.Numerics.Vector3(0, 0, 1);
 
             //  Perform the look at transformation.
             gl.LookAt((double)Position.X, (double)Position.Y, (double)Position.Z,

@@ -25,7 +25,7 @@ namespace SharpGL.SceneGraph
         /// <returns>
         /// Less than 0 if behind, 0 if on, Greater than 0 if in front.
         /// </returns>
-        public float ClassifyPoint(Vertex point)
+        public float ClassifyPoint(System.Numerics.Vector3 point)
         {
             //	(X-P)*N = 0. Where, X is a point to test, P is a point
             //	on the plane, and N is the normal to the plane.
@@ -36,12 +36,12 @@ namespace SharpGL.SceneGraph
         /// <summary>
         /// The position.
         /// </summary>
-        public Vertex position = new Vertex(0, 0, 0);
+        public System.Numerics.Vector3 position = new System.Numerics.Vector3(0, 0, 0);
 
         /// <summary>
         /// The normal.
         /// </summary>
-      public Vertex normal = new Vertex(0, 0, 0);
+      public System.Numerics.Vector3 normal = new System.Numerics.Vector3(0, 0, 0);
 
       /// <summary>
       /// The equation.

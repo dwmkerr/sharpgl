@@ -32,7 +32,7 @@ namespace SharpGL.Serialization.Tests
 
                 // The first vertex line is: v 29.564405 140.987503 67.743927
                 var vertex = polygon.Vertices.First();
-                Assert.That(vertex, Is.EqualTo(new Vertex(29.564405f, 140.987503f, 67.743927f)));
+                Assert.That(vertex, Is.EqualTo(new System.Numerics.Vector3(29.564405f, 140.987503f, 67.743927f)));
 
                 // Materials should have been read too
                 // First material is DBody; its ambient light is defined as: Ka 1.0000 0.6667 0.0000

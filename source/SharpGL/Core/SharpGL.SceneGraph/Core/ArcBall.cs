@@ -59,7 +59,7 @@ namespace SharpGL.SceneGraph.Core
             lastRotationMatrix.FromOtherMatrix(thisRotationMatrix, 3, 3);
             thisRotationMatrix.SetIdentity();
 
-            startVector = new Vertex(0, 0, 0);
+            startVector = new System.Numerics.Vector3(0, 0, 0);
         }
 
         private Matrix Matrix3fSetRotationFromQuat4f(float[] q1)
@@ -96,7 +96,7 @@ namespace SharpGL.SceneGraph.Core
         private float[] CalculateQuaternion()
         {
             //  Compute the cross product of the begin and end vectors.
-            Vertex cross = startVector.VectorProduct(currentVector);
+            System.Numerics.Vector3 cross = startVector.VectorProduct(currentVector);
 
             //  Is the perpendicular length essentially non-zero?
             if (cross.Magnitude() > 1.0e-5)
@@ -111,14 +111,14 @@ namespace SharpGL.SceneGraph.Core
             }
         }
 
-        public Vertex MapToSphere(float x, float y)
+        public System.Numerics.Vector3 MapToSphere(float x, float y)
         {
             //hyperboloid mapping taken from https://www.opengl.org/wiki/Object_Mouse_Trackball
 
             float pX = x * adjustWidth - 1.0f;
             float pY = y * adjustHeight - 1.0f;
 
-            Vertex P = new Vertex(pX, -pY, 0);
+            System.Numerics.Vector3 P = new System.Numerics.Vector3(pX, -pY, 0);
 
             //sphere radius
             const float radius = .5f;
@@ -158,8 +158,8 @@ namespace SharpGL.SceneGraph.Core
         private float adjustWidth = 1.0f;
         private float adjustHeight = 1.0f;
 
-        public Vertex startVector = new Vertex(0, 0, 0);
-        public Vertex currentVector = new Vertex(0, 0, 0);
+        public System.Numerics.Vector3 startVector = new System.Numerics.Vector3(0, 0, 0);
+        public System.Numerics.Vector3 currentVector = new System.Numerics.Vector3(0, 0, 0);
 
         Matrix transformMatrix = new Matrix(4, 4);
 

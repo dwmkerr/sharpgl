@@ -37,9 +37,9 @@ namespace SharpGL.SceneGraph.Raytracing
             int screenheight = viewport[3];
 
             //	From frustum data, we make a screen origin, and s/t vectors.
-            Vertex s = new Vertex(0, 0.03f, 0);
-            Vertex t = new Vertex(0, 0, 0.05f);
-            Vertex vScreenOrigin = new Vertex(0, 0, 5);
+            System.Numerics.Vector3 s = new System.Numerics.Vector3(0, 0.03f, 0);
+            System.Numerics.Vector3 t = new System.Numerics.Vector3(0, 0, 0.05f);
+            System.Numerics.Vector3 vScreenOrigin = new System.Numerics.Vector3(0, 0, 5);
 
             //	Go through every pixel we have, and convert it into a screen pixel.
             ScreenPixel[] pixels = new ScreenPixel[viewport[2] * viewport[3]];
@@ -60,7 +60,7 @@ namespace SharpGL.SceneGraph.Raytracing
                     ScreenPixel pixel = new ScreenPixel();
                     pixel.x = x;
                     pixel.y = y;
-                    pixel.worldpos = new Vertex(worldX, worldY, worldZ);
+                    pixel.worldpos = new System.Numerics.Vector3(worldX, worldY, worldZ);
                     pixel.ray.origin = camera.Position;
                     pixel.ray.direction = pixel.worldpos - camera.Position;
 

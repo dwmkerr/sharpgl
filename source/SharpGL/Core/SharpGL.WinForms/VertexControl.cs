@@ -111,7 +111,7 @@ namespace SharpGL.Controls
 		private System.Windows.Forms.TextBox textBoxY;
 		private System.Windows.Forms.TextBox textBoxZ;
 
-		protected Vertex vertex;
+		protected System.Numerics.Vector3 vertex;
 
 		protected void DoVertexChanged()
 		{
@@ -168,8 +168,8 @@ namespace SharpGL.Controls
 			DoVertexChanged();
 		}
 
-		[Description("This is the vertex associated with the control."), Category("Vertex Control")]
-		public Vertex Vertex
+		[Description("This is the vertex associated with the control."), Category("System.Numerics.Vector3 Control")]
+		public System.Numerics.Vector3 Vertex
 		{
 			get {return vertex;}
 			set 

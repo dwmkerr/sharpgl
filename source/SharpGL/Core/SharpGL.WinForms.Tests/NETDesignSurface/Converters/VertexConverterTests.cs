@@ -18,7 +18,7 @@ namespace SharpGL.WinForms.Tests.NETDesignSurface.Converters
                 var converter = new VertexConverter();
                 var vertex = (Vertex)converter.ConvertFrom(text);
 
-                Assert.That(vertex, Is.EqualTo(new Vertex(1.2f, -3.4f, 5.6789f)));
+                Assert.That(vertex, Is.EqualTo(new System.Numerics.Vector3(1.2f, -3.4f, 5.6789f)));
             }
         }
     }

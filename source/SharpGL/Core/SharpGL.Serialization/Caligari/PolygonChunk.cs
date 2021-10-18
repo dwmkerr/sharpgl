@@ -46,7 +46,7 @@ namespace SharpGL.Serialization.Caligari
             for (int i = 0; i < verticesCount; i++)
             {
                 //	Read a vertex.
-                Vertex vertex = new Vertex(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                System.Numerics.Vector3 vertex = new System.Numerics.Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
                 //	Multiply it by the position matrix.
                 vertex = vertex * pos.matrix;

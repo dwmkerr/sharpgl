@@ -81,7 +81,7 @@ namespace SharpGL.SceneGraph.Quadrics
             set 
             { 
                 baseRadius = value;
-                BoundingVolume.FromCylindricalVolume(new Vertex(), (float)height, (float)baseRadius, (float)topRadius);
+                BoundingVolume.FromCylindricalVolume(new System.Numerics.Vector3(), (float)height, (float)baseRadius, (float)topRadius);
             }
         }
 
@@ -98,7 +98,7 @@ namespace SharpGL.SceneGraph.Quadrics
             set 
             {
                 topRadius = value;
-                BoundingVolume.FromCylindricalVolume(new Vertex(), (float)height, (float)baseRadius, (float)topRadius);
+                BoundingVolume.FromCylindricalVolume(new System.Numerics.Vector3(), (float)height, (float)baseRadius, (float)topRadius);
             }
         }
 
@@ -115,7 +115,7 @@ namespace SharpGL.SceneGraph.Quadrics
             set 
             {
                 height = value;
-                BoundingVolume.FromCylindricalVolume(new Vertex(), (float)height, (float)baseRadius, (float)topRadius);
+                BoundingVolume.FromCylindricalVolume(new System.Numerics.Vector3(), (float)height, (float)baseRadius, (float)topRadius);
             }
         }
 

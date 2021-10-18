@@ -32,7 +32,7 @@ namespace SharpGL.SceneGraph
         /// <returns>
         /// The screen coords.
         /// </returns>
-        public static Vertex Project(this OpenGL gl, Vertex vertex)
+        public static System.Numerics.Vector3 Project(this OpenGL gl, System.Numerics.Vector3 vertex)
         {
             //	THIS CODE MUST BE TESTED
             double[] modelview = new double[16];
@@ -47,7 +47,7 @@ namespace SharpGL.SceneGraph
             gl.Project(vertex.X, vertex.Y, vertex.Z,
                 modelview, projection, viewport, x, y, z);
             
-            return new Vertex((float)x[0], (float)y[0], (float)z[0]);
+            return new System.Numerics.Vector3((float)x[0], (float)y[0], (float)z[0]);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SharpGL.SceneGraph
         /// <param name="type">The type.</param>
         /// <param name="stride">The stride.</param>
         /// <param name="pointer">The pointer.</param>
-        public static void VertexPointer(this OpenGL gl, int size, uint type, int stride, Vertex[] pointer)
+        public static void VertexPointer(this OpenGL gl, int size, uint type, int stride, System.Numerics.Vector3[] pointer)
         {
             //  TODO debug this.
             var handle = GCHandle.Alloc(pointer, GCHandleType.Pinned);

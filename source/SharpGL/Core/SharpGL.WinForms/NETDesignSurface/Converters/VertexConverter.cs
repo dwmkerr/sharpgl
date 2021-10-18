@@ -53,7 +53,7 @@ namespace SharpGL.WinForms.NETDesignSurface.Converters
 								parsed = s.Substring(nextcomma + 1, closebracket - (nextcomma + 1)).Trim();
 								zValue = float.Parse(parsed, CultureInfo.InvariantCulture);
 
-								return new Vertex(xValue, yValue, zValue);
+								return new System.Numerics.Vector3(xValue, yValue, zValue);
 							}
 						}
 					}
@@ -71,10 +71,10 @@ namespace SharpGL.WinForms.NETDesignSurface.Converters
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture,
 			object value, Type destType)
 		{
-			if (destType == typeof(string) && value is Vertex)
+			if (destType == typeof(string) && value is System.Numerics.Vector3)
 			{
 				//	We can easily convert a vertex to a string, format (x, y, z).
-				Vertex v = (Vertex)value;
+				System.Numerics.Vector3 v = (System.Numerics.Vector3)value;
 
 				return "(" + v.X + ", " + v.Y + ", " + v.Z + ")";
 			}

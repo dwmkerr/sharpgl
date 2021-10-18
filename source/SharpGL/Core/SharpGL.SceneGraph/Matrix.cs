@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace SharpGL.SceneGraph
 {
@@ -664,6 +665,40 @@ namespace SharpGL.SceneGraph
             {
                 return new Matrix(Multiply(Mat1.in_Mat, Mat2.in_Mat));
             }
+        }
+        
+        /// <summary>
+        /// Implements the operator *.
+        /// </summary>
+        /// <param name="lhs">The LHS.</param>
+        /// <param name="rhs">The RHS.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Vector3 operator * (Vector3 lhs, Matrix rhs)
+        {
+            float X = lhs.X * (float)rhs[0,0] + lhs.Y * (float)rhs[1,0] + lhs.Z * (float)rhs[2,0];
+            float Y = lhs.X * (float)rhs[0,1] + lhs.Y * (float)rhs[1,1] + lhs.Z * (float)rhs[2,1];
+            float Z = lhs.X * (float)rhs[0,2] + lhs.Y * (float)rhs[1,2] + lhs.Z * (float)rhs[2,2];
+
+            return new Vector3(X, Y, Z);
+        }
+
+        /// <summary>
+        /// Implements the operator *.
+        /// </summary>
+        /// <param name="lhs">The LHS.</param>
+        /// <param name="rhs">The RHS.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static Vector3 operator *(Matrix lhs, Vector3 rhs)
+        {
+            float X = rhs.X * (float)lhs[0, 0] + rhs.Y * (float)lhs[1, 0] + rhs.Z * (float)lhs[2, 0];
+            float Y = rhs.X * (float)lhs[0, 1] + rhs.Y * (float)lhs[1, 1] + rhs.Z * (float)lhs[2, 1];
+            float Z = rhs.X * (float)lhs[0, 2] + rhs.Y * (float)lhs[1, 2] + rhs.Z * (float)lhs[2, 2];
+
+            return new Vector3(X, Y, Z);
         }
         #endregion
 

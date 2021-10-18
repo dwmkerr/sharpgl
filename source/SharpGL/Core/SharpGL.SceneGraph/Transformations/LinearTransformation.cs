@@ -132,9 +132,9 @@ namespace SharpGL.SceneGraph.Transformations
         /// </summary>
         [Browsable(false)]
         [XmlIgnore]
-        public Vertex TranslationVertex
+        public System.Numerics.Vector3 TranslationVertex
         {
-            get { return new Vertex(translateX, translateY, translateZ); }
+            get { return new System.Numerics.Vector3(translateX, translateY, translateZ); }
         }
 
         /// <summary>
