@@ -23,6 +23,7 @@ _ReSharper*/
 *.opensdf
 
 # We don't want to ignore the main release folder scripts.
+.vs
 !/release/
 /release/2.1*/
 build/nuspec/SharpGLCore/lib/
