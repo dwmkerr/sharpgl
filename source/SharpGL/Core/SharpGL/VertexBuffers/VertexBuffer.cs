@@ -22,6 +22,11 @@ namespace SharpGL.VertexBuffers
             vertexBufferObject = ids[0];
         }
 
+        public void Delete(OpenGL gl)
+        {
+            gl.DeleteBuffers(1, new uint[] { vertexBufferObject });
+        }
+
         public void SetData(OpenGL gl, uint attributeIndex, float[] rawData, bool isNormalised, int stride)
         {
             //  Set the data, specify its shape and assign it to a vertex attribute (so shaders can bind to it).
