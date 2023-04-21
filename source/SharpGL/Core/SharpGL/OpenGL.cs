@@ -6966,26 +6966,6 @@ if (insideGLBegin == false)
         }
 
 #endregion
-        
-#region Utility Functions
-
-		/// <summary>
-		/// This function transforms a windows point into an OpenGL point,
-		/// which is measured from the bottom left of the screen.
-		/// </summary>
-		/// <param name="x">The x coord.</param>
-		/// <param name="y">The y coord.</param>
-		public void GDItoOpenGL(ref int x, ref int y)
-		{
-			//	Create an array that will be the viewport.
-			var viewport = new int[4];
-			
-			//	Get the viewport, then convert the mouse point to an opengl point.
-			GetInteger(GL_VIEWPORT, viewport);
-			y = viewport[3] - y;
-		}
-
-#endregion
 
 #region Utility Functions
 
