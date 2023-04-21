@@ -6916,14 +6916,17 @@ namespace SharpGL
 		{
             //  If we are in debug mode, clear the error flag.
 #if DEBUG
-      // GetError() should not be called at all inside glBegin-glEnd
-if (insideGLBegin == false)
-{
-            GetError();
-      }
+            // GetError() should not be called at all inside glBegin-glEnd
+            if (insideGLBegin == false)
+            {
+                GetError();
+                // ftlPhysicsGuy
+                // Clear Errors, noting any errors still in the buffer
+                CheckErrors(10, true);
+            }
 #endif
 
-      //  If we are not the current OpenGL object, make ourselves current.
+            //  If we are not the current OpenGL object, make ourselves current.
             if (currentOpenGLInstance != this)
             {
                 MakeCurrent();
@@ -6940,17 +6943,64 @@ if (insideGLBegin == false)
             //  are not in a glBegin function.
             if (insideGLBegin == false)
             {
-                //	This error check is very useful, as you can break anytime 
-                //	an OpenGL error occurs, going through a program with this on
-                //	can rid it of bugs. It's VERY slow though, as every call is monitored.
-                uint errorCode = GetError();
+                // ftlPhysicsGuy:
+				// Call CheckErrors to report on any errors encountered (accommodates multiple errors)
+                CheckErrors(10, false);
 
-                //	What error is it?
-                if (errorCode != GL_NO_ERROR)
+                ////	This error check is very useful, as you can break anytime 
+                ////	an OpenGL error occurs, going through a program with this on
+                ////	can rid it of bugs. It's VERY slow though, as every call is monitored.
+                //uint errorCode = GetError();
+
+                ////	What error is it?
+                //if (errorCode != GL_NO_ERROR)
+                //{
+                //    //  Get the error message.
+                //    var errorMessage = GetErrorDescription(errorCode);
+
+                //    //  Create a stack trace.
+                //    var stackTrace = new StackTrace();
+
+                //    //  Get the stack frames.
+                //    var stackFrames = stackTrace.GetFrames();
+
+                //    //  Write the error to the trace log.
+                //    var functionName = (stackFrames != null && stackFrames.Length > 1) ? stackFrames[1].GetMethod().Name : "Unknown Function";
+                //    Trace.WriteLine("OpenGL Error: \"" + errorMessage + "\", when calling function SharpGL." + functionName);
+                //}
+            }
+#endif
+        }
+
+        /// <summary>
+		/// ftlPhysicsGuy: Added to make a consistent method for accommodating multiple errors.
+        /// Calls GetErrors and uses the return value in a Trace.WriteLine call to report any
+        /// errors found.  Because there can be multiple errors, the call to GetErrors is
+        /// performed in a loop until no errors are found or until the loop has been executed for
+        /// a given maximum number of counts.
+        /// </summary>
+        /// <param name="maxLoopCount">Maximum number of times to report new errors before giving up</param>
+        /// <param name="clearingErrors">True if using CheckErrors to clear any existing errors (checks for any errors already in the buffer that have not yet been reported).</param>
+        protected void CheckErrors(int maxLoopCount, bool clearingErrors)
+        {
+            if (renderContextProvider == null) return;
+            // This error check is very useful, as you can break anytime 
+            // an OpenGL error occurs, going through a program with this on
+            // can rid it of bugs. It's VERY slow though, as every call is monitored.
+            uint errorCode = GetError();
+
+            int loopCount = 0;
+            while (errorCode != GL_NO_ERROR && loopCount < maxLoopCount) // JWH: added while loop with count checks
+            {
+                //  Get the error message.
+                var errorMessage = GetErrorDescription(errorCode);
+
+                if (clearingErrors)
                 {
-                    //  Get the error message.
-                    var errorMessage = GetErrorDescription(errorCode);
-
+                    Trace.WriteLine("OpenGL Error: when trying to CLEAR errors, found an old, unreported error: \"" + errorMessage + "\"");
+                }
+                else
+                {
                     //  Create a stack trace.
                     var stackTrace = new StackTrace();
 
@@ -6958,11 +7008,16 @@ if (insideGLBegin == false)
                     var stackFrames = stackTrace.GetFrames();
 
                     //  Write the error to the trace log.
-                    var functionName = (stackFrames != null && stackFrames.Length > 1) ? stackFrames[1].GetMethod().Name : "Unknown Function";
+                    var functionName = (stackFrames != null && stackFrames.Length > 2) ? stackFrames[2].GetMethod().Name : "Unknown Function";
                     Trace.WriteLine("OpenGL Error: \"" + errorMessage + "\", when calling function SharpGL." + functionName);
                 }
+
+                // Loop until all errors are checked and reset:
+                errorCode = GetError();
+                loopCount++;
             }
-#endif
+            if (loopCount >= maxLoopCount)
+                Trace.WriteLine("PreGLCall Error: looped with GetError() " + maxLoopCount + " times without clearing GL errors");
         }
 
 #endregion
