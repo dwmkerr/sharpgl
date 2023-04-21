@@ -556,6 +556,9 @@ namespace SharpGL
            fdwStrikeOut, uint fdwCharSet, uint fdwOutputPrecision, uint
            fdwClipPrecision, uint fdwQuality, uint fdwPitchAndFamily, string lpszFace);
 
+        [DllImport(Gdi32, SetLastError = true)]
+        public static extern bool GetCharABCWidthsFloat(IntPtr hDC, uint iFirstChar, uint iLastChar, [Out, MarshalAs(UnmanagedType.LPArray)] ABCFLOAT[] lpABCF);
+
         #endregion
 
         #region User32 Functions
