@@ -9,6 +9,45 @@ namespace SharpGL
     public partial class OpenGL
     {
         /// <summary>
+        /// ftlPhysicsGuy - This should provide better performance than using a dictionary.
+        ///                 Testing indicated that with only 15 items in extensionFunctions,
+        ///                 accessing this static class averaged about 7 times faster than doing
+        ///                 a lookup on the dictionary<para></para>
+        /// A static class that holds a delegate for a given GL Extensions Function.  During
+        /// runtime, the application will generate or retrieve the appropriate class for a given
+        /// delegate type as needed when GetDelegateFor<typeparamref name="T"/>() is called.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        static class GlExtensionFunction<T> where T : class
+        {
+            private static T m_delegate = null;
+            public static T Delegate
+            {
+                get
+                {
+                    if (m_delegate == null)
+                    {
+                        Delegate del = null;
+                        Type delegateType = typeof(T);
+                        //  Get the name of the extension function.
+                        string name = delegateType.Name;
+                        IntPtr proc = Win32.wglGetProcAddress(name);
+                        if (proc == IntPtr.Zero)
+                            throw new Exception("Extension function " + name + " not supported");
+
+                        //  Get the delegate for the function pointer.
+                        del = Marshal.GetDelegateForFunctionPointer(proc, delegateType);
+                        if (del == null)
+                            throw new Exception("Extension function " + name + " marshalled incorrectly");
+
+                        m_delegate = del as T;
+                    }
+                    return m_delegate;
+                }
+            }
+        }
+
+        /// <summary>
         /// Determines whether a named extension function is supported.
         /// </summary>
         /// <param name="extensionFunctionName">Name of the extension function.</param>
@@ -31,34 +70,11 @@ namespace SharpGL
         /// <returns>The delegate that points to the extension function.</returns>
         private T GetDelegateFor<T>() where T : class
         {
-            //  Get the type of the extension function.
-            Type delegateType = typeof(T);
-
-            //  Get the name of the extension function.
-            string name = delegateType.Name;
-
-            // ftlPhysicsGuy - Better way
-            Delegate del = null;
-            if (extensionFunctions.TryGetValue(name, out del) == false)
-            {
-                IntPtr proc = Win32.wglGetProcAddress(name);
-                if (proc == IntPtr.Zero)
-                    throw new Exception("Extension function " + name + " not supported");
-
-                //  Get the delegate for the function pointer.
-                del = Marshal.GetDelegateForFunctionPointer(proc, delegateType);
-
-                //  Add to the dictionary.
-                extensionFunctions.Add(name, del);
-            }
-
-            return del as T;
+            // Retrieves or creates a static version of the GlExtensionFunction class to provide
+            // the delegate for this method
+            // ftlPhysicsGuy - See comments on GlExtensionFunction class above.
+            return GlExtensionFunction<T>.Delegate;
         }
-
-        /// <summary>
-        /// The set of extension functions.
-        /// </summary>
-        private Dictionary<string, Delegate> extensionFunctions = new Dictionary<string, Delegate>();
 
         #region OpenGL 1.2
 
