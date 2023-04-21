@@ -104,6 +104,10 @@ namespace SharpGL.WPF
                         gl.LoadIdentity();
                     }
                 }
+ 
+                // Force re-creation of image buffer since size has changed
+                if (UseWriteableBitmapForRendering) 
+                    _imageBuffer = null;
             }
         }
 
@@ -121,6 +125,8 @@ namespace SharpGL.WPF
             {
                 //  Create OpenGL.
                 gl.Create(OpenGLVersion, RenderContextType, 1, 1, 32, null);
+                // Force re-set of dpi and format settings
+                if (UseWriteableBitmapForRendering) _dpiX = 0;
             }
 
             //  Set the most basic OpenGL styles.
@@ -137,6 +143,74 @@ namespace SharpGL.WPF
             timer.Interval = new TimeSpan(0, 0, 0, 0, (int)(1000.0 / FrameRate));
         }
 
+
+        // ftlPhysicsGuy:
+        // Fields to support the WriteableBitmap method of rendering the image for display
+        byte[] _imageBuffer;
+        WriteableBitmap _writeableBitmap;
+        Int32Rect _imageRect;
+        int _imageStride;
+        double _dpiX = 96;
+        double _dpiY = 96;
+        PixelFormat _format = PixelFormats.Bgra32;
+        int _bytesPerPixel = 32 >> 3;
+
+        /// <summary>
+        /// Fill the ImageSource from the provided bits IntPtr, using the provided hBitMap IntPtr
+        /// if needed to determine key data from the bitmap source.
+        /// </summary>
+        /// <param name="bits">An IntPtr to the bits for the bitmap image.  Generally provided from
+        /// DIBSectionRenderContextProvider.DIBSection.Bits or from
+        /// FBORenderContextProvider.InternalDIBSection.Bits.</param>
+        /// <param name="hBitmap">An IntPtr to the HBitmap for the image.  Generally provided from
+        /// DIBSectionRenderContextProvider.DIBSection.HBitmap or from
+        /// FBORenderContextProvider.InternalDIBSection.HBitmap.</param>
+        public void FillImageSource(IntPtr bits, IntPtr hBitmap)
+        {
+            // If DPI hasn't been set, use a call to HBitmapToBitmapSource to fill the info
+            // This should happen only once (near the start of the application)
+            if (_dpiX == 0)
+            {
+                var bitmapSource = BitmapConversion.HBitmapToBitmapSource(hBitmap);
+                _dpiX = bitmapSource.DpiX;
+                _dpiY = bitmapSource.DpiY;
+                _format = bitmapSource.Format;
+                _bytesPerPixel = gl.RenderContextProvider.BitDepth >> 3;
+                // FBO render context flips the image vertically, so transform to compensate
+                if (RenderContextType == SharpGL.RenderContextType.FBO)
+                {
+                    image.RenderTransform = new ScaleTransform(1.0, -1.0);
+                    image.RenderTransformOrigin = new Point(0.0, 0.5);
+                }
+                else
+                {
+                    image.RenderTransform = Transform.Identity;
+                    image.RenderTransformOrigin = new Point(0.0, 0.0);
+                }
+            }
+
+            // If the image buffer is null, create it at the correct size
+            // This should happen when the size of the image changes
+            if (_imageBuffer == null)
+            {
+                int width = gl.RenderContextProvider.Width;
+                int height = gl.RenderContextProvider.Height;
+
+                int imageBufferSize = width * height * _bytesPerPixel;
+                _imageBuffer = new byte[imageBufferSize];
+                _writeableBitmap = new WriteableBitmap(width, height, _dpiX, _dpiY, _format, null);
+                _imageRect = new Int32Rect(0, 0, width, height);
+                _imageStride = width * _bytesPerPixel;
+            }
+
+            // Fill the image buffer from the bits and create the writeable bitmap
+            System.Runtime.InteropServices.Marshal.Copy(bits, _imageBuffer, 0, _imageBuffer.Length);
+            _writeableBitmap.WritePixels(_imageRect, _imageBuffer, _imageStride, 0);
+
+            image.Source = _writeableBitmap;
+        }
+
+
         /// <summary>
         /// Handles the Tick event of the timer control.
         /// </summary>
@@ -146,6 +220,8 @@ namespace SharpGL.WPF
         {
             DoRender();
         }
+
+        public double FrameTime { get { return frameTime; } }
 
         /// <summary>
         /// Executes the GL Render
@@ -188,10 +264,18 @@ namespace SharpGL.WPF
 
                             if (hBitmap != IntPtr.Zero)
                             {
-                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
+                                if (UseWriteableBitmapForRendering)
+                                {
+                                    //  Fill the image source
+                                    FillImageSource(provider.DIBSection.Bits, hBitmap);
+                                }
+                                else
+                                {
+                                    var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
 
-                                //  Copy the pixels over.
-                                image.Source = newFormatedBitmapSource;
+                                    //  Copy the pixels over.
+                                    image.Source = newFormatedBitmapSource;
+                                }
                             }
                         }
                         break;
@@ -206,10 +290,18 @@ namespace SharpGL.WPF
 
                             if (hBitmap != IntPtr.Zero)
                             {
-                                var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
+                                if (UseWriteableBitmapForRendering)
+                                {
+                                    //  Fill the image source
+                                    FillImageSource(provider.InternalDIBSection.Bits, hBitmap);
+                                }
+                                else
+                                {
+                                    var newFormatedBitmapSource = GetFormatedBitmapSource(hBitmap);
 
-                                //  Copy the pixels over.
-                                image.Source = newFormatedBitmapSource;
+                                    //  Copy the pixels over.
+                                    image.Source = newFormatedBitmapSource;
+                                }
                             }
                         }
                         break;
@@ -434,6 +526,27 @@ namespace SharpGL.WPF
                 }
             }
         }
+
+        /// <summary>
+        /// The UseWriteableBitmapForRendering property.
+        /// </summary>
+        private static readonly DependencyProperty UseWriteableBitmapForRenderingProperty =
+          DependencyProperty.Register("UseWriteableBitmapForRendering", typeof(bool), typeof(OpenGLControl), 
+          new PropertyMetadata(true));
+
+        /// <summary>
+        /// Gets or sets a boolean noting whether to use a WriteableBitmap for rendering,
+        /// which should improve frame rates
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if using a WriteableBitmap to render, otherwise <c>false</c>.
+        /// </value>
+        public bool UseWriteableBitmapForRendering
+        {
+            get { return (bool)GetValue(UseWriteableBitmapForRenderingProperty); }
+            set { SetValue(UseWriteableBitmapForRenderingProperty, value); }
+        }
+
 
         /// <summary>
         /// Gets the OpenGL instance.
