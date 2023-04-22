@@ -6966,7 +6966,7 @@ if (insideGLBegin == false)
         }
 
 #endregion
-
+        
 #region Utility Functions
 
 		/// <summary>
