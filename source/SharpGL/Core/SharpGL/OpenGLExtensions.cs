@@ -2420,6 +2420,23 @@ namespace SharpGL
 
         #endregion
 
+        #region OpenGL 4.0 Additions (ftlPhysicsGuy)
+        //  Methods        
+        public void PatchParameter(uint pname, uint value)
+        {
+            GetDelegateFor<glPatchParameteri>()(pname, value);
+        }
+
+        private delegate void glPatchParameteri(uint pname, uint value);
+
+        // Constants
+        public const uint GL_TESS_EVALUATION_SHADER = 0x8e87;
+        public const uint GL_TESS_CONTROL_SHADER = 0x8e88;
+        public const uint GL_PATCH_VERTICES = 0x8E72; //36466;
+        public const uint GL_PATCH_DEFAULT_INNER_LEVEL = 0x8E73;
+        public const uint GL_PATCH_DEFAULT_OUTER_LEVEL = 0x8E74;
+        #endregion
+
         #region GL_EXT_texture3D
 
         /// <summary>
