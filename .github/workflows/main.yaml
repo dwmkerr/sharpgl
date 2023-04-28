@@ -48,15 +48,14 @@ jobs:
           ./source/SharpGL/artifacts/
 
     # Now that we know the build runs, create a release PR if needed.
-    steps:
-      - uses: google-github-actions/release-please-action@v3
-        id: release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: simple
-          package-name: sharpgl
-          extra-files: |
-            source/SharpGL/SharedAssemblyInfo.cs
+    - uses: google-github-actions/release-please-action@v3
+      id: release
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        release-type: simple
+        package-name: sharpgl
+        extra-files: |
+          source/SharpGL/SharedAssemblyInfo.cs
 
     # If we are building a release (i.e. we've merged from release-please) then
     # we can deploy.
