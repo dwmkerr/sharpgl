@@ -5,23 +5,7 @@ on:
 
 jobs:
   pull-request:
-    strategy:
-      matrix:
-        windows-version:
-          - windows-2019
-          - windows-2022
-        visual-studio-version:
-          - 16.11
-          - 17.3
-        # The GitHub Actions Windows images do not contain multiple versions of
-        # msbuild, so we need to exclude certain combinations.
-        exclude:
-        - windows-version: windows-2019
-          visual-studio-version: 17.3
-        - windows-version: windows-2022
-          visual-studio-version: 16.11
-    runs-on: ${{ matrix.windows-version }}
-
+    runs-on: windows-2022
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -29,14 +13,26 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
       with:
-        vs-version: ${{ matrix.visual-studio-version }}
+        vs-version: 17.3
         msbuild-architecture: x64
 
-    - name: Build
-      run: ./source/SharpGL/build.ps1
+    # Before building, restore Nuget packages and install dependencies.
+    - name: Install Dependencies
+      run: |
+        nuget restore source/SharpGL/SharpGL.sln
+        ./source/SharpGL/config.ps1
 
+    # Use our own build script as it hides some unneeded warnings.
+    - name: Build
+      run: |
+        ./source/SharpGL/build.ps1
+        ./source/SharpGL/pack.ps1
+
+    # Test and upload coverage reports.
     - name: Test
-      run: ./source/SharpGL/test.ps1
+      run: |
+        ./source/SharpGL/test.ps1
+        ./source/SharpGL/coverage.ps1
 
     # Upload the artifacts folder.
     - name: Upload Artifacts
