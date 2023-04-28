@@ -9,7 +9,45 @@ on:
       - main
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: 17.3
+        msbuild-architecture: x64
+
+    # Before building, restore Nuget packages and install dependencies.
+    - name: Install Dependencies
+      run: |
+        nuget restore source/SharpGL/SharpGL.sln
+        ./source/SharpGL/config.ps1
+
+    # Use our own build script as it hides some unneeded warnings.
+    - name: Build
+      run: |
+        ./source/SharpGL/build.ps1
+        ./source/SharpGL/pack.ps1
+
+    # Test and upload coverage reports.
+    - name: Test
+      run: |
+        ./source/SharpGL/test.ps1
+        ./source/SharpGL/coverage.ps1
+
+    # Upload the artifacts folder.
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: |
+          ./source/SharpGL/artifacts/
+
+    # Now that we know the build runs, create a release PR if needed.
     steps:
       - uses: google-github-actions/release-please-action@v3
         id: release
@@ -19,3 +57,10 @@ jobs:
           package-name: sharpgl
           extra-files: |
             source/SharpGL/SharedAssemblyInfo.cs
+
+    # If we are building a release (i.e. we've merged from release-please) then
+    # we can deploy.
+    - name: Publish
+      run: nuget push ./artifacts/packages/*.nupkg -Source 'https://api.nuget.org/v2/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+      if: ${{ steps.release.outputs.release_created }}
+
