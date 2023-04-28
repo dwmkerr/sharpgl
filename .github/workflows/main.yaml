@@ -60,6 +60,6 @@ jobs:
     # If we are building a release (i.e. we've merged from release-please) then
     # we can deploy.
     - name: Publish
-      run: nuget push ./artifacts/packages/*.nupkg -Source 'https://api.nuget.org/v2/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
       # temporarily always publish to test new api key
+      run: nuget push -ApiKey ${{secrets.NUGET_API_KEY}} ./artifacts/packages/*.nupkg 
       # if: ${{ steps.release.outputs.release_created }}
