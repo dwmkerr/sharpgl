@@ -11,6 +11,7 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
 <!-- vim-markdown-toc GFM -->
 
 * [Getting Started](#getting-started)
+* [Compatibility](#compatibility)
 * [Developer Guide](#developer-guide)
     * [Releasing](#releasing)
 * [Sample Applications](#sample-applications)
@@ -80,9 +81,9 @@ All components support the .NET Framework 4.0 onwards, .NET Core 3.0 onwards and
 | `SharpGL.WinForms` | 4.0+ | 3.0+ | 2.1+ |
 | `SharpGL.WPF` | 4.0+ | 3.0+ | 2.1+ |
 
-**Platform Comptability**
+**Platform Compatibility**
 
-Compatability across platforms is supported via framework specific components.
+Compatibility across platforms is supported via framework specific components.
 
 | Platform | Support       |
 |----------|---------------|

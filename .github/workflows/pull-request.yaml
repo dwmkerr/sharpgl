@@ -35,6 +35,9 @@ jobs:
     - name: Build
       run: ./source/SharpGL/build.ps1
 
+    - name: Test
+      run: ./source/SharpGL/test.ps1
+
     # Upload the artifacts folder.
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
