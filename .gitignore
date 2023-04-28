@@ -1,6 +1,7 @@
-#ignore thumbnails created by windows
+# Ignore thumbnails created by windows / MacOS.
 Thumbs.db
-#Ignore files build by Visual Studio
+.DS_Store
+# Ignore files build by Visual Studio
 *.user
 *.aps
 *.pch
