@@ -61,5 +61,4 @@ jobs:
     # we can deploy.
     - name: Publish
       # temporarily always publish to test new api key
-      run: nuget push -ApiKey ${{secrets.NUGET_API_KEY}} ./artifacts/packages/*.nupkg 
-      # if: ${{ steps.release.outputs.release_created }}
+      run: nuget push -Source https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}} ./artifacts/packages/*.nupkg 
