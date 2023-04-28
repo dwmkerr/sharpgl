@@ -20,6 +20,6 @@ using System.Runtime.InteropServices;
 // action know that we want to update semvers on these lines. Please do not
 // remove these comments.
 // x-release-please-start-version
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+[assembly: AssemblyVersion("3.1.2.0")]
+[assembly: AssemblyFileVersion("3.1.2.0")]
 // x-release-please-end

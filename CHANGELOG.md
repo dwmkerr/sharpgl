@@ -1,3 +1,13 @@
+# Changelog
+
+## [3.1.2](https://github.com/dwmkerr/sharpgl/compare/v3.1.1...v3.1.2) (2023-04-28)
+
+
+### Bug Fixes
+
+* annotate version file for release please ([4ef4a48](https://github.com/dwmkerr/sharpgl/commit/4ef4a4852e0944adce90c373e8593c67a0a35848))
+* correct release-please type ([9a4fc62](https://github.com/dwmkerr/sharpgl/commit/9a4fc62ab9a03d5bdd946754827a59a276125b63))
+
 #Version 2.4
 
 * All imported APIs now use 'SetLastError = true' to aid in analysing issues (thanks [robinsedlaczek](https://github.com/robinsedlaczek).
@@ -11,4 +21,4 @@
   - SharpGLCore -> SharpGL
   - SharpGLforWinForms -> SharpGL.WinForms
   - SharpGLforWPF -> SharpGL.WPF
-* No dynamic calls to OpenGL extension delegates, leading to a big performance gain. 
+* No dynamic calls to OpenGL extension delegates, leading to a big performance gain.
