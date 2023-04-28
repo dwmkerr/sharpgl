@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyProduct("SharpGL")]
-[assembly: AssemblyCopyright("Copyright © Dave Kerr 2020")]
+[assembly: AssemblyCopyright("Copyright © Dave Kerr 2023")]
 
 // Version information for an assembly consists of the following four values:
 //
