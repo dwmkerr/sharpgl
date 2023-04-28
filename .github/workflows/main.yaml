@@ -37,7 +37,7 @@ jobs:
     # we can deploy.
     - name: Publish
       # temporarily always publish to test new api key
-      run: nuget push ./artifacts/packages/*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}}
+      run: nuget push ./source/SharpGL/artifacts/packages/*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}}
 
     # Test and upload coverage reports.
     - name: Test
@@ -66,5 +66,5 @@ jobs:
     # If we are building a release (i.e. we've merged from release-please) then
     # we can deploy.
     - name: Publish
-      run: nuget push ./artifacts/packages/*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}}
+      run: nuget push ./source/SharpGL/artifacts/packages/*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey ${{secrets.NUGET_API_KEY}}
       if: ${{ steps.release.outputs.release_created }}
