@@ -1,6 +1,0 @@
-{
-  "release-type": "simple",
-  "extra-files": [
-    "./source/SharpGL/SharedAssemblyInfo.cs"
-  ]
-}

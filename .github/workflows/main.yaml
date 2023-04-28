@@ -17,3 +17,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: simple
           package-name: sharpgl
+          extra-files: |
+            ./source/SharpGL/SharedAssemblyInfo.cs
