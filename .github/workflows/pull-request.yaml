@@ -32,11 +32,23 @@ jobs:
         vs-version: ${{ matrix.visual-studio-version }}
         msbuild-architecture: x64
 
-    - name: Build
-      run: ./source/SharpGL/build.ps1
+    # Before building, restore Nuget packages and install dependencies.
+    - name: Install Dependencies
+      run: |
+        nuget restore source/SharpGL/SharpGL.sln
+        ./source/SharpGL/config.ps1
 
+    # Use our own build script as it hides some unneeded warnings.
+    - name: Build
+      run: |
+        ./source/SharpGL/build.ps1
+        ./source/SharpGL/pack.ps1
+
+    # Test and upload coverage reports.
     - name: Test
-      run: ./source/SharpGL/test.ps1
+      run: |
+        ./source/SharpGL/test.ps1
+        ./source/SharpGL/coverage.ps1
 
     # Upload the artifacts folder.
     - name: Upload Artifacts
