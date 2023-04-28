@@ -1,0 +1,18 @@
+# The 'main' workflow is used to create the 'Release Please' pull
+# request. This PR is opened when we have a new commit to main.
+# See:
+#   https://github.com/googleapis/release-please
+name: main
+on:
+  push:
+    branches:
+      - main
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          package-name: sharpgl
