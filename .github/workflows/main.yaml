@@ -18,4 +18,4 @@ jobs:
           release-type: simple
           package-name: sharpgl
           extra-files: |
-            ./source/SharpGL/SharedAssemblyInfo.cs
+            source/SharpGL/SharedAssemblyInfo.cs

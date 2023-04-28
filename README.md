@@ -13,6 +13,7 @@ Check out the [Samples](https://github.com/dwmkerr/sharpgl/wiki/Samples), they'r
 * [Getting Started](#getting-started)
 * [Compatibility](#compatibility)
 * [Developer Guide](#developer-guide)
+    * [Build Pipelines](#build-pipelines)
     * [Releasing](#releasing)
 * [Sample Applications](#sample-applications)
     * [WinForms - Ducky Sample](#winforms---ducky-sample)
@@ -119,6 +120,18 @@ artifacts\
   \tests                  # NUnit Test Reports
   \coverage               # Coverage Reports
   \packages               # NuGet Packages
+```
+
+### Build Pipelines
+
+Test the `main` build pipeline with [`act`]():
+
+```bash
+# Install act. See: https://github.com/nektos/act
+brew install act
+
+# Run the main pipeline to test release please
+act -j main -s GITHUB_TOKEN=<token>
 ```
 
 ### Releasing
