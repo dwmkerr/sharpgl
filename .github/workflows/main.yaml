@@ -50,7 +50,7 @@ jobs:
     # If we are building a release (i.e. we've merged from release-please) then
     # we can deploy.
     - name: Publish
-      run: dotnet nuget push ./source/SharpGL/artifacts/packages/*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+      run: dotnet nuget push ./source/SharpGL/artifacts/packages/*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{secrets.NUGET_API_KEY}}
 
 
     # Now that we know the build runs, create a release PR if needed.
