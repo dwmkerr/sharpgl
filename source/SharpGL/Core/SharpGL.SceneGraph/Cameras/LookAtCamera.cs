@@ -35,13 +35,13 @@ namespace SharpGL.SceneGraph.Cameras
 		/// <summary>
 		/// This is the point in the scene that the camera is pointed at.
 		/// </summary>
-		protected Vertex target = new Vertex(0, 0, 0);
+		protected System.Numerics.Vector3 target = new System.Numerics.Vector3(0, 0, 0);
         
 		/// <summary>
 		/// This is a vector that describes the 'up' direction (normally 0, 0, 1).
 		/// Use this to tilt the camera.
 		/// </summary>
-		protected Vertex upVector = new Vertex(0, 0, 1);
+		protected System.Numerics.Vector3 upVector = new System.Numerics.Vector3(0, 0, 1);
 
         /// <summary>
         /// Gets or sets the target.
@@ -50,7 +50,7 @@ namespace SharpGL.SceneGraph.Cameras
         /// The target.
         /// </value>
 		[Description("The target of the camera (the point it's looking at"), Category("Camera")]
-		public Vertex Target
+		public System.Numerics.Vector3 Target
 		{
 			get {return target;}
 			set {target = value;}
@@ -63,7 +63,7 @@ namespace SharpGL.SceneGraph.Cameras
         /// Up vector.
         /// </value>
 		[Description("The up direction, relative to camera. (Controls tilt)."), Category("Camera")]
-		public Vertex UpVector
+		public System.Numerics.Vector3 UpVector
 		{
 			get {return upVector;}
 			set {upVector = value;}

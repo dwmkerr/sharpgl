@@ -14,11 +14,11 @@ namespace SharpGL.WinForms.NETDesignSurface
         {
             //  TODO: When can we call this?
 
-            //  We cannot decorate the 'Texture', 'Vertex' and associated SceneGraph classes with the attributes which define
+            //  We cannot decorate the 'Texture', 'System.Numerics.Vector3' and associated SceneGraph classes with the attributes which define
             //  the type converters and editors, becauses the SceneGraph library is cross-platform. So we have to associate
             //  the attributes at runtime.
             TypeDescriptor.AddAttributes(typeof(Texture), new EditorAttribute(typeof(UITextureEditor), typeof(UITypeEditor)));
-            TypeDescriptor.AddAttributes(typeof(Vertex), new EditorAttribute(typeof(VertexConverter), typeof(TypeConverter)));
+            TypeDescriptor.AddAttributes(typeof(System.Numerics.Vector3), new EditorAttribute(typeof(VertexConverter), typeof(TypeConverter)));
         }
     }
 }

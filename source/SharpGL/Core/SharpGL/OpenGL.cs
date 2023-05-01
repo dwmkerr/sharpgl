@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Numerics;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using SharpGL.RenderContextProviders;
@@ -6292,6 +6293,10 @@ namespace SharpGL
             return result;
 		}
 
+		public void Vertex(System.Numerics.Vector2 vector) => Vertex(vector.X, vector.Y);
+		public void Vertex(System.Numerics.Vector3 vector) => Vertex(vector.X, vector.Y, vector.Z);
+		public void Vertex(System.Numerics.Vector4 vector) => Vertex(vector.X, vector.Y, vector.Z, vector.W);
+
 		/// <summary>
 		/// Set the current vertex (must be called between 'Begin' and 'End').
 		/// </summary>
@@ -6308,7 +6313,7 @@ namespace SharpGL
         /// Set the current vertex (must be called between 'Begin' and 'End').
         /// </summary>
         /// <param name="v">Specifies the coordinate.</param>
-        public void Vertex(double[] v)
+        public void Vertex(params double[] v)
         {
             PreGLCall();
             if (v.Length == 2)
@@ -6348,7 +6353,7 @@ namespace SharpGL
         /// Set the current vertex (must be called between 'Begin' and 'End').
         /// </summary>
         /// <param name="v">Specifies the coordinate.</param>
-        public void Vertex(int[] v)
+        public void Vertex(params int[] v)
         {
             PreGLCall();
             if (v.Length == 2)
@@ -6376,7 +6381,7 @@ namespace SharpGL
         /// Set the current vertex (must be called between 'Begin' and 'End').
         /// </summary>
         /// <param name="v">Specifies the coordinate.</param>
-        public void Vertex2sv(short[] v)
+        public void Vertex2sv(params short[] v)
         {
             PreGLCall();
             if (v.Length == 2)
@@ -6418,7 +6423,7 @@ namespace SharpGL
 		/// Sets the current vertex (must be called between 'Begin' and 'End').
 		/// </summary>
 		/// <param name="v">An array of 2, 3 or 4 floats.</param>
-		public void Vertex(float []v)
+		public void Vertex(params float []v)
 		{
 			PreGLCall();
 			if(v.Length == 2)

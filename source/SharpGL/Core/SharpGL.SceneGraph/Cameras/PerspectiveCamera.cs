@@ -29,8 +29,8 @@ namespace SharpGL.SceneGraph.Cameras
             //  Perform the perspective transformation.
             //gl.Translate(Position.X, Position.Y, Position.Z);
             gl.Perspective(fieldOfView, AspectRatio, near, far);
-            Vertex target = new Vertex(0, 0, 0);
-            Vertex upVector = new Vertex(0, 0, 1);
+            System.Numerics.Vector3 target = new System.Numerics.Vector3(0, 0, 0);
+            System.Numerics.Vector3 upVector = new System.Numerics.Vector3(0, 0, 1);
             //  Perform the look at transformation.
             gl.LookAt((double)Position.X, (double)Position.Y, (double)Position.Z,
                 (double)target.X, (double)target.Y, (double)target.Z,

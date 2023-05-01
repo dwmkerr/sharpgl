@@ -58,7 +58,7 @@ namespace SharpGL.SceneGraph.Evaluators
         /// <summary>
         /// The control points.
         /// </summary>
-		private VertexGrid controlPoints = new VertexGrid();
+		private VectorGrid controlPoints = new VectorGrid();
 
         /// <summary>
         /// Draw points flag.
@@ -82,7 +82,7 @@ namespace SharpGL.SceneGraph.Evaluators
         /// The control points.
         /// </value>
         [Description("The control points."), Category("Evaluator")]
-        public VertexGrid ControlPoints
+        public VectorGrid ControlPoints
 		{
 			get {return controlPoints;}
 			set {controlPoints = value; }

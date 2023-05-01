@@ -30,9 +30,9 @@ namespace SharpGL.SceneGraph.Helpers
             //  Create the 'Look At' camera
             var lookAtCamera = new LookAtCamera()
             {
-                Position = new Vertex(-10f, -10f, 10f),
-                Target = new Vertex(0f, 0f, 0f),
-                UpVector = new Vertex(0f, 0f, 1f)
+                Position = new System.Numerics.Vector3(-10f, -10f, 10f),
+                Target = new System.Numerics.Vector3(0f, 0f, 0f),
+                UpVector = new System.Numerics.Vector3(0f, 0f, 1f)
             };
 
             //  Set the look at camera as the current camera.
@@ -49,21 +49,21 @@ namespace SharpGL.SceneGraph.Helpers
             {
                 Name="Light 1",
                 On = true,
-                Position = new Vertex(-9, -9, 11),
+                Position = new System.Numerics.Vector3(-9, -9, 11),
                 GLCode = OpenGL.GL_LIGHT0
             };
             Light light2 = new Light()
             {
                 Name = "Light 2",
                 On = true,
-                Position = new Vertex(9, -9, 11),
+                Position = new System.Numerics.Vector3(9, -9, 11),
                 GLCode = OpenGL.GL_LIGHT1
             };
             Light light3 = new Light()
             {
                 Name = "Light 3",
                 On = true,
-                Position = new Vertex(0, 15, 15),
+                Position = new System.Numerics.Vector3(0, 15, 15),
                 GLCode = OpenGL.GL_LIGHT2
             };
             //  Add the lights.

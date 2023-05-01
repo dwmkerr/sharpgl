@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
+using System.Numerics;
 using SharpGL.SceneGraph.Collections;
 using SharpGL.SceneGraph.Core;
 using SharpGL.SceneGraph.Lighting;
@@ -44,13 +44,13 @@ namespace SharpGL.SceneGraph.Primitives
 		/// array, and create a face. It will take account of duplicate vertices too!
 		/// </summary>
 		/// <param name="vertexData">A set of vertices to make into a face.</param>
-		public virtual void AddFaceFromVertexData(Vertex[] vertexData)
+		public virtual void AddFaceFromVertexData(System.Numerics.Vector3[] vertexData)
 		{
 			//	Create a face.
 			Face newFace = new Face();
 
 			//	Go through the vertices...
-			foreach(Vertex v in vertexData)
+			foreach(System.Numerics.Vector3 v in vertexData)
 			{
 				//	Do we have this vertex already?
 				int at = VertexSearch.Search(vertices, 0, v, 0.01f);
@@ -143,14 +143,14 @@ namespace SharpGL.SceneGraph.Primitives
 
                     //	Set a normal, or generate one.
                     if (index.Normal != -1)
-                        gl.Normal(normals[index.Normal]);
+                        gl.Normal(normals[index.Normal].Array());
                     else
                     {
                         //	Do we have enough vertices for a normal?
                         if (face.Indices.Count >= 3)
                         {
                             //	Create a normal.
-                            Vertex vNormal = face.GetSurfaceNormal(this);
+                            System.Numerics.Vector3 vNormal = face.GetSurfaceNormal(this);
                             vNormal.UnitLength();
 
                             // todo use auto smoothing instead
@@ -158,7 +158,7 @@ namespace SharpGL.SceneGraph.Primitives
                             normals.Add(vNormal);
                             index.Normal = normals.Count - 1;
 
-                            gl.Normal(vNormal);
+                            gl.Normal(vNormal.Array());
                         }
                     }
 
@@ -191,11 +191,11 @@ namespace SharpGL.SceneGraph.Primitives
                         if (index.Normal != -1 && index.Vertex != -1)
                         {
                             //	Get the vertex.
-                            Vertex vertex = vertices[index.Vertex];
+                            Vector3 vertex = vertices[index.Vertex];
 
                             //	Get the normal vertex.
-                            Vertex normal = normals[index.Normal];
-                            Vertex vertex2 = vertex + normal;
+                            System.Numerics.Vector3 normal = normals[index.Normal];
+                            System.Numerics.Vector3 vertex2 = vertex + normal;
 
                             gl.Begin(OpenGL.GL_LINES);
                             gl.Vertex(vertex);
@@ -246,7 +246,7 @@ namespace SharpGL.SceneGraph.Primitives
 					float yPos = (float)y / (float)yPoints;
 
 					//	Create a control point from it.
-					Vertex v = new Vertex(xPos, 0, yPos);
+					System.Numerics.Vector3 v = new System.Numerics.Vector3(xPos, 0, yPos);
 
 					//	Add the 'height', based on color.
 					v.Y = (float)col.R / 255.0f + (float)col.G / 255.0f + 
@@ -318,7 +318,7 @@ namespace SharpGL.SceneGraph.Primitives
 				if(regenerateNormals)
 				{
 					//	Find a normal for the face.
-                    Vertex normal = face.GetSurfaceNormal(this);
+                    System.Numerics.Vector3 normal = face.GetSurfaceNormal(this);
 
 					//	Does this normal already exist?
 					int index = VertexSearch.Search(normals, 0, normal, 0.001f);
@@ -356,17 +356,17 @@ namespace SharpGL.SceneGraph.Primitives
 			
 				//	Find the point of intersection upon the plane, as a point 't' along
 				//	the ray.
-				Vertex point1OnPlane = vertices[face.Indices[0].Vertex];
-				Vertex point2OnPlane = vertices[face.Indices[1].Vertex];
-				Vertex point3OnPlane = vertices[face.Indices[2].Vertex];
-				Vertex midpointOpp1 = (point2OnPlane + point3OnPlane) / 2;
-				Vertex midpointOpp2 = (point1OnPlane + point3OnPlane) / 2;
-				Vertex midpointOpp3 = (point1OnPlane + point2OnPlane) / 2;
+				System.Numerics.Vector3 point1OnPlane = vertices[face.Indices[0].Vertex];
+				System.Numerics.Vector3 point2OnPlane = vertices[face.Indices[1].Vertex];
+				System.Numerics.Vector3 point3OnPlane = vertices[face.Indices[2].Vertex];
+				System.Numerics.Vector3 midpointOpp1 = (point2OnPlane + point3OnPlane) / 2;
+				System.Numerics.Vector3 midpointOpp2 = (point1OnPlane + point3OnPlane) / 2;
+				System.Numerics.Vector3 midpointOpp3 = (point1OnPlane + point2OnPlane) / 2;
 				
-				Vertex planeNormal = face.GetSurfaceNormal(this);
+				System.Numerics.Vector3 planeNormal = face.GetSurfaceNormal(this);
 
 
-				Vertex diff = point1OnPlane - ray.origin;
+				System.Numerics.Vector3 diff = point1OnPlane - ray.origin;
 				float s1 = diff.ScalarProduct(planeNormal);
 				float s2 =  ray.direction.ScalarProduct(planeNormal);
 
@@ -380,19 +380,19 @@ namespace SharpGL.SceneGraph.Primitives
 				if(denomintor < 0.00001f && denomintor > -0.00001f)
 					continue;	//	doesn't intersect the plane.
 
-			//	Vertex v = point1OnPlane - ray.origin;
+			//	System.Numerics.Vector3 v = point1OnPlane - ray.origin;
 			//	float t = (v.ScalarProduct(planeNormal)) / denomintor;
 
 				//	Now we can get the point of intersection.
-				Vertex vIntersect = ray.origin + (ray.direction * t);
+				System.Numerics.Vector3 vIntersect = ray.origin + (ray.direction * t);
 
 				//	Do my cool test.
-				Vertex vectorTo1 = vIntersect - point1OnPlane;
-				Vertex vectorTo2 = vIntersect - point2OnPlane;
-				Vertex vectorTo3 = vIntersect - point3OnPlane;
-				Vertex vectorMidTo1 = midpointOpp1 - point1OnPlane;
-				Vertex vectorMidTo2 = midpointOpp2 - point2OnPlane;
-				Vertex vectorMidTo3 = midpointOpp3 - point3OnPlane;
+				System.Numerics.Vector3 vectorTo1 = vIntersect - point1OnPlane;
+				System.Numerics.Vector3 vectorTo2 = vIntersect - point2OnPlane;
+				System.Numerics.Vector3 vectorTo3 = vIntersect - point3OnPlane;
+				System.Numerics.Vector3 vectorMidTo1 = midpointOpp1 - point1OnPlane;
+				System.Numerics.Vector3 vectorMidTo2 = midpointOpp2 - point2OnPlane;
+				System.Numerics.Vector3 vectorMidTo3 = midpointOpp3 - point3OnPlane;
 				
 				if(vectorTo1.Magnitude() > vectorMidTo1.Magnitude())
 					continue;
@@ -487,13 +487,13 @@ namespace SharpGL.SceneGraph.Primitives
 					continue;
 
 				//	Now get the vertices of the face.
-				Vertex v1 = Vertices[face.Indices[0].Vertex];
-				Vertex v2 = Vertices[face.Indices[1].Vertex];
-				Vertex v3 = Vertices[face.Indices[2].Vertex];
+				System.Numerics.Vector3 v1 = Vertices[face.Indices[0].Vertex];
+				System.Numerics.Vector3 v2 = Vertices[face.Indices[1].Vertex];
+				System.Numerics.Vector3 v3 = Vertices[face.Indices[2].Vertex];
 
 				//	Add the vertices to get a the midpoint of the edge formed by those
 				//	vectors.
-				Vertex vMidpoint = (v1 + v2 + v3) / 3;
+				System.Numerics.Vector3 vMidpoint = (v1 + v2 + v3) / 3;
 				Index iMidpoint = new Index(Vertices.Count);
                 Vertices.Add(vMidpoint);
 
@@ -599,7 +599,7 @@ namespace SharpGL.SceneGraph.Primitives
 		/// <summary>
 		/// The vertices that make up the polygon.
 		/// </summary>
-		private List<Vertex> vertices = new List<Vertex>();
+		private List<System.Numerics.Vector3> vertices = new List<System.Numerics.Vector3>();
 
 		/// <summary>
 		/// The UV coordinates (texture coodinates) for the polygon.
@@ -609,7 +609,7 @@ namespace SharpGL.SceneGraph.Primitives
 		/// <summary>
 		/// The normals of the polygon object.
 		/// </summary>
-		private List<Vertex> normals = new List<Vertex>();
+		private List<System.Numerics.Vector3> normals = new List<System.Numerics.Vector3>();
 
 		/// <summary>
 		/// Should the normals be drawn?
@@ -641,7 +641,7 @@ namespace SharpGL.SceneGraph.Primitives
         /// The vertices.
         /// </value>
 		[Description("The vertices that make up the polygon."), Category("Polygon")]
-		public List<Vertex> Vertices
+		public List<System.Numerics.Vector3> Vertices
 		{
 			get {return vertices;}
 			set {vertices = value; }
@@ -667,7 +667,7 @@ namespace SharpGL.SceneGraph.Primitives
         /// The normals.
         /// </value>
 		[Description("The normals."), Category("Normals")]
-		public List<Vertex> Normals
+		public List<System.Numerics.Vector3> Normals
 		{
 			get {return normals;}
 			set {normals = value; }

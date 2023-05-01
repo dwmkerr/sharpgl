@@ -62,7 +62,7 @@ namespace SharpGL.Serialization.Wavefront
                         float z = float.Parse(values[2], CultureInfo.InvariantCulture);
 
                         //  Add the normal.
-                        polygon.Normals.Add(new Vertex(x, y, z));
+                        polygon.Normals.Add(new System.Numerics.Vector3(x, y, z));
                         continue;
                     }
 
@@ -78,7 +78,7 @@ namespace SharpGL.Serialization.Wavefront
                         float z = float.Parse(values[2], CultureInfo.InvariantCulture);
 
                         //   Add the vertices.
-                        polygon.Vertices.Add(new Vertex(x, y, z));
+                        polygon.Vertices.Add(new System.Numerics.Vector3(x, y, z));
 
                         continue;
                     }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp3.0;netcoreapp3.1;net40;net45;net472</TargetFrameworks>
+    <TargetFrameworks>net46;net472;netcoreapp2.0;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <!-- The following properies are used to manage how the project is packaged. -->
     <PackageId>SharpGL.SceneGraph</PackageId>

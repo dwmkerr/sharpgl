@@ -29,9 +29,9 @@ namespace SharpGL.SceneGraph
         public float[] GetPlaneEquation(Polygon parent)
         {
             //	Get refs to vertices.
-            Vertex v1 = parent.Vertices[indices[0].Vertex];
-            Vertex v2 = parent.Vertices[indices[1].Vertex];
-            Vertex v3 = parent.Vertices[indices[2].Vertex];
+            System.Numerics.Vector3 v1 = parent.Vertices[indices[0].Vertex];
+            System.Numerics.Vector3 v2 = parent.Vertices[indices[1].Vertex];
+            System.Numerics.Vector3 v3 = parent.Vertices[indices[2].Vertex];
 
             float a = v1.Y * (v2.Z - v3.Z) + v2.Y * (v3.Z - v1.Z) + v3.Y * (v1.Z - v2.Z);
             float b = v1.Z * (v2.X - v3.X) + v2.Z * (v3.X - v1.X) + v3.Z * (v1.X - v2.X);
@@ -48,17 +48,17 @@ namespace SharpGL.SceneGraph
         /// </summary>
         /// <param name="parent">The parent.</param>
         /// <returns></returns>
-        public Vertex GetSurfaceNormal(Polygon parent)
+        public System.Numerics.Vector3 GetSurfaceNormal(Polygon parent)
         {
             //	Do we have enough vertices for a normal?
             if (indices.Count < 3)
-                return new Vertex(0, 0, 0);
+                return new System.Numerics.Vector3(0, 0, 0);
 
-            Vertex v1 = parent.Vertices[indices[0].Vertex];
-            Vertex v2 = parent.Vertices[indices[1].Vertex];
-            Vertex v3 = parent.Vertices[indices[2].Vertex];
-            Vertex va = v1 - v2;
-            Vertex vb = v2 - v3;
+            System.Numerics.Vector3 v1 = parent.Vertices[indices[0].Vertex];
+            System.Numerics.Vector3 v2 = parent.Vertices[indices[1].Vertex];
+            System.Numerics.Vector3 v3 = parent.Vertices[indices[2].Vertex];
+            System.Numerics.Vector3 va = v1 - v2;
+            System.Numerics.Vector3 vb = v2 - v3;
             return va.VectorProduct(vb);
         }
 
@@ -97,7 +97,7 @@ namespace SharpGL.SceneGraph
                     if (Indices.Count >= 3)
                     {
                         //	Create a normal.
-                        Vertex vNormal = GetSurfaceNormal(parent);
+                        System.Numerics.Vector3 vNormal = GetSurfaceNormal(parent);
                         vNormal.UnitLength();
 
                         //	Add it to the normals, setting the index for next time.

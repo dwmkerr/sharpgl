@@ -21,7 +21,7 @@ namespace SharpGL.SceneGraph.Core
         /// Creates the volume from vertices.
         /// </summary>
         /// <param name="vertices">The vertices.</param>
-        public void FromVertices(IEnumerable<Vertex> vertices)
+        public void FromVertices(IEnumerable<System.Numerics.Vector3> vertices)
         {
             var vertexList = vertices.ToList();
             if (vertexList.Count < 2)
@@ -77,7 +77,7 @@ namespace SharpGL.SceneGraph.Core
         /// </summary>
         /// <param name="centre">The centre.</param>
         /// <param name="radius">The radius.</param>
-        public void FromSphericalVolume(Vertex centre, float radius)
+        public void FromSphericalVolume(System.Numerics.Vector3 centre, float radius)
         {
             //  Set the centre.
             lll = centre;
@@ -100,18 +100,18 @@ namespace SharpGL.SceneGraph.Core
         /// <param name="height">The height.</param>
         /// <param name="baseRadius">The base radius.</param>
         /// <param name="topRadius">The top radius.</param>
-        public void FromCylindricalVolume(Vertex baseline, float height, float baseRadius, float topRadius)
+        public void FromCylindricalVolume(System.Numerics.Vector3 baseline, float height, float baseRadius, float topRadius)
         {
-            Vertex[] set = new Vertex[6];
+            System.Numerics.Vector3[] set = new System.Numerics.Vector3[6];
 
             set[0] = baseline;
-            set[1] = baseline + new Vertex(0, 0, height);
+            set[1] = baseline + new System.Numerics.Vector3(0, 0, height);
 
-            set[2] = baseline + new Vertex(baseRadius, baseRadius , 0);
-            set[3] = baseline + new Vertex(-baseRadius, -baseRadius, 0);
+            set[2] = baseline + new System.Numerics.Vector3(baseRadius, baseRadius , 0);
+            set[3] = baseline + new System.Numerics.Vector3(-baseRadius, -baseRadius, 0);
 
-            set[4] = set[1] + new Vertex(topRadius, topRadius, 0);
-            set[5] = set[1] + new Vertex(-topRadius, -topRadius, 0);
+            set[4] = set[1] + new System.Numerics.Vector3(topRadius, topRadius, 0);
+            set[5] = set[1] + new System.Numerics.Vector3(-topRadius, -topRadius, 0);
 
             FromVertices(set);            
         }
@@ -216,13 +216,13 @@ namespace SharpGL.SceneGraph.Core
             gl.PopAttrib();
         }
 
-        private Vertex lll;
-        private Vertex hll;
-        private Vertex lhl;
-        private Vertex llh;
-        private Vertex hhl;
-        private Vertex hlh;
-        private Vertex lhh;
-        private Vertex hhh;
+        private System.Numerics.Vector3 lll;
+        private System.Numerics.Vector3 hll;
+        private System.Numerics.Vector3 lhl;
+        private System.Numerics.Vector3 llh;
+        private System.Numerics.Vector3 hhl;
+        private System.Numerics.Vector3 hlh;
+        private System.Numerics.Vector3 lhh;
+        private System.Numerics.Vector3 hhh;
     }
 }

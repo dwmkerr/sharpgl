@@ -54,12 +54,12 @@ namespace SharpGL.SceneGraph.Feedback
                         int vertexCount = (int)feedbackBuffer[values - count--];
 
                         //	Create an array of vertices.
-                        Vertex[] vertices = new Vertex[vertexCount];
+                        System.Numerics.Vector3[] vertices = new System.Numerics.Vector3[vertexCount];
 
                         //	Parse them.
                         for (int i = 0; i < vertexCount; i++)
                         {
-                            vertices[i] = new Vertex();
+                            vertices[i] = new System.Numerics.Vector3();
                             double x = (double)feedbackBuffer[values - count--];
                             double y = (double)feedbackBuffer[values - count--];
                             double z = (double)feedbackBuffer[values - count--];

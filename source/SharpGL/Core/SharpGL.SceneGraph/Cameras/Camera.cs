@@ -58,7 +58,7 @@ namespace SharpGL.SceneGraph.Cameras
         /// <summary>
         /// The camera position.
         /// </summary>
-        private Vertex position = new Vertex(0, 0, 0);
+        private System.Numerics.Vector3 position = new System.Numerics.Vector3(0, 0, 0);
         
 		/// <summary>
 		/// Every time a camera is used to project, the projection matrix calculated 
@@ -78,7 +78,7 @@ namespace SharpGL.SceneGraph.Cameras
         /// The position.
         /// </value>
         [Description("The position of the camera"), Category("Camera")]
-        public Vertex Position
+        public System.Numerics.Vector3 Position
         {
             get { return position; }
             set { position = value; }

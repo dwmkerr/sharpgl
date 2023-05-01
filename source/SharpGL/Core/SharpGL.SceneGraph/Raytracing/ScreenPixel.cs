@@ -15,6 +15,6 @@ namespace SharpGL.SceneGraph.Raytracing
         public Ray ray = new Ray();
         public int x = 0;
         public int y = 0;
-        public Vertex worldpos = new Vertex();
+        public System.Numerics.Vector3 worldpos = new System.Numerics.Vector3();
     }
 }

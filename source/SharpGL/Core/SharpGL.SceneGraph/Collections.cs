@@ -19,7 +19,7 @@ namespace SharpGL.SceneGraph.Collections
         /// <param name="vertex">The target of the search.</param>
         /// <param name="accuracy">The threshhold of the distance from each dimension of the vertex for the search.</param>
         /// <returns></returns>
-        public static int Search(List<Vertex> vertices, int start, Vertex vertex, float accuracy)
+        public static int Search(List<System.Numerics.Vector3> vertices, int start, System.Numerics.Vector3 vertex, float accuracy)
         {
             //  Go through the verticies.
             for (int i = start; i < vertices.Count; i++)

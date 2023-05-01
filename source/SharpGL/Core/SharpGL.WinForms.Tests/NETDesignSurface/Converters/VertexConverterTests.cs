@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Numerics;
+using NUnit.Framework;
 using SharpGL.SceneGraph;
 using SharpGL.WinForms.NETDesignSurface.Converters;
 
@@ -16,9 +17,9 @@ namespace SharpGL.WinForms.Tests.NETDesignSurface.Converters
             {
                 var text = "  ( 1.2  ,  -3.4    ,  5.6789   )  ";
                 var converter = new VertexConverter();
-                var vertex = (Vertex)converter.ConvertFrom(text);
+                var vertex = (Vector3)converter.ConvertFrom(text);
 
-                Assert.That(vertex, Is.EqualTo(new Vertex(1.2f, -3.4f, 5.6789f)));
+                Assert.That(vertex, Is.EqualTo(new System.Numerics.Vector3(1.2f, -3.4f, 5.6789f)));
             }
         }
     }

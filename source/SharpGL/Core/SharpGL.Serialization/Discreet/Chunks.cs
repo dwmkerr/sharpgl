@@ -269,7 +269,7 @@ namespace SharpGL.Serialization.Discreet
             //	Read each vertex and add it.
             for (short i = 0; i < vertexCount; i++)
             {
-                Vertex v = new Vertex();
+                System.Numerics.Vector3 v = new System.Numerics.Vector3();
                 v.X = stream.ReadSingle();
                 v.Y = stream.ReadSingle();
                 v.Z = stream.ReadSingle();
@@ -277,7 +277,7 @@ namespace SharpGL.Serialization.Discreet
             }
         }
 
-        public List<Vertex> vertices = new List<Vertex>();
+        public List<System.Numerics.Vector3> vertices = new List<System.Numerics.Vector3>();
     }
 
     internal class FaceListChunk : MAXChunk

@@ -19,12 +19,12 @@ namespace SharpGL.SceneGraph.Raytracing
         /// <summary>
         /// The normal.
         /// </summary>
-        public Vertex normal = new Vertex();
+        public System.Numerics.Vector3 normal = new System.Numerics.Vector3();
 
         /// <summary>
         /// The point.
         /// </summary>
-        public Vertex point = new Vertex();
+        public System.Numerics.Vector3 point = new System.Numerics.Vector3();
 
         /// <summary>
         /// The closeness.

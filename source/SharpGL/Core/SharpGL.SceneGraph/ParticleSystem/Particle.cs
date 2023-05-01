@@ -106,27 +106,27 @@ namespace SharpGL.SceneGraph.ParticleSystems
         /// <summary>
         /// This is the vertex's current position in space.
         /// </summary>
-        protected Vertex position = new Vertex(0, 0, 0);
+        protected System.Numerics.Vector3 position = new System.Numerics.Vector3(0, 0, 0);
 
         /// <summary>
         ///	This is the velocity, do not modify!
         /// </summary>
-        protected Vertex velocity = new Vertex(0, 0, 0);
+        protected System.Numerics.Vector3 velocity = new System.Numerics.Vector3(0, 0, 0);
 
         /// <summary>
         /// This is the direction of the particle.
         /// </summary>
-        protected Vertex direction = new Vertex(0, 0, 0);
+        protected System.Numerics.Vector3 direction = new System.Numerics.Vector3(0, 0, 0);
 
         /// <summary>
         /// This shows the potential magnitude of the random effects of the direction.
         /// </summary>
-        protected Vertex directionRandomise = new Vertex(0.1f, 0.1f, 0.1f);
+        protected System.Numerics.Vector3 directionRandomise = new System.Numerics.Vector3(0.1f, 0.1f, 0.1f);
 
         /// <summary>
         /// This is the gravity affecting the particle.
         /// </summary>
-        protected Vertex gravity = new Vertex(0, -0.1f, 0);
+        protected System.Numerics.Vector3 gravity = new System.Numerics.Vector3(0, -0.1f, 0);
 
         /// <summary>
         /// Particles colour.
@@ -157,27 +157,27 @@ namespace SharpGL.SceneGraph.ParticleSystems
 
         #region Properties
 
-        public Vertex Position
+        public System.Numerics.Vector3 Position
         {
             get { return position; }
             set { position = value; }
         }
-        public Vertex Velocity
+        public System.Numerics.Vector3 Velocity
         {
             get { return velocity; }
             set { velocity = value; }
         }
-        public Vertex Direction
+        public System.Numerics.Vector3 Direction
         {
             get { return direction; }
             set { direction = value; }
         }
-        public Vertex DirectionRandomise
+        public System.Numerics.Vector3 DirectionRandomise
         {
             get { return directionRandomise; }
             set { directionRandomise = value; }
         }
-        public Vertex Gravity
+        public System.Numerics.Vector3 Gravity
         {
             get { return gravity; }
             set { gravity = value; }

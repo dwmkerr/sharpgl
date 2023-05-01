@@ -21,7 +21,7 @@ namespace SharpGL.SceneGraph.Lighting
 		public Light()
 		{
 			Name = "Light";
-            Position = new Vertex(0, 3, 0);
+            Position = new System.Numerics.Vector3(0, 3, 0);
 		}
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace SharpGL.SceneGraph.Lighting
         /// <summary>
         /// The position of the light.
         /// </summary>
-        private Vertex position = new Vertex(0, 0, 0);
+        private System.Numerics.Vector3 position = new System.Numerics.Vector3(0, 0, 0);
 
 		/// <summary>
 		/// Should the light cast a shadow?
@@ -151,7 +151,7 @@ namespace SharpGL.SceneGraph.Lighting
         /// The position.
         /// </value>
         [Category("Light"), Description("The position.")]
-        public Vertex Position
+        public System.Numerics.Vector3 Position
         {
             get { return position; }
             set 

@@ -122,7 +122,7 @@ namespace SharpGL.SceneGraph.Primitives
 				bool[] facesVisible = new bool[faces.Count];
 
 				//	Get the light position relative to the polygon.
-				Vertex lightPos = light.Position;
+				System.Numerics.Vector3 lightPos = light.Position;
 				lightPos = lightPos - ParentPolygon.Transformation.TranslationVertex;
 
 				//	Go through every face, finding out whether it's visible to the light.
@@ -203,7 +203,7 @@ namespace SharpGL.SceneGraph.Primitives
 		/// <param name="gl">The OpenGL object.</param>
 		/// <param name="lightPos">The position of the light casting the shadow.</param>
 		/// <param name="visibleArray">An array of bools indicating the visible faces.</param>
-		private void DoShadowPass(OpenGL gl, Vertex lightPos, bool[] visibleArray)
+		private void DoShadowPass(OpenGL gl, System.Numerics.Vector3 lightPos, bool[] visibleArray)
 		{
             //  Helpful references.
             var faces = ParentPolygon.Faces;
@@ -229,12 +229,12 @@ namespace SharpGL.SceneGraph.Primitives
 						if(neighbourIndex == -1 || visibleArray[neighbourIndex] == false )
 						{
 							//	Get the edge vertices.
-							Vertex v1 = vertices[face.Indices[j].Vertex];
-							Vertex v2 = vertices[face.Indices[(j+1)%face.Indices.Count].Vertex];
+							System.Numerics.Vector3 v1 = vertices[face.Indices[j].Vertex];
+							System.Numerics.Vector3 v2 = vertices[face.Indices[(j+1)%face.Indices.Count].Vertex];
 						
 							//	Create the two distant vertices.
-							Vertex v3 = (v1 - lightPos) * 100;
-							Vertex v4 = (v2 - lightPos) * 100;
+							System.Numerics.Vector3 v3 = (v1 - lightPos) * 100;
+							System.Numerics.Vector3 v4 = (v2 - lightPos) * 100;
 							
 							//	Draw the shadow volume.
                             gl.Begin(OpenGL.GL_TRIANGLE_STRIP);

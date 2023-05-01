@@ -19,7 +19,7 @@ namespace SharpGL.SceneGraph.Lighting
         public Spotlight()
 		{
             Name = "Spotlight";
-            Position = new Vertex(0, 3, 0);
+            Position = new System.Numerics.Vector3(0, 3, 0);
 		}
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace SharpGL.SceneGraph.Lighting
 			{
                 //  Set the spot parameters.
 			    gl.Light(GLCode, OpenGL.GL_SPOT_CUTOFF, spotCutoff);
-                gl.Light(GLCode, OpenGL.GL_SPOT_DIRECTION, direction);
+                gl.Light(GLCode, OpenGL.GL_SPOT_DIRECTION, direction.Array());
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace SharpGL.SceneGraph.Lighting
 		/// <summary>
 		/// A Vector describing the direction of the spotlight.
 		/// </summary>
-		private Vertex direction = new Vertex(0, 1, 0);
+		private System.Numerics.Vector3 direction = new System.Numerics.Vector3(0, 1, 0);
 
         /// <summary>
         /// Gets or sets the direction.
@@ -58,7 +58,7 @@ namespace SharpGL.SceneGraph.Lighting
         /// The direction.
         /// </value>
         [Category("Light"), Description("The spotlight direction.")]
-		public Vertex Direction
+		public System.Numerics.Vector3 Direction
 		{
 			get {return direction;}
 			set {direction = value; }

@@ -75,7 +75,7 @@ namespace SharpGL.SceneGraph.Quadrics
 
                 //  Update the bounding volume.
                 boundingVolumeHelper.BoundingVolume.FromSphericalVolume(
-                    new Vertex(0, 0, 0), (float)value + 0.1f);
+                    new System.Numerics.Vector3(0, 0, 0), (float)value + 0.1f);
             }
         }
 

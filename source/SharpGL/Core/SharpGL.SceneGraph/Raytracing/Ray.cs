@@ -19,11 +19,11 @@ namespace SharpGL.SceneGraph.Raytracing
         /// <summary>
         /// The origin.
         /// </summary>
-        public Vertex origin = new Vertex();
+        public System.Numerics.Vector3 origin = new System.Numerics.Vector3();
 
         /// <summary>
         /// The direction.
         /// </summary>
-        public Vertex direction = new Vertex();
+        public System.Numerics.Vector3 direction = new System.Numerics.Vector3();
     }
 }
