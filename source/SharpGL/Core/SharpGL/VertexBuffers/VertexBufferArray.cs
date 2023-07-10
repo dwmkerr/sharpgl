@@ -10,31 +10,10 @@ namespace SharpGL.VertexBuffers
     /// allow us to use a set of vertex buffers for vertices, indicies, normals and so on,
     /// without having to use more complicated interleaved arrays.
     /// </summary>
-    public class VertexBufferArray
+    public class VertexBufferArray : IDisposable
     {
-        public void Create(OpenGL gl)
-        {
-            //  Generate the vertex array.
-            uint[] ids = new uint[1];
-            gl.GenVertexArrays(1, ids);
-            vertexArrayObject = ids[0];
-        }
-
-        public void Delete(OpenGL gl)
-        {
-            gl.DeleteVertexArrays(1, new uint[] { vertexArrayObject });
-        }
-
-        public void Bind(OpenGL gl)
-        {
-            gl.BindVertexArray(vertexArrayObject);
-        }
-
-        public void Unbind(OpenGL gl)
-        {
-            gl.BindVertexArray(0);
-        }
-
+        private uint vertexArrayObject;
+        public OpenGL OpenGL { get; private set; }
         /// <summary>
         /// Gets the vertex buffer array object.
         /// </summary>
@@ -42,7 +21,70 @@ namespace SharpGL.VertexBuffers
         {
             get { return vertexArrayObject; }
         }
+        public bool IsCreated => vertexArrayObject != 0;
+        public void Create(OpenGL gl)
+        {
+            if (IsCreated) Delete();
+            OpenGL = gl;
+            //  Generate the vertex array.
+            uint[] ids = new uint[1];
+            gl.GenVertexArrays(1, ids);
+            vertexArrayObject = ids[0];
+        }
 
-        private uint vertexArrayObject;
+        public void Delete()
+        {
+            if (!IsCreated) return;
+            OpenGL.DeleteVertexArrays(1, new uint[] { vertexArrayObject });
+            vertexArrayObject = 0;
+        }
+        public void Delete(OpenGL gl)
+        {
+            if (!IsCreated) return;
+            gl.DeleteVertexArrays(1, new uint[] { vertexArrayObject });
+            vertexArrayObject = 0;
+        }
+        public void Bind()
+        {
+            if (!IsCreated) return;
+            OpenGL.BindVertexArray(vertexArrayObject);
+        }
+        public void Bind(OpenGL gl)
+        {
+            if (!IsCreated) return;
+            gl.BindVertexArray(vertexArrayObject);
+        }
+        public void Unbind()
+        {
+            OpenGL.BindVertexArray(0);
+        }
+        public void Unbind(OpenGL gl)
+        {
+            gl.BindVertexArray(0);
+        }
+        #region IDisposable
+        private bool disposedValue;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
+
+                Delete();
+                disposedValue = true;
+            }
+        }
+        ~VertexBufferArray()
+        {
+            Dispose(disposing: false);
+        }
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

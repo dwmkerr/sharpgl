@@ -15,6 +15,12 @@ namespace ModernOpenGLSample
         public FormModernOpenGLSample()
         {
             InitializeComponent();
+            this.FormClosing += FormModernOpenGLSample_FormClosing;
+        }
+
+        private void FormModernOpenGLSample_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            scene.Dispose();
         }
 
         /// <summary>
