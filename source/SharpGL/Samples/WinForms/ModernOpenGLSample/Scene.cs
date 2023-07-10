@@ -13,7 +13,7 @@ namespace ModernOpenGLSample
     /// This code is based on work from the OpenGL 4.x Swiftless tutorials, please see:
     /// http://www.swiftless.com/opengl4tuts.html
     /// </remarks>
-    public class Scene
+    public class Scene : IDisposable
     {
         //  The projection, view and model matrices.
         mat4 projectionMatrix;
@@ -96,21 +96,30 @@ namespace ModernOpenGLSample
         /// <param name="gl">The OpenGL instance.</param>
         private void CreateVerticesForSquare(OpenGL gl)
         {
-            var vertices = new float[18];
-            var colors = new float[18]; // Colors for our vertices  
-            vertices[0] = -0.5f; vertices[1] = -0.5f; vertices[2] = 0.0f; // Bottom left corner  
-            colors[0] = 1.0f; colors[1] = 1.0f; colors[2] = 1.0f; // Bottom left corner  
-            vertices[3] = -0.5f; vertices[4] = 0.5f; vertices[5] = 0.0f; // Top left corner  
-            colors[3] = 1.0f; colors[4] = 0.0f; colors[5] = 0.0f; // Top left corner  
-            vertices[6] = 0.5f; vertices[7] = 0.5f; vertices[8] = 0.0f; // Top Right corner  
-            colors[6] = 0.0f; colors[7] = 1.0f; colors[8] = 0.0f; // Top Right corner  
-            vertices[9] = 0.5f; vertices[10] = -0.5f; vertices[11] = 0.0f; // Bottom right corner  
-            colors[9] = 0.0f; colors[10] = 0.0f; colors[11] = 1.0f; // Bottom right corner  
-            vertices[12] = -0.5f; vertices[13] = -0.5f; vertices[14] = 0.0f; // Bottom left corner  
-            colors[12] = 1.0f; colors[13] = 1.0f; colors[14] = 1.0f; // Bottom left corner  
-            vertices[15] = 0.5f; vertices[16] = 0.5f; vertices[17] = 0.0f; // Top Right corner  
-            colors[15] = 0.0f; colors[16] = 1.0f; colors[17] = 0.0f; // Top Right corner  
+            //var vertices = new float[18];
+            //var colors = new float[18]; // Colors for our vertices  
+            //vertices[0] = -0.5f; vertices[1] = -0.5f; vertices[2] = 0.0f; // Bottom left corner  
+            //colors[0] = 1.0f; colors[1] = 1.0f; colors[2] = 1.0f; // Bottom left corner  
+            //vertices[3] = -0.5f; vertices[4] = 0.5f; vertices[5] = 0.0f; // Top left corner  
+            //colors[3] = 1.0f; colors[4] = 0.0f; colors[5] = 0.0f; // Top left corner  
+            //vertices[6] = 0.5f; vertices[7] = 0.5f; vertices[8] = 0.0f; // Top Right corner  
+            //colors[6] = 0.0f; colors[7] = 1.0f; colors[8] = 0.0f; // Top Right corner  
+            //vertices[9] = 0.5f; vertices[10] = -0.5f; vertices[11] = 0.0f; // Bottom right corner  
+            //colors[9] = 0.0f; colors[10] = 0.0f; colors[11] = 1.0f; // Bottom right corner  
+            //vertices[12] = -0.5f; vertices[13] = -0.5f; vertices[14] = 0.0f; // Bottom left corner  
+            //colors[12] = 1.0f; colors[13] = 1.0f; colors[14] = 1.0f; // Bottom left corner  
+            //vertices[15] = 0.5f; vertices[16] = 0.5f; vertices[17] = 0.0f; // Top Right corner  
+            //colors[15] = 0.0f; colors[16] = 1.0f; colors[17] = 0.0f; // Top Right corner  
 
+            var vertexAttributes = new float[36]
+            {
+                -0.5f, -0.5f,0.0f,1.0f,1.0f, 1.0f,
+                -0.5f, 0.5f,0.0f,1.0f,0.0f, 1.0f,
+                0.5f, 0.5f,0.0f,0.0f,1.0f, 1.0f,
+                0.5f, -0.5f,0.0f,0.0f,0.0f, 1.0f,
+                -0.5f, -0.5f,0.0f,1.0f,1.0f, 1.0f,
+                0.5f, 0.5f,0.0f,0.0f,1.0f, 0.0f,
+            };
             //  Create the vertex array object.
             vertexBufferArray = new VertexBufferArray();
             vertexBufferArray.Create(gl);
@@ -119,18 +128,52 @@ namespace ModernOpenGLSample
             //  Create a vertex buffer for the vertex data.
             var vertexDataBuffer = new VertexBuffer();
             vertexDataBuffer.Create(gl);
-            vertexDataBuffer.Bind(gl);
-            vertexDataBuffer.SetData(gl, 0, vertices, false, 3);
+            vertexDataBuffer.Bind();
+            vertexDataBuffer.SetData(vertexAttributes);
+            vertexDataBuffer.EnableVertexAttribute(0);
+            vertexDataBuffer.SetVertexAttribute(0, 3, 6 * sizeof(float), false, 0);
+            vertexDataBuffer.EnableVertexAttribute(1);
+            vertexDataBuffer.SetVertexAttribute(1, 3, 6 * sizeof(float), false, 3 * sizeof(float));
+            
 
-            //  Now do the same for the colour data.
-            var colourDataBuffer = new VertexBuffer();
-            colourDataBuffer.Create(gl);
-            colourDataBuffer.Bind(gl);
-            colourDataBuffer.SetData(gl, 1, colors, false, 3);
+            ////  Create a vertex buffer for the vertex data.
+            //var vertexDataBuffer = new VertexBuffer();
+            //vertexDataBuffer.Create(gl);
+            //vertexDataBuffer.Bind(gl);
+            //vertexDataBuffer.SetData(gl, 0, vertices, false, 3);
 
+            ////  Now do the same for the colour data.
+            //var colourDataBuffer = new VertexBuffer();
+            //colourDataBuffer.Create(gl);
+            //colourDataBuffer.Bind(gl);
+            //colourDataBuffer.SetData(gl, 1, colors, false, 3);
             //  Unbind the vertex array, we've finished specifying data for it.
             vertexBufferArray.Unbind(gl);
+            vertexDataBuffer.Dispose();
+            //colourDataBuffer.Dispose();
         }
-
+        #region IDisposable
+        private bool disposedValue;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
+                vertexBufferArray.Dispose();
+                disposedValue = true;
+            }
+        }
+        ~Scene()
+        {
+            Dispose(disposing: false);
+        }
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
