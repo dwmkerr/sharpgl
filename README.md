@@ -1,6 +1,6 @@
 # SharpGL
 
-[![main](https://github.com/dwmkerr/sharpgl/actions/workflows/main.yaml/badge.svg)](https://github.com/dwmkerr/sharpgl/actions/workflows/main.yaml) [![codecov](https://codecov.io/gh/dwmkerr/sharpgl/branch/master/graph/badge.svg)](https://codecov.io/gh/dwmkerr/sharpgl) [![GuardRails badge](https://api.guardrails.io/v2/badges/16780?token=569f2cc38a148f785f3a38ef0bcf5f5964995d7ca625abfad9956b14bd06ad96)](https://dashboard.guardrails.io/gh/dwmkerr/repos/16780) [![Buy me a coffee](https://img.shields.io/badge/thanks-buy%20me%20a%20coffee-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/dwmkerr?frequency=one-time)
+[![main](https://github.com/dwmkerr/sharpgl/actions/workflows/main.yaml/badge.svg)](https://github.com/dwmkerr/sharpgl/actions/workflows/main.yaml) [![codecov](https://codecov.io/gh/dwmkerr/sharpgl/branch/master/graph/badge.svg)](https://codecov.io/gh/dwmkerr/sharpgl) [![GuardRails badge](https://api.guardrails.io/v2/badges/16780?token=569f2cc38a148f785f3a38ef0bcf5f5964995d7ca625abfad9956b14bd06ad96)](https://dashboard.guardrails.io/gh/dwmkerr/repos/16780) [![Donate](https://img.shields.io/badge/thanks-donate-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/dwmkerr/sponsorships?frequency=one-time&amount=5)
 
 Unlock the power of OpenGL in any .NET application. SharpGL wraps all modern OpenGL features, provides helpful wrappers for advanced objects like Vertex Buffer Arrays and shaders, as well as offering a powerful Scene Graph and utility library to help you build your projects.
 
